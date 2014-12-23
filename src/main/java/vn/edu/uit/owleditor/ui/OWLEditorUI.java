@@ -2,11 +2,8 @@ package vn.edu.uit.owleditor.ui;
 
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -25,6 +22,7 @@ import vn.edu.uit.owleditor.view.EntryView;
 public class OWLEditorUI extends UI {
     private static final String URL = "http://chuongdang.com/transport.owl";
     private final OWLEditorEventBus editorEventBus = new OWLEditorEventBus();
+
     @Autowired
     ApplicationContext applicationContext;
     @Autowired

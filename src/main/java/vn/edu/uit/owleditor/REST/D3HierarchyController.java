@@ -2,7 +2,6 @@ package vn.edu.uit.owleditor.REST;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.vaadin.ui.UI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -11,12 +10,13 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.vaadin.spring.UIScope;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -30,13 +30,14 @@ import java.util.Set;
  */
 
 @RestController
-@UIScope
 public class D3HierarchyController {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(D3HierarchyController.class);
     private final JsonObject thingObject = new JsonObject();
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
+    @Autowired
+    OWLEditorUI editorUI;
 
     public static int randInt(int min, int max) {
 
@@ -55,11 +56,10 @@ public class D3HierarchyController {
     public @ResponseBody
     String getHierarchy() {
         try {
-
-            OWLEditorKit editorKit = (OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit");
+            OWLOntology ontology = editorUI.getActiveOntology();
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
-            editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
+            ontology.accept(initPopulationEngine(ontology));
             return thingObject.toString();
         } catch (NullPointerException ex) {
             ex.printStackTrace();

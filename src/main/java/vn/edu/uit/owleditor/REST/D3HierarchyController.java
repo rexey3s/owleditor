@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.vaadin.spring.VaadinSessionScope;
+import org.vaadin.spring.UIScope;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,7 @@ import java.util.Set;
  */
 
 @RestController
-@VaadinSessionScope
+@UIScope
 public class D3HierarchyController {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(D3HierarchyController.class);

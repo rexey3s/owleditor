@@ -1,0 +1,177 @@
+// Global variable overrides. Must be declared before importing Valo.
+
+// Defines the plaintext font size, weight and family. Font size affects general component sizing.
+//$v-font-size: 16px;
+//$v-font-weight: 300;
+//$v-font-family: "Open Sans", sans-serif;
+
+// Defines the border used by all components.
+//$v-border: 1px solid (v-shade 0.7);
+//$v-border-radius: 4px;
+
+// Affects the color of some component elements, e.g Button, Panel title, etc
+//$v-background-color: hsl(210, 0%, 98%);
+// Affects the color of content areas, e.g  Panel and Window content, TextField input etc
+//$v-app-background-color: $v-background-color;
+
+// Affects the visual appearance of all components
+//$v-gradient: v-linear 8%;
+//$v-bevel-depth: 30%;
+//$v-shadow-opacity: 5%;
+
+// Defines colors for indicating status (focus, success, failure)
+//$v-focus-color: valo-focus-color(); // Calculates a suitable color automatically
+//$v-friendly-color: #2c9720;
+//$v-error-indicator-color: #ed473b;
+
+// For more information, see: https://vaadin.com/book/-/page/themes.valo.html
+// Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
+
+@import "../valo/valo.scss";
+@import "views/dashboardview";
+@import "views/entryview";
+
+// Main layout padding
+$view-padding: round($v-unit-size / 1.5) !default;
+
+// Slight adjustment to menu background-color
+$valo-menu-background-color: #414B56;
+
+
+@mixin mytheme {
+  @include valo;
+  @include owleditor-entry-view;
+  @include dashboard-dashboard-view;
+
+  .diagram-container {
+    .node {
+      cursor: pointer;
+    }
+
+    .overlay {
+      background-color: #EEE;
+    }
+
+    .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+
+    .node text {
+      font-size: 10px;
+      font-family: sans-serif;
+    }
+
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
+
+    .templink {
+      fill: none;
+      stroke: red;
+      stroke-width: 3px;
+    }
+
+    .ghostCircle.show {
+      display: block;
+    }
+
+    .ghostCircle, .activeDrag .ghostCircle {
+      display: none;
+    }
+  }
+
+  .hierarchy-view {
+    .hierarchy-view-toolbar {
+      padding-left: round($v-unit-size / 1.8);
+    }
+  }
+
+  .individual-list {
+    .listselect-panel {
+      padding: 5px;
+    }
+    .toolbar {
+      padding-left: 20px !important;
+    }
+  }
+
+  .v-filterselect .v-icon + [class*="input"] {
+    padding-left: 50px;
+  }
+  .v-inferred-label {
+    border: 1px dashed #197de1;
+    background: antiquewhite;
+  }
+  .dashboard-tabsheet {
+    .v-tabsheet-tabs {
+      border: 1px solid #d5d5d5;
+      border-radius: 4px;
+    }
+  }
+  .object-property-panel {
+    padding-top: 0 !important;
+  }
+  .property-attr-bar {
+    margin-top: round($view-padding / 3);
+
+    //    @include valo-panel-style;
+    margin-bottom: round($view-padding / 3);
+
+    @include width-range($max: 680px) {
+      .attr-cell {
+        width: 50%;
+      }
+      .attr-cell:nth-child(2n+1) {
+        border-left: none;
+      }
+      .attr-cell:nth-child(n+3) {
+        border-top: valo-border($strength: 0.3);
+      }
+    }
+
+    @include width-range($max: 270px) {
+      .attr-cell {
+        width: 100%;
+        border-left: none;
+        border-top: valo-border($strength: 0.3);
+
+        &:first-child {
+          border-top: none;
+        }
+      }
+    }
+    .attr-cell {
+      //      @include valo-panel-style;
+      //      margin-bottom: round($view-padding / 3);
+
+      @include width-range($max: 680px) {
+        .attr-cell {
+          width: 50%;
+        }
+        .attr-cell:nth-child(2n+1) {
+          border-left: none;
+        }
+        .attr-cell:nth-child(n+3) {
+          border-top: valo-border($strength: 0.3);
+        }
+      }
+
+      @include width-range($max: 270px) {
+        .attr-cell {
+          width: 100%;
+          border-left: none;
+          border-top: valo-border($strength: 0.3);
+
+          &:first-child {
+            border-top: none;
+          }
+        }
+      }
+    }
+  }
+
+}

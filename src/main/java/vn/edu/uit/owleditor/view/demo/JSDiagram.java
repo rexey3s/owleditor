@@ -1,7 +1,6 @@
 package vn.edu.uit.owleditor.view.demo;
 
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -15,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import javax.annotation.Nonnull;
 import java.io.*;
@@ -27,8 +27,7 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/21/14.
  */
-@JavaScript({"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
-        "http://d3js.org/d3.v3.min.js", "hierarchy.js", "hierarchy.json"})
+@JavaScript({"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js", "http://d3js.org/d3.v3.min.js", "hierarchy.js", "hierarchy.json"})
 public class JSDiagram extends AbstractJavaScriptComponent {
     private static final int SIZE = 400;
     private final JsonObject thingObject = new JsonObject();

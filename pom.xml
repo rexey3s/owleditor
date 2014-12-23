@@ -25,7 +25,7 @@
 		<owlapi.version>4.0.0</owlapi.version>
 		<pellet.version>2.2.2</pellet.version>
 		<vaadin.version>7.3.6</vaadin.version>
-		<vaadinSpring.version>0.0.3</vaadinSpring.version>
+		<vaadinSpring.version>0.0.4-SNAPSHOT</vaadinSpring.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		
 	</properties>
@@ -62,6 +62,12 @@
 			<groupId>org.vaadin.spring</groupId>
 			<artifactId>spring-boot-vaadin</artifactId>
 			<version>${vaadinSpring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-client-compiled</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

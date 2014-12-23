@@ -3,11 +3,14 @@ package vn.edu.uit.owleditor.view;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.spring.VaadinComponent;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
+
+@VaadinComponent
 public class MainView extends HorizontalLayout {
 
     final TabSheet root = new TabSheet();

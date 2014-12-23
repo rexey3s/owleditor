@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.REST;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.vaadin.spring.events.EventBusListener;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 
@@ -30,7 +30,7 @@ import java.util.Set;
  */
 
 @RestController
-public class D3HierarchyController implements EventBusListener<Object> {
+public class D3HierarchyController {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(D3HierarchyController.class);
     private final JsonObject thingObject = new JsonObject();
@@ -52,9 +52,10 @@ public class D3HierarchyController implements EventBusListener<Object> {
         return randomNum;
     }
 
-    @Override
-    public void onEvent(final org.vaadin.spring.events.Event<Object> event) {
-        activeOntology = (OWLOntology) event.getPayload();
+    @Subscribe
+    public void onReceiveOntology(OWLOntology ont) {
+        this.activeOntology = ont;
+        
     }
     
     @RequestMapping(value = "/r/hierarchy", method = RequestMethod.GET)

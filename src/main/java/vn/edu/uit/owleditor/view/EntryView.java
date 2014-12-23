@@ -6,12 +6,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
-import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -21,13 +18,11 @@ import java.io.File;
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
 
-@VaadinComponent
 public class EntryView extends VerticalLayout {
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
-    @Autowired
-    EventBus eventBus;
+
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
@@ -66,7 +61,7 @@ public class EntryView extends VerticalLayout {
             try {
 
                 OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
-                eventBus.publish(EventScope.APPLICATION, EntryView.this, eKit);
+                OWLEditorUI.getEventBus().post(eKit.getActiveOntology());
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));

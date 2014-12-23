@@ -10,13 +10,10 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.EditorUtils;
@@ -39,10 +36,7 @@ public class D3HierarchyController implements EventBusListener<Object> {
     private final JsonObject thingObject = new JsonObject();
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
-    @Autowired
-    EventBus eventBus;
-    @Autowired
-    ApplicationContext applicationContext;
+
     OWLOntology activeOntology;
 
     public static int randInt(int min, int max) {

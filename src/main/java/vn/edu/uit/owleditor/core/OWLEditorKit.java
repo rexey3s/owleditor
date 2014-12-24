@@ -18,7 +18,6 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
@@ -72,11 +71,11 @@ public class OWLEditorKit implements Serializable {
     private BidirectionalShortFormProvider bidirectionalSfp;
 
 
-    //    public OWLEditorKit() {
-//        initialise();
-//
-//    }
-    @Autowired
+    public OWLEditorKit() {
+        initialise();
+
+    }
+    
     public OWLEditorKit(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);

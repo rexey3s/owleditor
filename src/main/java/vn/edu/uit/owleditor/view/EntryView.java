@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
@@ -32,6 +33,7 @@ public class EntryView extends VerticalLayout implements View {
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
 
+    @Autowired
     OWLEditorKit editorKit;
 
     public EntryView() {

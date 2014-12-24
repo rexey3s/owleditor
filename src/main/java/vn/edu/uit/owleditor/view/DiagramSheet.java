@@ -66,8 +66,8 @@ public class DiagramSheet extends VerticalLayout {
         thingObject.addProperty("name", "Thing");
         thingObject.add("children", thingArray);
         editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology(), thingObject));
-        LOG.info(thingObject.getAsString());
-        diagram.setValue(thingObject.getAsString());
+        LOG.info(thingObject.toString());
+        diagram.setValue(thingObject.toString());
     }
 
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {

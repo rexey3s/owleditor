@@ -18,7 +18,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -40,7 +41,7 @@ import java.util.Set;
  * on 11/11/14.
  */
 
-@Service
+@Component
 public class OWLEditorKit implements Serializable {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -70,7 +71,8 @@ public class OWLEditorKit implements Serializable {
     private ShortFormProvider sfpFormat;
 
     private BidirectionalShortFormProvider bidirectionalSfp;
-
+    
+    @Autowired
     public OWLEditorKit() {
         initialise();
 

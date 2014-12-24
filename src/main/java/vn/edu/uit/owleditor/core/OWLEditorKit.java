@@ -31,7 +31,6 @@ import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Set;
 
@@ -193,21 +192,6 @@ public class OWLEditorKit {
         parser.setDefaultOntology(activeOntology);
     }
 
-    public void setIRI(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
-        activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
-        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
-        activeOntology.getDirectImportsDocuments();
-        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
-        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
-        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-
-        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
-        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
-        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
-        parser.setDefaultOntology(activeOntology);
-
-    }
 
     public SWRLAPIOWLOntology getSWRLActiveOntology() {
         return swrlActiveOntology;

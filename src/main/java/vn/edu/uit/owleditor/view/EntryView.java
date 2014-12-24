@@ -73,9 +73,9 @@ public class EntryView extends VerticalLayout implements View {
                 EditorUtils.checkNotNull(editorKit, "Editor is null");
                 editorKit.setIRI(IRI.create(urlField.getValue()));
 
-//                UI.getCurrent().getSession().setAttribute("kit", eKit);
-//                UI.getCurrent().getSession().getCurrent().setConverterFactory(
-//                        new OWLObjectConverterFactory(eKit));
+                UI.getCurrent().getSession().setAttribute("kit", editorKit);
+                UI.getCurrent().getSession().getCurrent().setConverterFactory(
+                        new OWLObjectConverterFactory(editorKit));
 
 
                 UI.getCurrent().setContent(new MainView());

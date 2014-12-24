@@ -18,12 +18,11 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.impl.DefaultSWRLAPIRenderer;
+import org.vaadin.spring.VaadinSessionScope;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -41,7 +40,7 @@ import java.util.Set;
  * on 11/11/14.
  */
 
-@Scope(value = "vaadin-session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@VaadinSessionScope
 public class OWLEditorKit implements Serializable {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();

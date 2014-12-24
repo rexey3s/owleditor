@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.REST;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -53,11 +52,6 @@ public class RestAPI {
         return randomNum;
     }
 
-    @Subscribe
-    public void onReceiveOntology(OWLOntology ont) {
-        this.activeOntology = ont;
-        
-    }
 
     @RequestMapping(value = "/api/hierarchy", method = RequestMethod.GET)
     public

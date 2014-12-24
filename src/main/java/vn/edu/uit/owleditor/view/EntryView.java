@@ -8,11 +8,12 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.io.File;
 @VaadinView(name = EntryView.NAME)
 public class EntryView extends VerticalLayout implements View {
     public final static String NAME = "entryView";
+    private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
@@ -68,7 +70,6 @@ public class EntryView extends VerticalLayout implements View {
 
                 OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
 
-                OWLEditorUI.getEventBus().post(eKit.getActiveOntology());
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));
@@ -99,6 +100,7 @@ public class EntryView extends VerticalLayout implements View {
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
                 File file = (File) uploadField.getValue();
+                LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
                     OWLEditorKit eKit = new OWLEditorKit(IRI.create(file));
 

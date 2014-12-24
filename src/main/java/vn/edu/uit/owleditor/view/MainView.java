@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.utils.EditorUtils;
 
 
 /**
@@ -29,7 +30,8 @@ public class MainView extends HorizontalLayout implements View {
     OWLEditorKit editorKit;
     
     public MainView() {
-        LOG.info(editorKit.getActiveOntology().toString());
+//        LOG.info(editorKit.getActiveOntology().toString());
+        EditorUtils.checkNotNull(editorKit.getActiveOntology(), "Active Ontology is null");
         root.addTab(new ClassesSheet(), "Classes");
         root.addTab(new ObjectPropertiesSheet(), "Object Properties");
         root.addTab(new DataPropertiesSheet(), "Data Properties");

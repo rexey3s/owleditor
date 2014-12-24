@@ -28,7 +28,6 @@ public class EntryView extends VerticalLayout implements View {
     public final static String NAME = "entryView";
     private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
-    static OWLEditorKit editorKit;
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
 
@@ -68,7 +67,6 @@ public class EntryView extends VerticalLayout implements View {
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
                 OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
-                editorKit = eKit;
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));

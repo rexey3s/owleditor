@@ -55,18 +55,14 @@
 			<artifactId>vaadin-client-compiled</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client-compiler</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
+		<!--<dependency>-->
+		<!--<groupId>com.vaadin</groupId>-->
+		<!--<artifactId>vaadin-client-compiler</artifactId>-->
+		<!--<version>${vaadin.version}</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -82,32 +78,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-actuator</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-test</artifactId>-->
-		<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-		<!--<groupId>com.vaadin</groupId>-->
-		<!--<artifactId>vaadin-push</artifactId>-->
-		<!--<version>${vaadin.version}</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>javax.servlet</groupId>-->
-		<!--<artifactId>javax.servlet-api</artifactId>-->
-		<!--<version>3.0.1</version>-->
-		<!--<scope>provided</scope>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-push</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
 		
 		<!-- Event Bus and Eclipse Annotation -->
 		<!--<dependency>-->

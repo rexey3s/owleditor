@@ -19,7 +19,7 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -40,8 +40,7 @@ import java.util.Set;
  * Created by Chuong Dang
  * on 11/11/14.
  */
-
-@Component
+@Repository
 public class OWLEditorKit implements Serializable {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -72,29 +71,29 @@ public class OWLEditorKit implements Serializable {
 
     private BidirectionalShortFormProvider bidirectionalSfp;
 
-    @Autowired
-    public OWLEditorKit() {
-        initialise();
 
-    }
-
-//    public OWLEditorKit(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
+    //    public OWLEditorKit() {
 //        initialise();
-//        activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
-//        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
-//        activeOntology.getDirectImportsDocuments();
-//        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
-//        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-//        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
-//        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
 //
-//        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
-//        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
-//        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
-//        parser.setDefaultOntology(activeOntology);
-//
-//        reasonerToggle();
 //    }
+    @Autowired
+    public OWLEditorKit(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
+        initialise();
+        activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
+        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
+        activeOntology.getDirectImportsDocuments();
+        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
+        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
+        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
+        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+
+        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
+        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
+        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
+        parser.setDefaultOntology(activeOntology);
+
+        reasonerToggle();
+    }
 
 
 

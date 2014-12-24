@@ -10,7 +10,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
@@ -32,7 +31,7 @@ public class EntryView extends VerticalLayout implements View {
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
-    @Autowired
+
     OWLEditorKit editorKit;
 
     public EntryView() {
@@ -103,24 +102,24 @@ public class EntryView extends VerticalLayout implements View {
         uploadField.setFieldType(UploadField.FieldType.FILE);
         uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
         openBtn.addListener((Button.ClickEvent event) -> {
-//            try {
-//                File file = (File) uploadField.getValue();
-//                LOG.info(file.getAbsolutePath());
-//                if (file.exists()) {
-//                    OWLEditorKit eKit = new OWLEditorKit(IRI.create(file));
-//
-//                    UI.getCurrent().getSession().setAttribute("kit", eKit);
-//
-//                    UI.getCurrent().getSession().getCurrent().setConverterFactory(
-//                            new OWLObjectConverterFactory(eKit));
-//
-//                    UI.getCurrent().setContent(new MainView());
-//                }
-//            } catch (NullPointerException nullEx) {
-//                Notification.show("Please upload your file", Notification.Type.ERROR_MESSAGE);
-//            } catch (OWLOntologyCreationException e) {
-//                Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
-//            }
+            try {
+                File file = (File) uploadField.getValue();
+                LOG.info(file.getAbsolutePath());
+                if (file.exists()) {
+                    OWLEditorKit eKit = new OWLEditorKit(IRI.create(file));
+
+                    UI.getCurrent().getSession().setAttribute("kit", eKit);
+
+                    UI.getCurrent().getSession().getCurrent().setConverterFactory(
+                            new OWLObjectConverterFactory(eKit));
+
+                    UI.getCurrent().setContent(new MainView());
+                }
+            } catch (NullPointerException nullEx) {
+                Notification.show("Please upload your file", Notification.Type.ERROR_MESSAGE);
+            } catch (OWLOntologyCreationException e) {
+                Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
+            }
         });
         return uploadWrapper;
     }

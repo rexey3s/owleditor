@@ -15,6 +15,7 @@ import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.utils.EditorUtils;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -69,7 +70,7 @@ public class EntryView extends VerticalLayout implements View {
 
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
-
+                EditorUtils.checkNotNull(editorKit, "Editor is null");
                 editorKit.setIRI(IRI.create(urlField.getValue()));
 
 //                UI.getCurrent().getSession().setAttribute("kit", eKit);

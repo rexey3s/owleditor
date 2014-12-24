@@ -1,7 +1,7 @@
 /**
  * Created by Chuong Dang on 12/21/14.
  */
-window.com_chuongdang_owleditor_view_demo_JSDiagram = function () {
+window.vn_edu_uit_owleditor_view_demo_JSDiagram = function () {
     var SVG_ELEMENT = this.getElement();
     treeJSON = d3.json("/APP/PUBLISHED/hierarchy.json", function (error, treeData) {
 

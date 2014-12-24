@@ -30,9 +30,10 @@ import java.util.Set;
  */
 
 @RestController
-public class D3HierarchyController {
+@RequestMapping(value = "/api")
+public class RestAPI {
     private static final int SIZE = 400;
-    private static final Logger LOG = LoggerFactory.getLogger(D3HierarchyController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestAPI.class);
     private final JsonObject thingObject = new JsonObject();
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
@@ -57,8 +58,8 @@ public class D3HierarchyController {
         this.activeOntology = ont;
         
     }
-    
-    @RequestMapping(value = "/r/hierarchy", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/hierarchy", method = RequestMethod.GET)
     public
     @ResponseBody
     String getHierarchy() {

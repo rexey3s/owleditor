@@ -55,6 +55,7 @@ public class OWLEditorUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         setContent(new EntryView());
+        
     }
 
 }

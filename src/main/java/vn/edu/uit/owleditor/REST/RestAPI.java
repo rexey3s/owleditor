@@ -70,6 +70,8 @@ public class RestAPI {
     public
     @ResponseBody
     String getHierarchy() {
+        OWLEditorKit editorKit = (OWLEditorKit) session.getAttribute("kit");
+        LOG.info(editorKit.getActiveOntology().toString());
         try {
             EditorUtils.checkNotNull(activeOntology, "Can not load ontology");
             thingObject.addProperty("name", "Thing");

@@ -29,7 +29,6 @@ import java.util.Set;
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
 @RestController
-@RequestMapping(value = "/api")
 public class RestAPI {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(RestAPI.class);
@@ -60,7 +59,7 @@ public class RestAPI {
         
     }
 
-    @RequestMapping(value = "/hierarchy", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/hierarchy", method = RequestMethod.GET)
     public
     @ResponseBody
     String getHierarchy() {

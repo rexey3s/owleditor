@@ -1,14 +1,15 @@
 package vn.edu.uit.owleditor.view;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
@@ -19,15 +20,13 @@ import java.io.File;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-@VaadinComponent
-public class EntryView extends VerticalLayout {
+@VaadinView(name = EntryView.NAME)
+public class EntryView extends VerticalLayout implements View {
+    public final static String NAME = "entryView";
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
 
-    @Autowired
-    OWLEditorKit editorKit;
-    
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
@@ -65,19 +64,14 @@ public class EntryView extends VerticalLayout {
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
 
-//                OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
-//
-//                OWLEditorUI.getEventBus().post(eKit.getActiveOntology());
-//                UI.getCurrent().getSession().setAttribute("kit", eKit);
-//                UI.getCurrent().getSession().getCurrent().setConverterFactory(
-//                        new OWLObjectConverterFactory(eKit));
+                OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
 
-                editorKit = new OWLEditorKit(IRI.create(urlField.getValue()));
-
-                OWLEditorUI.getEventBus().post(editorKit.getActiveOntology());
-                UI.getCurrent().getSession().setAttribute("kit", editorKit);
+                OWLEditorUI.getEventBus().post(eKit.getActiveOntology());
+                UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
-                        new OWLObjectConverterFactory(editorKit));
+                        new OWLObjectConverterFactory(eKit));
+
+
                 UI.getCurrent().setContent(new MainView());
 
             } catch (OWLOntologyCreationException e) {
@@ -123,5 +117,8 @@ public class EntryView extends VerticalLayout {
     }
 
 
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
 
+    }
 }

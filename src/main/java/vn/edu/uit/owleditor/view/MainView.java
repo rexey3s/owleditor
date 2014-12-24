@@ -21,7 +21,13 @@ public class MainView extends HorizontalLayout {
         root.addTab(new IndividualsSheet(), "Individuals");
         root.addTab(new RuleSheet(), "SWRL Rules");
         root.addTab(new DemoSheet(), "Demo 1");
-        root.addTab(new DiagramSheet(), "Diagram");
+        DiagramSheet diagramSheet = new DiagramSheet();
+        root.addTab(diagramSheet, "Diagram");
+        root.addSelectedTabChangeListener(event -> {
+            if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
+                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reload();
+            }
+        });
         root.setSizeFull();
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         addComponent(root);

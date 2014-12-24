@@ -18,9 +18,6 @@ import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.view.demo.JSDiagram;
 
 import javax.annotation.Nonnull;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
@@ -33,37 +30,21 @@ import java.util.Set;
 public class DiagramSheet extends VerticalLayout {
     private static final int SIZE = 400;
     private static Logger LOG = LoggerFactory.getLogger(JSDiagram.class);
-    private final JsonObject thingObject = new JsonObject();
-    private final JsonArray thingArray = new JsonArray();
+
     private final Set<OWLClass> visited = new HashSet<>();
+    private final JSDiagram diagram = new JSDiagram();
+    private final OWLEditorKit editorKit;
     public DiagramSheet() {
-        OWLEditorKit editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
-        thingObject.addProperty("name", "Thing");
-        thingObject.add("children", thingArray);
-        editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
-        FileOutputStream fos;
-        File file;
-        try {
-            file = new File("src/main/java/vn/edu/uit/owleditor/view/demo/hierarchy.json");
-            fos = new FileOutputStream(file.getAbsoluteFile());
-//            Writer writer = new OutputStreamWriter(fos, "UTF-8");
-            fos.write(thingObject.toString().getBytes());
-            LOG.info(thingObject.toString());
-
-        } catch (IOException e) {
-            LOG.error(e.getMessage());
-        }
-
-        JSDiagram diagram = new JSDiagram();
-        diagram.setValue(thingObject.toString());
+        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();       
+        
         final HorizontalLayout diagramContainer = new HorizontalLayout();
         addStyleName("diagram-container");
         diagramContainer.addComponent(diagram);
         diagramContainer.setSizeFull();
         addComponent(diagramContainer);
         setSizeFull();
+        reload();
     }
-
 
     public static int randInt(int min, int max) {
 
@@ -78,6 +59,17 @@ public class DiagramSheet extends VerticalLayout {
         return randomNum;
     }
 
+    public void reload() {
+        visited.clear();
+        final JsonObject thingObject = new JsonObject();
+        final JsonArray thingArray = new JsonArray();
+        thingObject.addProperty("name", "Thing");
+        thingObject.add("children", thingArray);
+        editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology(), thingObject));
+        LOG.info(thingObject.getAsString());
+        diagram.setValue(thingObject.getAsString());
+    }
+
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
         visited.add(child);
         final JsonObject childObject = new JsonObject();
@@ -88,10 +80,10 @@ public class DiagramSheet extends VerticalLayout {
 
             parentObject.get("children").getAsJsonArray().add(childObject);
 
-        } else {
-
+        } else if (parentObject.has("children")) {
             if (EntitySearcher.getSuperClasses(child, ontology).size() == 0)
-                thingArray.add(childObject);
+                parentObject.get("children").getAsJsonArray().add(childObject);
+            
         }
         Collection<OWLClassExpression> childs = EntitySearcher.getSubClasses(child, ontology);
         if (childs.size() > 0) {
@@ -108,7 +100,7 @@ public class DiagramSheet extends VerticalLayout {
         }
     }
 
-    private OWLObjectVisitorAdapter initPopulationEngine(OWLOntology activeOntology) {
+    private OWLObjectVisitorAdapter initPopulationEngine(OWLOntology activeOntology, JsonObject thingObject) {
         return new OWLObjectVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLOntology ontology) {
@@ -120,7 +112,7 @@ public class DiagramSheet extends VerticalLayout {
             @Override
             public void visit(@Nonnull OWLClass owlClass) {
                 if (!visited.contains(owlClass)) {
-                    recursive(activeOntology, owlClass, null, null);
+                    recursive(activeOntology, owlClass, null, thingObject);
                 }
             }
         };

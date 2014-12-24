@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+import org.springframework.stereotype.Component;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -31,6 +32,7 @@ import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 
@@ -38,7 +40,8 @@ import java.util.Set;
  * Created by Chuong Dang
  * on 11/11/14.
  */
-public class OWLEditorKit {
+@Component
+public class OWLEditorKit implements Serializable {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
 

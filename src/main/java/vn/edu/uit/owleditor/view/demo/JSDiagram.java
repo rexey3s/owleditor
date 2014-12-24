@@ -14,6 +14,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import javax.annotation.Nonnull;
@@ -30,6 +32,7 @@ import java.util.Set;
 @JavaScript({"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js", "http://d3js.org/d3.v3.min.js", "hierarchy.js", "hierarchy.json"})
 public class JSDiagram extends AbstractJavaScriptComponent {
     private static final int SIZE = 400;
+    private static Logger LOG = LoggerFactory.getLogger(JSDiagram.class);
     private final JsonObject thingObject = new JsonObject();
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
@@ -40,17 +43,15 @@ public class JSDiagram extends AbstractJavaScriptComponent {
         thingObject.addProperty("name", "Thing");
         thingObject.add("children", thingArray);
         ontology.accept(initPopulationEngine(activeOntology));
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream("hierachy.json"), "UTF-8")) {
-
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(new File("hierarchy.json"), true);
+            Writer writer = new OutputStreamWriter(fos, "UTF-8");
             Gson gson = new GsonBuilder().create();
             gson.toJson(thingObject, writer);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
         }
 
     }

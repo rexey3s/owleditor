@@ -72,10 +72,10 @@ public class OWLEditorKit implements Serializable {
 
     private BidirectionalShortFormProvider bidirectionalSfp;
 
-//    public OWLEditorKit() {
-//        initialise();
-//
-//    }
+    public OWLEditorKit() {
+        initialise();
+
+    }
 
     public OWLEditorKit(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         initialise();

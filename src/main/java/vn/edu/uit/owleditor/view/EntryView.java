@@ -80,7 +80,7 @@ public class EntryView extends VerticalLayout implements View {
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
-                LOG.info(nullEx.getMessage());
+                LOG.error(nullEx.getMessage(), editorKit);
             } catch (OWLOntologyCreationException e) {
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
             } catch (Exception e) {

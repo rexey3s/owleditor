@@ -18,6 +18,7 @@ public class JSDiagram extends AbstractJavaScriptComponent {
 
     public void setValue(String value) {
         getState().value = value;
+
     }
 
     public void setData(JSONObject data) {

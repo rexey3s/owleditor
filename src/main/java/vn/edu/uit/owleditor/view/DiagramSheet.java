@@ -55,6 +55,7 @@ public class DiagramSheet extends VerticalLayout {
         }
 
         JSDiagram diagram = new JSDiagram();
+        diagram.setValue(thingObject.toString());
         final HorizontalLayout diagramContainer = new HorizontalLayout();
         addStyleName("diagram-container");
         diagramContainer.addComponent(diagram);

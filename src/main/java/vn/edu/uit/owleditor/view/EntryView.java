@@ -9,6 +9,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.vaadin.easyuploads.UploadField;
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.ui.OWLEditorUI;
@@ -20,6 +21,7 @@ import java.io.File;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
+@UIScope
 @VaadinView(name = EntryView.NAME)
 public class EntryView extends VerticalLayout implements View {
     public final static String NAME = "entryView";

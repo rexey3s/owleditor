@@ -7,6 +7,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 
@@ -15,6 +16,7 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
+@UIScope
 @VaadinView(name = MainView.NAME)
 public class MainView extends HorizontalLayout implements View {
     public final static String NAME = "mainView";

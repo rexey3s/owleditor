@@ -3,7 +3,6 @@ package vn.edu.uit.owleditor.REST;
 import com.google.common.eventbus.Subscribe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.vaadin.server.VaadinSession;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -12,9 +11,6 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,7 +28,6 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
-@Scope(value = "vaadin-session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @RestController
 @RequestMapping(value = "/api")
 public class RestAPI {
@@ -44,8 +39,7 @@ public class RestAPI {
 
     OWLOntology activeOntology;
 
-    @Autowired
-    VaadinSession session;
+
     
     public static int randInt(int min, int max) {
 
@@ -70,8 +64,8 @@ public class RestAPI {
     public
     @ResponseBody
     String getHierarchy() {
-        OWLEditorKit editorKit = (OWLEditorKit) session.getAttribute("kit");
-        LOG.info(editorKit.getActiveOntology().toString());
+//        OWLEditorKit editorKit = (OWLEditorKit) session.getAttribute("kit");
+//        LOG.info(editorKit.getActiveOntology().toString());
         try {
             EditorUtils.checkNotNull(activeOntology, "Can not load ontology");
             thingObject.addProperty("name", "Thing");

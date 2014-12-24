@@ -6,7 +6,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
@@ -17,12 +19,15 @@ import java.io.File;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-
+@VaadinComponent
 public class EntryView extends VerticalLayout {
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
 
+    @Autowired
+    OWLEditorKit editorKit;
+    
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
@@ -60,11 +65,19 @@ public class EntryView extends VerticalLayout {
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
 
-                OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
-                OWLEditorUI.getEventBus().post(eKit.getActiveOntology());
-                UI.getCurrent().getSession().setAttribute("kit", eKit);
+//                OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
+//
+//                OWLEditorUI.getEventBus().post(eKit.getActiveOntology());
+//                UI.getCurrent().getSession().setAttribute("kit", eKit);
+//                UI.getCurrent().getSession().getCurrent().setConverterFactory(
+//                        new OWLObjectConverterFactory(eKit));
+
+                editorKit = new OWLEditorKit(IRI.create(urlField.getValue()));
+
+                OWLEditorUI.getEventBus().post(editorKit.getActiveOntology());
+                UI.getCurrent().getSession().setAttribute("kit", editorKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
-                        new OWLObjectConverterFactory(eKit));
+                        new OWLObjectConverterFactory(editorKit));
                 UI.getCurrent().setContent(new MainView());
 
             } catch (OWLOntologyCreationException e) {

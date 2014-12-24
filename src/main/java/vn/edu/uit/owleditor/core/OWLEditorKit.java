@@ -18,12 +18,12 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.impl.DefaultSWRLAPIRenderer;
-import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.VaadinSessionScope;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -40,8 +40,7 @@ import java.util.Set;
  * Created by Chuong Dang
  * on 11/11/14.
  */
-@VaadinComponent
-@VaadinSessionScope
+@Service
 public class OWLEditorKit implements Serializable {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -77,6 +76,7 @@ public class OWLEditorKit implements Serializable {
 
     }
 
+    @Autowired
     public OWLEditorKit(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);

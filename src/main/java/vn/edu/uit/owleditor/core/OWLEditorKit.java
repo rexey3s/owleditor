@@ -1,7 +1,6 @@
 package vn.edu.uit.owleditor.core;
 
 
-
 import com.clarkparsia.owlapi.explanation.DefaultExplanationGenerator;
 import com.clarkparsia.owlapi.explanation.util.ExplanationProgressMonitor;
 import com.clarkparsia.owlapi.explanation.util.SilentExplanationProgressMonitor;
@@ -19,7 +18,6 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.stereotype.Component;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -40,7 +38,6 @@ import java.util.Set;
  * Created by Chuong Dang
  * on 11/11/14.
  */
-@Component
 public class OWLEditorKit implements Serializable {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();

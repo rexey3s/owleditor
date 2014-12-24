@@ -49,6 +49,7 @@ public class DiagramSheet extends VerticalLayout {
             Writer writer = new OutputStreamWriter(fos, "UTF-8");
             Gson gson = new GsonBuilder().create();
             gson.toJson(thingObject, writer);
+            LOG.info(thingObject.toString());
 
         } catch (IOException e) {
             LOG.error(e.getMessage());

@@ -1,7 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.vaadin.ui.HorizontalLayout;
@@ -20,7 +18,9 @@ import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.view.demo.JSDiagram;
 
 import javax.annotation.Nonnull;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
@@ -46,9 +46,8 @@ public class DiagramSheet extends VerticalLayout {
         try {
             file = new File("src/main/java/vn/edu/uit/owleditor/view/demo/hierarchy.json");
             fos = new FileOutputStream(file.getAbsoluteFile());
-            Writer writer = new OutputStreamWriter(fos, "UTF-8");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(thingObject, writer);
+//            Writer writer = new OutputStreamWriter(fos, "UTF-8");
+            fos.write(thingObject.toString().getBytes());
             LOG.info(thingObject.toString());
 
         } catch (IOException e) {

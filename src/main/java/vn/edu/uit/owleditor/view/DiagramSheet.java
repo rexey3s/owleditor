@@ -44,7 +44,7 @@ public class DiagramSheet extends VerticalLayout {
         FileOutputStream fos;
         File file;
         try {
-            file = new File("../demo/hierarchy.json");
+            file = new File("src/main/java/vn/edu/uit/owleditor/view/demo/hierarchy.json");
             fos = new FileOutputStream(file.getAbsoluteFile());
             Writer writer = new OutputStreamWriter(fos, "UTF-8");
             Gson gson = new GsonBuilder().create();

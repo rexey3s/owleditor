@@ -23,6 +23,7 @@ import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.impl.DefaultSWRLAPIRenderer;
+import org.vaadin.spring.VaadinSessionScope;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -31,7 +32,6 @@ import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 
@@ -41,7 +41,8 @@ import java.util.Set;
  */
 
 @Repository
-public class OWLEditorKit implements Serializable {
+@VaadinSessionScope
+public class OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
 
@@ -77,7 +78,7 @@ public class OWLEditorKit implements Serializable {
 
     }
 
-    public OWLEditorKit(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
+    public OWLEditorKit(IRI documentIRI) throws OWLOntologyCreationException {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);

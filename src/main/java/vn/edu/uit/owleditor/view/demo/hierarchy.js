@@ -3,7 +3,7 @@
  */
 window.vn_edu_uit_owleditor_view_demo_JSDiagram = function () {
     var SVG_ELEMENT = this.getElement();
-    treeJSON = d3.json("/APP/PUBLISHED/hierarchy.json", function (error, treeData) {
+    treeJSON = d3.json("/UI/APP/PUBLISHED/hierarchy.json", function (error, treeData) {
 
         // Calculate total nodes, max label length
         var totalNodes = 0;

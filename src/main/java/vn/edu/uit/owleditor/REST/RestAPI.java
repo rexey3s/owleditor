@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.vaadin.spring.events.Event;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusListener;
+import org.vaadin.spring.events.*;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import javax.annotation.Nonnull;
@@ -39,6 +37,7 @@ public class RestAPI implements EventBusListener<Object> {
     private final Set<OWLClass> visited = new HashSet<>();
 
     @Autowired
+    @EventBusScope(value = EventScope.SESSION, proxy = true)
     EventBus eventBus;
 
     

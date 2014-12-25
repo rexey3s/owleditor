@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusScope;
+import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
@@ -34,6 +36,7 @@ public class EntryView extends VerticalLayout implements View {
     private final TextField urlField = new TextField();
 
     @Autowired
+    @EventBusScope(value = EventScope.SESSION, proxy = true)
     EventBus eventBus;
     
     public EntryView() {

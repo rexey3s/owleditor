@@ -13,7 +13,7 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
  */
 
 @VaadinComponent
-@Scope(value = "vaadin-session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class OntologyOnSession {
     public OWLOntology getActiveOntology() throws NullPointerException {
         OWLEditorKit eKit = (OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit");

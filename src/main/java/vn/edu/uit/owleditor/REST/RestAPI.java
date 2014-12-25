@@ -36,9 +36,8 @@ public class RestAPI {
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
 
-    //    OWLOntology activeOntology;
     @Autowired
-    OntologyService service;
+    OntologyOnSession service;
 
     
     public static int randInt(int min, int max) {

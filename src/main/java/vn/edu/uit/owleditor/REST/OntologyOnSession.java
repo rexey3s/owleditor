@@ -4,7 +4,7 @@ import com.vaadin.ui.UI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.vaadin.spring.VaadinComponent;
+import org.springframework.stereotype.Service;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 /**
@@ -12,8 +12,8 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
  *         Faculty of Computer Network and Telecomunication created on 12/25/14.
  */
 
-@VaadinComponent
-@Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Service
+@Scope(value = "vaadin-session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class OntologyOnSession {
     public OWLOntology getActiveOntology() throws NullPointerException {
         OWLEditorKit eKit = (OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit");

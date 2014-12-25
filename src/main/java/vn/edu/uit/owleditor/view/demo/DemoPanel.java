@@ -1,10 +1,5 @@
 package vn.edu.uit.owleditor.view.demo;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.core.swrlapi.DataPropertyAtomCollector;
-import vn.edu.uit.owleditor.core.swrlapi.SWRLAtomSearchByDefinedClass;
-import vn.edu.uit.owleditor.data.property.OWLClassSource;
-import vn.edu.uit.owleditor.utils.EditorUtils;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
@@ -12,9 +7,16 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.teemu.wizards.Wizard;
 import org.vaadin.teemu.wizards.event.*;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.swrlapi.DataPropertyAtomCollector;
+import vn.edu.uit.owleditor.core.swrlapi.SWRLAtomSearchByDefinedClass;
+import vn.edu.uit.owleditor.data.property.OWLClassSource;
+import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -26,6 +28,7 @@ import java.util.Map;
  *         Faculty of Computer Network and Telecomunication created on 12/17/14.
  */
 public class DemoPanel extends VerticalLayout implements Property.Viewer, WizardProgressListener {
+    private static final Logger LOG = LoggerFactory.getLogger(DemoPanel.class);
     private final OWLEditorKit editorKit;
     private final DemoUIFactory uiFactory;
     private final OWLClassSource dataSource = new OWLClassSource();
@@ -89,18 +92,14 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         wz.addListener(this);
         searcher.getDataPropertiesByDefinedClass(owlClass)
                 .stream().filter(dp -> (dp instanceof OWLDataProperty))
-                .forEach(dp -> uiFactory.getDataPropertyAssertionCreator((OWLDataProperty) dp, individual).forEach(
-                                step -> wz.addStep(step,
-                                        sf((OWLDataProperty) dp))
-                        ));
+                .forEach(dp -> uiFactory.getDataPropertyAssertionCreator((OWLDataProperty) dp, individual)
+                        .forEach(step -> wz.addStep(step, sf((OWLDataProperty) dp))));
 
         searcher.getObjectPropertiesByDefinedClass(owlClass)
                 .stream().filter(op -> (op instanceof OWLObjectProperty))
                 .forEach(op -> uiFactory.getObjectPropertyAssertionCreator(
-                        (OWLObjectProperty) op, individual
-                ).forEach(step -> {
-                    wz.addStep(step, sf((OWLObjectProperty)op));
-                }));
+                        (OWLObjectProperty) op, individual)
+                        .forEach(step -> wz.addStep(step, sf((OWLObjectProperty) op))));
         return wz;
     }
 
@@ -123,7 +122,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
                         dialog -> {
                             individualsToClassify = new HashSet<>();
                             if (dialog.isConfirmed()) {
-                                individuals.stream().filter(i -> i.isNamed())
+                                individuals.stream().filter(OWLIndividual::isNamed)
                                         .forEach(i -> individualsToClassify.add((OWLNamedIndividual) i));
                                 if (individualsToClassify.iterator().hasNext()) {
                                     OWLNamedIndividual i = individualsToClassify.iterator().next();
@@ -202,15 +201,10 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
             DataPropertyAtomCollector collector = new DataPropertyAtomCollector(dataSource.getValue());
             editorKit.getSWRLActiveOntology().getSWRLAPIRules()
                     .stream().filter(rule -> !rule.isSQWRLQuery())
-                    .forEach(rule -> {
-                        rule.accept(collector);
-                    });
+                    .forEach(rule -> rule.accept(collector));
             Map<OWLDataProperty, Object> mapper = collector.getRecommendedAnswers();
 
-            System.out.println(mapper);
-            mapper.forEach((k, v) -> {
-                Notification.show(OWLEditorKit.render(k) + " has possible answers " + String.valueOf(v), Notification.Type.ASSISTIVE_NOTIFICATION);
-            });
+            LOG.info(mapper.toString());
         }
     }
 

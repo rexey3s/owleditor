@@ -119,7 +119,7 @@ public class DataPropertyAtomCollector implements SWRLObjectVisitor {
 			if (arg instanceof SWRLLiteralBuiltInArgument) {
 
 				SWRLBuiltInArgument builtInArgument = (SWRLBuiltInArgument) arg;
-				CompareBuiltInRangeCollector collector = new CompareBuiltInRangeCollector(vocab);
+				OprandBuiltInCollector collector = new OprandBuiltInCollector(vocab);
 				currentRange.put(vocab, builtInArgument.accept(collector));
 				System.out.println(recommendedAnswers);
 				recommendedAnswers.put(currentDprop, currentRange);

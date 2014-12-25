@@ -36,8 +36,8 @@ public class EntryView extends VerticalLayout implements View {
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
     @Inject
-    @EventBusScope(value = EventScope.UI)
-    EventBus eventBus;
+    @EventBusScope(EventScope.APPLICATION)
+    private EventBus eventBus;
 
     public EntryView() {
         Assert.notNull(eventBus, "Event bus should not null");

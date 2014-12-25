@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class CompareBuiltInRangeCollector implements SWRLBuiltInArgumentVisitorEx<OWLLiteral> {
+public class OprandBuiltInCollector implements SWRLBuiltInArgumentVisitorEx<OWLLiteral> {
 
     private static final Set<SWRLBuiltInsVocabulary> allowedSWRLVocab =
             new HashSet<SWRLBuiltInsVocabulary>() {
@@ -27,7 +27,7 @@ public class CompareBuiltInRangeCollector implements SWRLBuiltInArgumentVisitorE
     private final SWRLBuiltInsVocabulary builtInVocab;
     private final Map<SWRLBuiltInsVocabulary, OWLLiteral> pop;
 
-    public CompareBuiltInRangeCollector(SWRLBuiltInsVocabulary vocab) {
+    public OprandBuiltInCollector(SWRLBuiltInsVocabulary vocab) {
         this.builtInVocab = vocab;
         pop = new HashMap<SWRLBuiltInsVocabulary, OWLLiteral>();
     }

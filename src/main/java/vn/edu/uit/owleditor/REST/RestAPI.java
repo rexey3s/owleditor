@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.vaadin.spring.events.Event;
+import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusListener;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -29,7 +31,7 @@ import java.util.Set;
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
 @RestController
-public class RestAPI {
+public class RestAPI implements EventBusListener<Object> {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(RestAPI.class);
     private final JsonObject thingObject = new JsonObject();
@@ -37,7 +39,7 @@ public class RestAPI {
     private final Set<OWLClass> visited = new HashSet<>();
 
     @Autowired
-    OntologyOnSession service;
+    EventBus eventBus;
 
     
     public static int randInt(int min, int max) {
@@ -61,11 +63,10 @@ public class RestAPI {
 //        OWLEditorKit editorKit = (OWLEditorKit) session.getAttribute("kit");
 //        LOG.info(editorKit.getActiveOntology().toString());
         try {
-            EditorUtils.checkNotNull(service, "Service is null");
-            final OWLOntology ontology = service.getActiveOntology();
+            eventBus.subscribe(this);
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
-            ontology.accept(initPopulationEngine(ontology));
+//            ontology.accept(initPopulationEngine(ontology));
             return thingObject.toString();
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());
@@ -119,5 +120,11 @@ public class RestAPI {
                 }
             }
         };
+    }
+
+    @Override
+    public void onEvent(Event<Object> event) {
+        OWLOntology ontology = (OWLOntology) event.getPayload();
+        LOG.info("Ontology " + ontology.toString());
     }
 }

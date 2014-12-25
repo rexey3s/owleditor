@@ -10,8 +10,10 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
+import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
@@ -31,6 +33,9 @@ public class EntryView extends VerticalLayout implements View {
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
 
+    @Autowired
+    EventBus eventBus;
+    
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
         addComponent(entriesPanel);
@@ -67,7 +72,9 @@ public class EntryView extends VerticalLayout implements View {
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
                 OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
+
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
+                eventBus.publish(this, eKit.getActiveOntology());
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));
 

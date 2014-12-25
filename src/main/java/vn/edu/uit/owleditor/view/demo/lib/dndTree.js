@@ -1,12 +1,12 @@
 /**
  * Created by Chuong Dang on 12/21/14.
  */
-window.vn_edu_uit_owleditor_view_demo_JSDiagram = function () {
+window.vn_edu_uit_owleditor_view_demo_DnDTree = function () {
     var SVG_ELEMENT = this.getElement();
 
 
     this.onStateChange = function () {
-        var treeData = JSON.parse(this.getState().value);
+        var treeData = JSON.parse(this.getState().data);
         console.log(treeData);
         // Calculate total nodes, max label length
         var totalNodes = 0;

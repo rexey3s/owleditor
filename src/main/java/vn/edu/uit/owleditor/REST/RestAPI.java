@@ -26,6 +26,7 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
+/* Just a hypothesis */
 @RestController
 public class RestAPI {
     private static final int SIZE = 400;

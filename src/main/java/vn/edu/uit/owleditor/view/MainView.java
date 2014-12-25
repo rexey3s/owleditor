@@ -34,7 +34,7 @@ public class MainView extends HorizontalLayout implements View {
         root.addTab(diagramSheet, "Diagram");
         root.addSelectedTabChangeListener(event -> {
             if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
-                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reload();
+                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
             }
         });
         root.setSizeFull();

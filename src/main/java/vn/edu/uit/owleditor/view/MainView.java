@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.navigator.VaadinView;
-import vn.edu.uit.owleditor.utils.EditorUtils;
 
 
 /**
@@ -29,11 +28,7 @@ public class MainView extends HorizontalLayout implements View {
     EventBus eventBus;
     
     public MainView() {
-        try {
-            EditorUtils.checkNotNull(eventBus, "Event bus is null");
-        } catch (NullPointerException ex) {
-            LOG.error(ex.getMessage());
-        }
+
         root.addTab(new ClassesSheet(), "Classes");
         root.addTab(new ObjectPropertiesSheet(), "Object Properties");
         root.addTab(new DataPropertiesSheet(), "Data Properties");

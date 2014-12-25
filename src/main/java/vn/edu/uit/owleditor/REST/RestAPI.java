@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -61,6 +62,7 @@ public class RestAPI {
 //        OWLEditorKit editorKit = (OWLEditorKit) session.getAttribute("kit");
 //        LOG.info(editorKit.getActiveOntology().toString());
         try {
+            EditorUtils.checkNotNull(service, "Service is null");
             final OWLOntology ontology = service.getActiveOntology();
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
@@ -69,9 +71,7 @@ public class RestAPI {
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());
         }
-        finally {
-            return thingObject.toString();
-        }
+        return "No ontology was found";
     }
 
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {

@@ -1,7 +1,7 @@
 /**
  * Created by Chuong Dang on 12/21/14.
  */
-window.vn_edu_uit_owleditor_view_demo_DnDTree = function () {
+window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
     var SVG_ELEMENT = this.getElement();
 
 

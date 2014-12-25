@@ -1,4 +1,4 @@
-package vn.edu.uit.owleditor.view.demo;
+package vn.edu.uit.owleditor.view.diagram;
 
 
 import com.vaadin.annotations.JavaScript;

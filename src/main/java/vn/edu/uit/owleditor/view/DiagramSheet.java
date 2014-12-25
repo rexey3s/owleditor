@@ -2,7 +2,6 @@ package vn.edu.uit.owleditor.view;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -15,13 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.view.demo.DnDTree;
+import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
+import vn.edu.uit.owleditor.view.diagram.DnDTree;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -67,9 +65,6 @@ public class DiagramSheet extends VerticalLayout {
         entityDnDTree.reload();
     }
 
-    public interface Reloadable {
-        public void reload();
-    }
 
     public static class EntityDnDTree extends AbstractDiagramLayout<OWLClass> {
         private final JsonObject thingObject = new JsonObject();
@@ -233,25 +228,5 @@ public class DiagramSheet extends VerticalLayout {
         }
     }
 
-    public abstract static class AbstractDiagramLayout<T extends OWLEntity> extends VerticalLayout implements Reloadable {
-        protected final DnDTree graph = new DnDTree();
-        protected final Set<T> visited = new HashSet<>();
-        protected final OWLOntology activeOntology;
 
-        public AbstractDiagramLayout(@Nonnull OWLOntology ontology) {
-            activeOntology = ontology;
-            final HorizontalLayout diagramContainer = new HorizontalLayout();
-            addStyleName("diagram-container");
-            diagramContainer.addComponent(graph);
-            diagramContainer.setSizeFull();
-            addComponent(diagramContainer);
-            setSizeFull();
-
-
-        }
-
-        protected abstract void recursive(OWLOntology ontology, T child, T parent, JsonObject parentObject);
-
-        protected abstract OWLObjectVisitor initPopulationEngine(OWLOntology activeOntology, JsonObject topObject);
-    }
 }

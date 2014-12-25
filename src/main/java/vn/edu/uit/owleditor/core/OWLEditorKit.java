@@ -18,14 +18,10 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.impl.DefaultSWRLAPIRenderer;
-import org.vaadin.spring.VaadinSessionScope;
-import org.vaadin.spring.events.EventBus;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -41,8 +37,6 @@ import java.util.Set;
  * on 11/11/14.
  */
 
-@Repository
-@VaadinSessionScope
 public class OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -50,8 +44,8 @@ public class OWLEditorKit {
     private static final OWLObjectRenderer renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
 
     private final ExplanationProgressMonitor progressMonitor = new SilentExplanationProgressMonitor();
-    @Autowired
-    EventBus eventBus;
+
+
     private SWRLAPIRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
@@ -79,7 +73,6 @@ public class OWLEditorKit {
     public OWLEditorKit(IRI documentIRI) throws OWLOntologyCreationException {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
-        eventBus.publish(this, activeOntology);
         swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
         activeOntology.getDirectImportsDocuments();
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());

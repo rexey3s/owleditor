@@ -10,17 +10,12 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusScope;
-import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
-import javax.inject.Inject;
 import java.io.File;
 
 /**
@@ -35,12 +30,9 @@ public class EntryView extends VerticalLayout implements View {
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
-    @Inject
-    @EventBusScope(EventScope.APPLICATION)
-    private EventBus eventBus;
+
 
     public EntryView() {
-        Assert.notNull(eventBus, "Event bus should not null");
         final Component entriesPanel = buildEntryPanel();
         addComponent(entriesPanel);
         setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);

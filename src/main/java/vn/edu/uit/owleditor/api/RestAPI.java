@@ -1,4 +1,4 @@
-package vn.edu.uit.owleditor.REST;
+package vn.edu.uit.owleditor.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -26,7 +26,7 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
-/* Just a hypothesis */
+/* just an experimental controller*/
 @RestController
 public class RestAPI {
     private static final int SIZE = 400;

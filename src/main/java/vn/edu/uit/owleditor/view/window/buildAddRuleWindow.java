@@ -1,15 +1,15 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
-import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.parser.SWRLParseException;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
 
 import javax.annotation.Nonnull;
 
@@ -37,7 +37,7 @@ public class buildAddRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLAP
                     SWRLAPIRule rule = editorKit.getSWRLActiveOntology()
                             .createSWRLRule(editor.getRuleName(),
                                     String.valueOf(editor.getValue()), editor.getRuleComment(), true);
-                    OWLEditorUI.getEventBus().post(addExpression.addingExpression(rule));
+                    OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(rule));
                     close();
                 } catch (SWRLParseException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);

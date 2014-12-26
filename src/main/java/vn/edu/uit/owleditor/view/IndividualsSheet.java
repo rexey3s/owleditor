@@ -1,17 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
-import vn.edu.uit.owleditor.utils.EditorUtils;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.utils.converter.StringToNamedIndividualConverter;
-import vn.edu.uit.owleditor.utils.validator.IRIValidatorImpl;
-import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
-import vn.edu.uit.owleditor.view.panel.NamedIndividualPanelContainer;
-import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
@@ -24,6 +12,18 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.vaadin.dialogs.ConfirmDialog;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.utils.EditorUtils;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
+import vn.edu.uit.owleditor.utils.converter.StringToNamedIndividualConverter;
+import vn.edu.uit.owleditor.utils.validator.IRIValidatorImpl;
+import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
+import vn.edu.uit.owleditor.view.panel.NamedIndividualPanelContainer;
+import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -118,7 +118,7 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
             list.setItemCaptionPropertyId(OWLEditorData.OWLNamedIndividualName);
             list.addValueChangeListener(this);
             list.setNullSelectionAllowed(false);
-//            OWLEditorUI.getEventBus().register(this);
+//            OWLEditorUI.getGuavaEventBus().register(this);
         }
 
         private void buildComponents() {

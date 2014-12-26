@@ -1,11 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
-import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
@@ -19,6 +13,12 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
 import org.vaadin.dialogs.ConfirmDialog;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
+import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -45,7 +45,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
         editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
         activeOntology = editorKit.getSWRLActiveOntology();
         rulesContainer = buildRulesContainer();
-        OWLEditorUI.getEventBus().register(this);
+        OWLEditorUI.getGuavaEventBus().register(this);
         init();
     }
 
@@ -110,7 +110,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
             ConfirmDialog.show(UI.getCurrent(), dialog -> {
                 if (dialog.isConfirmed()) {
                     try {
-                        OWLEditorUI.getEventBus().post(editorKit.getDataFactory().getRuleRemoveEvent(
+                        OWLEditorUI.getGuavaEventBus().post(editorKit.getDataFactory().getRuleRemoveEvent(
                                 selectedRow.getValue(), activeOntology.getOWLOntology()));
                         dialog.close();
                     } catch (NullPointerException ex) {

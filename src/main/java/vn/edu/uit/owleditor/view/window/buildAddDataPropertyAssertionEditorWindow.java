@@ -1,12 +1,12 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.event.OWLPropertyAssertionAddHandler;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLPropertyAssertionAddHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
 
 import javax.annotation.Nonnull;
 
@@ -28,7 +28,7 @@ public class buildAddDataPropertyAssertionEditorWindow extends DataPropertyAsser
             try {
                 OWLDataPropertyExpression expression = getSelectedDataProperty();
                 OWLLiteral restriction = getOWLLiteral();
-                OWLEditorUI.getEventBus().post(adder.addingRestriction(expression, restriction));
+                OWLEditorUI.getGuavaEventBus().post(adder.addingRestriction(expression, restriction));
                 close();
             } catch (NullPointerException nullEx) {
                 Notification.show(nullEx.getMessage(), Notification.Type.ERROR_MESSAGE);

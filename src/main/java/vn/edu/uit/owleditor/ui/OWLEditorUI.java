@@ -28,7 +28,7 @@ public class OWLEditorUI extends UI {
     @Autowired
     EventBus eventBus;
 
-    public static OWLEditorEventBus getEventBus() {
+    public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
     }
 
@@ -58,4 +58,7 @@ public class OWLEditorUI extends UI {
         
     }
 
+    public EventBus getEventBus() {
+        return this.eventBus;
+    }
 }

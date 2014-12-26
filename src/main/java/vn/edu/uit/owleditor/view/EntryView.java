@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
@@ -34,10 +33,7 @@ public class EntryView extends VerticalLayout {
     private final TextField urlField = new TextField();
 
     @Autowired
-    ApplicationContext applicationContext;
-
-    @Autowired
-    private EventBus eventBus;
+    EventBus eventBus;
     
     public EntryView() {
         Assert.notNull(eventBus);

@@ -19,15 +19,15 @@ public class OWLEditorEventBus implements SubscriberExceptionHandler {
     private final EventBus eventBus = new EventBus(this);
 
     public static void post(@Nonnull final Object event) {
-        OWLEditorUI.getEventBus().eventBus.post(event);
+        OWLEditorUI.getGuavaEventBus().eventBus.post(event);
     }
 
     public static void register(@Nonnull final Object object) {
-        OWLEditorUI.getEventBus().eventBus.register(object);
+        OWLEditorUI.getGuavaEventBus().eventBus.register(object);
     }
 
     public static void unregister(@Nonnull final Object object) {
-        OWLEditorUI.getEventBus().eventBus.unregister(object);
+        OWLEditorUI.getGuavaEventBus().eventBus.unregister(object);
     }
 
     @Override

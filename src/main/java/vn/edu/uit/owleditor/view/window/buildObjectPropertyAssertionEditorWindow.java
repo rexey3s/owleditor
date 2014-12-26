@@ -1,12 +1,12 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.event.OWLPropertyAssertionAddHandler;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLPropertyAssertionAddHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
 
 import javax.annotation.Nonnull;
 
@@ -27,7 +27,7 @@ public class buildObjectPropertyAssertionEditorWindow extends ObjectPropertyAsse
     Button.ClickListener initSaveListener() {
         return clicked -> {
             try {
-                OWLEditorUI.getEventBus().post(adder.addingRestriction(
+                OWLEditorUI.getGuavaEventBus().post(adder.addingRestriction(
                         hierarchy.getSelectedProperty().getValue(), owlIndividualList.getSelectedProperty().getValue()
                 ));
                 close();

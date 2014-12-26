@@ -1,14 +1,14 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
-import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
+import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 /**
  * Created by Chuong Dang on 18/11/2014.
@@ -73,7 +73,7 @@ public class AddNamedIndividualWindow extends Window {
         save.addClickListener(event -> {
             OWLNamedIndividual newIndividual = (OWLNamedIndividual) individualsBox.getValue();
             if (addExpression != null)
-                OWLEditorUI.getEventBus().post(addExpression.addingExpression(newIndividual));
+                OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(newIndividual));
             close();
         });
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);

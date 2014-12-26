@@ -1,15 +1,5 @@
 package vn.edu.uit.owleditor.view.demo;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.core.owlapi.OWLDataRangeVisitorAdapter;
-import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
-import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
-import vn.edu.uit.owleditor.data.property.OWLLiteralSource;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.utils.EditorUtils;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.view.IndividualsSheet;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -22,6 +12,16 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.teemu.wizards.WizardStep;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.owlapi.OWLDataRangeVisitorAdapter;
+import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
+import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
+import vn.edu.uit.owleditor.data.property.OWLLiteralSource;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.utils.EditorUtils;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
+import vn.edu.uit.owleditor.view.IndividualsSheet;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -445,7 +445,7 @@ public class DemoUIFactory {
                     "Are you sure about adding \"" + OWLEditorKit.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
-                            OWLEditorUI.getEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
+                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
                             dialog.close();
                         } else
                             dialog.close();
@@ -508,7 +508,7 @@ public class DemoUIFactory {
                     "Are you sure about adding \"" + OWLEditorKit.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
-                            OWLEditorUI.getEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
+                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
                             dialog.close();
 
                         } else
@@ -551,7 +551,7 @@ public class DemoUIFactory {
             EditorUtils.checkNotNull(selectedProperty.getValue(), "Please select an option");
             OWLIndividualAxiom axiom = factory
                     .getOWLDataPropertyAssertionAxiom(property, subject, selectedProperty.getValue());
-            OWLEditorUI.getEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(axiom, subject));
+            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(axiom, subject));
 
         }
 

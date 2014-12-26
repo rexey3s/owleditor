@@ -1,13 +1,13 @@
 package vn.edu.uit.owleditor.view.component;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.data.property.OWLObjectSource;
-import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.vaadin.dialogs.ConfirmDialog;
+import vn.edu.uit.owleditor.data.property.OWLObjectSource;
+import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
 
 import javax.annotation.Nonnull;
 
@@ -56,7 +56,7 @@ public abstract class AbstractNonEditableOWLObjectLabel<T extends OWLObject>
                         ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", msgBox -> {
                             if (msgBox.isConfirmed()) {
                                 if (removeExpression != null)
-                                    OWLEditorUI.getEventBus().post(removeExpression
+                                    OWLEditorUI.getGuavaEventBus().post(removeExpression
                                             .removingExpression());
 
                             } else {

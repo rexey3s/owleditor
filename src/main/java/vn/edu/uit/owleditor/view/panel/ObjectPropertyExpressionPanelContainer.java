@@ -1,16 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.property.*;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
-import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
-import vn.edu.uit.owleditor.view.component.AbstractNonEditableOWLObjectLabel;
-import vn.edu.uit.owleditor.view.component.InferredLabel;
-import vn.edu.uit.owleditor.view.window.AbstractOWLExpressionEditorWindow;
-import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
@@ -20,6 +9,17 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.property.*;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
+import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
+import vn.edu.uit.owleditor.view.component.AbstractNonEditableOWLObjectLabel;
+import vn.edu.uit.owleditor.view.component.InferredLabel;
+import vn.edu.uit.owleditor.view.window.AbstractOWLExpressionEditorWindow;
+import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -435,7 +435,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         protected Button.ClickListener initSaveListener() {
             return click -> {
                 if (getSelectedTab() instanceof ObjectPropertyHierarchicalPanel) {
-                    OWLEditorUI.getEventBus().post(addExpression.addingExpression(
+                    OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(
                             hierarchy.getSelectedProperty().getValue()));
                     close();
                 }

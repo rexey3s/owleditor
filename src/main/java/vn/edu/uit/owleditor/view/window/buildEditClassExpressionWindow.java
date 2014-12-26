@@ -1,17 +1,17 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
-import vn.edu.uit.owleditor.view.component.ClassExpressionEditor;
-import vn.edu.uit.owleditor.view.component.ObjectRestrictionCreator;
-import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 import com.vaadin.data.Property;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
+import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.view.component.ClassExpressionEditor;
+import vn.edu.uit.owleditor.view.component.ObjectRestrictionCreator;
+import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
 import javax.annotation.Nonnull;
 
@@ -48,7 +48,7 @@ public class buildEditClassExpressionWindow extends AbstractOWLExpressionEditorW
                 try {
                     editorKit.getParser().setStringToParse(String.valueOf(editor.getValue()));
                     OWLClassExpression ce = editorKit.getParser().parseClassExpression();
-                    OWLEditorUI.getEventBus().post(modifyExpression.modifyingExpression(ce));
+                    OWLEditorUI.getGuavaEventBus().post(modifyExpression.modifyingExpression(ce));
                     close();
                 } catch (ManchesterOWLSyntaxParserException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
@@ -57,14 +57,14 @@ public class buildEditClassExpressionWindow extends AbstractOWLExpressionEditorW
             } else if (getSelectedTab() instanceof ObjectRestrictionCreator) {
                 try {
                     OWLClassExpression ce = restrictionEditor.getDataProperty().getValue();
-                    OWLEditorUI.getEventBus().post(modifyExpression.modifyingExpression(ce));
+                    OWLEditorUI.getGuavaEventBus().post(modifyExpression.modifyingExpression(ce));
                     close();
                 } catch (NullPointerException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
 
             } else if (getSelectedTab() instanceof ClassHierarchicalPanel) {
-                OWLEditorUI.getEventBus().post(modifyExpression
+                OWLEditorUI.getGuavaEventBus().post(modifyExpression
                         .modifyingExpression(hierarchy.getSelectedProperty().getValue()));
                 close();
             }

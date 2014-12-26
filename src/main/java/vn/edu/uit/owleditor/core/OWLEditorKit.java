@@ -18,6 +18,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -37,6 +39,7 @@ import java.util.Set;
  * on 11/11/14.
  */
 
+@Repository
 public class OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -44,13 +47,11 @@ public class OWLEditorKit {
     private static final OWLObjectRenderer renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
 
     private final ExplanationProgressMonitor progressMonitor = new SilentExplanationProgressMonitor();
-
-
+    private final OWLOntologyManager modelManager = OWLManager.createOWLOntologyManager();
     private SWRLAPIRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
     private OWLEditorDataFactory editorDataFactory;
-    private OWLOntologyManager modelManager;
     private PrefixManager prefixManager;
     private OWLOntology activeOntology;
     private OWLEntityRemover entityRemover;
@@ -65,7 +66,9 @@ public class OWLEditorKit {
     private ShortFormProvider sfpFormat;
     private BidirectionalShortFormProvider bidirectionalSfp;
 
-    public OWLEditorKit() {
+
+    @Autowired
+    public OWLEditorKit(OWLManager modelManager) {
         initialise();
 
     }
@@ -105,7 +108,6 @@ public class OWLEditorKit {
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));
     }
     private void initialise() {
-        modelManager = OWLManager.createOWLOntologyManager();
         reasonerFactory = PelletReasonerFactory.getInstance();
         explanationOrderer = new ExplanationOrdererImpl(modelManager);
         parser = OWLManager.createManchesterParser();

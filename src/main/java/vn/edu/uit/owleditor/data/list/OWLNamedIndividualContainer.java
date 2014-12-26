@@ -1,16 +1,16 @@
 package vn.edu.uit.owleditor.data.list;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
-import vn.edu.uit.owleditor.data.OWLObjectContainer;
-import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
 import com.vaadin.data.util.IndexedContainer;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
+import vn.edu.uit.owleditor.data.OWLObjectContainer;
+import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
 

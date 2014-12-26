@@ -20,14 +20,11 @@ import vn.edu.uit.owleditor.view.EntryView;
 @VaadinUI
 public class OWLEditorUI extends UI {
     private static final String URL = "http://chuongdang.com/transport.owl";
-    private final OWLEditorEventBus editorEventBus = new OWLEditorEventBus();
     @Autowired
     ApplicationContext applicationContext;
-    //    @Autowired
-//    @EventBusScope(value = EventScope.UI, proxy = true)
-//    public EventBus eventBusUI;
-//    @Autowired
-//    private OWLEditorEventBus editorEventBus;
+
+    @Autowired
+    private OWLEditorEventBus editorEventBus;
 
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
@@ -55,7 +52,6 @@ public class OWLEditorUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-//        eventBusUI.publish(this, "Hello ontology ");
         setContent(new EntryView());
         
     }

@@ -5,11 +5,8 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinUI;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
+import org.vaadin.spring.VaadinComponent;
 
 
 
@@ -18,17 +15,14 @@ import vn.edu.uit.owleditor.event.OWLEditorEventBus;
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
 @UIScope
-@VaadinUI
+@VaadinComponent
 public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
 
-    @Autowired
-    OWLEditorEventBus eventBus;
-    
+
     public MainView() {
-        Assert.notNull(eventBus, " Event bus should not be null");
         root.addTab(new ClassesSheet(), "Classes");
         root.addTab(new ObjectPropertiesSheet(), "Object Properties");
         root.addTab(new DataPropertiesSheet(), "Data Properties");

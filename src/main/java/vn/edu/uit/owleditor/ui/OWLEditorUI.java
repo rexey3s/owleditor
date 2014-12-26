@@ -24,7 +24,7 @@ public class OWLEditorUI extends UI {
     ApplicationContext applicationContext;
 
     @Autowired
-    private OWLEditorEventBus editorEventBus;
+    OWLEditorEventBus editorEventBus;
 
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;

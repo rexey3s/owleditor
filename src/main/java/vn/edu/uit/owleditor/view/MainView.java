@@ -5,9 +5,11 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
-
+import org.vaadin.spring.events.EventBus;
 
 
 /**
@@ -21,8 +23,11 @@ public class MainView extends HorizontalLayout {
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
 
-
+    @Autowired
+    EventBus eventBus;
+    
     public MainView() {
+        Assert.notNull(eventBus, "Event bus should not be null");
         root.addTab(new ClassesSheet(), "Classes");
         root.addTab(new ObjectPropertiesSheet(), "Object Properties");
         root.addTab(new DataPropertiesSheet(), "Data Properties");

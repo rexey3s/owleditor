@@ -34,7 +34,7 @@ public class EntryView extends VerticalLayout {
     @Autowired
     OWLEditorEventBus editorEventBus;
 
-    
+
     public EntryView() {
         Assert.notNull(editorEventBus);
         final Component entriesPanel = buildEntryPanel();

@@ -10,7 +10,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.util.Assert;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.events.EventBus;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
@@ -55,7 +54,7 @@ public class OWLEditorUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        Assert.notNull(eventBus, "E tao ko co null nha");
+        eventBus.publish(this, "Hello ontology ");
         setContent(new EntryView());
         
     }

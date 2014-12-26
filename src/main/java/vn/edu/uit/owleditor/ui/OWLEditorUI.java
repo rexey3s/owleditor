@@ -20,13 +20,12 @@ import vn.edu.uit.owleditor.view.EntryView;
 @VaadinUI
 public class OWLEditorUI extends UI {
     private static final String URL = "http://chuongdang.com/transport.owl";
+    private final OWLEditorEventBus editorEventBus = new OWLEditorEventBus();
     @Autowired
     ApplicationContext applicationContext;
-
     //    @Autowired
 //    @EventBusScope(value = EventScope.UI, proxy = true)
 //    public EventBus eventBusUI;
-//    private final OWLEditorEventBus editorEventBus = new OWLEditorEventBus();
 //    @Autowired
 //    private OWLEditorEventBus editorEventBus;
 

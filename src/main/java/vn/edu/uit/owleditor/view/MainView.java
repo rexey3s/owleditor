@@ -11,9 +11,7 @@ import org.springframework.util.Assert;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBusListenerMethod;
-
-import javax.annotation.PostConstruct;
+import org.vaadin.spring.events.EventBusListener;
 
 
 /**
@@ -22,7 +20,7 @@ import javax.annotation.PostConstruct;
  */
 @UIScope
 @VaadinComponent
-public class MainView extends HorizontalLayout {
+public class MainView extends HorizontalLayout implements EventBusListener {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
@@ -31,6 +29,8 @@ public class MainView extends HorizontalLayout {
     EventBus eventBus;
     
     public MainView() {
+        eventBus.subscribe(this);
+
         Assert.notNull(eventBus, "Event bus should not be null");
         root.addTab(new ClassesSheet(), "Classes");
         root.addTab(new ObjectPropertiesSheet(), "Object Properties");
@@ -43,6 +43,7 @@ public class MainView extends HorizontalLayout {
         root.addSelectedTabChangeListener(event -> {
             if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
                 ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
+                eventBus.publish(this, "Diagram reloading");
             }
         });
         root.setSizeFull();
@@ -51,15 +52,9 @@ public class MainView extends HorizontalLayout {
         setSizeFull();
     }
 
-    @PostConstruct
-    private void init() {
-        eventBus.subscribe(this);
+
+    @Override
+    public void onEvent(org.vaadin.spring.events.Event event) {
+        Notification.show(String.valueOf(event.getPayload()));
     }
-
-    @EventBusListenerMethod
-    public void onEnter(String msg) {
-        Notification.show(msg);
-
-    }
-
 }

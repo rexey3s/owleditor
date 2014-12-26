@@ -6,9 +6,9 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.parser.SWRLParseException;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
 
 import javax.annotation.Nonnull;

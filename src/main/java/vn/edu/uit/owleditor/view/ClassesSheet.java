@@ -1,15 +1,15 @@
 package vn.edu.uit.owleditor.view;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.view.panel.ClassExpressionPanelContainer;
-import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 import com.vaadin.data.Property;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.view.panel.ClassExpressionPanelContainer;
+import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
 /**
  * Created by Chuong Dang on 11/5/14.

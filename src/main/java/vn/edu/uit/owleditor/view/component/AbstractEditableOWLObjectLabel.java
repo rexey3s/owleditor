@@ -6,11 +6,11 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.vaadin.dialogs.ConfirmDialog;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 
 import javax.annotation.Nonnull;
 

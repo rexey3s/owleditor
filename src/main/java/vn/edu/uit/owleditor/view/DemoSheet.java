@@ -1,12 +1,12 @@
 package vn.edu.uit.owleditor.view;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.view.demo.DemoPanel;
-import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 import com.vaadin.data.Property;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.view.demo.DemoPanel;
+import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,

@@ -9,11 +9,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
 import org.semanticweb.owlapi.model.OWLDataRange;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.view.component.DataRangeExpressionEditor;
 

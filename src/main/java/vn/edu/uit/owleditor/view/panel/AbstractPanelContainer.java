@@ -5,8 +5,8 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 
 import javax.annotation.Nonnull;

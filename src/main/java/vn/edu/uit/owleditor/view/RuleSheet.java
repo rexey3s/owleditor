@@ -13,10 +13,10 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
 import org.vaadin.dialogs.ConfirmDialog;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
 import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 

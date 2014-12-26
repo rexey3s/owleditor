@@ -1,16 +1,16 @@
 package vn.edu.uit.owleditor.view;
 
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.view.panel.ObjectPropertyExpressionPanelContainer;
-import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
 import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
+import vn.edu.uit.owleditor.view.panel.ObjectPropertyExpressionPanelContainer;
+import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
 
 import javax.annotation.Nonnull;
 

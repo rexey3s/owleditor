@@ -1,4 +1,4 @@
-package vn.edu.uit.owleditor.ui;
+package vn.edu.uit.owleditor;
 
 
 import com.vaadin.annotations.Theme;

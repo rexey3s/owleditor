@@ -6,11 +6,11 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.parser.SWRLParseException;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorSWRLAPIRuleRenderer;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
 import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
 
 import javax.annotation.Nonnull;

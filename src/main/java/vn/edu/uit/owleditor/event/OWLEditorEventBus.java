@@ -5,7 +5,7 @@ import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
-import vn.edu.uit.owleditor.ui.OWLEditorUI;
+import vn.edu.uit.owleditor.OWLEditorUI;
 
 import javax.annotation.Nonnull;
 

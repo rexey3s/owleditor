@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.VaadinUI;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 
 
@@ -18,7 +18,7 @@ import vn.edu.uit.owleditor.event.OWLEditorEventBus;
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
 @UIScope
-@VaadinComponent
+@VaadinUI
 public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);

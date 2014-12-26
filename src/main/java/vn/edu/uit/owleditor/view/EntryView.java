@@ -9,12 +9,12 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.navigator.SpringViewProvider;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
@@ -34,7 +34,7 @@ public class EntryView extends VerticalLayout {
     private final TextField urlField = new TextField();
 
     @Autowired
-    private SpringViewProvider viewProvider;
+    ApplicationContext applicationContext;
 
     @Autowired
     private EventBus eventBus;

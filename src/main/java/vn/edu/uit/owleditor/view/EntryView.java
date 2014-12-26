@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
@@ -36,7 +35,6 @@ public class EntryView extends VerticalLayout {
     EventBus eventBus;
     
     public EntryView() {
-        Assert.notNull(eventBus);
         final Component entriesPanel = buildEntryPanel();
         addComponent(entriesPanel);
         setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
@@ -72,6 +70,7 @@ public class EntryView extends VerticalLayout {
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
                 OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
+                eventBus.publish(this, "E tui moi nhap ontology vo ne");
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusScope;
+import org.vaadin.spring.events.EventScope;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
@@ -22,11 +24,11 @@ import vn.edu.uit.owleditor.view.EntryView;
 public class OWLEditorUI extends UI {
     private static final String URL = "http://chuongdang.com/transport.owl";
     private final OWLEditorEventBus editorEventBus = new OWLEditorEventBus();
-
+    @Autowired
+    @EventBusScope(value = EventScope.UI, proxy = true)
+    public EventBus eventBusUI;
     @Autowired
     ApplicationContext applicationContext;
-    @Autowired
-    EventBus eventBus;
 
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
@@ -54,12 +56,9 @@ public class OWLEditorUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        eventBus.publish(this, "Hello ontology ");
+        eventBusUI.publish(this, "Hello ontology ");
         setContent(new EntryView());
         
     }
 
-    public EventBus getEventBus() {
-        return this.eventBus;
-    }
 }

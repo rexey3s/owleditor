@@ -33,9 +33,10 @@ public class EntryView extends VerticalLayout {
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
+
     @Inject
-    @EventBusScope(EventScope.APPLICATION)
-    private EventBus eventBus;
+    @EventBusScope(EventScope.UI)
+    EventBus eventBusUI;
     
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
@@ -72,7 +73,7 @@ public class EntryView extends VerticalLayout {
 
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
-                Assert.notNull(eventBus, " not null");
+                Assert.notNull(eventBusUI, " not null");
                 OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(

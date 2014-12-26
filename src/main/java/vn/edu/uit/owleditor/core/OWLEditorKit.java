@@ -18,8 +18,6 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -39,7 +37,6 @@ import java.util.Set;
  * on 11/11/14.
  */
 
-@Repository
 public class OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -67,8 +64,7 @@ public class OWLEditorKit {
     private BidirectionalShortFormProvider bidirectionalSfp;
 
 
-    @Autowired
-    public OWLEditorKit(OWLManager modelManager) {
+    public OWLEditorKit() {
         initialise();
 
     }

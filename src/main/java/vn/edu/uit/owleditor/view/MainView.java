@@ -6,11 +6,8 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBusListener;
 
 
@@ -25,13 +22,9 @@ public class MainView extends HorizontalLayout implements EventBusListener {
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
 
-    @Autowired
-    EventBus eventBus;
-    
-    public MainView() {
-        eventBus.subscribe(this);
 
-        Assert.notNull(eventBus, "Event bus should not be null");
+    public MainView() {
+
         root.addTab(new ClassesSheet(), "Classes");
         root.addTab(new ObjectPropertiesSheet(), "Object Properties");
         root.addTab(new DataPropertiesSheet(), "Data Properties");
@@ -43,7 +36,6 @@ public class MainView extends HorizontalLayout implements EventBusListener {
         root.addSelectedTabChangeListener(event -> {
             if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
                 ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
-                eventBus.publish(this, "Diagram reloading");
             }
         });
         root.setSizeFull();

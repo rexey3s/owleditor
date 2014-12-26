@@ -1,6 +1,7 @@
 package vn.edu.uit.owleditor.view;
 
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
@@ -10,6 +11,9 @@ import org.springframework.util.Assert;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBusListenerMethod;
+
+import javax.annotation.PostConstruct;
 
 
 /**
@@ -47,15 +51,15 @@ public class MainView extends HorizontalLayout {
         setSizeFull();
     }
 
-//    @PostConstruct
-//    private void init() {
-//        eventBus.subscribe(this);
-//    }
+    @PostConstruct
+    private void init() {
+        eventBus.subscribe(this);
+    }
 
-//    @EventBusListenerMethod
-//    public void eTaoNgheMayNoiNe(String msg) {
-//        Notification.show(msg);
-//
-//    }
+    @EventBusListenerMethod
+    public void onEnter(String msg) {
+        Notification.show(msg);
+
+    }
 
 }

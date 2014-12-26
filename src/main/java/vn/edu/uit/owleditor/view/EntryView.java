@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.events.EventBus;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
@@ -34,6 +35,8 @@ public class EntryView extends VerticalLayout {
     @Autowired
     OWLEditorEventBus editorEventBus;
 
+    @Autowired
+    EventBus eventBus;
 
     public EntryView() {
         Assert.notNull(editorEventBus);
@@ -76,7 +79,7 @@ public class EntryView extends VerticalLayout {
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));
 
-
+                eventBus.publish(this, "SxS");
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {

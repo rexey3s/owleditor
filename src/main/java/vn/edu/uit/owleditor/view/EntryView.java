@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
@@ -43,6 +44,7 @@ public class EntryView extends VerticalLayout {
     }
 
     private Component buildEntryPanel() {
+        Assert.notNull(eventBus);
         final VerticalLayout entryPanel = new VerticalLayout();
         entryPanel.setSizeUndefined();
         entryPanel.setSpacing(true);

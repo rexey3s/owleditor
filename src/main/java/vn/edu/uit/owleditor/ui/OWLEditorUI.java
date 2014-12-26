@@ -10,7 +10,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.events.EventBus;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
@@ -19,7 +18,6 @@ import vn.edu.uit.owleditor.view.EntryView;
 
 
 @Theme("mytheme")
-@UIScope
 @VaadinUI
 public class OWLEditorUI extends UI {
     private static final String URL = "http://chuongdang.com/transport.owl";

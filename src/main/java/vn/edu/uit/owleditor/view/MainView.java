@@ -1,15 +1,12 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.VaadinComponent;
 
 
 /**
@@ -17,8 +14,8 @@ import org.vaadin.spring.navigator.VaadinView;
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
 @UIScope
-@VaadinView(name = MainView.NAME)
-public class MainView extends HorizontalLayout implements View {
+@VaadinComponent
+public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
@@ -45,8 +42,8 @@ public class MainView extends HorizontalLayout implements View {
         setSizeFull();
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        Notification.show("Welcome to Web ontology editor");
-    }
+//    @Override
+//    public void enter(ViewChangeListener.ViewChangeEvent event) {
+//        Notification.show("Welcome to Web ontology editor");
+//    }
 }

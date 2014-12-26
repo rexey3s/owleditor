@@ -27,8 +27,8 @@ public class OWLEditorUI extends UI {
 //    @EventBusScope(value = EventScope.UI, proxy = true)
 //    public EventBus eventBusUI;
 //    private final OWLEditorEventBus editorEventBus = new OWLEditorEventBus();
-    @Autowired
-    private OWLEditorEventBus editorEventBus;
+//    @Autowired
+//    private OWLEditorEventBus editorEventBus;
 
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;

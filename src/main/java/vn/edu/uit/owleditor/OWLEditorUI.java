@@ -56,6 +56,7 @@ public class OWLEditorUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
+        eventBus.publish(this, "going to main view");
         setContent(new EntryView());
         
     }

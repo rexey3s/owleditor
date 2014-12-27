@@ -13,8 +13,8 @@ import org.vaadin.spring.VaadinComponent;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-@VaadinComponent
 @UIScope
+@VaadinComponent("mainView")
 public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);

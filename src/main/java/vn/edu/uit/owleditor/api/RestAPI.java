@@ -58,13 +58,11 @@ public class RestAPI {
     public
     @ResponseBody
     String getHierarchy() {
-//        OWLEditorKit editorKit = (OWLEditorKit) session.getAttribute("kit");
-//        LOG.info(editorKit.getActiveOntology().toString());
         try {
             Assert.notNull(editorKit, "Editor Kit should not be null");
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
-//            editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
+            editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
             return thingObject.toString();
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());

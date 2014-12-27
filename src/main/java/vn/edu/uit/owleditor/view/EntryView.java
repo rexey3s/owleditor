@@ -22,7 +22,7 @@ import java.io.File;
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
 @UIScope
-@VaadinComponent
+@VaadinComponent("entryView")
 public class EntryView extends VerticalLayout {
     public final static String NAME = "entryView";
     private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);

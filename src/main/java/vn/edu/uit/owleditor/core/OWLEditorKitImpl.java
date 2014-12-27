@@ -40,7 +40,7 @@ import java.util.Collections;
  *         Faculty of Computer Network and Telecomunication created on 11/11/14.
  */
 @Repository
-@Scope(value = "vaadin-session", proxyMode = ScopedProxyMode.INTERFACES)
+@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
 public class OWLEditorKitImpl implements OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();

@@ -1,5 +1,14 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.vaadin.data.Property;
+import com.vaadin.event.Action;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.semanticweb.owlapi.search.EntitySearcher;
+import org.vaadin.dialogs.ConfirmDialog;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLDataPropertySource;
@@ -10,17 +19,6 @@ import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.converter.StringToOWLDataPropertyConverter;
 import vn.edu.uit.owleditor.utils.validator.OWLDataPropertyValidator;
 import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
-import com.vaadin.data.Property;
-import com.vaadin.event.Action;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.ChangeApplied;
-import org.semanticweb.owlapi.search.EntitySearcher;
-import org.vaadin.dialogs.ConfirmDialog;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -30,7 +28,6 @@ import java.util.List;
  *         Faculty of Computer Network and Telecomunication created on 11/22/2014.
  */
 public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDataProperty> {
-    private static final Log LOG = LogFactory.getLog(DataPropertyHierarchicalPanel.class);
     // Actions for the context menu
     private static final Action ADD_SUB = new Action("Add Sub DataProperty");
     private static final Action ADD_SIBLING = new Action("Add Sibling DataProperty");
@@ -301,8 +298,6 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
                 axiom.accept(dataContainer.getOWLOntologyChangeListener());
 
-                LOG.info(String.format("{0} change: {1}", System.currentTimeMillis(),
-                        OWLEditorKit.render(axiom.getAxiom())));
             }
             dataContainer.getEntityRemover().reset();
         }

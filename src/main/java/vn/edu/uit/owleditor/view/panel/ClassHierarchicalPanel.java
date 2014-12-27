@@ -1,5 +1,17 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.vaadin.data.Property;
+import com.vaadin.event.Action;
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.StreamResource;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
+import org.semanticweb.owlapi.io.StreamDocumentTarget;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.semanticweb.owlapi.search.EntitySearcher;
+import org.vaadin.dialogs.ConfirmDialog;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
@@ -11,20 +23,6 @@ import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.converter.StringToOWLClassConverter;
 import vn.edu.uit.owleditor.utils.validator.OWLClassValidator;
 import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
-import com.vaadin.data.Property;
-import com.vaadin.event.Action;
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.StreamResource;
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.semanticweb.owlapi.io.StreamDocumentTarget;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.ChangeApplied;
-import org.semanticweb.owlapi.search.EntitySearcher;
-import org.vaadin.dialogs.ConfirmDialog;
 
 import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
@@ -33,7 +31,6 @@ import java.util.List;
 
 
 public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
-    private static final Log LOG = LogFactory.getLog(ClassHierarchicalPanel.class);
     // Actions for the context menu
     private static final Action ADD_SUB = new Action("Add SubClass");
     private static final Action ADD_SIBLING = new Action("Add SiblingClass");
@@ -304,9 +301,6 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             for (OWLOntologyChange axiom : changes) {
 
                 axiom.accept(dataContainer.getOWLOntologyChangeListener());
-
-                LOG.info(String.format("{0} change: {1}", System.currentTimeMillis(),
-                        OWLEditorKit.render(axiom.getAxiom())));
             }
             dataContainer.getEntityRemover().reset();
         }

@@ -1,12 +1,12 @@
 package vn.edu.uit.owleditor.data.hierarchy;
 
-import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
+import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
 
@@ -32,8 +32,7 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
 
                 OWLObjectProperty subProp = axiom.getSubProperty().asOWLObjectProperty();
 
-                getItem(subProp)
-                        .getItemProperty(OWLEditorData.OWLObjectPropertyName)
+                getContainerProperty(subProp, OWLEditorData.OWLObjectPropertyName)
                         .setValue(sf(subProp));
 
                 setChildrenAllowed(subProp, false);

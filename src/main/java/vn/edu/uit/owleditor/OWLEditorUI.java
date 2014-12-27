@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
-import org.vaadin.spring.events.EventBus;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
@@ -28,14 +27,14 @@ public class OWLEditorUI extends UI {
     OWLEditorEventBus editorEventBus;
 
     @Autowired
-    EventBus eventBus;
+    OWLEditorKit editorKit;
     
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
     }
 
-    public static EventBus getEventBus() {
-        return ((OWLEditorUI) UI.getCurrent()).eventBus;
+    public static OWLEditorKit getEditorKit() {
+        return ((OWLEditorUI) UI.getCurrent()).editorKit;
     }
 
     public OWLOntology getActiveOntology() {
@@ -54,13 +53,10 @@ public class OWLEditorUI extends UI {
         return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit")).getPrefixManager();
     }
 
-    public OWLEditorKit getEditorKit() {
-        return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit"));
-    }
-
     @Override
     protected void init(VaadinRequest request) {
         setContent(new EntryView());
     }
+
 
 }

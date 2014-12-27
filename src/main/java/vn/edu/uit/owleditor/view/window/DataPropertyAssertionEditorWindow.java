@@ -1,9 +1,5 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
-import vn.edu.uit.owleditor.utils.EditorUtils;
-import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
@@ -11,6 +7,10 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
+import vn.edu.uit.owleditor.utils.EditorUtils;
+import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
 
 import javax.annotation.Nonnull;
 
@@ -91,7 +91,7 @@ public abstract class DataPropertyAssertionEditorWindow extends Window {
     }
 
     public OWLLiteral getOWLLiteral() {
-        EditorUtils.checkNotNull((OWLDatatype) dataType.getValue(), "Please select a OWL2Datatype");
+        EditorUtils.checkNotNull(dataType.getValue(), "Please select a OWL2Datatype");
         return editorKit.getOWLDataFactory()
                 .getOWLLiteral(lexicalValue.getValue(), (OWLDatatype) dataType.getValue());
     }

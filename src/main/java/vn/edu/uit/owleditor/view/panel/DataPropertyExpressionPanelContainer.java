@@ -9,13 +9,9 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.*;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
-import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
-import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
+import vn.edu.uit.owleditor.event.*;
 import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
 import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 import vn.edu.uit.owleditor.view.component.AbstractNonEditableOWLObjectLabel;
@@ -174,7 +170,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
                 if (editorKit.getReasonerStatus()) {
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getDataPropertyDomains(dataSource.getValue(), false).getFlattened();
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.remove(thing);
                     implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                                     () -> editorKit.explain(editorKit.getOWLDataFactory()
@@ -370,7 +366,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     }
 
     @Override
-    public void setPropertyDataSource(Property newDataSource) {
+    public void setPropertyDataSource(@Nonnull Property newDataSource) {
         equivPn.setPropertyDataSource(newDataSource);
         subOfPn.setPropertyDataSource(newDataSource);
         disjointPn.setPropertyDataSource(newDataSource);
@@ -392,7 +388,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
         protected Button.ClickListener initSaveListener() {
             return click -> {
                 if (getSelectedTab() instanceof DataPropertyHierarchicalPanel) {
-                    OWLEditorUI.getGuavaEventBus().post(
+                    OWLEditorEventBus.post(
                             addExpression.addingExpression(hierarchy.getSelectedProperty().getValue()));
                     close();
                 }

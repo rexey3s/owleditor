@@ -1,16 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.property.*;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
-import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
-import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
-import vn.edu.uit.owleditor.view.component.InferredLabel;
-import vn.edu.uit.owleditor.view.window.AddNamedIndividualWindow;
-import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
-import vn.edu.uit.owleditor.view.window.buildEditClassExpressionWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
@@ -22,6 +11,17 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.property.*;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
+import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
+import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
+import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
+import vn.edu.uit.owleditor.view.component.InferredLabel;
+import vn.edu.uit.owleditor.view.window.AddNamedIndividualWindow;
+import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
+import vn.edu.uit.owleditor.view.window.buildEditClassExpressionWindow;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -81,7 +81,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                     implicitClasses.remove(dataSource.getValue());
                     /* Obviously,  class is a thing, so remove it */
                     implicitClasses.remove(thing);
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.forEach(ce -> root.addComponent(new InferredLabel(ce,
                                     () -> editorKit.explain(editorKit.getOWLDataFactory()
                                             .getOWLEquivalentClassesAxiom(dataSource.getValue(), ce))))
@@ -118,7 +118,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getSuperClasses(dataSource.getValue(), false).getFlattened();
                     implicitClasses.remove(thing);
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.forEach(c -> root.addComponent(new InferredLabel(
                                     c, () -> editorKit.explain(editorKit.getOWLDataFactory()
                                     .getOWLSubClassOfAxiom(dataSource.getValue(), c))))
@@ -178,7 +178,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getDisjointClasses(dataSource.getValue()).getFlattened();
 
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.remove(nothing);
 
                     implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,

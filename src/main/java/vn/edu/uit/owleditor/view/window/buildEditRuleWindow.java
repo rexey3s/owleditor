@@ -6,10 +6,10 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.parser.SWRLParseException;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorSWRLAPIRuleRenderer;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
 
@@ -21,13 +21,13 @@ import javax.annotation.Nonnull;
  */
 public class buildEditRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLAPIRule> {
     private final SWRLRuleEditor editor;
-    private final SWRLAPIRenderer myRenderer;
+
     public buildEditRuleWindow(@Nonnull OWLEditorKit eKit,
                                @Nonnull SWRLAPIRuleSource source, @Nonnull OWLExpressionUpdateHandler<SWRLAPIRule> mod) throws NullPointerException {
         super(eKit, source, mod);
 
         editor = new SWRLRuleEditor(editorKit);
-        myRenderer = new OWLEditorSWRLAPIRuleRenderer(editorKit.getSWRLActiveOntology());
+        SWRLAPIRenderer myRenderer = new OWLEditorSWRLAPIRuleRenderer(editorKit.getSWRLActiveOntology());
         editor.setValue(myRenderer.renderSWRLRule(source.getValue()));
         editor.setRuleName(source.getValue().getRuleName());
         editor.setRuleComment(source.getValue().getComment());
@@ -45,7 +45,7 @@ public class buildEditRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLA
                     SWRLAPIRule rule = editorKit.getSWRLActiveOntology()
                             .createSWRLRule(editor.getRuleName(),
                                     String.valueOf(editor.getValue()), editor.getRuleComment(), true);
-                    OWLEditorUI.getGuavaEventBus().post(modifyExpression.modifyingExpression(rule));
+                    OWLEditorEventBus.post(modifyExpression.modifyingExpression(rule));
                     close();
                 } catch (SWRLParseException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);

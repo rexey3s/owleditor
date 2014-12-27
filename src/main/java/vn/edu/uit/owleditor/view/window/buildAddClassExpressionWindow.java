@@ -5,8 +5,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.view.component.ClassExpressionEditor;
 import vn.edu.uit.owleditor.view.component.ObjectRestrictionCreator;
@@ -44,7 +44,7 @@ public class buildAddClassExpressionWindow extends AbstractOWLExpressionEditorWi
                 try {
                     editorKit.getParser().setStringToParse(String.valueOf(editor.getValue()));
                     OWLClassExpression ce = editorKit.getParser().parseClassExpression();
-                    OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(ce));
+                    OWLEditorEventBus.post(addExpression.addingExpression(ce));
                     close();
                 } catch (ManchesterOWLSyntaxParserException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
@@ -53,14 +53,14 @@ public class buildAddClassExpressionWindow extends AbstractOWLExpressionEditorWi
             } else if (getSelectedTab() instanceof ObjectRestrictionCreator) {
                 try {
                     OWLClassExpression ce = restrictionEditor.getDataProperty().getValue();
-                    OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(ce));
+                    OWLEditorEventBus.post(addExpression.addingExpression(ce));
                     close();
                 } catch (NullPointerException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
 
             } else if (getSelectedTab() instanceof ClassHierarchicalPanel) {
-                OWLEditorUI.getGuavaEventBus().post(addExpression
+                OWLEditorEventBus.post(addExpression
                         .addingExpression(hierarchy.getSelectedProperty().getValue()));
                 close();
             }

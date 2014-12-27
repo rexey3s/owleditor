@@ -22,6 +22,8 @@ import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.impl.DefaultSWRLAPIRenderer;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinComponent;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -29,14 +31,16 @@ import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
-import java.util.Set;
 
 /**
  * Created by Chuong Dang
  * on 11/11/14.
  */
 
+@UIScope
+@VaadinComponent
 public class OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
@@ -44,7 +48,9 @@ public class OWLEditorKit {
     private static final OWLObjectRenderer renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
 
     private final ExplanationProgressMonitor progressMonitor = new SilentExplanationProgressMonitor();
+
     private final OWLOntologyManager modelManager = OWLManager.createOWLOntologyManager();
+
     private SWRLAPIRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
@@ -69,7 +75,15 @@ public class OWLEditorKit {
 
     }
 
-    public OWLEditorKit(IRI documentIRI) throws OWLOntologyCreationException {
+    public static String getShortForm(OWLEntity entity) {
+        return sfp.getShortForm(entity);
+    }
+
+    public static String render(OWLObject object) {
+        return renderer.render(object);
+    }
+
+    public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
@@ -85,18 +99,6 @@ public class OWLEditorKit {
         parser.setDefaultOntology(activeOntology);
 
         reasonerToggle();
-    }
-
-
-
-
-    /* Static convenient method for rendering and getting short form of OWLObject 's */
-    public static String getShortForm(OWLEntity entity) {
-        return sfp.getShortForm(entity);
-    }
-
-    public static String render(OWLObject object) {
-        return renderer.render(object);
     }
 
     public ExplanationTree explain(OWLAxiom axiom) {
@@ -141,14 +143,6 @@ public class OWLEditorKit {
             if (reasoner != null) reasoner.dispose();
             if (explanationGenerator != null) explanationGenerator = null;
         }
-    }
-
-    public Set<Set<OWLAxiom>> getExplanations(OWLAxiom axiom) {
-        return explanationGenerator.getExplanations(axiom);
-    }
-
-    public Set<OWLAxiom> getExplanation(OWLAxiom axiom) {
-        return explanationGenerator.getExplanation(axiom);
     }
 
     public OWLEntityRemover getEntityRemover() {

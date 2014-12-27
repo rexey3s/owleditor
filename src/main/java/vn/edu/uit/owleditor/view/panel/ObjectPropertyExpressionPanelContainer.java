@@ -13,6 +13,7 @@ import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
 import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
@@ -31,8 +32,7 @@ import java.util.Set;
  */
 public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContainer {
     private static final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
-    private static final OWLObjectProperty topProperty = OWLManager.getOWLDataFactory().getOWLTopObjectProperty();
-    private static final OWLObjectProperty bottomProperty = OWLManager.getOWLDataFactory().getOWLBottomObjectProperty();
+
     private AbstractExpressionPanel objPropEquivPanel;
     private AbstractExpressionPanel subObjPropPanel;
     private AbstractExpressionPanel inversePropsPanel;
@@ -176,7 +176,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                 if (editorKit.getReasonerStatus()) {
                     Set<OWLClass> implicitClasses = editorKit
                             .getReasoner().getObjectPropertyDomains(dataSource.getValue(), false).getFlattened();
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.remove(thing);
                     implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                             () -> editorKit.explain(editorKit.getOWLDataFactory()
@@ -207,7 +207,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                 if (editorKit.getReasonerStatus()) {
                     Set<OWLClass> implicitClasses = editorKit
                             .getReasoner().getObjectPropertyRanges(dataSource.getValue(), false).getFlattened();
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.remove(thing);
                     implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                                     () -> editorKit.explain(editorKit.getOWLDataFactory()
@@ -435,7 +435,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         protected Button.ClickListener initSaveListener() {
             return click -> {
                 if (getSelectedTab() instanceof ObjectPropertyHierarchicalPanel) {
-                    OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(
+                    OWLEditorEventBus.post(addExpression.addingExpression(
                             hierarchy.getSelectedProperty().getValue()));
                     close();
                 }

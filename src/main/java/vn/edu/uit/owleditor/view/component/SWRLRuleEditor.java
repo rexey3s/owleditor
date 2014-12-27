@@ -1,14 +1,14 @@
 package vn.edu.uit.owleditor.view.component;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.list.SWRLAtomShortFormContainer;
-import vn.edu.uit.owleditor.utils.EditorUtils;
 import com.vaadin.data.validator.AbstractStringValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.exceptions.InvalidSWRLRuleNameException;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.list.SWRLAtomShortFormContainer;
+import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
 
@@ -45,9 +45,6 @@ public class SWRLRuleEditor extends VerticalLayout {
         ruleComment.setValue(s);
     }
 
-    public String getRuleAsString() {
-        return input.getValue();
-    }
     private void initialise() {
         root.addComponents(input);
         root.setSizeFull();

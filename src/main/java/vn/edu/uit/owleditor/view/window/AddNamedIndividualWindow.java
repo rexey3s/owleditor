@@ -4,9 +4,9 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
@@ -16,7 +16,6 @@ import vn.edu.uit.owleditor.utils.OWLEditorData;
 public class AddNamedIndividualWindow extends Window {
 
     private final ComboBox individualsBox = new ComboBox("Individuals");
-    private OWLNamedIndividualContainer container;
     private OWLExpressionAddHandler<OWLNamedIndividual> addExpression;
 
     public AddNamedIndividualWindow(OWLExpressionAddHandler<OWLNamedIndividual> addExpression) {
@@ -24,7 +23,7 @@ public class AddNamedIndividualWindow extends Window {
         OWLEditorKit eKit = (OWLEditorKit)
                 UI.getCurrent().getSession().getAttribute("kit");
 
-        container = eKit.getDataFactory().getOWLIndividualListContainer();
+        OWLNamedIndividualContainer container = eKit.getDataFactory().getOWLIndividualListContainer();
 
         individualsBox.setContainerDataSource(container);
 
@@ -73,7 +72,7 @@ public class AddNamedIndividualWindow extends Window {
         save.addClickListener(event -> {
             OWLNamedIndividual newIndividual = (OWLNamedIndividual) individualsBox.getValue();
             if (addExpression != null)
-                OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(newIndividual));
+                OWLEditorEventBus.post(addExpression.addingExpression(newIndividual));
             close();
         });
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);

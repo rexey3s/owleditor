@@ -9,9 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
 import org.semanticweb.owlapi.model.OWLDataRange;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -72,22 +72,24 @@ public class DataRangeEditorWindow extends AbstractOWLExpressionEditorWindow<OWL
                         editorKit.getParser().setStringToParse(editor.getValue());
 
                         OWLDataRange dataRange = editorKit.getParser().parseDataRange();
-                        OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression(dataRange));
+                        OWLEditorEventBus.post(addExpression.addingExpression(dataRange));
                         close();
 
                     } catch (ManchesterOWLSyntaxParserException parserEx) {
                         Notification.show(parserEx.getMessage(), Notification.Type.ERROR_MESSAGE);
                     }
 
-                } else if (modifyExpression != null) {
-                    try {
-                        editorKit.getParser().setStringToParse(editor.getValue());
-                        OWLDataRange dataRange = editorKit.getParser().parseDataRange();
-                        OWLEditorUI.getGuavaEventBus().post(modifyExpression.modifyingExpression(dataRange));
-                        close();
+                } else {
+                    if (modifyExpression != null) {
+                        try {
+                            editorKit.getParser().setStringToParse(editor.getValue());
+                            OWLDataRange dataRange = editorKit.getParser().parseDataRange();
+                            OWLEditorEventBus.post(modifyExpression.modifyingExpression(dataRange));
+                            close();
 
-                    } catch (ManchesterOWLSyntaxParserException parserEx) {
-                        Notification.show(parserEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+                        } catch (ManchesterOWLSyntaxParserException parserEx) {
+                            Notification.show(parserEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+                        }
                     }
                 }
 
@@ -95,9 +97,9 @@ public class DataRangeEditorWindow extends AbstractOWLExpressionEditorWindow<OWL
             } else if (getSelectedTab() instanceof ListSelect) {
                 try {
                     if (addExpression != null) {
-                        OWLEditorUI.getGuavaEventBus().post(addExpression.addingExpression((OWLDataRange) datatypeList.getValue()));
+                        OWLEditorEventBus.post(addExpression.addingExpression((OWLDataRange) datatypeList.getValue()));
                     } else if (modifyExpression != null) {
-                        OWLEditorUI.getGuavaEventBus().post(modifyExpression.modifyingExpression((OWLDataRange) datatypeList.getValue()));
+                        OWLEditorEventBus.post(modifyExpression.modifyingExpression((OWLDataRange) datatypeList.getValue()));
                     }
                     close();
                 } catch (ManchesterOWLSyntaxParserException parserEx) {

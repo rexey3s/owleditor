@@ -1,15 +1,12 @@
 package vn.edu.uit.owleditor.view;
 
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.events.EventBusListener;
-import vn.edu.uit.owleditor.OWLEditorUI;
 
 
 /**
@@ -18,7 +15,7 @@ import vn.edu.uit.owleditor.OWLEditorUI;
  */
 @VaadinComponent
 @UIScope
-public class MainView extends HorizontalLayout implements EventBusListener {
+public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
@@ -43,14 +40,9 @@ public class MainView extends HorizontalLayout implements EventBusListener {
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         addComponent(root);
         setSizeFull();
-        
-        OWLEditorUI.getEventBus().subscribe(this);
+
 
     }
 
-    @Override
-    public void onEvent(org.vaadin.spring.events.Event event) {
-        Notification.show(event.getPayload().toString());
 
-    }
 }

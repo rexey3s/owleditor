@@ -1,16 +1,16 @@
 package vn.edu.uit.owleditor.view.component;
 
+import com.vaadin.data.util.converter.StringToIntegerConverter;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLClassExpressionSource;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
-import com.vaadin.data.util.converter.StringToIntegerConverter;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Select;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import org.semanticweb.owlapi.model.OWLClassExpression;
 
 import javax.annotation.Nonnull;
 
@@ -25,7 +25,7 @@ public class ObjectRestrictionCreator extends VerticalLayout {
     private final HorizontalLayout restrictionWrapper = new HorizontalLayout();
     private ObjectPropertyHierarchicalPanel objectPropertyHierarchy;
     private ClassHierarchicalPanel classHierarchy;
-    private Select wordBox;
+    private ListSelect wordBox;
     private TextField numberField;
 
     public ObjectRestrictionCreator(@Nonnull OWLEditorKit eKit) {
@@ -37,7 +37,7 @@ public class ObjectRestrictionCreator extends VerticalLayout {
     private void initialize() {
         classHierarchy = new ClassHierarchicalPanel(editorKit);
         objectPropertyHierarchy = new ObjectPropertyHierarchicalPanel(editorKit);
-        wordBox = new Select();
+        wordBox = new ListSelect();
         numberField = new TextField();
 
         HorizontalLayout hcWrapper = new HorizontalLayout();

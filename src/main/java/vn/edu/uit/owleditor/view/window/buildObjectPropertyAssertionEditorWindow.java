@@ -4,8 +4,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLPropertyAssertionAddHandler;
 
 import javax.annotation.Nonnull;
@@ -27,12 +27,12 @@ public class buildObjectPropertyAssertionEditorWindow extends ObjectPropertyAsse
     Button.ClickListener initSaveListener() {
         return clicked -> {
             try {
-                OWLEditorUI.getGuavaEventBus().post(adder.addingRestriction(
+                OWLEditorEventBus.post(adder.addingRestriction(
                         hierarchy.getSelectedProperty().getValue(), owlIndividualList.getSelectedProperty().getValue()
                 ));
                 close();
-            } catch (NullPointerException nullex) {
-                Notification.show(nullex.getMessage(), Notification.Type.ERROR_MESSAGE);
+            } catch (NullPointerException nullEx) {
+                Notification.show(nullEx.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
         };
     }

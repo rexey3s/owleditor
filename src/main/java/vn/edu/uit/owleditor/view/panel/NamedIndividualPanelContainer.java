@@ -1,5 +1,17 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.collect.Multimap;
+import com.google.common.eventbus.Subscribe;
+import com.vaadin.data.Property;
+import com.vaadin.server.Responsive;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.semanticweb.owlapi.search.EntitySearcher;
+import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
@@ -13,22 +25,12 @@ import vn.edu.uit.owleditor.view.window.AddNamedIndividualWindow;
 import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
 import vn.edu.uit.owleditor.view.window.buildAddDataPropertyAssertionEditorWindow;
 import vn.edu.uit.owleditor.view.window.buildObjectPropertyAssertionEditorWindow;
-import com.google.common.collect.Multimap;
-import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
-import com.vaadin.server.Responsive;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.ChangeApplied;
-import org.semanticweb.owlapi.search.EntitySearcher;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -86,7 +88,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                 if (editorKit.getReasonerStatus()) {
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getTypes(dataSource.getValue(), false).getFlattened();
-                    implicitClasses.removeAll(ces);
+                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
                     implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                                     () -> editorKit.explain(editorKit.getOWLDataFactory()
                                             .getOWLClassAssertionAxiom(c, dataSource.getValue()))
@@ -107,26 +109,31 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLIndividual> individuals = EntitySearcher
-                        .getSameIndividuals(dataSource.getValue(), editorKit.getActiveOntology());
+                Collection<OWLNamedIndividual> individuals = EntitySearcher
+                        .getSameIndividuals(dataSource.getValue(), editorKit.getActiveOntology())
+                        .stream().filter(OWLIndividual::isNamed)
+                        .map(i -> (OWLNamedIndividual) i)
+                        .collect(Collectors.toCollection(ArrayList::new));
 
-                individuals.stream().filter(OWLIndividual::isNamed)
-                        .forEach(i -> root.addComponent(new NamedIndividualLabel(
-                                        new OWLNamedIndividualSource(i.asOWLNamedIndividual()),
-                                        () -> editorKit.getDataFactory()
-                                                .getSamesIndividualsAxiomRemoveEvent(
-                                                        dataSource.getValue(), i.asOWLNamedIndividual()))
-                        ));
+                individuals.forEach(i -> root
+                        .addComponent(new
+                                NamedIndividualLabel(new
+                                OWLNamedIndividualSource(
+                                i.asOWLNamedIndividual()),
+                                () -> editorKit.getDataFactory()
+                                        .getSamesIndividualsAxiomRemoveEvent(dataSource
+                                                .getValue(), i.asOWLNamedIndividual()))));
+                
                 if (editorKit.getReasonerStatus()) {
                     Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
                             .getSameIndividuals(dataSource.getValue()).getEntities();
+
                     implicitIndividuals.removeAll(individuals);
-                    implicitIndividuals.forEach(i -> root.addComponent(new InferredLabel(i,
-                                    () -> editorKit.explain(editorKit.getOWLDataFactory().getOWLSameIndividualAxiom(
-                                            i, dataSource.getValue()
-                                    ))
-                            ))
-                    );
+                    implicitIndividuals.forEach(i -> root
+                            .addComponent(new
+                                    InferredLabel(i, () -> editorKit
+                                    .explain(editorKit.getOWLDataFactory()
+                                            .getOWLSameIndividualAxiom(i, dataSource.getValue())))));
                 }
             }
         };
@@ -142,8 +149,11 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLIndividual> individuals = EntitySearcher
-                        .getDifferentIndividuals(dataSource.getValue(), editorKit.getActiveOntology());
+                Collection<OWLNamedIndividual> individuals = EntitySearcher
+                        .getDifferentIndividuals(dataSource.getValue(), editorKit.getActiveOntology())
+                        .stream().filter(OWLIndividual::isNamed)
+                        .map(i -> (OWLNamedIndividual) i)
+                        .collect(Collectors.toCollection(ArrayList::new));
 
                 individuals.stream().filter(OWLIndividual::isNamed)
                         .forEach(i -> root.addComponent(new NamedIndividualLabel(

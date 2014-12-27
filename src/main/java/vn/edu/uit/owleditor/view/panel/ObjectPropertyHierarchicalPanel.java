@@ -1,15 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
-import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
-import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.utils.converter.StringToOWLObjectPropertyConverter;
-import vn.edu.uit.owleditor.utils.validator.OWLObjectPropertyValidator;
-import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
@@ -20,12 +10,23 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
+import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
+import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
+import vn.edu.uit.owleditor.utils.converter.StringToOWLObjectPropertyConverter;
+import vn.edu.uit.owleditor.utils.validator.OWLObjectPropertyValidator;
+import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
- * Created by Chuong Dang on 11/21/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecomunication created on 11/21/14.
  */
 public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLObjectProperty> {
 

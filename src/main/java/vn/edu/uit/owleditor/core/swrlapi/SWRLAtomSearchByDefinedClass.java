@@ -1,9 +1,9 @@
 package vn.edu.uit.owleditor.core.swrlapi;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.swrlapi.core.SWRLAPIOWLOntology;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -56,30 +56,27 @@ public class SWRLAtomSearchByDefinedClass {
     private OWLClassExpression intersectDomainExpression(Collection<OWLClassExpression> domains) {
         final Set<OWLClassExpression> intersectExpressions = new HashSet<>();
         final OWLObjectIntersectionOf owlObjectIntersectionOf;
-        domains.forEach(ce -> {
-            ce.accept(new OWLClassExpressionVisitorAdapter() {
-                @Override
-                public void visit(OWLClass ce) {
-                    super.visit(ce);
-                }
+        domains.forEach(ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
+            @Override
+            public void visit(OWLClass ce) {
+                super.visit(ce);
+            }
 
-                @Override
-                public void visit(OWLObjectIntersectionOf ce) {
-                    super.visit(ce);
-                }
+            @Override
+            public void visit(OWLObjectIntersectionOf ce) {
+                super.visit(ce);
+            }
 
-                @Override
-                public void visit(OWLObjectUnionOf ce) {
-                    super.visit(ce);
-                }
+            @Override
+            public void visit(OWLObjectUnionOf ce) {
+                super.visit(ce);
+            }
 
-                @Override
-                public void visit(OWLObjectComplementOf ce) {
-                    super.visit(ce);
-                }
-            });
-
-        });
+            @Override
+            public void visit(OWLObjectComplementOf ce) {
+                super.visit(ce);
+            }
+        }));
         return null;
     }
 

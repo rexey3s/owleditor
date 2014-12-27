@@ -2,6 +2,7 @@ package vn.edu.uit.owleditor.view;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
@@ -12,7 +13,6 @@ import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -65,11 +65,11 @@ public class EntryView extends VerticalLayout {
 
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
-                OWLEditorKit eKit = new OWLEditorKit(IRI.create(urlField.getValue()));
-                UI.getCurrent().getSession().setAttribute("kit", eKit);
-                UI.getCurrent().getSession().getCurrent().setConverterFactory(
-                        new OWLObjectConverterFactory(eKit));
-                OWLEditorUI.getEventBus().publish(this, "Going to main view");
+                OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
+
+                UI.getCurrent().getSession().setAttribute("kit", OWLEditorUI.getEditorKit());
+                VaadinSession.getCurrent().setConverterFactory(
+                        new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
@@ -100,12 +100,12 @@ public class EntryView extends VerticalLayout {
                 File file = (File) uploadField.getValue();
                 LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
-                    OWLEditorKit eKit = new OWLEditorKit(IRI.create(file));
+//                    OWLEditorKit eKit = new OWLEditorKit(IRI.create(file));
+                    OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
+                    UI.getCurrent().getSession().setAttribute("kit", OWLEditorUI.getEditorKit());
 
-                    UI.getCurrent().getSession().setAttribute("kit", eKit);
-
-                    UI.getCurrent().getSession().getCurrent().setConverterFactory(
-                            new OWLObjectConverterFactory(eKit));
+                    VaadinSession.getCurrent().setConverterFactory(
+                            new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                     UI.getCurrent().setContent(new MainView());
                 }

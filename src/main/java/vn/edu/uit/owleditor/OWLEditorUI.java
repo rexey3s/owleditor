@@ -19,7 +19,6 @@ import vn.edu.uit.owleditor.view.EntryView;
 @Theme("mytheme")
 @VaadinUI
 public class OWLEditorUI extends UI {
-    private static final String URL = "http://chuongdang.com/transport.owl";
     @Autowired
     ApplicationContext applicationContext;
 

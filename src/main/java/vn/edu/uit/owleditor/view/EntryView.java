@@ -67,7 +67,7 @@ public class EntryView extends VerticalLayout {
             try {
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
 
-                UI.getCurrent().getSession().setAttribute("kit", OWLEditorUI.getEditorKit());
+//                UI.getCurrent().getSession().setAttribute("kit", OWLEditorUI.getEditorKit());
                 VaadinSession.getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
                 UI.getCurrent().setContent(new MainView());

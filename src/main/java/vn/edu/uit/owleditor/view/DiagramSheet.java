@@ -3,7 +3,6 @@ package vn.edu.uit.owleditor.view;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.*;
@@ -12,7 +11,9 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vn.edu.uit.owleditor.OWLEditorUI;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
@@ -25,16 +26,19 @@ import java.util.Random;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
+@UIScope
+@VaadinComponent
 public class DiagramSheet extends VerticalLayout {
     private static final int SIZE = 400;
     private static Logger LOG = LoggerFactory.getLogger(DnDTree.class);
     private final TabSheet tabSheet = new TabSheet();
     private final ClassDnDTree classDnDTree;
     private final EntityDnDTree entityDnDTree;
+    @Autowired
+    OWLEditorKit editorKit;
     
-    private final OWLEditorKit editorKit;
     public DiagramSheet() {
-        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
+//        editorKit = OWLEditorUI.getEditorKit();
         classDnDTree = new ClassDnDTree(editorKit.getActiveOntology());
         entityDnDTree = new EntityDnDTree(editorKit.getActiveOntology());
 

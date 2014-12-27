@@ -4,7 +4,6 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
@@ -12,7 +11,8 @@ import vn.edu.uit.owleditor.view.panel.ClassExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
 /**
- * Created by Chuong Dang on 11/5/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecomunication created on 11/5/14.
  */
 public class ClassesSheet extends HorizontalLayout implements Property.ValueChangeListener {
 
@@ -22,7 +22,7 @@ public class ClassesSheet extends HorizontalLayout implements Property.ValueChan
 
 
     public ClassesSheet() {
-        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
+        editorKit = OWLEditorUI.getEditorKit();
         initialise();
 
     }
@@ -37,7 +37,6 @@ public class ClassesSheet extends HorizontalLayout implements Property.ValueChan
         tabs.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         tabs.addTab(clLayout, "Class Description");
         tabs.addTab(new Panel(), "Annotation");
-//        tabs.addStyleName(ValoTheme.LAYOUT_CARD);
         addComponent(hcLayout);
         addComponent(tabs);
         setExpandRatio(hcLayout, 1.0f);

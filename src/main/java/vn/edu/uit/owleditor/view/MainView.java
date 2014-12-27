@@ -11,8 +11,6 @@ import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.events.EventBusListener;
 import vn.edu.uit.owleditor.OWLEditorUI;
 
-import javax.annotation.PostConstruct;
-
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -45,14 +43,13 @@ public class MainView extends HorizontalLayout implements EventBusListener {
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         addComponent(root);
         setSizeFull();
+        OWLEditorUI.getEventBus().subscribe(this);
+
     }
 
-    @PostConstruct
-    private void register() {
-        OWLEditorUI.getEventBus().subscribe(this);
-    }
     @Override
     public void onEvent(org.vaadin.spring.events.Event event) {
-        Notification.show(String.valueOf(event.getPayload()));
+        Notification.show(event.toString());
+
     }
 }

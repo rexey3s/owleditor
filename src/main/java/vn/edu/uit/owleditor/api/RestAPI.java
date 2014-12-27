@@ -61,7 +61,7 @@ public class RestAPI {
     String getHierarchy() {
         try {
             Assert.notNull(editorKit, "Editor Kit should not be null");
-
+            Assert.notNull(editorKit.getActiveOntology(), "Please dont be null");
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
 //            activeOntology.accept(initPopulationEngine(activeOntology));

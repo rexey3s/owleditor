@@ -1,5 +1,7 @@
 package vn.edu.uit.owleditor.core.swrlapi;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 import org.swrlapi.builtins.arguments.SWRLLiteralBuiltInArgument;
@@ -22,8 +24,8 @@ public class AtomSearcher {
             SWRLBuiltInsVocabulary.LESS_THAN.getIRI(),
             SWRLBuiltInsVocabulary.LESS_THAN_OR_EQUAL.getIRI()};
     private static final List<IRI> filteredBuiltinList = Arrays.asList(filteredBuiltIn);
-    private final Map<OWLObjectProperty, Set<OWLClass>> objectPropertiesSuggestion = new HashMap<>();
-    private final Map<OWLDataProperty, Object> dataPropertySuggestions = new HashMap<>();
+    private final Multimap<OWLObjectProperty, Multimap<Set<OWLClass>, Set<SWRLAtom>>> objectPropertiesSuggestion = LinkedListMultimap.create();
+    private final Multimap<OWLDataProperty, Multimap<Object, Set<SWRLAtom>>> dataPropertySuggestions = LinkedListMultimap.create();
     private final SWRLAPIOWLOntology ontology;
     private final Set<SWRLAPIRule> rules = new HashSet<>();
 
@@ -31,15 +33,15 @@ public class AtomSearcher {
         ontology = swrlapiowlOntology;
         ontology.getSWRLAPIRules().stream()
                 .filter(rule -> !rule.isSQWRLQuery())
-                .forEach(rule -> rules.add(rule));
+                .forEach(rules::add);
 
     }
 
-    public static Map<OWLObjectProperty, Set<OWLClass>> getObjectPropertySuggestion(OWLClass owlClass, SWRLAPIOWLOntology ontology) {
+    public static Multimap<OWLObjectProperty, Multimap<Set<OWLClass>, Set<SWRLAtom>>> getObjectPropertySuggestion(OWLClass owlClass, SWRLAPIOWLOntology ontology) {
         return new AtomSearcher(ontology).getObjectPropertySuggestionByClass(owlClass);
     }
 
-    public static Map<OWLDataProperty, Object> getDataProperySuggestion(OWLClass owlClass, SWRLAPIOWLOntology ontology) {
+    public static Multimap<OWLDataProperty, Multimap<Object, Set<SWRLAtom>>> getDataProperySuggestion(OWLClass owlClass, SWRLAPIOWLOntology ontology) {
         return new AtomSearcher(ontology).getDataSuggestionByClass(owlClass);
     }
 
@@ -71,7 +73,6 @@ public class AtomSearcher {
             public void visit(SWRLRule rule1) {
                 rule1.getBody().forEach(atom1 -> atom1.accept(this));
             }
-
             @Override
             public void visit(SWRLBuiltInAtom builtInAtom) {
                 if (filteredBuiltinList.contains(builtInAtom.getPredicate())) {
@@ -91,27 +92,29 @@ public class AtomSearcher {
         return literalsSuggestion;
     }
 
-    private Map<OWLObjectProperty, Set<OWLClass>> getObjectPropertySuggestionByClass(OWLClass clzz) {
+    private Multimap<OWLObjectProperty, Multimap<Set<OWLClass>, Set<SWRLAtom>>> getObjectPropertySuggestionByClass(OWLClass clzz) {
 
         objectPropertiesSuggestion.clear();
         Set<SWRLRule> affectedRules = new HashSet<>();
-
         for (SWRLRule rule : rules) {
-            affectedRules.addAll(rule.getBody().stream().filter(atom -> atom.containsEntityInSignature(clzz)).map(atom -> rule).collect(Collectors.toList()));
+            affectedRules.addAll(rule.getBody()
+                    .stream().filter(atom -> atom.containsEntityInSignature(clzz))
+                    .map(atom -> rule).collect(Collectors.toList()));
         }
+        /* To be more efficient */
+        affectedRules.forEach(rule -> rule.getBody().forEach(atom -> atom.accept(new SWRLObjectVisitorAdapter() {
+            @Override
+            public void visit(SWRLObjectPropertyAtom propertyAtom) {
+                final Multimap<Set<OWLClass>, Set<SWRLAtom>> consequence = LinkedListMultimap.create();
+                consequence.put(collectObjectPropertyEndpoint(rule, propertyAtom), rule.getHead());
+                objectPropertiesSuggestion.put(propertyAtom.getPredicate().asOWLObjectProperty(), consequence);
+            }
+        })));
 
-        affectedRules.forEach(rule -> rule.getBody().forEach(atom -> {
-            atom.accept(new SWRLObjectVisitorAdapter() {
-                @Override
-                public void visit(SWRLObjectPropertyAtom propertyAtom) {
-                    objectPropertiesSuggestion.put(propertyAtom.getPredicate().asOWLObjectProperty(), collectObjectPropertyEndpoint(rule, propertyAtom));
-                }
-            });
-        }));
         return objectPropertiesSuggestion;
     }
 
-    private Map<OWLDataProperty, Object> getDataSuggestionByClass(OWLClass clzz) {
+    private Multimap<OWLDataProperty, Multimap<Object, Set<SWRLAtom>>> getDataSuggestionByClass(OWLClass clzz) {
 
         dataPropertySuggestions.clear();
         Set<SWRLAPIRule> affectedRules = new HashSet<>();
@@ -120,31 +123,27 @@ public class AtomSearcher {
             affectedRules.addAll(rule.getBody().stream().filter(atom -> atom.containsEntityInSignature(clzz)).map(atom -> rule).collect(Collectors.toList()));
         }
 
-        affectedRules.forEach(rule -> rule.getBody().forEach(atom -> {
-            atom.accept(new SWRLObjectVisitorAdapter() {
-                @Override
-                public void visit(SWRLDataPropertyAtom propertyAtom) {
-                    propertyAtom.getSecondArgument().accept(new SWRLObjectVisitorAdapter() {
-                        @Override
-                        public void visit(SWRLLiteralArgument node) {
-                            dataPropertySuggestions.put(
-                                    propertyAtom.getPredicate().asOWLDataProperty(),
-                                    node.getLiteral());
-                        }
+        affectedRules.forEach(rule -> rule.getBody().forEach(atom -> atom.accept(new SWRLObjectVisitorAdapter() {
+            @Override
+            public void visit(SWRLDataPropertyAtom propertyAtom) {
+                final Multimap<Object, Set<SWRLAtom>> consequence = LinkedListMultimap.create();
+                propertyAtom.getSecondArgument().accept(new SWRLObjectVisitorAdapter() {
+                    @Override
+                    public void visit(SWRLLiteralArgument node) {
+                        consequence.put(node.getLiteral(), rule.getHead());
+                    }
 
-                        @Override
-                        public void visit(SWRLVariable variable) {
-                            Map<IRI, OWLLiteral> variableDependencies = collectLiteralEndpoint(rule, variable);
-                            if (!variableDependencies.isEmpty())
-                                dataPropertySuggestions.put(
-                                        propertyAtom.getPredicate().asOWLDataProperty(),
-                                        variableDependencies
-                                );
-                        }
-                    });
-                }
-            });
-        }));
+                    @Override
+                    public void visit(SWRLVariable variable) {
+                        Map<IRI, OWLLiteral> variableDependencies = collectLiteralEndpoint(rule, variable);
+                        if (!variableDependencies.isEmpty())
+                            consequence.put(variableDependencies, rule.getHead());
+
+                    }
+                });
+                dataPropertySuggestions.put(propertyAtom.getPredicate().asOWLDataProperty(), consequence);
+            }
+        })));
         return dataPropertySuggestions;
     }
 

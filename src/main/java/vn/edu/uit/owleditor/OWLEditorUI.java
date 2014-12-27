@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.navigator.SpringViewProvider;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
@@ -28,7 +29,11 @@ public class OWLEditorUI extends UI {
 
     @Autowired
     OWLEditorKit editorKit;
-    
+
+    @Autowired
+    SpringViewProvider viewProvider;
+
+
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
     }

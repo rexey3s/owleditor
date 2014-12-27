@@ -15,7 +15,7 @@ import org.vaadin.teemu.wizards.event.*;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
-import vn.edu.uit.owleditor.core.swrlapi.DataPropertyAtomCollector;
+import vn.edu.uit.owleditor.core.swrlapi.AtomSearcher;
 import vn.edu.uit.owleditor.core.swrlapi.SWRLAtomSearchByDefinedClass;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.utils.EditorUtils;
@@ -23,7 +23,6 @@ import vn.edu.uit.owleditor.utils.EditorUtils;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -201,13 +200,9 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         if (property.getValue() != null) {
             dataSource.setValue((OWLClass) property.getValue());
 
-            DataPropertyAtomCollector collector = new DataPropertyAtomCollector(dataSource.getValue());
-            editorKit.getSWRLActiveOntology().getSWRLAPIRules()
-                    .stream().filter(rule -> !rule.isSQWRLQuery())
-                    .forEach(rule -> rule.accept(collector));
-            Map<OWLDataProperty, Object> mapper = collector.getRecommendedAnswers();
 
-            LOG.info(mapper.toString());
+            LOG.info(AtomSearcher.getDataProperySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
+            LOG.info(AtomSearcher.getObjectPropertySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
         }
     }
 

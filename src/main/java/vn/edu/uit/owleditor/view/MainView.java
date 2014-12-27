@@ -49,7 +49,7 @@ public class MainView extends HorizontalLayout implements EventBusListener {
 
     @Override
     public void onEvent(org.vaadin.spring.events.Event event) {
-        Notification.show(event.toString());
+        Notification.show(event.getPayload().toString());
 
     }
 }

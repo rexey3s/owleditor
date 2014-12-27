@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.vaadin.spring.VaadinSessionScope;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
@@ -30,6 +31,7 @@ import java.util.Set;
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
 @RestController
+@VaadinSessionScope
 @RequestMapping(value = "/api/")
 public class RestAPI {
     private static final int SIZE = 400;

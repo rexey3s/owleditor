@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +39,6 @@ public class RestAPI {
     private final Set<OWLClass> visited = new HashSet<>();
 
     @Autowired
-    @Qualifier("editorKit")
     OWLEditorKit editorKit;
 
     public static int randInt(int min, int max) {

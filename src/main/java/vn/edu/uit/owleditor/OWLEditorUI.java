@@ -45,6 +45,7 @@ public class OWLEditorUI extends UI {
     protected void init(VaadinRequest request) {
         setContent(new EntryView());
         LOG.info(request.getWrappedSession().getAttributeNames().toString());
+
     }
 
 

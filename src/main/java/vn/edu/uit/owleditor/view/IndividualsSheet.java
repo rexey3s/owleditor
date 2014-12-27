@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
@@ -39,11 +38,10 @@ import java.util.List;
 @VaadinComponent
 public class IndividualsSheet extends HorizontalLayout implements Property.ValueChangeListener {
 
-    @Autowired
     private ClassHierarchicalPanel hierarchy;
-    @Autowired
+
     private IndividualList individualsList;
-    @Autowired
+
     private NamedIndividualPanelContainer indPanels;
 
     private OWLEditorKit editorKit;
@@ -55,9 +53,9 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
     }
 
     private void initialise() {
-//        hierarchy = new ClassHierarchicalPanel();
-//        individualsList = new IndividualList();
-//        indPanels = new NamedIndividualPanelContainer();
+        hierarchy = new ClassHierarchicalPanel();
+        individualsList = new IndividualList();
+        indPanels = new NamedIndividualPanelContainer();
 
         hierarchy.addValueChangeListener(this);
         individualsList.addValueChangeListener(valueChangeEvent -> {

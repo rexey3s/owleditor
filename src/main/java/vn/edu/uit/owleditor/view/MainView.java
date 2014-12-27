@@ -43,6 +43,7 @@ public class MainView extends HorizontalLayout implements EventBusListener {
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         addComponent(root);
         setSizeFull();
+        
         OWLEditorUI.getEventBus().subscribe(this);
 
     }

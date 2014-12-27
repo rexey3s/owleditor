@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
@@ -68,7 +69,7 @@ public class EntryView extends VerticalLayout {
                 UI.getCurrent().getSession().setAttribute("kit", eKit);
                 UI.getCurrent().getSession().getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(eKit));
-
+                OWLEditorUI.getEventBus().publish(this, "Going to main view");
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
@@ -76,6 +77,7 @@ public class EntryView extends VerticalLayout {
             } catch (OWLOntologyCreationException e) {
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
             } catch (Exception e) {
+                LOG.error(e.getMessage());
                 Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
             }
         });

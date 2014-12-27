@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
@@ -38,7 +39,7 @@ public class RestAPI {
     private final Set<OWLClass> visited = new HashSet<>();
 
     @Autowired
-    OWLEditorKitImpl editorKit;
+    OWLEditorKit editorKit;
 
     public static int randInt(int min, int max) {
 

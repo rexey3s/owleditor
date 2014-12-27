@@ -55,7 +55,6 @@ public class EntryView extends VerticalLayout implements View {
         final HorizontalLayout urlFieldWrapper = new HorizontalLayout();
         final Button openBtn = new Button("Open");
 
-//        urlField.addValidator(new URLValidator("Invalid URL"));
         urlField.setIcon(FontAwesome.EXTERNAL_LINK);
         urlField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         openBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);

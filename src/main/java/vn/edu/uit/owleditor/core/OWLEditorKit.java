@@ -4,8 +4,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -19,7 +17,6 @@ import javax.annotation.Nonnull;
  *         Faculty of Computer Network and Telecomunication created on 12/27/14.
  */
 @Service
-@Scope(value = "vaadin-session", proxyMode = ScopedProxyMode.INTERFACES)
 public interface OWLEditorKit {
 
 

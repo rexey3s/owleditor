@@ -10,13 +10,10 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
@@ -38,8 +35,8 @@ public class RestAPI {
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
 
-    @Autowired
-    OWLEditorKit editorKit;
+//    @Autowired
+//    OWLEditorKit editorKit;
 
     public static int randInt(int min, int max) {
 
@@ -60,8 +57,7 @@ public class RestAPI {
     @ResponseBody
     String getHierarchy() {
         try {
-            Assert.notNull(editorKit, "Editor Kit should not be null");
-            Assert.notNull(editorKit.getActiveOntology(), "Editor Kit Ontology should not be null");
+//            Assert.notNull(editorKit, "Editor Kit should not be null");
 
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);

@@ -64,7 +64,7 @@ public class RestAPI {
             Assert.notNull(editorKit.getActiveOntology(), "Please dont be null");
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
-//            activeOntology.accept(initPopulationEngine(activeOntology));
+            editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
             return thingObject.toString();
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());

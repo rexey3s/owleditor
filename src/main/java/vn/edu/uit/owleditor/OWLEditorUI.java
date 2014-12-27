@@ -34,6 +34,10 @@ public class OWLEditorUI extends UI {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
     }
 
+    public static EventBus getEventBus() {
+        return ((OWLEditorUI) UI.getCurrent()).eventBus;
+    }
+
     public OWLOntology getActiveOntology() {
         return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit")).getActiveOntology();
     }
@@ -58,7 +62,6 @@ public class OWLEditorUI extends UI {
     protected void init(VaadinRequest request) {
         eventBus.publish(this, "going to main view");
         setContent(new EntryView());
-        
-    }
 
+    }
 }

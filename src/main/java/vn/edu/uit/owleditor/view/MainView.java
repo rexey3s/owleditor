@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.events.EventBusListener;
+import vn.edu.uit.owleditor.OWLEditorUI;
+
+import javax.annotation.PostConstruct;
 
 
 /**
@@ -44,7 +47,10 @@ public class MainView extends HorizontalLayout implements EventBusListener {
         setSizeFull();
     }
 
-
+    @PostConstruct
+    private void register() {
+        OWLEditorUI.getEventBus().subscribe(this);
+    }
     @Override
     public void onEvent(org.vaadin.spring.events.Event event) {
         Notification.show(String.valueOf(event.getPayload()));

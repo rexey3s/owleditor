@@ -67,7 +67,7 @@ public class RestAPI {
 
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
-//            editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
+            activeOntology.accept(initPopulationEngine(activeOntology));
             return thingObject.toString();
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());

@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
@@ -27,6 +28,7 @@ public class OWLEditorUI extends UI {
     OWLEditorEventBus editorEventBus;
 
     @Autowired
+    @Qualifier("SpringSessionEditorKit")
     OWLEditorKit editorKit;
     
     public static OWLEditorEventBus getGuavaEventBus() {

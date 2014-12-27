@@ -8,6 +8,7 @@ import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.OWLEditorUI;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 /**
  * Created by Chuong Dang on 11/20/2014.
@@ -17,7 +18,7 @@ import javax.annotation.Nonnull;
  */
 @UIScope
 @VaadinComponent
-public class OWLEditorEventBus implements SubscriberExceptionHandler {
+public class OWLEditorEventBus implements SubscriberExceptionHandler, Serializable {
 
     private final EventBus eventBus = new EventBus(this);
 

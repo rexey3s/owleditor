@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.swrlapi.core.SWRLAPIFactory;
@@ -166,6 +167,8 @@ public class OWLEditorKit {
         return swrlActiveOntology.getOWLDataFactory();
     }
 
+    @Bean
+    @Scope(value = "vaadin-session")
     public OWLOntology getActiveOntology() {
         return activeOntology;
     }

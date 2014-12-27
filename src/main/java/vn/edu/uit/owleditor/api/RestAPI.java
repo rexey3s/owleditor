@@ -40,7 +40,7 @@ public class RestAPI {
     private final Set<OWLClass> visited = new HashSet<>();
 
     @Autowired
-    @Qualifier("SpringSessionEditorKit")
+    @Qualifier("editorKit")
     OWLEditorKit editorKit;
 
     public static int randInt(int min, int max) {

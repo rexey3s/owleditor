@@ -11,9 +11,9 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
@@ -34,13 +34,11 @@ public class DiagramSheet extends VerticalLayout {
     private final TabSheet tabSheet = new TabSheet();
     private final ClassDnDTree classDnDTree;
     private final EntityDnDTree entityDnDTree;
-    @Autowired
-    OWLEditorKit editorKit;
+
     
     public DiagramSheet() {
-//        editorKit = OWLEditorUI.getEditorKit();
-        classDnDTree = new ClassDnDTree(editorKit.getActiveOntology());
-        entityDnDTree = new EntityDnDTree(editorKit.getActiveOntology());
+        classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
+        entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
 
         tabSheet.addTab(classDnDTree, "Classes");
         tabSheet.addTab(entityDnDTree, "Entities");
@@ -107,7 +105,7 @@ public class DiagramSheet extends VerticalLayout {
             if (individuals.size() > 0 || childs.size() > 0) {
                 final JsonArray childArray = new JsonArray();
                 childObject.add("children", childArray);
-                individuals.stream().filter(i -> i.isNamed()).forEach(i -> {
+                individuals.stream().filter(OWLIndividual::isNamed).forEach(i -> {
                     final JsonObject iObject = new JsonObject();
                     iObject.addProperty("name", "Individual: " + OWLEditorKit.getShortForm(i.asOWLNamedIndividual()));
                     iObject.addProperty("type", "individual");

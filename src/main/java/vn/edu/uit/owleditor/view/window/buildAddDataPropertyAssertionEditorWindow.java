@@ -4,7 +4,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLPropertyAssertionAddHandler;
 
@@ -17,8 +16,7 @@ import javax.annotation.Nonnull;
 public class buildAddDataPropertyAssertionEditorWindow extends DataPropertyAssertionEditorWindow {
     private final OWLPropertyAssertionAddHandler<OWLDataPropertyExpression, OWLLiteral> adder;
 
-    public buildAddDataPropertyAssertionEditorWindow(@Nonnull OWLEditorKit eKit, @Nonnull OWLPropertyAssertionAddHandler<OWLDataPropertyExpression, OWLLiteral> adder) {
-        super(eKit);
+    public buildAddDataPropertyAssertionEditorWindow(@Nonnull OWLPropertyAssertionAddHandler<OWLDataPropertyExpression, OWLLiteral> adder) {
         this.adder = adder;
     }
 

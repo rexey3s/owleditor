@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLClass;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -53,6 +53,6 @@ public final class OWLClassSource implements OWLLogicalEntitySource<OWLClass> {
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.getShortForm(owlClass));
+        return String.valueOf(OWLEditorKitImpl.getShortForm(owlClass));
     }
 }

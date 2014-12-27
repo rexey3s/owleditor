@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.*;
 import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
@@ -39,10 +38,6 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     private AbstractExpressionPanel domainsPn;
     private AbstractExpressionPanel rangesPn;
 
-    public DataPropertyExpressionPanelContainer(@Nonnull OWLEditorKit eKit) {
-        super(eKit);
-
-    }
 
     @Override
     protected Component buildContent() {
@@ -52,7 +47,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, owlDataPropertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(owlDataPropertyExpression ->
                         editorKit.getDataFactory().getEquivalentDataPropertiesAddEvent(
                                 dataSource.getValue(), owlDataPropertyExpression)
                 ));
@@ -83,7 +78,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
         subOfPn = new DataPropertyPanel("Sub Property Of: ") {
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, owlDataPropertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(owlDataPropertyExpression ->
                         editorKit.getDataFactory().getSubPropertyOfAddEvent(dataSource.getValue(), owlDataPropertyExpression)
                 ));
             }
@@ -116,7 +111,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, owlDataPropertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(owlDataPropertyExpression ->
                         editorKit.getDataFactory().getDisjointPropertiesAddEvent(dataSource.getValue(), owlDataPropertyExpression)
                 ));
             }
@@ -152,7 +147,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(editorKit, owlClassExpression ->
+                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(owlClassExpression ->
                         editorKit.getDataFactory().getDomainsAddEvent(dataSource.getValue(), owlClassExpression)
                 ));
             }
@@ -162,7 +157,6 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
                 Collection<OWLClassExpression> ces = EntitySearcher
                         .getDomains(dataSource.getValue(), editorKit.getActiveOntology());
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
-                                editorKit,
                                 new OWLClassExpressionSource(ce),
                                 () -> editorKit.getDataFactory().getDomainsRemoveEvent(dataSource.getValue(), ce),
                                 newEx -> editorKit.getDataFactory().getDomainsModEvent(dataSource.getValue(), newEx, ce)))
@@ -184,7 +178,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new DataRangeEditorWindow(editorKit, range ->
+                UI.getCurrent().addWindow(new DataRangeEditorWindow(range ->
                         editorKit.getDataFactory().getRangesAddEvent(dataSource.getValue(), range)
                 ));
             }
@@ -194,7 +188,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
                 Collection<OWLDataRange> dataRanges = EntitySearcher
                         .getRanges(dataSource.getValue(), editorKit.getActiveOntology());
 
-                dataRanges.forEach(rng -> root.addComponent(new DataRangeLabel(editorKit,
+                dataRanges.forEach(rng -> root.addComponent(new DataRangeLabel(
                             new OWLDataRangeSource(rng),
                             () -> editorKit.getDataFactory().getRangesRemoveEvent(dataSource.getValue(), rng),
                             newRange -> editorKit.getDataFactory().getRangesModEvent(dataSource.getValue(), newRange, rng)
@@ -218,7 +212,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
             @Override
             public void visit(OWLDataPropertyDomainAxiom axiom) {
-                domainsPn.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(editorKit,
+                domainsPn.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(
                         new OWLClassExpressionSource(axiom.getDomain()),
                         () -> editorKit.getDataFactory().getDomainsRemoveEvent(owner, axiom.getDomain()),
                         newEx -> editorKit.getDataFactory().getDomainsModEvent(owner, newEx, axiom.getDomain())
@@ -229,7 +223,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
             @Override
             public void visit(OWLDataPropertyRangeAxiom axiom) {
 
-                rangesPn.addMoreExpression(new DataRangeLabel(editorKit,
+                rangesPn.addMoreExpression(new DataRangeLabel(
                         new OWLDataRangeSource(axiom.getRange()),
                         () -> editorKit.getDataFactory().getRangesRemoveEvent(owner, axiom.getRange()),
                         newEx -> editorKit.getDataFactory().getRangesModEvent(owner, newEx, axiom.getRange())
@@ -377,9 +371,9 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     private static class buildAddSimpleExpressionWindow extends AbstractOWLExpressionEditorWindow<OWLDataPropertyExpression> {
         private final DataPropertyHierarchicalPanel hierarchy;
 
-        public buildAddSimpleExpressionWindow(@Nonnull OWLEditorKit eKit, OWLExpressionAddHandler<OWLDataPropertyExpression> addExpression1) {
-            super(eKit, addExpression1);
-            hierarchy = new DataPropertyHierarchicalPanel(editorKit);
+        public buildAddSimpleExpressionWindow(OWLExpressionAddHandler<OWLDataPropertyExpression> addExpression1) {
+            super(addExpression1);
+            hierarchy = new DataPropertyHierarchicalPanel();
             addMoreTab(hierarchy, "Chose a property");
 
         }
@@ -406,16 +400,15 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
     public static class DataRangeLabel extends AbstractEditableOWLObjectLabel<OWLDataRange> {
 
-        public DataRangeLabel(@Nonnull OWLEditorKit eKit,
-                              @Nonnull OWLObjectSource<OWLDataRange> expressionSource,
+        public DataRangeLabel(@Nonnull OWLObjectSource<OWLDataRange> expressionSource,
                               @Nonnull OWLExpressionRemoveHandler removeExpression,
                               @Nonnull OWLExpressionUpdateHandler<OWLDataRange> modifyExpression) {
-            super(eKit, expressionSource, removeExpression, modifyExpression);
+            super(expressionSource, removeExpression, modifyExpression);
         }
 
         @Override
         public void initModifiedAction() {
-            UI.getCurrent().addWindow(new DataRangeEditorWindow(editorKit, expressionSource, modifyExpression));
+            UI.getCurrent().addWindow(new DataRangeEditorWindow(expressionSource, modifyExpression));
         }
     }
 

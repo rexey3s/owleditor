@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.utils.validator;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.Validator;
 import org.semanticweb.owlapi.model.OWLEntity;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -21,7 +22,7 @@ public class IRIValidatorImpl<T extends OWLEntity> implements Validator {
     public void validate(Object o) throws InvalidValueException {
         if (editorKit.getActiveOntology().isDeclared((T) o)) {
             throw new InvalidValueException(
-                    OWLEditorKit.getShortForm((T) o)
+                    OWLEditorKitImpl.getShortForm((T) o)
                             + " was already defined in this ontology, " +
                             "please enter a another name");
         }

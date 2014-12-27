@@ -5,8 +5,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
-import vn.edu.uit.owleditor.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.view.panel.ClassExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
@@ -16,20 +14,17 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
  */
 public class ClassesSheet extends HorizontalLayout implements Property.ValueChangeListener {
 
-    private final OWLEditorKit editorKit;
     private ClassHierarchicalPanel hcLayout;
     private ClassExpressionPanelContainer clLayout;
 
 
     public ClassesSheet() {
-        editorKit = OWLEditorUI.getEditorKit();
         initialise();
-
     }
 
     private void initialise() {
-        hcLayout = new ClassHierarchicalPanel(editorKit);
-        clLayout = new ClassExpressionPanelContainer(editorKit);
+        hcLayout = new ClassHierarchicalPanel();
+        clLayout = new ClassExpressionPanelContainer();
         TabSheet tabs = new TabSheet();
         hcLayout.addValueChangeListener(this);
         tabs.setSizeFull();

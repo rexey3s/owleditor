@@ -5,7 +5,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.view.component.ClassExpressionEditor;
@@ -24,12 +23,11 @@ public class buildAddClassExpressionWindow extends AbstractOWLExpressionEditorWi
     private final ClassHierarchicalPanel hierarchy;
     private final ObjectRestrictionCreator restrictionEditor;
 
-    public buildAddClassExpressionWindow(@Nonnull OWLEditorKit eKit,
-                                         @Nonnull OWLExpressionAddHandler<OWLClassExpression> addExpression) {
-        super(eKit, addExpression);
-        editor = new ClassExpressionEditor(editorKit);
-        hierarchy = new ClassHierarchicalPanel(editorKit);
-        restrictionEditor = new ObjectRestrictionCreator(editorKit);
+    public buildAddClassExpressionWindow(@Nonnull OWLExpressionAddHandler<OWLClassExpression> addExpression) {
+        super(addExpression);
+        editor = new ClassExpressionEditor();
+        hierarchy = new ClassHierarchicalPanel();
+        restrictionEditor = new ObjectRestrictionCreator();
         addTabStyle(ValoTheme.TABSHEET_COMPACT_TABBAR);
         addMoreTab(editor, "Expression Editor");
         addMoreTab(hierarchy, "Choose a class");

@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.utils.validator;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.Validator;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -19,7 +20,7 @@ public class OWLObjectPropertyValidator extends AbstractIRIValidator<OWLObjectPr
     public void validate(Object value) throws InvalidValueException {
         if (isDeclared((OWLObjectProperty) value)) {
             throw new InvalidValueException(
-                    OWLEditorKit.getShortForm((OWLObjectProperty) value)
+                    OWLEditorKitImpl.getShortForm((OWLObjectProperty) value)
                             + " was already defined in this ontology, please enter a another name");
         }
     }

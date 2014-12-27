@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
 import vn.edu.uit.owleditor.data.OWLObjectContainer;
 import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
@@ -77,7 +77,7 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
 
     @Override
     public String sf(@Nonnull OWLEntity entity) {
-        return OWLEditorKit.getShortForm(entity);
+        return OWLEditorKitImpl.getShortForm(entity);
     }
 
 
@@ -93,7 +93,7 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
                             addItem(axiom.getIndividual().asOWLNamedIndividual());
                             getContainerProperty(axiom.getIndividual().asOWLNamedIndividual(),
                                     OWLEditorData.OWLNamedIndividualName).setValue(
-                                    OWLEditorKit.getShortForm(axiom.getIndividual().asOWLNamedIndividual())
+                                    OWLEditorKitImpl.getShortForm(axiom.getIndividual().asOWLNamedIndividual())
                             );
                         }
                     }

@@ -6,7 +6,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.vaadin.dialogs.ConfirmDialog;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
@@ -22,16 +21,13 @@ public abstract class AbstractEditableOWLObjectLabel<T extends OWLObject>
         extends HorizontalLayout implements OWLLabel<T> {
 
     protected final Label label = new Label();
-    protected final OWLEditorKit editorKit;
     protected OWLObjectSource<T> expressionSource;
     protected OWLExpressionRemoveHandler removeExpression;
     protected OWLExpressionUpdateHandler<T> modifyExpression;
 
-    public AbstractEditableOWLObjectLabel(@Nonnull OWLEditorKit eKit,
-                                          @Nonnull OWLObjectSource<T> expressionSource,
+    public AbstractEditableOWLObjectLabel(@Nonnull OWLObjectSource<T> expressionSource,
                                           @Nonnull OWLExpressionRemoveHandler removeExpression,
                                           @Nonnull OWLExpressionUpdateHandler<T> modifyExpression) {
-        this.editorKit = eKit;
         this.expressionSource = expressionSource;
         this.removeExpression = removeExpression;
         this.modifyExpression = modifyExpression;

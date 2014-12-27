@@ -6,12 +6,9 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.parser.SWRLParseException;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -21,9 +18,9 @@ public class buildAddRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLAP
 
     private final SWRLRuleEditor editor;
 
-    public buildAddRuleWindow(@Nonnull OWLEditorKit eKit, OWLExpressionAddHandler<SWRLAPIRule> adder) {
-        super(eKit, adder);
-        editor = new SWRLRuleEditor(editorKit);
+    public buildAddRuleWindow(OWLExpressionAddHandler<SWRLAPIRule> adder) {
+        super(adder);
+        editor = new SWRLRuleEditor();
         addTabStyle(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         setCaption(null);
         addMoreTab(editor, "SWRL Rule Editor");

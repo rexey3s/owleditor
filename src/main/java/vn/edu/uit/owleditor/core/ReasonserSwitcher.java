@@ -9,9 +9,9 @@ import javax.annotation.Nonnull;
  *         Faculty of Computer Network and Telecomunication created on 12/8/2014.
  */
 public class ReasonserSwitcher implements Property<Boolean> {
-    private final OWLEditorKit editorKit;
+    private final OWLEditorKitImpl editorKit;
 
-    public ReasonserSwitcher(@Nonnull OWLEditorKit eKit) {
+    public ReasonserSwitcher(@Nonnull OWLEditorKitImpl eKit) {
         editorKit = eKit;
     }
 

@@ -1,13 +1,15 @@
 package vn.edu.uit.owleditor.utils.converter;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
 
 /**
- * Created by Chuong Dang on 11/21/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecomunication created on 11/21/14.
  */
 public class StringToOWLObjectPropertyConverter extends
         AbstractStringToOWLObjectConverter<OWLObjectProperty> {
@@ -50,7 +52,7 @@ public class StringToOWLObjectPropertyConverter extends
         if (value == null) {
             return null;
         }
-        return OWLEditorKit.getShortForm(value);
+        return OWLEditorKitImpl.getShortForm(value);
     }
 
     @Override

@@ -6,11 +6,8 @@ import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.exceptions.InvalidSWRLRuleNameException;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.list.SWRLAtomShortFormContainer;
 import vn.edu.uit.owleditor.utils.EditorUtils;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -22,10 +19,9 @@ public class SWRLRuleEditor extends VerticalLayout {
     private final ComboBox suggestBox = new ComboBox();
     private final TextField ruleName = new TextField();
     private final TextField ruleComment = new TextField();
-    private final OWLEditorKit editorKit;
-    public SWRLRuleEditor(@Nonnull OWLEditorKit eKit) {
-        editorKit = eKit;
-        suggestBox.setContainerDataSource(new SWRLAtomShortFormContainer(eKit));
+
+    public SWRLRuleEditor() {
+        suggestBox.setContainerDataSource(new SWRLAtomShortFormContainer());
         initialise();
     }
 

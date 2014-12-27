@@ -1,13 +1,13 @@
 package vn.edu.uit.owleditor.data;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import org.semanticweb.owlapi.model.*;
+import org.swrlapi.core.SWRLAPIRule;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import org.semanticweb.owlapi.model.*;
-import org.swrlapi.core.SWRLAPIRule;
 
 import javax.annotation.Nonnull;
 
@@ -17,9 +17,9 @@ import javax.annotation.Nonnull;
  */
 public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
-    private final OWLEditorKit editorKit;
+    private final OWLEditorKitImpl editorKit;
 
-    public OWLEditorDataFactoryImpl(@Nonnull OWLEditorKit eKit) {
+    public OWLEditorDataFactoryImpl(@Nonnull OWLEditorKitImpl eKit) {
         this.editorKit = eKit;
     }
 

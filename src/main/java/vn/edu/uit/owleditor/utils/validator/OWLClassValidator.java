@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.utils.validator;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.Validator;
 import org.semanticweb.owlapi.model.OWLClass;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +21,7 @@ public class OWLClassValidator extends AbstractIRIValidator<OWLClass> implements
     public void validate(Object value) throws InvalidValueException {
         if (editorKit.getActiveOntology().isDeclared((OWLClass) value)) {
             throw new InvalidValueException(
-                    OWLEditorKit.getShortForm((OWLClass) value)
+                    OWLEditorKitImpl.getShortForm((OWLClass) value)
                             + " was already defined in this ontology, " +
                             "please enter a another name");
         }

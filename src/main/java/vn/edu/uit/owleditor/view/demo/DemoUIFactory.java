@@ -14,6 +14,7 @@ import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.teemu.wizards.WizardStep;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.core.owlapi.OWLDataRangeVisitorAdapter;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
@@ -36,6 +37,7 @@ public class DemoUIFactory {
     private static final Log LOG = org.apache.commons.logging.LogFactory.getLog(DemoUIFactory.class);
     private final OWLEditorKit editorKit;
     private DemoWizardStep defaultStep;
+
     public DemoUIFactory(@Nonnull OWLEditorKit eKit) {
         this.editorKit = eKit;
 
@@ -58,7 +60,7 @@ public class DemoUIFactory {
 
             @Override
             public String getCaption() {
-                return OWLEditorKit.render(property);
+                return OWLEditorKitImpl.render(property);
             }
         };
         final Set<WizardStep> retSteps = new HashSet<>();
@@ -67,7 +69,7 @@ public class DemoUIFactory {
                 @Nonnull
                 @Override
                 public WizardStep visit(@Nonnull OWLClass ce) {
-                    return new ObjectPropertyAssertionCreator(editorKit, property, subject);
+                    return new ObjectPropertyAssertionCreator(property, subject);
                 }
 
                 @Nonnull
@@ -79,7 +81,7 @@ public class DemoUIFactory {
                 @Nonnull
                 @Override
                 public WizardStep visit(@Nonnull OWLObjectUnionOf ce) {
-                    return new ObjectPropertyAssertionCreator(editorKit, property, subject);
+                    return new ObjectPropertyAssertionCreator(property, subject);
                 }
 
                 @Nonnull
@@ -193,7 +195,7 @@ public class DemoUIFactory {
 
             @Override
             public String getCaption() {
-                return OWLEditorKit.render(property);
+                return OWLEditorKitImpl.render(property);
             }
         };
         final Set<WizardStep> retSteps = new HashSet<>();
@@ -392,11 +394,11 @@ public class DemoUIFactory {
         private Tree owlClassTree = new Tree();
 
 
-        public ObjectPropertyAssertionCreator(OWLEditorKit editorKit1, OWLObjectProperty property, OWLNamedIndividual subject) {
+        public ObjectPropertyAssertionCreator(OWLObjectProperty property, OWLNamedIndividual subject) {
             super(subject);
-            editorKit = editorKit1;
+            editorKit = OWLEditorUI.getEditorKit();
             this.property = property;
-            individualList = new IndividualsSheet.IndividualList(editorKit);
+            individualList = new IndividualsSheet.IndividualList();
             OWLClassHierarchicalContainer container = new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
             owlClassTree.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             owlClassTree.setItemCaptionPropertyId(OWLEditorData.OWLClassName);
@@ -432,7 +434,7 @@ public class DemoUIFactory {
         }
 
         public String getCaption() {
-            return OWLEditorKit.getShortForm(property);
+            return OWLEditorKitImpl.getShortForm(property);
         }
 
         @Override
@@ -442,7 +444,7 @@ public class DemoUIFactory {
                             subject, individualList.getSelectedProperty().getValue());
 
             ConfirmDialog.show(UI.getCurrent(),
-                    "Are you sure about adding \"" + OWLEditorKit.render(newAxiom) + "\"",
+                    "Are you sure about adding \"" + OWLEditorKitImpl.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
                             OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
@@ -476,7 +478,7 @@ public class DemoUIFactory {
         }
 
         public String getCaption() {
-            return OWLEditorKit.getShortForm(property);
+            return OWLEditorKitImpl.getShortForm(property);
         }
 
         private void initialise() {
@@ -505,7 +507,7 @@ public class DemoUIFactory {
             OWLIndividualAxiom newAxiom = factory
                     .getOWLDataPropertyAssertionAxiom(property, subject, getOWLLiteral());
             ConfirmDialog.show(UI.getCurrent(),
-                    "Are you sure about adding \"" + OWLEditorKit.render(newAxiom) + "\"",
+                    "Are you sure about adding \"" + OWLEditorKitImpl.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
                             OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
@@ -557,7 +559,7 @@ public class DemoUIFactory {
 
         @Override
         public String getCaption() {
-            return OWLEditorKit.getShortForm(property);
+            return OWLEditorKitImpl.getShortForm(property);
         }
     }
     private static abstract class DemoAbstractComponent extends VerticalLayout implements DemoWizardStep {

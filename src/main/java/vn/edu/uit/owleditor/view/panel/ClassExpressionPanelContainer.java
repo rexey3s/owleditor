@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
@@ -44,9 +43,6 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
     private AbstractExpressionPanel disjointPanel;
 
-    public ClassExpressionPanelContainer(@Nonnull OWLEditorKit eKit) {
-        super(eKit);
-    }
 
     @Override
     protected Component buildContent() {
@@ -54,7 +50,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddClassExpressionWindow(
-                                editorKit, owlClassExpression ->
+                                owlClassExpression ->
                                 editorKit.getDataFactory().getEquivalentClassesAddEvent(
                                         dataSource.getValue(), owlClassExpression))
                 );
@@ -66,7 +62,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                         .getEquivalentClasses(dataSource.getValue(), editorKit.getActiveOntology());
 
                 ces.remove(dataSource.getValue());
-                ces.forEach(ce -> root.addComponent(new ClassLabel(editorKit,
+                ces.forEach(ce -> root.addComponent(new ClassLabel(
                                 new OWLClassExpressionSource(ce),
                                 () -> editorKit.getDataFactory().getEquivalentClassesRemoveEvent(
                                         dataSource.getValue(), ce),
@@ -93,7 +89,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
         subClsOfPanel = new ClassPanel("SubClass Of: ") {
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(editorKit, expression ->
+                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(expression ->
                                 editorKit.getDataFactory().getSubClassOfAddEvent(
                                         dataSource.getValue(), expression))
                 );
@@ -105,7 +101,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                         .getSuperClasses(dataSource.getValue(),
                                 editorKit.getActiveOntology());
                 for (OWLClassExpression ce : ces) {
-                    root.addComponent(new ClassLabel(editorKit,
+                    root.addComponent(new ClassLabel(
                                     new OWLClassExpressionSource(ce),
                                     () -> editorKit.getDataFactory().getSubClassOfRemoveEvent(
                                             dataSource.getValue(), ce),
@@ -157,7 +153,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
         disjointPanel = new ClassPanel("Mutual Disjoint With: ") {
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(editorKit, expression ->
+                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(expression ->
                         editorKit.getDataFactory().getDisjointClassesAddEvent(dataSource.getValue(), expression)
                 ));
             }
@@ -167,7 +163,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 Collection<OWLClassExpression> ces = EntitySearcher.getDisjointClasses(dataSource.getValue(),
                         editorKit.getActiveOntology());
                 ces.remove(dataSource.getValue());
-                ces.forEach(ce -> root.addComponent(new ClassLabel(editorKit,
+                ces.forEach(ce -> root.addComponent(new ClassLabel(
                                 new OWLClassExpressionSource(ce),
                                 () -> editorKit.getDataFactory().getDisjointClassesRemoveEvent(
                                         dataSource.getValue(), ce),
@@ -224,7 +220,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             public void visit(OWLDisjointClassesAxiom axiom) {
                 Set<OWLClassExpression> ces = axiom.getClassExpressions();
                 ces.remove(owner);
-                ces.forEach(ce -> disjointPanel.addMoreExpression(new ClassLabel(editorKit,
+                ces.forEach(ce -> disjointPanel.addMoreExpression(new ClassLabel(
                                 new OWLClassExpressionSource(ce),
                                 () -> new OWLEditorEvent.ClassAxiomRemoved(addAxiom, owner),
                                 modEx -> editorKit.getDataFactory().getDisjointClassesModEvent(
@@ -237,7 +233,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             public void visit(OWLEquivalentClassesAxiom axiom) {
                 Set<OWLClassExpression> ces = axiom.getClassExpressions();
                 ces.remove(owner);
-                ces.forEach(ce -> equivPanel.addMoreExpression(new ClassLabel(editorKit,
+                ces.forEach(ce -> equivPanel.addMoreExpression(new ClassLabel(
                                 new OWLClassExpressionSource(ce),
                                 () -> new OWLEditorEvent.ClassAxiomRemoved(addAxiom, owner),
                                 modEx -> editorKit.getDataFactory().getEquivalentClassesModEvent(
@@ -247,7 +243,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
             @Override
             public void visit(OWLSubClassOfAxiom axiom) {
-                subClsOfPanel.addMoreExpression(new ClassLabel(editorKit,
+                subClsOfPanel.addMoreExpression(new ClassLabel(
                                 new OWLClassExpressionSource(axiom.getSuperClass()),
                                 () -> new OWLEditorEvent.ClassAxiomRemoved(addAxiom, owner),
                                 modEx -> editorKit.getDataFactory().getSubClassOfModEvent(
@@ -339,16 +335,15 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     public static class ClassLabel extends AbstractEditableOWLObjectLabel<OWLClassExpression> {
-        public ClassLabel(@Nonnull OWLEditorKit eKit,
-                          @Nonnull OWLObjectSource<OWLClassExpression> expressionSource,
+        public ClassLabel(@Nonnull OWLObjectSource<OWLClassExpression> expressionSource,
                           @Nonnull OWLExpressionRemoveHandler removeExpression1,
                           @Nonnull OWLExpressionUpdateHandler<OWLClassExpression> modifyExpression1) {
-            super(eKit, expressionSource, removeExpression1, modifyExpression1);
+            super(expressionSource, removeExpression1, modifyExpression1);
         }
 
         @Override
         public void initModifiedAction() {
-            UI.getCurrent().addWindow(new buildEditClassExpressionWindow(editorKit, expressionSource, modifyExpression));
+            UI.getCurrent().addWindow(new buildEditClassExpressionWindow(expressionSource, modifyExpression));
         }
     }
 

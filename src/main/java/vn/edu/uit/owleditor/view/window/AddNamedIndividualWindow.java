@@ -4,7 +4,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
@@ -20,7 +20,7 @@ public class AddNamedIndividualWindow extends Window {
 
     public AddNamedIndividualWindow(OWLExpressionAddHandler<OWLNamedIndividual> addExpression) {
         this.addExpression = addExpression;
-        OWLEditorKit eKit = (OWLEditorKit)
+        OWLEditorKitImpl eKit = (OWLEditorKitImpl)
                 UI.getCurrent().getSession().getAttribute("kit");
 
         OWLNamedIndividualContainer container = eKit.getDataFactory().getOWLIndividualListContainer();

@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -50,6 +50,6 @@ public class OWLLiteralSource implements OWLPropertyAssertionObjectSource<OWLLit
 
     @Override
     public String toString() {
-        return OWLEditorKit.render(data);
+        return OWLEditorKitImpl.render(data);
     }
 }

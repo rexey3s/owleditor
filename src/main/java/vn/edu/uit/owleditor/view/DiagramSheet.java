@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
 
@@ -84,7 +84,7 @@ public class DiagramSheet extends VerticalLayout {
         protected void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
             visited.add(child);
             final JsonObject childObject = new JsonObject();
-            childObject.addProperty("name", OWLEditorKit.getShortForm(child));
+            childObject.addProperty("name", OWLEditorKitImpl.getShortForm(child));
             childObject.addProperty("type", "class");
             childObject.addProperty("size", randInt(2, 10) * SIZE);
 
@@ -107,7 +107,7 @@ public class DiagramSheet extends VerticalLayout {
                 childObject.add("children", childArray);
                 individuals.stream().filter(OWLIndividual::isNamed).forEach(i -> {
                     final JsonObject iObject = new JsonObject();
-                    iObject.addProperty("name", "Individual: " + OWLEditorKit.getShortForm(i.asOWLNamedIndividual()));
+                    iObject.addProperty("name", "Individual: " + OWLEditorKitImpl.getShortForm(i.asOWLNamedIndividual()));
                     iObject.addProperty("type", "individual");
                     childArray.add(iObject);
                 });
@@ -184,7 +184,7 @@ public class DiagramSheet extends VerticalLayout {
         protected void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
             visited.add(child);
             final JsonObject childObject = new JsonObject();
-            childObject.addProperty("name", OWLEditorKit.getShortForm(child));
+            childObject.addProperty("name", OWLEditorKitImpl.getShortForm(child));
             childObject.addProperty("size", randInt(2, 10) * SIZE);
 
             if (parent != null && parentObject.has("children")) {

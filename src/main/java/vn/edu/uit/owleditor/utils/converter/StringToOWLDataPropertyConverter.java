@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.utils.converter;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.util.converter.Converter;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -50,7 +51,7 @@ public class StringToOWLDataPropertyConverter extends AbstractStringToOWLObjectC
         if (value == null) {
             return null;
         }
-        return OWLEditorKit.getShortForm(value);
+        return OWLEditorKitImpl.getShortForm(value);
     }
 
     @Override

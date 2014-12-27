@@ -6,7 +6,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.parser.SWRLParseException;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorSWRLAPIRuleRenderer;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
@@ -22,11 +21,10 @@ import javax.annotation.Nonnull;
 public class buildEditRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLAPIRule> {
     private final SWRLRuleEditor editor;
 
-    public buildEditRuleWindow(@Nonnull OWLEditorKit eKit,
-                               @Nonnull SWRLAPIRuleSource source, @Nonnull OWLExpressionUpdateHandler<SWRLAPIRule> mod) throws NullPointerException {
-        super(eKit, source, mod);
+    public buildEditRuleWindow(@Nonnull SWRLAPIRuleSource source, @Nonnull OWLExpressionUpdateHandler<SWRLAPIRule> mod) throws NullPointerException {
+        super(source, mod);
 
-        editor = new SWRLRuleEditor(editorKit);
+        editor = new SWRLRuleEditor();
         SWRLAPIRenderer myRenderer = new OWLEditorSWRLAPIRuleRenderer(editorKit.getSWRLActiveOntology());
         editor.setValue(myRenderer.renderSWRLRule(source.getValue()));
         editor.setRuleName(source.getValue().getRuleName());

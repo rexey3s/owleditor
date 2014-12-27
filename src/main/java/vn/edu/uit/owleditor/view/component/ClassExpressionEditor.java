@@ -1,9 +1,5 @@
 package vn.edu.uit.owleditor.view.component;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.list.OWLEntitiesShortFormContainer;
-import vn.edu.uit.owleditor.utils.EditorUtils;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.shared.ui.combobox.FilteringMode;
@@ -12,8 +8,10 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-
-import javax.annotation.Nonnull;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.data.list.OWLEntitiesShortFormContainer;
+import vn.edu.uit.owleditor.utils.EditorUtils;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 
 /**
@@ -25,9 +23,9 @@ public class ClassExpressionEditor extends VerticalLayout {
     private final TextArea input = new TextArea();
     private final ComboBox entitiesList = new ComboBox();
 
-    public ClassExpressionEditor(@Nonnull OWLEditorKit eKit) {
+    public ClassExpressionEditor() {
         entitiesList.setContainerDataSource(
-                new OWLEntitiesShortFormContainer(eKit));
+                new OWLEntitiesShortFormContainer(OWLEditorUI.getEditorKit()));
         initialise();
     }
 

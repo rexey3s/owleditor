@@ -7,12 +7,11 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -31,9 +30,9 @@ public abstract class DataPropertyAssertionEditorWindow extends Window {
     private final VerticalLayout root = new VerticalLayout();
 
 
-    public DataPropertyAssertionEditorWindow(@Nonnull OWLEditorKit eKit) {
-        this.editorKit = eKit;
-        hierarchy = new DataPropertyHierarchicalPanel(editorKit);
+    public DataPropertyAssertionEditorWindow() {
+        this.editorKit = OWLEditorUI.getEditorKit();
+        hierarchy = new DataPropertyHierarchicalPanel();
         hierarchy.setCaption("DataProperty");
         dataType.setContainerDataSource(new OWL2DatatypeContainer());
         initialise();

@@ -9,7 +9,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLDataPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -38,8 +38,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
     private final OWLDataPropertyTree tree = new OWLDataPropertyTree();
 
-    public DataPropertyHierarchicalPanel(@Nonnull OWLEditorKit editorKit) {
-        super(editorKit);
+    public DataPropertyHierarchicalPanel() {
         buildComponents();
 
         tree.addActionHandler(this);
@@ -200,7 +199,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
                             editorKit.getOWLDataFactory().getOWLFunctionalDataPropertyAxiom(getCurrentProperty().getValue()));
                     dataContainer.checkFunctionalIcon(getCurrentProperty().getValue());
 
-                    Notification.show(OWLEditorKit.getShortForm(
+                    Notification.show(OWLEditorKitImpl.getShortForm(
                                     getCurrentProperty().getValue())
                                     + " is functional: "
                                     + valueChangeEvent.getProperty().getValue(),
@@ -246,10 +245,10 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
                 expandItem(event.getSuperProperty());
                 Notification.show("Successfully create "
-                        + OWLEditorKit.getShortForm(event.getSubProperty()));
+                        + OWLEditorKitImpl.getShortForm(event.getSubProperty()));
             } else
                 Notification.show("Cannot create "
-                                + OWLEditorKit.getShortForm(event.getSubProperty()),
+                                + OWLEditorKitImpl.getShortForm(event.getSubProperty()),
                         Notification.Type.WARNING_MESSAGE);
 
         }
@@ -279,9 +278,9 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
             }
             if (ok == ChangeApplied.SUCCESSFULLY)
                 Notification.show("Successfully create "
-                        + OWLEditorKit.getShortForm(event.getDeclareProperty()));
+                        + OWLEditorKitImpl.getShortForm(event.getDeclareProperty()));
             else
-                Notification.show("Cannot create " + OWLEditorKit.getShortForm(
+                Notification.show("Cannot create " + OWLEditorKitImpl.getShortForm(
                                 event.getDeclareProperty()),
                         Notification.Type.WARNING_MESSAGE);
         }

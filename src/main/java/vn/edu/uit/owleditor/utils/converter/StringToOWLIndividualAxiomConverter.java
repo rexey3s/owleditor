@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.utils.converter;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorExAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -27,26 +28,26 @@ public class StringToOWLIndividualAxiomConverter extends AbstractStringToOWLObje
         return owlAxiom.accept(new OWLAxiomVisitorExAdapter<String>("Cannnot convert from OWLAxiom to String") {
             @Override
             public String visit(OWLDataPropertyAssertionAxiom axiom) {
-                return OWLEditorKit.render(axiom.getProperty())
-                        + " " + OWLEditorKit.render(axiom.getObject());
+                return OWLEditorKitImpl.render(axiom.getProperty())
+                        + " " + OWLEditorKitImpl.render(axiom.getObject());
             }
 
             @Override
             public String visit(OWLObjectPropertyAssertionAxiom axiom) {
-                return OWLEditorKit.render(axiom.getProperty())
-                        + " " + OWLEditorKit.render(axiom.getObject());
+                return OWLEditorKitImpl.render(axiom.getProperty())
+                        + " " + OWLEditorKitImpl.render(axiom.getObject());
             }
 
             @Override
             public String visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-                return OWLEditorKit.render(axiom.getProperty())
-                        + " " + OWLEditorKit.render(axiom.getObject());
+                return OWLEditorKitImpl.render(axiom.getProperty())
+                        + " " + OWLEditorKitImpl.render(axiom.getObject());
             }
 
             @Override
             public String visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-                return OWLEditorKit.render(axiom.getProperty())
-                        + " " + OWLEditorKit.render(axiom.getObject());
+                return OWLEditorKitImpl.render(axiom.getProperty())
+                        + " " + OWLEditorKitImpl.render(axiom.getObject());
             }
         });
     }

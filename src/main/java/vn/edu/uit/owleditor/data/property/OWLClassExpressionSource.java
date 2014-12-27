@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -51,6 +51,6 @@ public final class OWLClassExpressionSource implements OWLObjectSource<OWLClassE
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.render(owlClassExpressionSource));
+        return String.valueOf(OWLEditorKitImpl.render(owlClassExpressionSource));
     }
 }

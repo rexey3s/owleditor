@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -39,8 +39,8 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
     private final OWLObjectPropertyTree tree = new OWLObjectPropertyTree();
 
-    public ObjectPropertyHierarchicalPanel(@Nonnull OWLEditorKit editorKit) {
-        super(editorKit);
+    public ObjectPropertyHierarchicalPanel() {
+        super();
         buildComponents();
         tree.addActionHandler(this);
         Responsive.makeResponsive(this);
@@ -232,11 +232,11 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
                 expandItem(event.getSuperProperty());
                 Notification.show("Successfully create "
-                                + OWLEditorKit.getShortForm(event.getSubProperty()),
+                                + OWLEditorKitImpl.getShortForm(event.getSubProperty()),
                         Notification.Type.TRAY_NOTIFICATION);
             } else {
                 Notification.show("Cannot create "
-                                + OWLEditorKit.getShortForm(event.getSubProperty()),
+                                + OWLEditorKitImpl.getShortForm(event.getSubProperty()),
                         Notification.Type.WARNING_MESSAGE);
             }
         }
@@ -266,10 +266,10 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
             }
             if (ok == ChangeApplied.SUCCESSFULLY) {
                 Notification.show("Successfully create "
-                                + OWLEditorKit.getShortForm(event.getDeclareProperty()),
+                                + OWLEditorKitImpl.getShortForm(event.getDeclareProperty()),
                         Notification.Type.TRAY_NOTIFICATION);
             } else
-                Notification.show("Cannot create " + OWLEditorKit.getShortForm(
+                Notification.show("Cannot create " + OWLEditorKitImpl.getShortForm(
                                 event.getDeclareProperty()),
                         Notification.Type.WARNING_MESSAGE);
         }
@@ -286,7 +286,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
                 axiom.accept(dataContainer.getOWLOntologyChangeListener());
 
-                System.out.println(OWLEditorKit.render(axiom.getAxiom()));
+                System.out.println(OWLEditorKitImpl.render(axiom.getAxiom()));
             }
             dataContainer.getEntityRemover().reset();
         }

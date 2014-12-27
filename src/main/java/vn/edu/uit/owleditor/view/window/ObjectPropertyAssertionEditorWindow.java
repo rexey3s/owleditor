@@ -1,15 +1,13 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
-import vn.edu.uit.owleditor.view.IndividualsSheet;
-import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
-import javax.annotation.Nonnull;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
+import vn.edu.uit.owleditor.view.IndividualsSheet;
+import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -19,15 +17,13 @@ public abstract class ObjectPropertyAssertionEditorWindow extends Window {
 
     protected final ObjectPropertyHierarchicalPanel hierarchy;
     protected final IndividualsSheet.IndividualList owlIndividualList;
-    private final OWLEditorKit editorKit;
     private final HorizontalLayout main = new HorizontalLayout();
     private final VerticalLayout root = new VerticalLayout();
 
-    public ObjectPropertyAssertionEditorWindow(@Nonnull OWLEditorKit eKit) {
-        this.editorKit = eKit;
-        hierarchy = new ObjectPropertyHierarchicalPanel(editorKit);
-        owlIndividualList = new IndividualsSheet.IndividualList(editorKit);
-        owlIndividualList.setContainerDataSource(new OWLNamedIndividualContainer(editorKit.getActiveOntology()));
+    public ObjectPropertyAssertionEditorWindow() {
+        hierarchy = new ObjectPropertyHierarchicalPanel();
+        owlIndividualList = new IndividualsSheet.IndividualList();
+        owlIndividualList.setContainerDataSource(new OWLNamedIndividualContainer(OWLEditorUI.getEditorKit().getActiveOntology()));
         initialise();
     }
 

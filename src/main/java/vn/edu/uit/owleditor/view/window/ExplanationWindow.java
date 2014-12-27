@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.window;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
@@ -9,8 +8,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import uk.ac.manchester.cs.owl.explanation.ordering.Tree;
-
-import javax.annotation.Nonnull;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 
 /**
@@ -20,10 +19,8 @@ import javax.annotation.Nonnull;
 public class ExplanationWindow extends Window {
     private final VerticalLayout root = new VerticalLayout();
     private final VerticalLayout body = new VerticalLayout();
-    private final OWLEditorKit editorKit;
 
-    public ExplanationWindow(@Nonnull OWLEditorKit editorKit, ExplanationTree explanationTree) {
-        this.editorKit = editorKit;
+    public ExplanationWindow(ExplanationTree explanationTree) {
         initialize();
         printIndented(explanationTree, "");
     }
@@ -83,9 +80,9 @@ public class ExplanationWindow extends Window {
 
         public ExplanationLabel(OWLAxiom axiom) {
             if (axiom instanceof SWRLRule)
-                label.setValue(editorKit.getRuleRenderer().renderSWRLRule((SWRLRule) axiom));
+                label.setValue(OWLEditorUI.getEditorKit().getRuleRenderer().renderSWRLRule((SWRLRule) axiom));
             else
-                label.setValue(OWLEditorKit.render(axiom));
+                label.setValue(OWLEditorKitImpl.render(axiom));
 
             label.addStyleName(ValoTheme.LABEL_COLORED);
             label.addStyleName(ValoTheme.LABEL_NO_MARGIN);

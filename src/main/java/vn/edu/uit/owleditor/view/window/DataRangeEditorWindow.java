@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
 import org.semanticweb.owlapi.model.OWLDataRange;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
@@ -33,12 +33,11 @@ public class DataRangeEditorWindow extends AbstractOWLExpressionEditorWindow<OWL
      * @param expression
      * @param modifyExpression1
      */
-    public DataRangeEditorWindow(@Nonnull OWLEditorKit eKit,
-                                 @Nonnull Property<OWLDataRange> expression,
+    public DataRangeEditorWindow(@Nonnull Property<OWLDataRange> expression,
                                  @Nonnull OWLExpressionUpdateHandler<OWLDataRange> modifyExpression1) {
-        super(eKit, expression, modifyExpression1);
+        super(expression, modifyExpression1);
         initialise();
-        editor.setValue(OWLEditorKit.render(expression.getValue()));
+        editor.setValue(OWLEditorKitImpl.render(expression.getValue()));
         addMoreTab(datatypeList, "Data type");
         addMoreTab(editor, "Data range expression");
 
@@ -48,9 +47,8 @@ public class DataRangeEditorWindow extends AbstractOWLExpressionEditorWindow<OWL
      * Add mode
      * @param addExpression1
      */
-    public DataRangeEditorWindow(@Nonnull OWLEditorKit eKit,
-                                 @Nonnull OWLExpressionAddHandler<OWLDataRange> addExpression1) {
-        super(eKit, addExpression1);
+    public DataRangeEditorWindow(@Nonnull OWLExpressionAddHandler<OWLDataRange> addExpression1) {
+        super(addExpression1);
         initialise();
         addMoreTab(datatypeList, "Data type");
         addMoreTab(editor, "Data range expression");

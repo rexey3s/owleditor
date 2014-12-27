@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -51,6 +51,6 @@ public final class OWLIndividualAxiomSource implements OWLAxiomSource<OWLIndivid
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.render(axiom));
+        return String.valueOf(OWLEditorKitImpl.render(axiom));
     }
 }

@@ -17,6 +17,7 @@ import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
 import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 
@@ -39,18 +40,17 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
 
     private final SWRLAPIOWLOntology activeOntology;
     private final Container rulesContainer;
-    private Table rulesTable;
 
     public RuleSheet() {
-        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
+        editorKit = OWLEditorUI.getEditorKit();
         activeOntology = editorKit.getSWRLActiveOntology();
         rulesContainer = buildRulesContainer();
-        OWLEditorUI.getGuavaEventBus().register(this);
+        OWLEditorEventBus.register(this);
         init();
     }
 
     private void init() {
-        rulesTable = new Table();
+        Table rulesTable = new Table();
         rulesTable.setContainerDataSource(rulesContainer);
         rulesTable.setSelectable(true);
         rulesTable.addActionHandler(this);
@@ -90,13 +90,12 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
     @Override
     public void handleAction(Action action, Object target, Object sender) {
         if (action == ADD) {
-            UI.getCurrent().addWindow(new buildAddRuleWindow(editorKit, rule ->
+            UI.getCurrent().addWindow(new buildAddRuleWindow(rule ->
                         editorKit.getDataFactory().getRuleAddEvent(rule, activeOntology.getOWLOntology())
             ));
         } else if (action == EDIT) {
             try {
                 UI.getCurrent().addWindow(new buildEditRuleWindow(
-                        editorKit,
                         selectedRow,
                         rule -> editorKit.getDataFactory()
                                 .getRuleMofifyEvent(
@@ -110,7 +109,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
             ConfirmDialog.show(UI.getCurrent(), dialog -> {
                 if (dialog.isConfirmed()) {
                     try {
-                        OWLEditorUI.getGuavaEventBus().post(editorKit.getDataFactory().getRuleRemoveEvent(
+                        OWLEditorEventBus.post(editorKit.getDataFactory().getRuleRemoveEvent(
                                 selectedRow.getValue(), activeOntology.getOWLOntology()));
                         dialog.close();
                     } catch (NullPointerException ex) {

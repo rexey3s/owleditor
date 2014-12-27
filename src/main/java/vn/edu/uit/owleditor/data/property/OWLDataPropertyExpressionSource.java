@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -52,7 +52,7 @@ public final class OWLDataPropertyExpressionSource implements OWLPropertyExpress
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.render(dataPropertyExpression));
+        return String.valueOf(OWLEditorKitImpl.render(dataPropertyExpression));
     }
 
 }

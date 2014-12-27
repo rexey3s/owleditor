@@ -1,15 +1,16 @@
 package vn.edu.uit.owleditor.view.window;
 
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
-import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
+import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 
 import javax.annotation.Nonnull;
 
@@ -19,50 +20,43 @@ import javax.annotation.Nonnull;
  */
 public abstract class AbstractOWLExpressionEditorWindow<A extends OWLObject> extends Window {
 
-    protected final OWLEditorKit editorKit;
     private final VerticalLayout root = new VerticalLayout();
     private final TabSheet tabs = new TabSheet();
+    protected OWLEditorKit editorKit;
     protected Property<A> currentExpression;
     protected OWLExpressionAddHandler<A> addExpression;
     protected OWLExpressionUpdateHandler<A> modifyExpression;
 
-    public AbstractOWLExpressionEditorWindow(@Nonnull OWLEditorKit eKit) {
-        this.editorKit = eKit;
+    public AbstractOWLExpressionEditorWindow() {
         initialize();
     }
     /**
      * Add mode
-     * @param eKit
      * @param addExpression
      */
-    public AbstractOWLExpressionEditorWindow(@Nonnull OWLEditorKit eKit,
-                                             @Nonnull OWLExpressionAddHandler<A> addExpression) {
-        this.editorKit = eKit;
+    public AbstractOWLExpressionEditorWindow(@Nonnull OWLExpressionAddHandler<A> addExpression) {
+        this.editorKit = OWLEditorUI.getEditorKit();
         this.addExpression = addExpression;
         initialize();
     }
 
     /**
-     * @param eKit
      * @param currentExpression
      */
-    public AbstractOWLExpressionEditorWindow(@Nonnull OWLEditorKit eKit,
-                                             @Nonnull Property<A> currentExpression) {
-        this.editorKit = eKit;
+    public AbstractOWLExpressionEditorWindow(@Nonnull Property<A> currentExpression) {
+        this.editorKit = OWLEditorUI.getEditorKit();
         this.currentExpression = currentExpression;
         initialize();
     }
 
     /**
      * Edit mode
-     * @param eKit
      * @param currentExpression
      * @param modifyExpression
      */
-    public AbstractOWLExpressionEditorWindow(@Nonnull OWLEditorKit eKit,
-                                             @Nonnull Property<A> currentExpression,
+    public AbstractOWLExpressionEditorWindow(@Nonnull Property<A> currentExpression,
                                              @Nonnull OWLExpressionUpdateHandler<A> modifyExpression) {
-        this.editorKit = eKit;
+        this.editorKit = OWLEditorUI.getEditorKit();
         this.currentExpression = currentExpression;
         this.modifyExpression = modifyExpression;
         initialize();

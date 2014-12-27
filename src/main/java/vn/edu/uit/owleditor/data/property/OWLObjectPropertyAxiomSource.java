@@ -1,8 +1,8 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.Property;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAxiom;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -52,6 +52,6 @@ public final class OWLObjectPropertyAxiomSource implements Property<OWLObjectPro
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.render(objectPropertyAx));
+        return String.valueOf(OWLEditorKitImpl.render(objectPropertyAx));
     }
 }

@@ -1,7 +1,8 @@
 package vn.edu.uit.owleditor.utils.converter;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLClass;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class StringToOWLClassConverter extends AbstractStringToOWLObjectConverte
         if (value == null) {
             return null;
         }
-        return OWLEditorKit.getShortForm(value);
+        return OWLEditorKitImpl.getShortForm(value);
     }
 
     @Override

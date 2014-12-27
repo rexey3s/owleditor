@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.utils.converter;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.util.converter.Converter;
 import org.semanticweb.owlapi.model.OWLDataRange;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -46,7 +47,7 @@ public class StringToDataRangeConverter extends AbstractStringToOWLObjectConvert
         if (value == null) {
             return null;
         }
-        return OWLEditorKit.render(value);
+        return OWLEditorKitImpl.render(value);
     }
 
     @Override

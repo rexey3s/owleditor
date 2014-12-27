@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.vaadin.dialogs.ConfirmDialog;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
@@ -25,7 +26,6 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 import vn.edu.uit.owleditor.view.panel.NamedIndividualPanelContainer;
 import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -40,14 +40,14 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
     private OWLEditorKit editorKit;
 
     public IndividualsSheet() {
-        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
+        editorKit = OWLEditorUI.getEditorKit();
         initialise();
 
     }
 
     private void initialise() {
-        hierarchy = new ClassHierarchicalPanel(editorKit);
-        individualsList = new IndividualList(editorKit);
+        hierarchy = new ClassHierarchicalPanel();
+        individualsList = new IndividualList();
         hierarchy.addValueChangeListener(this);
         individualsList.addValueChangeListener(valueChangeEvent -> {
             if (valueChangeEvent.getProperty().getValue() != null) {
@@ -60,7 +60,7 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
         listWrapper.addComponents(hierarchy, individualsList);
         listWrapper.setSpacing(true);
         listWrapper.setSizeFull();
-        indPanels = new NamedIndividualPanelContainer(editorKit);
+        indPanels = new NamedIndividualPanelContainer();
 
         TabSheet tabs = new TabSheet();
         tabs.setSizeFull();
@@ -111,9 +111,9 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
 
         private final OWLEditorKit editorKit;
 
-        public IndividualList(@Nonnull OWLEditorKit eKit) {
+        public IndividualList() {
             buildComponents();
-            editorKit = eKit;
+            editorKit = OWLEditorUI.getEditorKit();
             list.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             list.setItemCaptionPropertyId(OWLEditorData.OWLNamedIndividualName);
             list.addValueChangeListener(this);
@@ -226,7 +226,7 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
             if(ok == ChangeApplied.SUCCESSFULLY) {
                 list.addItem(event.getIndividual());
                 list.getContainerProperty(event.getIndividual(), OWLEditorData.OWLNamedIndividualName)
-                        .setValue(OWLEditorKit.getShortForm(event.getIndividual()));
+                        .setValue(OWLEditorKitImpl.getShortForm(event.getIndividual()));
                 Notification.show("Successfully created individual", Notification.Type.TRAY_NOTIFICATION);
             }
             else

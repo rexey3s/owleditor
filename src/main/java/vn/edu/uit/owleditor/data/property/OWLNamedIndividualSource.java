@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -48,6 +48,6 @@ public final class OWLNamedIndividualSource implements OWLLogicalEntitySource<OW
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.getShortForm(owlNamedIndividual));
+        return String.valueOf(OWLEditorKitImpl.getShortForm(owlNamedIndividual));
     }
 }

@@ -1,8 +1,8 @@
 package vn.edu.uit.owleditor.utils.validator;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.Validator;
 import org.semanticweb.owlapi.model.OWLEntity;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import javax.annotation.Nonnull;
 

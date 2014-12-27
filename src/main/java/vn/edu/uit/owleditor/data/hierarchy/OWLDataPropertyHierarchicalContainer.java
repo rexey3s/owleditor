@@ -1,8 +1,5 @@
 package vn.edu.uit.owleditor.data.hierarchy;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -12,6 +9,9 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -179,7 +179,7 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                             axiom);
             manager.applyChanges(changes);
             for (OWLOntologyChange change : changes) {
-                System.out.println(OWLEditorKit.render(change.getAxiom()));
+                System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
             }
         }
     }

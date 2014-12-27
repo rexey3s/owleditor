@@ -1,12 +1,12 @@
 package vn.edu.uit.owleditor.data.list;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.utils.OWLEditorData;
 import com.vaadin.data.util.IndexedContainer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -31,7 +31,7 @@ public class OWL2DatatypeContainer extends IndexedContainer {
     }
 
     private String sf(OWLDatatype owlDatatype) {
-        return OWLEditorKit.getShortForm(owlDatatype);
+        return OWLEditorKitImpl.getShortForm(owlDatatype);
     }
 }
 

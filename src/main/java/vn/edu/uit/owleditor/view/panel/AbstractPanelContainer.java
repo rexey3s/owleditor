@@ -5,6 +5,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
@@ -23,8 +24,8 @@ public abstract class AbstractPanelContainer extends Panel {
     protected CssLayout descriptionPanels = new CssLayout();
 
 
-    public AbstractPanelContainer(@Nonnull OWLEditorKit eKit) {
-        editorKit = eKit;
+    public AbstractPanelContainer() {
+        editorKit = OWLEditorUI.getEditorKit();
         addStyleName(ValoTheme.PANEL_BORDERLESS);
         setSizeFull();
 

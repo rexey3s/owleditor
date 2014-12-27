@@ -1,9 +1,9 @@
 package vn.edu.uit.owleditor.data;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.Property;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import java.util.List;
 public abstract class OWLPropertyAttributes {
     public static class IsFunctionalDataProperty implements Property<Boolean> {
         private final OWLFunctionalDataPropertyAxiom functionalDataPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isFunctional;
 
-        public IsFunctionalDataProperty(OWLEditorKit eKit, OWLDataProperty owlDataProperty) {
+        public IsFunctionalDataProperty(OWLEditorKitImpl eKit, OWLDataProperty owlDataProperty) {
             this.eKit = eKit;
             functionalDataPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLFunctionalDataPropertyAxiom(owlDataProperty);
@@ -41,7 +41,7 @@ public abstract class OWLPropertyAttributes {
                                 functionalDataPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -79,11 +79,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsFunctionalProperty implements Property<Boolean> {
 
         private final OWLFunctionalObjectPropertyAxiom functionalObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isFunctional;
 
-        public IsFunctionalProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsFunctionalProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             functionalObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLFunctionalObjectPropertyAxiom(owlObjectProperty);
@@ -106,7 +106,7 @@ public abstract class OWLPropertyAttributes {
                                 functionalObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -146,11 +146,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsInverseFunctionalProperty implements Property<Boolean> {
 
         private final OWLInverseFunctionalObjectPropertyAxiom inverseFunctionalObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isInverseFunctional;
 
-        public IsInverseFunctionalProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsInverseFunctionalProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             inverseFunctionalObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLInverseFunctionalObjectPropertyAxiom(owlObjectProperty);
@@ -173,7 +173,7 @@ public abstract class OWLPropertyAttributes {
                                 inverseFunctionalObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -212,11 +212,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsSymmetricProperty implements Property<Boolean> {
 
         private final OWLSymmetricObjectPropertyAxiom symmetricObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isSymmetric;
 
-        public IsSymmetricProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsSymmetricProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             symmetricObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLSymmetricObjectPropertyAxiom(owlObjectProperty);
@@ -239,7 +239,7 @@ public abstract class OWLPropertyAttributes {
                                 symmetricObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -278,11 +278,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsASymmetricProperty implements Property<Boolean> {
 
         private final OWLAsymmetricObjectPropertyAxiom owlaSymmetricObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isASymmetric;
 
-        public IsASymmetricProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsASymmetricProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             owlaSymmetricObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLAsymmetricObjectPropertyAxiom(owlObjectProperty);
@@ -305,7 +305,7 @@ public abstract class OWLPropertyAttributes {
                                 owlaSymmetricObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -344,11 +344,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsTransitiveProperty implements Property<Boolean> {
 
         private final OWLTransitiveObjectPropertyAxiom transitiveObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isTransitive;
 
-        public IsTransitiveProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsTransitiveProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             transitiveObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLTransitiveObjectPropertyAxiom(owlObjectProperty);
@@ -371,7 +371,7 @@ public abstract class OWLPropertyAttributes {
                                 transitiveObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -410,11 +410,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsReflexiveProperty implements Property<Boolean> {
 
         private final OWLReflexiveObjectPropertyAxiom reflexiveObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isReflexive;
 
-        public IsReflexiveProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsReflexiveProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             reflexiveObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLReflexiveObjectPropertyAxiom(owlObjectProperty);
@@ -437,7 +437,7 @@ public abstract class OWLPropertyAttributes {
                                 reflexiveObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }
@@ -476,11 +476,11 @@ public abstract class OWLPropertyAttributes {
     public static class IsIrreflexiveProperty implements Property<Boolean> {
 
         private final OWLIrreflexiveObjectPropertyAxiom irreflexiveObjectPropertyAxiom;
-        private final OWLEditorKit eKit;
+        private final OWLEditorKitImpl eKit;
         private Boolean readOnly = false;
         private Boolean isIrreflexive;
 
-        public IsIrreflexiveProperty(OWLEditorKit eKit, OWLObjectProperty owlObjectProperty) {
+        public IsIrreflexiveProperty(OWLEditorKitImpl eKit, OWLObjectProperty owlObjectProperty) {
             this.eKit = eKit;
             irreflexiveObjectPropertyAxiom =
                     eKit.getOWLDataFactory().getOWLIrreflexiveObjectPropertyAxiom(owlObjectProperty);
@@ -503,7 +503,7 @@ public abstract class OWLPropertyAttributes {
                                 irreflexiveObjectPropertyAxiom);
                 eKit.getModelManager().applyChanges(changes);
                 for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKit.render(change.getAxiom()));
+                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
                 }
             }
         }

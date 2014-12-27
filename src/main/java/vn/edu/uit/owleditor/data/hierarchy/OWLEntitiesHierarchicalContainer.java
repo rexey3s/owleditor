@@ -1,11 +1,11 @@
 package vn.edu.uit.owleditor.data.hierarchy;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -14,11 +14,11 @@ import javax.annotation.Nonnull;
  *         Faculty of Computer Network and Telecomunication created on 12/8/2014.
  */
 public class OWLEntitiesHierarchicalContainer extends HierarchicalContainer {
-    private final OWLEditorKit editorKit;
+    private final OWLEditorKitImpl editorKit;
     private final OWLNamedObjectVisitor populationEngine;
     private final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
 
-    public OWLEntitiesHierarchicalContainer(@Nonnull OWLEditorKit eKit) {
+    public OWLEntitiesHierarchicalContainer(@Nonnull OWLEditorKitImpl eKit) {
         editorKit = eKit;
         populationEngine = initPopulationEngine();
         addContainerProperty("Entities", String.class, "Unknown");
@@ -71,7 +71,7 @@ public class OWLEntitiesHierarchicalContainer extends HierarchicalContainer {
     }
 
     public String sf(@Nonnull OWLEntity entity) {
-        return OWLEditorKit.getShortForm(entity);
+        return OWLEditorKitImpl.getShortForm(entity);
     }
 
 

@@ -1,14 +1,13 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.data.property.OWLLogicalEntitySource;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
-
-import javax.annotation.Nonnull;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.property.OWLLogicalEntitySource;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -17,11 +16,11 @@ import javax.annotation.Nonnull;
 public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends VerticalLayout implements
         Action.Handler, Property.ValueChangeNotifier {
 
-    protected final OWLEditorKit editorKit;
     protected Label caption = new Label();
+    protected OWLEditorKit editorKit;
 
-    public AbstractHierarchyPanel(@Nonnull OWLEditorKit eKit) {
-        editorKit = eKit;
+    public AbstractHierarchyPanel() {
+        editorKit = OWLEditorUI.getEditorKit();
     }
 
     @Override

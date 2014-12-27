@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.teemu.wizards.Wizard;
 import org.vaadin.teemu.wizards.event.*;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.core.swrlapi.DataPropertyAtomCollector;
 import vn.edu.uit.owleditor.core.swrlapi.SWRLAtomSearchByDefinedClass;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
@@ -38,8 +40,9 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
     private ObjectProperty titleDataSource = new ObjectProperty("Anonymous Type", String.class);
     private Collection<OWLNamedIndividual> individualsToClassify;
-    public DemoPanel(@Nonnull OWLEditorKit eKit) {
-        editorKit = eKit;
+
+    public DemoPanel() {
+        editorKit = OWLEditorUI.getEditorKit();
         uiFactory = new DemoUIFactory(editorKit);
         searcher = new SWRLAtomSearchByDefinedClass(editorKit);
         start = buildStartButton();
@@ -118,7 +121,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
                 } else
 //                PopulateClassWithDefaultIndividual();
                 ConfirmDialog.show(UI.getCurrent(),
-                        "Generate recommendation for " + OWLEditorKit.getShortForm(dataSource.getValue()),
+                        "Generate recommendation for " + OWLEditorKitImpl.getShortForm(dataSource.getValue()),
                         dialog -> {
                             individualsToClassify = new HashSet<>();
                             if (dialog.isConfirmed()) {
@@ -185,7 +188,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     }
 
     private String sf(OWLEntity entity) {
-        return OWLEditorKit.getShortForm(entity);
+        return OWLEditorKitImpl.getShortForm(entity);
     }
 
     @Override

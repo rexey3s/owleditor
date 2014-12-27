@@ -12,10 +12,9 @@ import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.view.panel.ObjectPropertyExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
 
-import javax.annotation.Nonnull;
-
 /**
- * Created by Chuong Dang on 11/21/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecomunication created on 11/21/14.
  */
 public class ObjectPropertiesSheet extends HorizontalLayout implements Property.ValueChangeListener {
 
@@ -26,15 +25,15 @@ public class ObjectPropertiesSheet extends HorizontalLayout implements Property.
 
 
     public ObjectPropertiesSheet() {
-        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
+        editorKit = OWLEditorUI.getEditorKit();
         initialise();
 
     }
 
     private void initialise() {
-        hcLayout = new ObjectPropertyHierarchicalPanel(editorKit);
-        attributes = new ObjectPropertyAttributes(editorKit);
-        objectPropertyPanels = new ObjectPropertyExpressionPanelContainer(editorKit);
+        hcLayout = new ObjectPropertyHierarchicalPanel();
+        attributes = new ObjectPropertyAttributes();
+        objectPropertyPanels = new ObjectPropertyExpressionPanelContainer();
         hcLayout.addValueChangeListener(this);
         hcLayout.setImmediate(true);
         VerticalLayout ver = new VerticalLayout();
@@ -79,8 +78,8 @@ public class ObjectPropertiesSheet extends HorizontalLayout implements Property.
         CheckBox isIrreflexive = new CheckBox(OWLEditorData.OWLIrreflexiveObjectProperty.toString());
         private OWLObjectPropertySource dataSource;
 
-        public ObjectPropertyAttributes(@Nonnull OWLEditorKit eKit) {
-            editorKit = eKit;
+        public ObjectPropertyAttributes() {
+            editorKit = OWLEditorUI.getEditorKit();
             Responsive.makeResponsive(this);
             setWidth("100%");
             addStyleName(ValoTheme.LAYOUT_CARD);

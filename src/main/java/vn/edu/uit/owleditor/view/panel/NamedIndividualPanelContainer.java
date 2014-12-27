@@ -12,7 +12,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -53,10 +52,6 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     private AbstractExpressionPanel negObjAssertPn;
 
 
-    public NamedIndividualPanelContainer(@Nonnull OWLEditorKit eKit) {
-        super(eKit);
-    }
-
     @Override
     protected Component buildContent() {
         descriptionPanels = new CssLayout();
@@ -66,7 +61,6 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddClassExpressionWindow(
-                        editorKit,
                         owlClassExpression -> editorKit.getDataFactory()
                                 .getIndividualTypesAxiomAddEvent(dataSource.getValue(), owlClassExpression)
                 ));
@@ -77,7 +71,6 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                 Collection<OWLClassExpression> ces = EntitySearcher
                         .getTypes(dataSource.getValue(), editorKit.getActiveOntology());
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
-                                editorKit,
                                 new OWLClassExpressionSource(ce),
                                 () -> editorKit.getDataFactory()
                                         .getIndividualTypesAxiomRemoveEvent(dataSource.getValue(), ce),
@@ -178,7 +171,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildObjectPropertyAssertionEditorWindow(
-                        editorKit, (expression, restriction) ->
+                        (expression, restriction) ->
                         editorKit.getDataFactory()
                                 .getIndividualObjectPropertyAssertionAxiomAddEvent(dataSource.getValue(),
                                         expression, restriction)));
@@ -226,7 +219,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddDataPropertyAssertionEditorWindow(
-                        editorKit, (expression, restriction) ->
+                        (expression, restriction) ->
                         editorKit.getDataFactory()
                                 .getIndividualDataAssertionAxiomAddEvent(dataSource.getValue(),
                                         expression, restriction)));
@@ -272,7 +265,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildObjectPropertyAssertionEditorWindow(
-                        editorKit, (expression, restriction) ->
+                        (expression, restriction) ->
                         editorKit.getDataFactory()
                                 .getIndividualNegativeObjectPropertyAssertionAxiomAddEvent(dataSource.getValue(),
                                         expression, restriction)));
@@ -300,7 +293,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddDataPropertyAssertionEditorWindow(
-                        editorKit, (expression, restriction) ->
+                        (expression, restriction) ->
                         editorKit.getDataFactory()
                                 .getIndividualNegativeDataAssertionAxiomAddEvent(dataSource.getValue(),
                                         expression, restriction)));
@@ -363,7 +356,6 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             public void visit(OWLClassAssertionAxiom axiom) {
                 typePn.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(
-                        editorKit,
                         new OWLClassExpressionSource(axiom.getClassExpression()),
                         () -> editorKit.getDataFactory()
                                 .getIndividualTypesAxiomRemoveEvent(owner, axiom.getClassExpression()),

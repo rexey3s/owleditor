@@ -1,9 +1,9 @@
 package vn.edu.uit.owleditor.utils.converter;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.semanticweb.owlapi.model.*;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 
 import javax.annotation.Nonnull;
 

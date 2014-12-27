@@ -4,8 +4,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
-import vn.edu.uit.owleditor.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.event.ExplanationHandler;
 import vn.edu.uit.owleditor.view.window.ExplanationWindow;
 
@@ -16,13 +15,12 @@ import javax.annotation.Nonnull;
  *         Faculty of Computer Network and Telecomunication created on 12/8/2014.
  */
 public class InferredLabel extends HorizontalLayout {
-    final OWLEditorKit editorKit;
     private final Label label = new Label();
     private final ExplanationHandler explanationGetter;
 
     public InferredLabel(@Nonnull OWLObject owlObject, @Nonnull ExplanationHandler explanationHandler) {
-        editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
-        label.setValue(OWLEditorKit.render(owlObject));
+
+        label.setValue(OWLEditorKitImpl.render(owlObject));
         explanationGetter = explanationHandler;
         initialise();
     }
@@ -51,7 +49,7 @@ public class InferredLabel extends HorizontalLayout {
         tools.addItem("", FontAwesome.QUESTION_CIRCLE, clicked -> {
             Notification.show("Generating explanations", Notification.Type.TRAY_NOTIFICATION);
             try {
-                UI.getCurrent().addWindow(new ExplanationWindow(editorKit, explanationGetter.onGenerateExplanation()));
+                UI.getCurrent().addWindow(new ExplanationWindow(explanationGetter.onGenerateExplanation()));
             } catch (NullPointerException nullEx) {
                 Notification.show(nullEx.getMessage(), Notification.Type.WARNING_MESSAGE);
             }

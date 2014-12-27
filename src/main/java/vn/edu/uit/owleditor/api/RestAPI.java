@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -38,11 +38,8 @@ public class RestAPI {
     private final Set<OWLClass> visited = new HashSet<>();
 
     @Autowired
-    OWLEditorKit editorKit;
+    OWLEditorKitImpl editorKit;
 
-    @Autowired
-    OWLOntology activeOntology;
-    
     public static int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
@@ -63,11 +60,11 @@ public class RestAPI {
     String getHierarchy() {
         try {
             Assert.notNull(editorKit, "Editor Kit should not be null");
-            Assert.notNull(activeOntology, "Editor Kit should not be null");
+            Assert.notNull(editorKit.getActiveOntology(), "Editor Kit Ontology should not be null");
 
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
-            activeOntology.accept(initPopulationEngine(activeOntology));
+//            activeOntology.accept(initPopulationEngine(activeOntology));
             return thingObject.toString();
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());
@@ -78,7 +75,7 @@ public class RestAPI {
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
         visited.add(child);
         final JsonObject childObject = new JsonObject();
-        childObject.addProperty("name", OWLEditorKit.getShortForm(child));
+        childObject.addProperty("name", OWLEditorKitImpl.getShortForm(child));
         childObject.addProperty("size", randInt(2, 10) * SIZE);
 
         if (parent != null && parentObject.has("children")) {

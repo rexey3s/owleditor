@@ -14,7 +14,9 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -43,9 +45,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     //    private static int eventCount = 0;
     private final OWLClassTree owlTree;
 
-    public ClassHierarchicalPanel(@Nonnull OWLEditorKit eKit) {
-        super(eKit);
-        owlTree = new OWLClassTree(editorKit);
+    public ClassHierarchicalPanel() {
+        owlTree = new OWLClassTree();
         owlTree.addActionHandler(this);
 
         buildComponents();
@@ -222,10 +223,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         private final OWLClassSource currentProperty = new OWLClassSource();
         private final OWLEditorKit editorKit;
 
-        public OWLClassTree(@Nonnull OWLEditorKit eKit) {
-
-            editorKit = eKit;
-
+        public OWLClassTree() {
+            editorKit = OWLEditorUI.getEditorKit();
             dataContainer = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
 
             editorKit.getModelManager().addOntologyChangeListener(changes -> {
@@ -284,10 +283,10 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             }
             if (ok == ChangeApplied.SUCCESSFULLY)
                 Notification.show("Successfully create "
-                                + OWLEditorKit.getShortForm(event.getDeclareClass()),
+                                + OWLEditorKitImpl.getShortForm(event.getDeclareClass()),
                         Notification.Type.TRAY_NOTIFICATION);
             else {
-                Notification.show("Cannot create " + OWLEditorKit.getShortForm(
+                Notification.show("Cannot create " + OWLEditorKitImpl.getShortForm(
                                 event.getDeclareClass()),
                         Notification.Type.WARNING_MESSAGE);
             }
@@ -322,11 +321,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             if (ChangeApplied.SUCCESSFULLY == declareOk && ChangeApplied.SUCCESSFULLY == subClzOk) {
                 expandItem(event.getSuperClass());
                     Notification.show("Successfully create "
-                                    + OWLEditorKit.getShortForm(event.getSubClass()),
+                                    + OWLEditorKitImpl.getShortForm(event.getSubClass()),
                             Notification.Type.TRAY_NOTIFICATION);
             } else {
                     Notification.show("Cannot create "
-                                    + OWLEditorKit.getShortForm(event.getSubClass()),
+                                    + OWLEditorKitImpl.getShortForm(event.getSubClass()),
                             Notification.Type.WARNING_MESSAGE);
             }
         }

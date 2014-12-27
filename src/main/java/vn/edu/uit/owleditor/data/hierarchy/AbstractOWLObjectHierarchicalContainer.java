@@ -7,7 +7,7 @@ import org.semanticweb.owlapi.model.OWLNamedObjectVisitor;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
 import vn.edu.uit.owleditor.data.OWLObjectContainer;
 
@@ -70,7 +70,7 @@ public abstract class AbstractOWLObjectHierarchicalContainer<T extends OWLEntity
 
     @Override
     public String sf(@Nonnull OWLEntity entity) {
-        return OWLEditorKit.getShortForm(entity);
+        return OWLEditorKitImpl.getShortForm(entity);
     }
 
 

@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.data.property;
 
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
 
@@ -52,6 +52,6 @@ public final class OWLDataPropertySource implements OWLPropertySource<OWLDataPro
 
     @Override
     public String toString() {
-        return String.valueOf(OWLEditorKit.getShortForm(dataProperty));
+        return String.valueOf(OWLEditorKitImpl.getShortForm(dataProperty));
     }
 }

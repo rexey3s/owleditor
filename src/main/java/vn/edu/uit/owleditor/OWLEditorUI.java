@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
 
@@ -37,19 +38,19 @@ public class OWLEditorUI extends UI {
     }
 
     public OWLOntology getActiveOntology() {
-        return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit")).getActiveOntology();
+        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getActiveOntology();
     }
 
     public OWLOntologyManager getOWLOntManager() {
-        return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit")).getModelManager();
+        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getModelManager();
     }
 
     public OWLDataFactory getDataFactory() {
-        return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit")).getOWLDataFactory();
+        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getOWLDataFactory();
     }
 
     public PrefixManager getPM() {
-        return ((OWLEditorKit) UI.getCurrent().getSession().getAttribute("kit")).getPrefixManager();
+        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getPrefixManager();
     }
 
     @Override

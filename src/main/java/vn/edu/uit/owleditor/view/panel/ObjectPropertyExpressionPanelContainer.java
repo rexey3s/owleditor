@@ -9,8 +9,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import vn.edu.uit.owleditor.OWLEditorUI;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
@@ -40,8 +38,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     private AbstractExpressionPanel rangesPanel;
     private AbstractExpressionPanel disjointPanel;
 
-    public ObjectPropertyExpressionPanelContainer(@Nonnull OWLEditorKit eKit) {
-        super(eKit);
+    public ObjectPropertyExpressionPanelContainer() {
         addRootStyleName("object-property-panel");
     }
 
@@ -55,7 +52,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         objPropEquivPanel = new ObjectPropertyPanel("Equivalent To: ") {
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, propertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(propertyExpression ->
                         editorKit.getDataFactory().getEquivalentObjectPropertiesAddEvent(
                                 dataSource.getValue(), propertyExpression)
                 ));
@@ -90,7 +87,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, propertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(propertyExpression ->
                         editorKit.getDataFactory().getSubPropertyOfAddEvent(dataSource.getValue(), propertyExpression)
                 ));
             }
@@ -124,7 +121,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         inversePropsPanel = new ObjectPropertyPanel("Inverse Of: ") {
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, propertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(propertyExpression ->
                         editorKit.getDataFactory().getInversePropertyOfAddEvent(dataSource.getValue(), propertyExpression)
                 ));
             }
@@ -157,7 +154,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(editorKit, owlClassExpression ->
+                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(owlClassExpression ->
                         editorKit.getDataFactory().getDomainsAddEvent(dataSource.getValue(), owlClassExpression)
                 ));
             }
@@ -168,7 +165,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                         .getDomains(dataSource.getValue(), editorKit.getActiveOntology());
 
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
-                                editorKit, new OWLClassExpressionSource(ce),
+                                new OWLClassExpressionSource(ce),
                                 () -> editorKit.getDataFactory().getDomainsRemoveEvent(dataSource.getValue(), ce),
                                 newEx -> editorKit.getDataFactory().getDomainsModEvent(dataSource.getValue(), newEx, ce)
                         ))
@@ -188,7 +185,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         rangesPanel = new ObjectPropertyPanel("Range (intersection): ") {
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(editorKit, owlClassExpression ->
+                UI.getCurrent().addWindow(new buildAddClassExpressionWindow(owlClassExpression ->
                         editorKit.getDataFactory().getRangesAddEvent(dataSource.getValue(), owlClassExpression)
                 ));
             }
@@ -198,7 +195,6 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                 Collection<OWLClassExpression> ces = EntitySearcher
                         .getRanges(dataSource.getValue(), editorKit.getActiveOntology());
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
-                                editorKit,
                                 new OWLClassExpressionSource(ce),
                                 () -> editorKit.getDataFactory().getRangesRemoveEvent(dataSource.getValue(), ce),
                                 newEx -> editorKit.getDataFactory().getRangesModEvent(dataSource.getValue(), newEx, ce)
@@ -221,7 +217,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             protected void initActionADD() {
-                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(editorKit, propertyExpression ->
+                UI.getCurrent().addWindow(new buildAddSimpleExpressionWindow(propertyExpression ->
                         editorKit.getDataFactory().getDisjointPropertiesAddEvent(dataSource.getValue(), propertyExpression)
                 ));
             }
@@ -305,7 +301,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             public void visit(OWLObjectPropertyDomainAxiom axiom) {
-                domainsPanel.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(editorKit,
+                domainsPanel.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(
                         new OWLClassExpressionSource(axiom.getDomain()),
                         () -> editorKit.getDataFactory().getDomainsRemoveEvent(owner, axiom.getDomain()),
                         newEx -> editorKit.getDataFactory().getDomainsModEvent(owner, newEx, axiom.getDomain())));
@@ -313,7 +309,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             public void visit(OWLObjectPropertyRangeAxiom axiom) {
-                rangesPanel.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(editorKit,
+                rangesPanel.addMoreExpression(new ClassExpressionPanelContainer.ClassLabel(
                         new OWLClassExpressionSource(axiom.getRange()),
                         () -> editorKit.getDataFactory().getRangesRemoveEvent(owner, axiom.getRange()),
                         newEx -> editorKit.getDataFactory().getRangesModEvent(owner, newEx, axiom.getRange())));
@@ -381,7 +377,6 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     public void afterObjectPropertyAxiomRemoved(
             OWLEditorEvent.ObjectPropertyAxiomRemoved event) {
 
-        OWLEditorKit editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -401,7 +396,6 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     public void afterObjectPropertyAxiomModified(
             OWLEditorEvent.ObjectPropertyAxiomModified event) {
 
-        OWLEditorKit editorKit = ((OWLEditorUI) UI.getCurrent()).getEditorKit();
         ChangeApplied removeOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));
         ChangeApplied addOk = editorKit.getModelManager()
@@ -423,10 +417,9 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     public static class buildAddSimpleExpressionWindow extends AbstractOWLExpressionEditorWindow<OWLObjectPropertyExpression> {
         private final ObjectPropertyHierarchicalPanel hierarchy;
 
-        public buildAddSimpleExpressionWindow(@Nonnull OWLEditorKit eKit,
-                                              @Nonnull OWLExpressionAddHandler<OWLObjectPropertyExpression> addExpression1) {
-            super(eKit, addExpression1);
-            hierarchy = new ObjectPropertyHierarchicalPanel(editorKit);
+        public buildAddSimpleExpressionWindow(@Nonnull OWLExpressionAddHandler<OWLObjectPropertyExpression> addExpression1) {
+            super(addExpression1);
+            hierarchy = new ObjectPropertyHierarchicalPanel();
             addMoreTab(hierarchy, "Chose a Property");
 
         }

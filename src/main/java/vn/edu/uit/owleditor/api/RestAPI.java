@@ -29,8 +29,8 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
-/* just an experimental controller*/
 @RestController
+@RequestMapping(value = "/api/")
 public class RestAPI {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(RestAPI.class);
@@ -55,13 +55,13 @@ public class RestAPI {
     }
 
 
-    @RequestMapping(value = "/api/hierarchy", method = RequestMethod.GET)
+    @RequestMapping(value = "/owl/class", method = RequestMethod.GET)
     public
     @ResponseBody
     String getHierarchy() {
         try {
             Assert.notNull(editorKit, "Editor Kit should not be null");
-            Assert.notNull(editorKit.getActiveOntology(), "Please dont be null");
+            Assert.notNull(editorKit.getActiveOntology(), "Your ontology has not been ready yet!");
             thingObject.addProperty("name", "Thing");
             thingObject.add("children", thingArray);
             editorKit.getActiveOntology().accept(initPopulationEngine(editorKit.getActiveOntology()));
@@ -69,7 +69,7 @@ public class RestAPI {
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());
         }
-        return "No ontology was found";
+        return "No service";
     }
 
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {

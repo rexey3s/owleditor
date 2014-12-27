@@ -4,16 +4,13 @@ package vn.edu.uit.owleditor;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.PrefixManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
 
@@ -21,6 +18,7 @@ import vn.edu.uit.owleditor.view.EntryView;
 @Theme("mytheme")
 @VaadinUI
 public class OWLEditorUI extends UI {
+    private static final Logger LOG = LoggerFactory.getLogger(OWLEditorUI.class);
     @Autowired
     ApplicationContext applicationContext;
 
@@ -42,25 +40,11 @@ public class OWLEditorUI extends UI {
         return ((OWLEditorUI) UI.getCurrent()).editorKit;
     }
 
-    public OWLOntology getActiveOntology() {
-        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getActiveOntology();
-    }
-
-    public OWLOntologyManager getOWLOntManager() {
-        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getModelManager();
-    }
-
-    public OWLDataFactory getDataFactory() {
-        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getOWLDataFactory();
-    }
-
-    public PrefixManager getPM() {
-        return ((OWLEditorKitImpl) UI.getCurrent().getSession().getAttribute("kit")).getPrefixManager();
-    }
 
     @Override
     protected void init(VaadinRequest request) {
         setContent(new EntryView());
+        LOG.info(request.getWrappedSession().getAttributeNames().toString());
     }
 
 

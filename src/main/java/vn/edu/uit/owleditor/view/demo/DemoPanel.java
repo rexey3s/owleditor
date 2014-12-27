@@ -31,13 +31,19 @@ import java.util.HashSet;
 public class DemoPanel extends VerticalLayout implements Property.Viewer, WizardProgressListener {
     private static final Logger LOG = LoggerFactory.getLogger(DemoPanel.class);
     private final OWLEditorKit editorKit;
+
     private final DemoUIFactory uiFactory;
+
     private final OWLClassSource dataSource = new OWLClassSource();
+
     private final SWRLAtomSearchByDefinedClass searcher;
+
     private final VerticalLayout body = new VerticalLayout();
+
     private final Component start;
 
     private ObjectProperty titleDataSource = new ObjectProperty("Anonymous Type", String.class);
+
     private Collection<OWLNamedIndividual> individualsToClassify;
 
     public DemoPanel() {
@@ -154,12 +160,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         });
     }
 
-    /**
-     * Should only be called after checkHadDefaultIndividual
-     *
-     * @param owlClass
-     * @return
-     */
+
     private Boolean addDefaultIndividual(OWLClass owlClass) {
         final String nameInd = sf(owlClass) + "_" + "DefaultIndividual";
         OWLNamedIndividual individual = editorKit.getOWLDataFactory()
@@ -172,10 +173,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         ChangeApplied ok1 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), axiom1);
         ChangeApplied ok2 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), axiom2);
 
-        if (ChangeApplied.SUCCESSFULLY == ok1 && ChangeApplied.SUCCESSFULLY == ok2) {
-            return true;
-        }
-        return false;
+        return ChangeApplied.SUCCESSFULLY == ok1 && ChangeApplied.SUCCESSFULLY == ok2;
     }
 
     private Boolean checkHadDefaultIndividual(OWLClass owlClass) {

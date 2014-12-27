@@ -12,6 +12,8 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -35,6 +37,8 @@ import java.util.stream.Collectors;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/3/2014.
  */
+@UIScope
+@VaadinComponent
 public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     private AbstractExpressionPanel typePn;
@@ -56,7 +60,6 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     protected Component buildContent() {
         descriptionPanels = new CssLayout();
         descriptionPanels.addStyleName("dashboard-panels");
-
         typePn = new IndividualPanel("Types: ") {
             @Override
             protected void initActionADD() {

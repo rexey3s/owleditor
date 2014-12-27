@@ -11,7 +11,10 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
@@ -32,11 +35,17 @@ import java.util.List;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/3/2014.
  */
+@UIScope
+@VaadinComponent
 public class IndividualsSheet extends HorizontalLayout implements Property.ValueChangeListener {
 
+    @Autowired
     private ClassHierarchicalPanel hierarchy;
+    @Autowired
     private IndividualList individualsList;
+    @Autowired
     private NamedIndividualPanelContainer indPanels;
+
     private OWLEditorKit editorKit;
 
     public IndividualsSheet() {
@@ -46,8 +55,10 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
     }
 
     private void initialise() {
-        hierarchy = new ClassHierarchicalPanel();
-        individualsList = new IndividualList();
+//        hierarchy = new ClassHierarchicalPanel();
+//        individualsList = new IndividualList();
+//        indPanels = new NamedIndividualPanelContainer();
+
         hierarchy.addValueChangeListener(this);
         individualsList.addValueChangeListener(valueChangeEvent -> {
             if (valueChangeEvent.getProperty().getValue() != null) {
@@ -60,7 +71,6 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
         listWrapper.addComponents(hierarchy, individualsList);
         listWrapper.setSpacing(true);
         listWrapper.setSizeFull();
-        indPanels = new NamedIndividualPanelContainer();
 
         TabSheet tabs = new TabSheet();
         tabs.setSizeFull();
@@ -101,6 +111,8 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
         }
     }
 
+    @UIScope
+    @VaadinComponent
     public static class IndividualList extends VerticalLayout implements
             OWLEntityActionHandler<OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualRemoved>,
             Container.Viewer, Property.ValueChangeNotifier, Property.ValueChangeListener {

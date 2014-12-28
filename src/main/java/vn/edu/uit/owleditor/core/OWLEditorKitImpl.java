@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -41,7 +42,7 @@ import java.util.Collections;
  */
 @Repository
 @Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
-//@SessionAttributes(value = "OWLEditorKit", types = OWLEditorKit.class)
+@SessionAttributes(value = "OWLEditorKit", types = OWLEditorKit.class)
 public class OWLEditorKitImpl implements OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();

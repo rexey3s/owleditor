@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
+import org.vaadin.spring.servlet.SpringAwareVaadinServlet;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
@@ -32,7 +33,8 @@ public class OWLEditorUI extends UI {
 
     @Autowired
     SpringViewProvider viewProvider;
-
+    @Autowired
+    SpringAwareVaadinServlet springAwareVaadinServlet;
     @Autowired
     private HttpSession httpSession;
 
@@ -50,11 +52,14 @@ public class OWLEditorUI extends UI {
         setContent(new EntryView());
         LOG.info("Here are things VaadinRequest WrapSession");
         request.getWrappedSession().getAttributeNames()
-                .forEach(name -> LOG.info(name));
-        LOG.info("Here are things in HttpSession");
-        while (httpSession.getAttributeNames().hasMoreElements()) {
-            LOG.info(httpSession.getAttributeNames().nextElement());
-        }
+                .forEach(LOG::info);
+
+        LOG.info("SpringAwareVaadinServlet Context -> " + springAwareVaadinServlet.getServletContext());
+        LOG.info("HttpSession Servlet Context -> " + httpSession.getServletContext());
+        LOG.info("This VaadinRequest SessionId -> " + request.getWrappedSession().getId());
+        LOG.info("HttpSession Id -> " + httpSession.getId());
+        LOG.info("Session Attr EditorKit in HttpSession -> " + httpSession.getAttribute("OWLEditorKit"));
+        LOG.info("Session Attr EditorKit in VaadinRequestSession -> " + request.getWrappedSession().getAttribute("OWLEditorKit"));
     }
 
 

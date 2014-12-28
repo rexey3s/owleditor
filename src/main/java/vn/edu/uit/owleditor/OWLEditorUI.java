@@ -3,6 +3,7 @@ package vn.edu.uit.owleditor;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,10 @@ public class OWLEditorUI extends UI {
 
     @Autowired
     SpringViewProvider viewProvider;
-
+    @Autowired
+    MainView mainView;
+    @Autowired
+    EntryView entryView;
     @Autowired
     private HttpSession httpSession;
 
@@ -49,6 +53,15 @@ public class OWLEditorUI extends UI {
     public static HttpSession getHttpSession() {
         return ((OWLEditorUI) UI.getCurrent()).httpSession;
     }
+
+    public static Component getMainView() {
+        return ((OWLEditorUI) UI.getCurrent()).mainView;
+    }
+
+    public static Component getEntryView() {
+        return ((OWLEditorUI) UI.getCurrent()).entryView;
+    }
+    
     
     @Override
     protected void init(VaadinRequest request) {
@@ -64,14 +77,14 @@ public class OWLEditorUI extends UI {
         if (eKit != null && eKit.getActiveOntology() != null) {
             ConfirmDialog.show(this, "Do you want to load a new ontology ?", dialog -> {
                 if (dialog.isConfirmed()) {
-                    setContent(new EntryView());
+                    setContent(entryView);
 
                 } else {
-                    setContent(new MainView());
+                    setContent(mainView);
                 }
             });
         } else {
-            setContent(new EntryView());
+            setContent(entryView);
         }
 
     }

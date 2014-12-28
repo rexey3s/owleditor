@@ -1,7 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
@@ -13,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
@@ -24,8 +22,8 @@ import java.io.File;
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
 @UIScope
-@VaadinView(name = EntryView.NAME)
-public class EntryView extends VerticalLayout implements View {
+@VaadinComponent
+public class EntryView extends VerticalLayout {
     public final static String NAME = "entryView";
     private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
@@ -73,7 +71,7 @@ public class EntryView extends VerticalLayout implements View {
                         new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
-                UI.getCurrent().setContent(new MainView());
+                UI.getCurrent().setContent(OWLEditorUI.getMainView());
 
             } catch (NullPointerException nullEx) {
                 LOG.error(nullEx.getMessage());
@@ -108,7 +106,7 @@ public class EntryView extends VerticalLayout implements View {
 
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
-                    UI.getCurrent().setContent(new MainView());
+                    UI.getCurrent().setContent(OWLEditorUI.getMainView());
                 }
             } catch (NullPointerException nullEx) {
                 Notification.show("Please upload your file", Notification.Type.ERROR_MESSAGE);
@@ -119,8 +117,4 @@ public class EntryView extends VerticalLayout implements View {
         return uploadWrapper;
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-
-    }
 }

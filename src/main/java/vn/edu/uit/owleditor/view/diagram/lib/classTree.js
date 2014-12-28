@@ -11,7 +11,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
 
     }
 
-    GraphRender = d3.json(API_PATH, function (error, treeData) {
+    GraphRender = d3.json("/api/owl/class", function (error, treeData) {
         console.log(treeData);
         // Calculate total nodes, max label length
         var totalNodes = 0;

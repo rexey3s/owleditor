@@ -46,6 +46,8 @@ public interface OWLEditorKit {
 
     public ManchesterOWLSyntaxParser getParser();
 
+    public OWLClassExpression parseClassExpression(String s);
+
     public OWLOntologyManager getModelManager();
 
     public PrefixManager getPrefixManager();

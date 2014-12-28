@@ -4,7 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
-import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserException;
+import org.semanticweb.owlapi.io.OWLParserException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
@@ -44,11 +44,11 @@ public class buildEditClassExpressionWindow extends AbstractOWLExpressionEditorW
         return clicked -> {
             if (getSelectedTab() instanceof ClassExpressionEditor) {
                 try {
-                    editorKit.getParser().setStringToParse(String.valueOf(editor.getValue()));
-                    OWLClassExpression ce = editorKit.getParser().parseClassExpression();
+//                    editorKit.getParser().setStringToParse(String.valueOf(editor.getValue()));
+                    OWLClassExpression ce = editorKit.parseClassExpression(editor.getValue());
                     OWLEditorEventBus.post(modifyExpression.modifyingExpression(ce));
                     close();
-                } catch (ManchesterOWLSyntaxParserException ex) {
+                } catch (OWLParserException ex) {
                     Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
                 }
 

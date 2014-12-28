@@ -32,9 +32,9 @@ public class MainView extends HorizontalLayout {
         DiagramSheet diagramSheet = new DiagramSheet();
         root.addTab(diagramSheet, "Diagram");
         root.addSelectedTabChangeListener(event -> {
-            if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
-                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
-            }
+//            if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
+//                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
+//            }
         });
         root.setSizeFull();
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);

@@ -10,6 +10,7 @@ import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.expression.ShortFormEntityChecker;
 import org.semanticweb.owlapi.io.OWLObjectRenderer;
+import org.semanticweb.owlapi.io.OWLParserException;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxPrefixNameShortFormProvider;
 import org.semanticweb.owlapi.model.*;
@@ -151,6 +152,16 @@ public class OWLEditorKitImpl implements OWLEditorKit {
 
     public ManchesterOWLSyntaxParser getParser() {
         return parser;
+    }
+
+
+    public OWLClassExpression parseClassExpression(String s) throws OWLParserException {
+
+        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
+        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
+        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
+        parser.setStringToParse(s);
+        return parser.parseClassExpression();
     }
 
     public SWRLAPIRenderer getRuleRenderer() {

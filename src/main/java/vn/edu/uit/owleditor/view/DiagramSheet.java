@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -15,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
-import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
@@ -35,16 +36,17 @@ public class DiagramSheet extends VerticalLayout implements View {
     private static final int SIZE = 400;
     private static Logger LOG = LoggerFactory.getLogger(DnDTree.class);
     private final TabSheet tabSheet = new TabSheet();
-    private final ClassDnDTree classDnDTree;
-    private final EntityDnDTree entityDnDTree;
+//    private final ClassDnDTree classDnDTree;
+//    private final EntityDnDTree entityDnDTree;
 
     
     public DiagramSheet() {
-        classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
-        entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
-
-        tabSheet.addTab(classDnDTree, "Classes");
-        tabSheet.addTab(entityDnDTree, "Entities");
+//        classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
+//        entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
+        DnDTree classTree = new DnDTree();
+        classTree.setAPI("/api/owl/class");
+        tabSheet.addTab(wrapping(classTree), "Classes");
+        tabSheet.addTab(wrapping(classTree), "Entities");
         tabSheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         tabSheet.setSizeFull();
         setMargin(true);
@@ -65,10 +67,20 @@ public class DiagramSheet extends VerticalLayout implements View {
         return randomNum;
     }
 
-    public void reloadAll() {
-        classDnDTree.reload();
-        entityDnDTree.reload();
+    private Component wrapping(DnDTree tree) {
+        final HorizontalLayout diagramContainer = new HorizontalLayout();
+        addStyleName("diagram-container");
+        diagramContainer.addComponent(tree);
+        diagramContainer.setSizeFull();
+        addComponent(diagramContainer);
+        setSizeFull();
+        return diagramContainer;
     }
+
+//    public void reloadAll() {
+//        classDnDTree.reload();
+//        entityDnDTree.reload();
+//    }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

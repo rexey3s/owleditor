@@ -40,8 +40,8 @@ public class buildAddClassExpressionWindow extends AbstractOWLExpressionEditorWi
         return click -> {
             if (getSelectedTab() instanceof ClassExpressionEditor) {
                 try {
-                    editorKit.getParser().setStringToParse(String.valueOf(editor.getValue()));
-                    OWLClassExpression ce = editorKit.getParser().parseClassExpression();
+//                    editorKit.getParser().setStringToParse(String.valueOf(editor.getValue()));
+                    OWLClassExpression ce = editorKit.parseClassExpression(String.valueOf(editor.getValue()));
                     OWLEditorEventBus.post(addExpression.addingExpression(ce));
                     close();
                 } catch (OWLParserException ex) {

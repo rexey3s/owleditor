@@ -6,8 +6,12 @@
 window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
     // Get JSON data
     var SVG_ELEMENT = this.getElement();
+    this.onStateChange = function () {
+        new GraphRender(this.getState().api);
 
-    treeJSON = d3.json("/api/owl/class", function (error, treeData) {
+    }
+
+    GraphRender = d3.json(API_PATH, function (error, treeData) {
         console.log(treeData);
         // Calculate total nodes, max label length
         var totalNodes = 0;

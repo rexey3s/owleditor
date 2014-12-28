@@ -8,4 +8,6 @@ import com.vaadin.shared.ui.JavaScriptComponentState;
  */
 public class DnDTreeState extends JavaScriptComponentState {
     public String data;
+
+    public String api;
 }

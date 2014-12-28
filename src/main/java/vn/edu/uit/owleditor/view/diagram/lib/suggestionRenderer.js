@@ -3,7 +3,8 @@
  *         Faculty of Computer Network and Telecommunication created on 12/28/14.
  */
 window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
-    var SVG = this.getElement();
+    var SVG_ELEMENT = this.getElement();
+
     this.onStateChange = function () {
         var data = JSON.parse(this.getState().data);
         console.log(data);
@@ -23,8 +24,7 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         data.nodes.forEach(function (v) {
             g.setNode(v.id, {label: v.label, width: 100, height: 20});
         });
-        data.edges.forEach(function (v) {
-            // key = Object.keys(v)[0]
+        data.edges.forEach(function (v) {            // key = Object.keys(v)[0]
 
             g.setEdge(v.start, v.end, {label: v.label});
         });
@@ -34,18 +34,18 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         g.edges().forEach(function (e) {
             console.log("Edge " + e.v + " -> " + e.w + ": " + JSON.stringify(g.edge(e)));
         });
-        var viewerWidth = $(document).width();
-        var viewerHeight = $(document).height();
+        var viewerWidth = $(".suggestion-graph-container").width();
+        var viewerHeight = $(".suggestion-graph-container").height();
         // Create the renderer
         var render = new dagreD3.render();
 
         // Set up an SVG group so that we can translate the final graph.
-        var svg = d3.select(SVG).append("svg")
+        var svg = d3.select(SVG_ELEMENT).append("svg")
             .attr("width", viewerWidth)
             .attr("height", viewerHeight)
             .attr("class", "overlay");
         inner = svg.append("g");
-        svg.selectAll
+        //svg.selectAll
         // Set up zoom support
         var zoom = d3.behavior.zoom().on("zoom", function () {
             inner.attr("transform", "translate(" + d3.event.translate + ")" +

@@ -1,13 +1,11 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.view.panel.ClassExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
@@ -17,8 +15,8 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
  *         Faculty of Computer Network and Telecomunication created on 11/5/14.
  */
 @UIScope
-@VaadinView(name = ClassesSheet.NAME)
-public class ClassesSheet extends HorizontalLayout implements View {
+@VaadinComponent
+public class ClassesSheet extends HorizontalLayout {
     public static final String NAME = "Classes";
     private ClassHierarchicalPanel hcLayout;
     private ClassExpressionPanelContainer clLayout;
@@ -52,7 +50,4 @@ public class ClassesSheet extends HorizontalLayout implements View {
     }
 
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-    }
 }

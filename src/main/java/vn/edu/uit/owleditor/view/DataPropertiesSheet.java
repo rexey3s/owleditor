@@ -1,13 +1,11 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.view.panel.DataPropertyExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
 
@@ -16,8 +14,8 @@ import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
  *         Faculty of Computer Network and Telecomunication created on 11/22/2014.
  */
 @UIScope
-@VaadinView(name = DataPropertiesSheet.NAME)
-public class DataPropertiesSheet extends HorizontalLayout implements View {
+@VaadinComponent
+public class DataPropertiesSheet extends HorizontalLayout {
     public static final String NAME = "DataProperties";
     
     private DataPropertyHierarchicalPanel hcLayout;
@@ -54,8 +52,4 @@ public class DataPropertiesSheet extends HorizontalLayout implements View {
     }
 
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        
-    }
 }

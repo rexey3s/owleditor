@@ -7,7 +7,8 @@ import javax.annotation.Nonnull;
 
 
 /**
- * Created by Chuong Dang on 11/16/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecomunication created on 11/16/14.
  */
 public final class OWLClassSource implements OWLLogicalEntitySource<OWLClass> {
 

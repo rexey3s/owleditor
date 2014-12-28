@@ -1,9 +1,13 @@
 package vn.edu.uit.owleditor.view;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.view.panel.ClassExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
@@ -12,8 +16,9 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 11/5/14.
  */
-
-public class ClassesSheet extends HorizontalLayout {
+@UIScope
+@VaadinView(name = ClassesSheet.NAME)
+public class ClassesSheet extends HorizontalLayout implements View {
     public static final String NAME = "Classes";
     private ClassHierarchicalPanel hcLayout;
     private ClassExpressionPanelContainer clLayout;
@@ -47,4 +52,8 @@ public class ClassesSheet extends HorizontalLayout {
     }
 
 
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
+    }
 }

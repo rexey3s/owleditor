@@ -36,7 +36,7 @@ import java.util.List;
  */
 @UIScope
 @VaadinComponent
-public class IndividualsSheet extends HorizontalLayout implements Property.ValueChangeListener {
+public class IndividualsSheet extends HorizontalLayout {
 
     private ClassHierarchicalPanel hierarchy;
 
@@ -57,10 +57,24 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
         individualsList = new IndividualList();
         indPanels = new NamedIndividualPanelContainer();
 
-        hierarchy.addValueChangeListener(this);
-        individualsList.addValueChangeListener(valueChangeEvent -> {
-            if (valueChangeEvent.getProperty().getValue() != null) {
-                indPanels.setPropertyDataSource(new OWLNamedIndividualSource((OWLNamedIndividual) valueChangeEvent.getProperty().getValue()));
+        hierarchy.addValueChangeListener(event -> {
+            if (event.getProperty().getValue() != null) {
+                OWLClass clz = hierarchy.getSelectedProperty().getValue();
+                if (clz.isOWLThing()) {
+                    individualsList.setContainerDataSource(editorKit
+                            .getDataFactory()
+                            .getOWLIndividualListContainer());
+                } else
+                    individualsList.setContainerDataSource(editorKit
+                            .getDataFactory()
+                            .getOWLIndividualListContainer(clz));
+
+            }
+        });
+        individualsList.addValueChangeListener(event -> {
+            if (event.getProperty().getValue() != null) {
+                indPanels.setPropertyDataSource(new
+                        OWLNamedIndividualSource((OWLNamedIndividual) event.getProperty().getValue()));
             }
         });
         hierarchy.setImmediate(true);
@@ -92,28 +106,12 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
         setSizeFull();
     }
 
-    @Override
-    public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-        if (valueChangeEvent.getProperty().getValue() != null) {
-            OWLClass clz = hierarchy.getSelectedProperty().getValue();
-            if(clz.isOWLThing()) {
-                individualsList.setContainerDataSource(editorKit
-                        .getDataFactory()
-                        .getOWLIndividualListContainer());
-            }
-            else
-            individualsList.setContainerDataSource(editorKit
-                    .getDataFactory()
-                    .getOWLIndividualListContainer(clz));
-
-        }
-    }
 
     @UIScope
     @VaadinComponent
     public static class IndividualList extends VerticalLayout implements
             OWLEntityActionHandler<OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualRemoved>,
-            Container.Viewer, Property.ValueChangeNotifier, Property.ValueChangeListener {
+            Container.Viewer {
 
         private final ListSelect list = new ListSelect();
 
@@ -126,9 +124,12 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
             editorKit = OWLEditorUI.getEditorKit();
             list.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             list.setItemCaptionPropertyId(OWLEditorData.OWLNamedIndividualName);
-            list.addValueChangeListener(this);
+            list.addValueChangeListener(event -> {
+                if (event.getProperty().getValue() != null) {
+                    selectSource.setValue((OWLNamedIndividual) event.getProperty().getValue());
+                }
+            });
             list.setNullSelectionAllowed(false);
-//            OWLEditorUI.getGuavaEventBus().register(this);
         }
 
         private void buildComponents() {
@@ -167,40 +168,28 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
             act.addItem("Add Individual", clicked ->
                             UI.getCurrent().addWindow(new buildAddIndividualWindow(this))
             );
-            act.addItem("Remove Individual", clicked -> {
-                ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", dialog -> {
-                    if (dialog.isConfirmed()) {
-                        this.afterRemoved(new OWLEditorEvent.IndividualRemoved(
-                                getSelectedProperty().getValue()
-                        ));
-                    } else {
-                        dialog.close();
-                    }
-                });
-            });
+            act.addItem("Remove Individual", clicked -> ConfirmDialog.show(UI.getCurrent(),
+                    "Are you sure ?", dialog -> {
+                        if (dialog.isConfirmed()) {
+                            this.afterRemoved(new OWLEditorEvent.IndividualRemoved(
+                                    getSelectedProperty().getValue()
+                            ));
+                        } else {
+                            dialog.close();
+                        }
+                    }));
             return tools;
         }
 
 
-        @Override
         public void addValueChangeListener(Property.ValueChangeListener valueChangeListener) {
             list.addValueChangeListener(valueChangeListener);
-        }
-
-        @Deprecated
-        public void addListener(Property.ValueChangeListener valueChangeListener) {
-
-        }
-
-        @Override
+        }     
+       
         public void removeValueChangeListener(Property.ValueChangeListener valueChangeListener) {
             list.removeValueChangeListener(valueChangeListener);
         }
 
-        @Deprecated
-        public void removeListener(Property.ValueChangeListener valueChangeListener) {
-
-        }
 
         @Override
         public Container getContainerDataSource() {
@@ -212,14 +201,7 @@ public class IndividualsSheet extends HorizontalLayout implements Property.Value
             list.setContainerDataSource(container);
         }
 
-        @Override
-        public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-            if (valueChangeEvent.getProperty().getValue() != null) {
-                selectSource.setValue((OWLNamedIndividual) valueChangeEvent.getProperty().getValue());
-            }
-        }
-
-        public OWLNamedIndividualSource getSelectedProperty() {
+        public OWLNamedIndividualSource getSelectedProperty() throws NullPointerException {
             EditorUtils.checkNotNull(selectSource.getValue(), "Please select an Individual");
             return selectSource;
         }

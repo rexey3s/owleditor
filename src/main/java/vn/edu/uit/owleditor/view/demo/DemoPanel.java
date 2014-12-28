@@ -50,7 +50,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
     private final Component start;
 
-    private SuggestionGraph graph;
+    private SuggestionGraph graph = new SuggestionGraph();
     
     private Collection<OWLNamedIndividual> individualsToClassify;
 

@@ -3,7 +3,6 @@ package vn.edu.uit.owleditor;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,11 +53,7 @@ public class OWLEditorUI extends UI {
         return ((OWLEditorUI) getCurrent()).httpSession;
     }
 
-    public static Component getEntryView() {
-        return ((OWLEditorUI) getCurrent()).entryView;
-    }
-    
-    
+
     @Override
     protected void init(VaadinRequest request) {
 

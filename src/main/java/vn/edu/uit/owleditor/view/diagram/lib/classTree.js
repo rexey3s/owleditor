@@ -1,11 +1,13 @@
 /**
- * Created by Chuong Dang on 12/21/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecomunication created on 12/28/2014.
  */
+
 window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
+    // Get JSON data
     var SVG_ELEMENT = this.getElement();
 
-    this.onStateChange = function () {
-        var treeData = JSON.parse(this.getState().data);
+    treeJSON = d3.json("/api/owl/class", function (error, treeData) {
         console.log(treeData);
         // Calculate total nodes, max label length
         var totalNodes = 0;
@@ -22,10 +24,9 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
         var root;
 
         // size of the diagram
-        // var viewerWidth = $(document).width();
-        // var viewerHeight = $(document).height();
         var viewerWidth = $(".diagram-container").width();
         var viewerHeight = $(".diagram-container").height();
+
         var tree = d3.layout.tree()
             .size([viewerHeight, viewerWidth]);
 
@@ -48,8 +49,8 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 for (var i = 0; i < count; i++) {
                     visit(children[i], visitFn, childrenFn);
                 }
-                }
             }
+        }
 
         // Call visit function to establish maxLabelLength
         visit(treeData, function (d) {
@@ -96,8 +97,8 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 panTimer = setTimeout(function () {
                     pan(domNode, speed, direction);
                 }, 50);
-                }
             }
+        }
 
         // Define the zoom function for the zoomable tree
 
@@ -137,7 +138,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                         }
                         return true;
                     }).remove();
-                }
+            }
 
             // remove parent link
             parentLink = tree.links(tree.nodes(draggingNode.parent));
@@ -200,7 +201,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                     } catch (e) {
 
                     }
-                    }
+                }
 
                 d.x0 += d3.event.dy;
                 d.y0 += d3.event.dx;
@@ -210,7 +211,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
             }).on("dragend", function (d) {
                 if (d == root) {
                     return;
-                    }
+                }
                 domNode = this;
                 if (selectedNode) {
                     // now remove the element from the parent, and insert it into the new elements children
@@ -224,17 +225,17 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                         } else {
                             selectedNode._children.push(draggingNode);
                         }
-                        } else {
+                    } else {
                         selectedNode.children = [];
                         selectedNode.children.push(draggingNode);
-                        }
+                    }
                     // Make sure that the node being added to is expanded so user can see added node is correctly moved
                     expand(selectedNode);
                     sortTree();
                     endDrag();
-                    } else {
+                } else {
                     endDrag();
-                    }
+                }
             });
 
         function endDrag() {
@@ -249,7 +250,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 centerNode(draggingNode);
                 draggingNode = null;
             }
-            }
+        }
 
         // Helper functions for collapsing and expanding nodes.
 
@@ -259,7 +260,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 d._children.forEach(collapse);
                 d.children = null;
             }
-            }
+        }
 
         function expand(d) {
             if (d._children) {
@@ -267,7 +268,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 d.children.forEach(expand);
                 d._children = null;
             }
-            }
+        }
 
         var overCircle = function (d) {
             selectedNode = d;
@@ -332,7 +333,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 d._children = null;
             }
             return d;
-            }
+        }
 
         // Toggle children on click.
 
@@ -360,7 +361,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 }
             };
             childCount(0, root);
-            var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
+            var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
             tree = tree.size([newHeight, viewerWidth]);
 
             // Compute the new tree layout.
@@ -373,7 +374,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 // alternatively to keep a fixed scale one can set a fixed depth per level
                 // Normalize for fixed-depth by commenting out below line
                 // d.y = (d.depth * 500); //500px per level.
-                });
+            });
 
             // Update the nodesâ€¦
             node = svgGroup.selectAll("g.node")
@@ -473,7 +474,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
             var link = svgGroup.selectAll("path.link")
                 .data(links, function (d) {
                     return d.target.id;
-                    });
+                });
 
             // Enter any new links at the parent's previous position.
             link.enter().insert("path", "g")
@@ -487,7 +488,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                         source: o,
                         target: o
                     });
-                    });
+                });
 
             // Transition links to their new position.
             link.transition()
@@ -528,9 +529,39 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
         update(root);
         centerNode(root);
 
+        var couplingParent1 = tree.nodes(root).filter(function (d) {
+            return d['name'] === 'cluster';
+        })[0];
+        var couplingChild1 = tree.nodes(root).filter(function (d) {
+            return d['name'] === 'JSONConverter';
+        })[0];
 
-    }
+        multiParents = [{
+            parent: couplingParent1,
+            child: couplingChild1
+        }];
+
+        multiParents.forEach(function (multiPair) {
+            svgGroup.append("path", "g")
+                .attr("class", "additionalParentLink")
+                .attr("d", function () {
+                    var oTarget = {
+                        x: multiPair.parent.x0,
+                        y: multiPair.parent.y0
+                    };
+                    var oSource = {
+                        x: multiPair.child.x0,
+                        y: multiPair.child.y0
+                    };
+                    /*if (multiPair.child.depth === multiPair.couplingParent1.depth) {
+                     return "M" + oSource.y + " " + oSource.x + " L" + (oTarget.y + ((Math.abs((oTarget.x - oSource.x))) * 0.25)) + " " + oTarget.x + " " + oTarget.y + " " + oTarget.x;
+                     }*/
+                    return diagonal({
+                        source: oSource,
+                        target: oTarget
+                    });
+                });
+        });
+    });
+
 }
-
-
-

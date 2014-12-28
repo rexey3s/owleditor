@@ -1,10 +1,13 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.data.Property;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.view.panel.DataPropertyExpressionPanelContainer;
 import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
 
@@ -12,9 +15,13 @@ import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 11/22/2014.
  */
-public class DataPropertiesSheet extends HorizontalLayout implements Property.ValueChangeListener {
-
+@UIScope
+@VaadinView(name = DataPropertiesSheet.NAME)
+public class DataPropertiesSheet extends HorizontalLayout implements View {
+    public static final String NAME = "DataProperties";
+    
     private DataPropertyHierarchicalPanel hcLayout;
+
     private DataPropertyExpressionPanelContainer panels;
 
 
@@ -26,7 +33,11 @@ public class DataPropertiesSheet extends HorizontalLayout implements Property.Va
         hcLayout = new DataPropertyHierarchicalPanel();
         panels = new DataPropertyExpressionPanelContainer();
         TabSheet tabs = new TabSheet();
-        hcLayout.addValueChangeListener(this);
+        hcLayout.addValueChangeListener(event -> {
+            if (event.getProperty().getValue() != null) {
+                panels.setPropertyDataSource(hcLayout.getSelectedProperty());
+            }
+        });
         tabs.setSizeFull();
         tabs.addStyleName("dashboard-tabsheet");
         tabs.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
@@ -42,10 +53,9 @@ public class DataPropertiesSheet extends HorizontalLayout implements Property.Va
         setSizeFull();
     }
 
+
     @Override
-    public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null) {
-            panels.setPropertyDataSource(hcLayout.getSelectedProperty());
-        }
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        
     }
 }

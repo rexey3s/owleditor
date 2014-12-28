@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +20,6 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
@@ -37,7 +37,8 @@ public class RestAPI {
     private final JsonObject thingObject = new JsonObject();
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
-
+    @Autowired
+    OWLEditorKit eKit;
 
     public static int randInt(int min, int max) {
 
@@ -52,13 +53,12 @@ public class RestAPI {
         return randomNum;
     }
 
-
     @RequestMapping(value = "/owl/class", method = RequestMethod.GET)
     public
     @ResponseBody
-    String getHierarchy(HttpSession session) {
+    String getHierarchy() {
         try {
-            OWLEditorKit eKit = (OWLEditorKit) session.getAttribute("OWLEditorKit");
+//            OWLEditorKit eKit = (OWLEditorKit) session.getAttribute("OWLEditorKit");
             Assert.notNull(eKit, "Editor Kit should not be null");
             Assert.notNull(eKit.getActiveOntology(), "Your ontology has not been ready yet!");
             thingObject.addProperty("name", "Thing");

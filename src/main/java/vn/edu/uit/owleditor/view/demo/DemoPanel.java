@@ -12,8 +12,6 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinComponent;
 import org.vaadin.teemu.wizards.Wizard;
 import org.vaadin.teemu.wizards.event.*;
 import vn.edu.uit.owleditor.OWLEditorUI;
@@ -34,8 +32,7 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/17/14.
  */
-@UIScope
-@VaadinComponent
+
 public class DemoPanel extends VerticalLayout implements Property.Viewer, WizardProgressListener {
     private static final Logger LOG = LoggerFactory.getLogger(DemoPanel.class);
     private final OWLEditorKit editorKit;
@@ -71,7 +68,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         body.addComponent(createSuggestionGraphWrapper(graph));
         body.addComponent(start);
         body.setHeight("100%");
-
+        addComponent(body);
         setSpacing(true);
         setSizeFull();
     }

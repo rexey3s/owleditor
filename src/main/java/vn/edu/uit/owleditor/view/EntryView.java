@@ -71,7 +71,7 @@ public class EntryView extends VerticalLayout {
                         new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
-                UI.getCurrent().setContent(OWLEditorUI.getMainView());
+                UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
                 LOG.error(nullEx.getMessage());
@@ -106,7 +106,7 @@ public class EntryView extends VerticalLayout {
 
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
-                    UI.getCurrent().setContent(OWLEditorUI.getMainView());
+                    UI.getCurrent().setContent(new MainView());
                 }
             } catch (NullPointerException nullEx) {
                 Notification.show("Please upload your file", Notification.Type.ERROR_MESSAGE);

@@ -35,10 +35,10 @@ public class OWLEditorUI extends UI {
 
     @Autowired
     SpringViewProvider viewProvider;
-    @Autowired
-    MainView mainView;
-    @Autowired
+
+    @Autowired 
     EntryView entryView;
+
     @Autowired
     private HttpSession httpSession;
 
@@ -54,9 +54,6 @@ public class OWLEditorUI extends UI {
         return ((OWLEditorUI) UI.getCurrent()).httpSession;
     }
 
-    public static Component getMainView() {
-        return ((OWLEditorUI) UI.getCurrent()).mainView;
-    }
 
     public static Component getEntryView() {
         return ((OWLEditorUI) UI.getCurrent()).entryView;
@@ -80,7 +77,7 @@ public class OWLEditorUI extends UI {
                     setContent(entryView);
 
                 } else {
-                    setContent(mainView);
+                    setContent(new MainView());
                 }
             });
         } else {

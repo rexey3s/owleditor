@@ -71,7 +71,7 @@ public class EntryView extends VerticalLayout {
                 eKit.loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
 
                 VaadinSession.getCurrent().setConverterFactory(
-                        new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
+                        new OWLObjectConverterFactory(eKit));
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", eKit);
                 
@@ -109,7 +109,7 @@ public class EntryView extends VerticalLayout {
                     eKit.loadOntologyFromOntologyDocument(IRI.create(file));
 
                     VaadinSession.getCurrent().setConverterFactory(
-                            new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
+                            new OWLObjectConverterFactory(eKit));
 
                     OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", eKit);
                     UI.getCurrent().setContent(new MainView());

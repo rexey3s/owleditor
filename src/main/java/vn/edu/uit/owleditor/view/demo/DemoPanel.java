@@ -1,7 +1,9 @@
 package vn.edu.uit.owleditor.view.demo;
 
+import com.google.common.collect.Multimap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.*;
@@ -10,6 +12,8 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.VaadinComponent;
 import org.vaadin.teemu.wizards.Wizard;
 import org.vaadin.teemu.wizards.event.*;
 import vn.edu.uit.owleditor.OWLEditorUI;
@@ -19,15 +23,19 @@ import vn.edu.uit.owleditor.core.swrlapi.AtomSearcher;
 import vn.edu.uit.owleditor.core.swrlapi.SWRLAtomSearchByDefinedClass;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.utils.EditorUtils;
+import vn.edu.uit.owleditor.view.diagram.SuggestionGraph;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/17/14.
  */
+@UIScope
+@VaadinComponent
 public class DemoPanel extends VerticalLayout implements Property.Viewer, WizardProgressListener {
     private static final Logger LOG = LoggerFactory.getLogger(DemoPanel.class);
     private final OWLEditorKit editorKit;
@@ -42,8 +50,8 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
     private final Component start;
 
-    private ObjectProperty titleDataSource = new ObjectProperty("Anonymous Type", String.class);
-
+    private SuggestionGraph graph;
+    
     private Collection<OWLNamedIndividual> individualsToClassify;
 
     public DemoPanel() {
@@ -60,29 +68,26 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     private void initialise() {
 
         body.addStyleName(ValoTheme.LAYOUT_WELL);
+        body.addComponent(graph);
         body.addComponent(start);
         body.setHeight("100%");
-        Component titleBar = buildTitleBar();
 
-        addComponents(titleBar, body);
-        setExpandRatio(titleBar, 1);
-        setExpandRatio(body, 11);
         setSpacing(true);
         setSizeFull();
     }
 
-    private Component buildTitleBar() {
-        final Panel wrapper = new Panel();
-        wrapper.addStyleName(ValoTheme.PANEL_BORDERLESS);
-//        wrapper.setMargin(true);
-        final Label title = new Label();
-        title.setPropertyDataSource(titleDataSource);
-        title.addStyleName(ValoTheme.LABEL_COLORED);
-        title.setSizeUndefined();
-        wrapper.setContent(title);
-        wrapper.setSizeFull();
-        return wrapper;
+    private Component createSuggestionGraphWrapper(final Component graph) {
+        final HorizontalLayout container = new HorizontalLayout();
+        addStyleName("suggestion-graph-container");
+        container.addComponent(graph);
+        container.setSizeFull();
+        addComponent(container);
+        setSizeFull();
+        return container;
+        
     }
+
+
     private Component buildStartButton() {
         final VerticalLayout wrapper = new VerticalLayout();
         final Button start = new Button("Start recommendation");
@@ -134,7 +139,6 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
                                         .forEach(i -> individualsToClassify.add((OWLNamedIndividual) i));
                                 if (individualsToClassify.iterator().hasNext()) {
                                     OWLNamedIndividual i = individualsToClassify.iterator().next();
-                                    titleDataSource.setValue(sf(i));
                                     body.removeComponent(start);
                                     body.addComponent(buildWizard(dataSource.getValue(), i));
                                 }
@@ -197,10 +201,40 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     public void setPropertyDataSource(Property property) {
         if (property.getValue() != null) {
             dataSource.setValue((OWLClass) property.getValue());
+            Multimap<OWLObjectProperty, Multimap<Set<OWLClass>, Set<SWRLAtom>>> multimap = AtomSearcher
+                    .getObjectPropertySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology());
+            JsonArray nodes = new JsonArray();
+            JsonArray edges = new JsonArray();
 
+            JsonObject classNode = new JsonObject();
+            final String className = OWLEditorKitImpl.getShortForm(dataSource.getValue());
+            classNode.addProperty("id", className);
+            classNode.addProperty("label", className);
+            nodes.add(classNode);
 
+            multimap.entries().forEach(entry -> {
+
+                final String edgeLabel = OWLEditorKitImpl.getShortForm(entry.getKey());
+                entry.getValue().entries().forEach(entry2 -> {
+                    entry2.getKey().forEach(clz -> {
+                        final JsonObject node = new JsonObject();
+                        final JsonObject edge = new JsonObject();
+                        final String clzName = OWLEditorKitImpl.getShortForm(clz);
+                        node.addProperty("id", clzName);
+                        node.addProperty("label", clzName);
+                        nodes.add(node);
+                        edge.addProperty("start", className);
+                        edge.addProperty("end", clzName);
+                        edge.addProperty("label", edgeLabel);
+                        edges.add(edge);
+                    });
+                });
+            });
+            graph.setNodes(nodes.toString());
+            graph.setEgdes(edges.toString());
+            
             LOG.info(AtomSearcher.getDataProperySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
-            LOG.info(AtomSearcher.getObjectPropertySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
+//            LOG.info();
         }
     }
 
@@ -227,7 +261,6 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
         if (individualsToClassify.iterator().hasNext()) {
             OWLNamedIndividual i = individualsToClassify.iterator().next();
-            titleDataSource.setValue(sf(i));
 
             body.addComponent(buildWizard(dataSource.getValue(), i));
             body.removeComponent(start);

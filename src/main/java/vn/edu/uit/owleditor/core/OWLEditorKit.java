@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/27/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/27/14.
  */
 @Service
 public interface OWLEditorKit {

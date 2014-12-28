@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/26/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/26/14.
  */
 public class SWRLBuilInArgumentVisitorExAdapter<T> implements SWRLBuiltInArgumentVisitorEx<T> {
     @Nonnull

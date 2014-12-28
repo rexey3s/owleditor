@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/23/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/23/14.
  */
 @RestController
 @RequestMapping(value = "/api/")

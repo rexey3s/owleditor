@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/22/2014.
+ *         Faculty of Computer Network and Telecommunication created on 11/22/2014.
  */
 @SuppressWarnings({"unchecked"})
 public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer<OWLDataProperty> {

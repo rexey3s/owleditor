@@ -4,7 +4,7 @@ import org.semanticweb.owlapi.model.*;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/19/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/19/14.
  */
 public class OWLDataRangeVisitorAdapter implements OWLDataRangeVisitor {
     @SuppressWarnings({"unused"})

@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/10/2014.
+ *         Faculty of Computer Network and Telecommunication created on 12/10/2014.
  */
 public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
     private final OWLOntology ontology;

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/25/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/25/14.
  */
 public class AtomSearcher {
     private static final IRI[] filteredBuiltIn = {

@@ -16,7 +16,7 @@ import java.util.Collections;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/6/14.
+ *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
 public abstract class AbstractOWLObjectHierarchicalContainer<T extends OWLEntity>
         extends HierarchicalContainer

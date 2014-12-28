@@ -12,7 +12,6 @@ import java.io.Serializable;
 
 /**
  * Created by Chuong Dang on 11/20/2014.
-
  * A simple wrapper for Guava event bus. Defines static convenience methods for
  * relevant actions.
  */

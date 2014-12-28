@@ -40,6 +40,7 @@ public class EntryView extends VerticalLayout implements View {
         setSizeFull();
     }
 
+
     private Component buildEntryPanel() {
         final VerticalLayout entryPanel = new VerticalLayout();
         entryPanel.setSizeUndefined();

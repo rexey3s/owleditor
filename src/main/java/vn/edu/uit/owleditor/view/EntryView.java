@@ -70,7 +70,7 @@ public class EntryView extends VerticalLayout {
                 VaadinSession.getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
-//                OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
+                OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
@@ -102,7 +102,7 @@ public class EntryView extends VerticalLayout {
                 LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
                     OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
-//                    OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
+                    OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
 
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));

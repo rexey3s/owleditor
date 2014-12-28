@@ -75,17 +75,15 @@ public class EntryView extends VerticalLayout {
                 
                 UI.getCurrent().setContent(new MainView());
 
+            } catch (NullPointerException nullEx) {
+                LOG.error(nullEx.getMessage());
             }
-//            catch (NullPointerException nullEx) {
-//                LOG.error(nullEx.getMessage());
-//            }
             catch (OWLOntologyCreationException e) {
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
+            } catch (Exception e) {
+                LOG.error(e.getMessage());
+                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
             }
-//            catch (Exception e) {
-//                LOG.error(e.getMessage());
-//                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
-//            }
         });
 
         return urlFieldWrapper;

@@ -50,8 +50,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
     private final Component start;
 
-    private SuggestionGraph graph = new SuggestionGraph();
-    
+    private SuggestionGraph graph;
     private Collection<OWLNamedIndividual> individualsToClassify;
 
     public DemoPanel() {
@@ -59,6 +58,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         uiFactory = new DemoUIFactory(editorKit);
         searcher = new SWRLAtomSearchByDefinedClass(editorKit);
         start = buildStartButton();
+        graph = new SuggestionGraph();
         initialise();
 
         
@@ -68,7 +68,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     private void initialise() {
 
         body.addStyleName(ValoTheme.LAYOUT_WELL);
-        body.addComponent(graph);
+        body.addComponent(createSuggestionGraphWrapper(graph));
         body.addComponent(start);
         body.setHeight("100%");
 

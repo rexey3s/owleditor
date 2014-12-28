@@ -65,6 +65,7 @@ public class OWLEditorUI extends UI {
             ConfirmDialog.show(this, "Do you want to load a new ontology ?", dialog -> {
                 if (dialog.isConfirmed()) {
                     setContent(new EntryView());
+                    httpSession.removeAttribute("OWLEditorKit");
 
                 } else {
                     setContent(new MainView());

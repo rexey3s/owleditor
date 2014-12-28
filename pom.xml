@@ -57,12 +57,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client</artifactId>
-			<version>${vaadin.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-push</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
@@ -71,12 +65,12 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
+		<!--<dependency>-->
+		<!--<groupId>javax.servlet</groupId>-->
+		<!--<artifactId>javax.servlet-api</artifactId>-->
+		<!--<version>3.0.1</version>-->
+		<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 		<!--<dependency>-->
 		<!--<groupId>com.vaadin</groupId>-->
 		<!--<artifactId>vaadin-client-compiler</artifactId>-->

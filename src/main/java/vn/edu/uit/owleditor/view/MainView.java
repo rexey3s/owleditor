@@ -7,9 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
-import vn.edu.uit.owleditor.OWLEditorUI;
-
-import javax.annotation.PreDestroy;
 
 
 /**
@@ -46,11 +43,5 @@ public class MainView extends HorizontalLayout {
 
 
     }
-
-    @PreDestroy
-    protected void destroy() {
-        OWLEditorUI.getHttpSession().removeAttribute("OWLEditorKit");
-    }
-
 
 }

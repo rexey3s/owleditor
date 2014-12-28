@@ -199,4 +199,11 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         this.prefixManager = prefixManager;
     }
 
+    public void removeActiveOntology() {
+        if (activeOntology != null && modelManager.contains(activeOntology)) {
+            modelManager.removeOntology(activeOntology);
+            activeOntology = null;
+        }
+    }
+
 }

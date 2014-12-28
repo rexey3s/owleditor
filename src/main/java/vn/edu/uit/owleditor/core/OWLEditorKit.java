@@ -52,4 +52,6 @@ public interface OWLEditorKit {
 
     public void setPrefixManager(PrefixManager prefixManager);
     
+    public void removeActiveOntology();
+    
 }

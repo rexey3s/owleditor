@@ -14,6 +14,8 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
 
+import javax.servlet.http.HttpSession;
+
 
 @Theme("mytheme")
 @VaadinUI
@@ -31,6 +33,8 @@ public class OWLEditorUI extends UI {
     @Autowired
     SpringViewProvider viewProvider;
 
+    @Autowired
+    private HttpSession httpSession;
 
     public static OWLEditorEventBus getGuavaEventBus() {
         return ((OWLEditorUI) getCurrent()).editorEventBus;
@@ -44,8 +48,13 @@ public class OWLEditorUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         setContent(new EntryView());
-        LOG.info(request.getWrappedSession().getAttributeNames().toString());
-
+        LOG.info("Here are things VaadinRequest WrapSession");
+        request.getWrappedSession().getAttributeNames()
+                .forEach(name -> LOG.info(name));
+        LOG.info("Here are things in HttpSession");
+        while (httpSession.getAttributeNames().hasMoreElements()) {
+            LOG.info(httpSession.getAttributeNames().nextElement());
+        }
     }
 
 

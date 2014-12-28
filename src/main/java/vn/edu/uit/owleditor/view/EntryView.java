@@ -68,9 +68,10 @@ public class EntryView extends VerticalLayout implements View {
             try {
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
 
-//                UI.getCurrent().getSession().setAttribute("kit", OWLEditorUI.getEditorKit());
                 VaadinSession.getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
+
+                OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
@@ -101,13 +102,11 @@ public class EntryView extends VerticalLayout implements View {
                 File file = (File) uploadField.getValue();
                 LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
-//                    OWLEditorKit eKit = new OWLEditorKit(IRI.create(file));
                     OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
-                    UI.getCurrent().getSession().setAttribute("kit", OWLEditorUI.getEditorKit());
+                    OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
 
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
-
                     UI.getCurrent().setContent(new MainView());
                 }
             } catch (NullPointerException nullEx) {

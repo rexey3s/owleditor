@@ -13,6 +13,7 @@ import org.vaadin.spring.navigator.SpringViewProvider;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
+import vn.edu.uit.owleditor.view.MainView;
 
 import javax.servlet.http.HttpSession;
 
@@ -44,23 +45,27 @@ public class OWLEditorUI extends UI {
         return ((OWLEditorUI) UI.getCurrent()).editorKit;
     }
 
-
+    public static HttpSession getHttpSession() {
+        return ((OWLEditorUI) UI.getCurrent()).httpSession;
+    }
+    
     @Override
     protected void init(VaadinRequest request) {
-        setContent(new EntryView());
-        LOG.info("Here are things VaadinRequest WrapSession");
-        request.getWrappedSession().getAttributeNames()
-                .forEach(LOG::info);
 
-//        LOG.info("SpringAwareVaadinServlet Context -> " + springAwareVaadinServlet.getServletContext());
-        LOG.info("HttpSession Servlet Context -> " + httpSession.getServletContext());
-//        LOG.info("VaadinRequest Servlet Context -> "+ request.getWrapp)
+        LOG.info("Notice: VaadinRequest WrapSession is equivalent to HttpSession");
         LOG.info("This VaadinRequest SessionId -> " + request.getWrappedSession().getId());
         LOG.info("HttpSession Id -> " + httpSession.getId());
-        LOG.info("Session Attr EditorKit in HttpSession -> " + httpSession.getAttribute("OWLEditorKit"));
-        LOG.info("Session Attr EditorKit in VaadinRequestSession -> " + request.getWrappedSession().getAttribute("OWLEditorKit"));
-
+        updateContent();
     }
 
+    private void updateContent() {
+        OWLEditorKit eKit = (OWLEditorKit) httpSession.getAttribute("OWLEditorKit");
+        if (eKit != null && eKit.getActiveOntology() != null) {
+            setContent(new MainView());
 
+        } else {
+            setContent(new EntryView());
+        }
+
+    }
 }

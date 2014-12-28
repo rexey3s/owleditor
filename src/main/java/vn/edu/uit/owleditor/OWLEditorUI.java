@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.util.Assert;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
@@ -31,6 +30,8 @@ public class OWLEditorUI extends UI {
     @Autowired
     OWLEditorEventBus editorEventBus;
 
+    @Autowired
+    OWLEditorKit editorKit;
 
     @Autowired
     SpringViewProvider viewProvider;
@@ -46,22 +47,15 @@ public class OWLEditorUI extends UI {
     }
 
     public static OWLEditorKit getEditorKit() {
-        OWLEditorKit eKit = (OWLEditorKit) getHttpSession().getAttribute("OWLEditorKit");
-
-        try {
-            Assert.notNull(eKit, "No available OWLEditorKit");
-        } catch (NullPointerException nullEx) {
-            LOG.error(nullEx.getMessage());
-        }
-        return eKit;
+        return ((OWLEditorUI) getCurrent()).editorKit;
     }
 
     public static HttpSession getHttpSession() {
-        return ((OWLEditorUI) UI.getCurrent()).httpSession;
+        return ((OWLEditorUI) getCurrent()).httpSession;
     }
 
     public static Component getEntryView() {
-        return ((OWLEditorUI) UI.getCurrent()).entryView;
+        return ((OWLEditorUI) getCurrent()).entryView;
     }
     
     

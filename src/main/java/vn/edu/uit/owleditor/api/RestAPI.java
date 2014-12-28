@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectVisitor;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
@@ -19,6 +20,7 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,10 +34,9 @@ import java.util.stream.Collectors;
 public class RestAPI {
     private static final int SIZE = 400;
     private static final Logger LOG = LoggerFactory.getLogger(RestAPI.class);
+    protected final Set<OWLClass> visited = new HashSet<>();
     private final JsonObject thingObject = new JsonObject();
-    private final JsonArray thingArray = new JsonArray();
-    private final Set<OWLClass> visited = new HashSet<>();
-
+    private JsonArray thingArray;
 
     public static int randInt(int min, int max) {
 
@@ -50,22 +51,35 @@ public class RestAPI {
         return randomNum;
     }
 
+    @PostConstruct
+    protected void postConstruct() {
+        thingObject.addProperty("name", "Thing");
+        thingObject.add("children", thingArray);
+        thingArray = new JsonArray();
+    }
+
+    public void reload(OWLOntology ontology) {
+        visited.clear();
+        thingObject.remove("children");
+        thingArray = new JsonArray();
+        thingObject.add("children", thingArray);
+        ontology.accept(initPopulationEngine(ontology, thingObject));
+    }
+    
     @RequestMapping(value = "/owl/class", method = RequestMethod.GET)
     public
     @ResponseBody
-    String getHierarchy(HttpSession session) {
+    String getClassHierarchy(HttpSession session) {
         try {
             OWLEditorKit eKit = (OWLEditorKit) session.getAttribute("OWLEditorKit");
             Assert.notNull(eKit, "Editor Kit should not be null");
             Assert.notNull(eKit.getActiveOntology(), "Your ontology has not been ready yet!");
-            thingObject.addProperty("name", "Thing");
-            thingObject.add("children", thingArray);
-            eKit.getActiveOntology().accept(initPopulationEngine(eKit.getActiveOntology()));
+            reload(eKit.getActiveOntology());
             return thingObject.toString();
         } catch (NullPointerException ex) {
             LOG.error(ex.getMessage());
         }
-        return "No service";
+        return thingObject.toString();
     }
 
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
@@ -103,7 +117,7 @@ public class RestAPI {
         }
     }
 
-    private OWLObjectVisitorAdapter initPopulationEngine(OWLOntology activeOntology) {
+    private OWLObjectVisitor initPopulationEngine(OWLOntology activeOntology, JsonObject top) {
         return new OWLObjectVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLOntology ontology) {
@@ -115,10 +129,11 @@ public class RestAPI {
             @Override
             public void visit(@Nonnull OWLClass owlClass) {
                 if (!visited.contains(owlClass)) {
-                    recursive(activeOntology, owlClass, null, null);
+                    recursive(activeOntology, owlClass, null, top);
                 }
             }
         };
     }
+
 
 }

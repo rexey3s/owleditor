@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
@@ -30,8 +31,6 @@ public class OWLEditorUI extends UI {
     @Autowired
     OWLEditorEventBus editorEventBus;
 
-    @Autowired
-    OWLEditorKit editorKit;
 
     @Autowired
     SpringViewProvider viewProvider;
@@ -47,7 +46,14 @@ public class OWLEditorUI extends UI {
     }
 
     public static OWLEditorKit getEditorKit() {
-        return ((OWLEditorUI) UI.getCurrent()).editorKit;
+        OWLEditorKit eKit = (OWLEditorKit) getHttpSession().getAttribute("OWLEditorKit");
+
+        try {
+            Assert.notNull(eKit, "No available OWLEditorKit");
+        } catch (NullPointerException nullEx) {
+            LOG.error(nullEx.getMessage());
+        }
+        return eKit;
     }
 
     public static HttpSession getHttpSession() {
@@ -76,7 +82,7 @@ public class OWLEditorUI extends UI {
             ConfirmDialog.show(this, "Do you want to load a new ontology ?", dialog -> {
                 if (dialog.isConfirmed()) {
                     setContent(entryView);
-                    editorKit.removeActiveOntology();
+                    eKit.removeActiveOntology();
 
                 } else {
                     setContent(new MainView());

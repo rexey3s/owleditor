@@ -19,7 +19,6 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
@@ -40,7 +39,7 @@ import java.util.Collections;
  *         Faculty of Computer Network and Telecomunication created on 11/11/14.
  */
 @Repository
-@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+@Scope(value = "session")
 public class OWLEditorKitImpl implements OWLEditorKit {
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();

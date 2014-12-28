@@ -13,6 +13,8 @@ import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -65,12 +67,14 @@ public class EntryView extends VerticalLayout {
 
         openBtn.addListener((Button.ClickEvent event) -> {
             try {
-                OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
+                OWLEditorKit eKit = new OWLEditorKitImpl();
+                eKit.loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
 
                 VaadinSession.getCurrent().setConverterFactory(
                         new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
-                OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
+                OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", eKit);
+                
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
@@ -101,11 +105,13 @@ public class EntryView extends VerticalLayout {
                 File file = (File) uploadField.getValue();
                 LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
-                    OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
-                    OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
+                    OWLEditorKit eKit = new OWLEditorKitImpl();
+                    eKit.loadOntologyFromOntologyDocument(IRI.create(file));
 
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
+
+                    OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", eKit);
                     UI.getCurrent().setContent(new MainView());
                 }
             } catch (NullPointerException nullEx) {

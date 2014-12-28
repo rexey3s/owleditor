@@ -10,7 +10,6 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,10 +19,9 @@ import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import javax.servlet.http.HttpSession;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -37,8 +35,7 @@ public class RestAPI {
     private final JsonObject thingObject = new JsonObject();
     private final JsonArray thingArray = new JsonArray();
     private final Set<OWLClass> visited = new HashSet<>();
-    @Autowired
-    OWLEditorKit eKit;
+
 
     public static int randInt(int min, int max) {
 
@@ -56,9 +53,9 @@ public class RestAPI {
     @RequestMapping(value = "/owl/class", method = RequestMethod.GET)
     public
     @ResponseBody
-    String getHierarchy() {
+    String getHierarchy(HttpSession session) {
         try {
-//            OWLEditorKit eKit = (OWLEditorKit) session.getAttribute("OWLEditorKit");
+            OWLEditorKit eKit = (OWLEditorKit) session.getAttribute("OWLEditorKit");
             Assert.notNull(eKit, "Editor Kit should not be null");
             Assert.notNull(eKit.getActiveOntology(), "Your ontology has not been ready yet!");
             thingObject.addProperty("name", "Thing");
@@ -82,8 +79,13 @@ public class RestAPI {
             parentObject.get("children").getAsJsonArray().add(childObject);
 
         } else {
-
-            if (EntitySearcher.getSuperClasses(child, ontology).size() == 0)
+            Collection<OWLClass> superClasses = EntitySearcher
+                    .getSuperClasses(child, ontology)
+                    .stream()
+                    .filter(ce -> (ce instanceof OWLClass))
+                    .map(OWLClassExpression::asOWLClass)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            if (superClasses.size() == 0)
                 thingArray.add(childObject);
         }
         Collection<OWLClassExpression> childs = EntitySearcher.getSubClasses(child, ontology);

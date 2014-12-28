@@ -5,12 +5,8 @@
 window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
     var SVG = this.getElement();
     this.onStateChange = function () {
-        var nodes = JSON.parse(this.getState().nodes);
-        var edges = JSON.parse(this.getState().edges);
-
-        suggestionGraph(nodes, edges);
-    }
-    var suggestionGraph = function (nodes, edges) {
+        var data = JSON.parse(this.getState().data);
+        console.log(data);
         var g = new dagreD3.graphlib.Graph()
             .setGraph({})
             .setDefaultEdgeLabel(function () {
@@ -24,10 +20,10 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
             return {};
         });
 
-        nodes.forEach(function (v) {
+        data.nodes.forEach(function (v) {
             g.setNode(v.id, {label: v.label, width: 100, height: 20});
         });
-        edges.forEach(function (v) {
+        data.edges.forEach(function (v) {
             // key = Object.keys(v)[0]
 
             g.setEdge(v.start, v.end, {label: v.label});
@@ -80,7 +76,7 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
             .scale(initialScale)
             .event(svg);
         svg.attr('height', g.graph().height * initialScale + 40);
-
     }
+
 }
 

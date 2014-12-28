@@ -200,6 +200,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
             dataSource.setValue((OWLClass) property.getValue());
             Multimap<OWLObjectProperty, Multimap<Set<OWLClass>, Set<SWRLAtom>>> multimap = AtomSearcher
                     .getObjectPropertySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology());
+            JsonObject root = new JsonObject();
             JsonArray nodes = new JsonArray();
             JsonArray edges = new JsonArray();
 
@@ -227,8 +228,9 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
                     });
                 });
             });
-            graph.setNodes(nodes.toString());
-            graph.setEgdes(edges.toString());
+            root.add("nodes", nodes);
+            root.add("edges", edges);
+            graph.setData(root.toString());
             
             LOG.info(AtomSearcher.getDataProperySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
 //            LOG.info();

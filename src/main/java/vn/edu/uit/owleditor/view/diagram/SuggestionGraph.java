@@ -10,13 +10,9 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
 @JavaScript({"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
         "http://d3js.org/d3.v3.min.js", "lib/dagre-d3.min.js", "lib/suggestionRenderer.js"})
 public class SuggestionGraph extends AbstractJavaScriptComponent {
-    public void setNodes(String json) {
-        getState().nodes = json;
-    }
+    public void setData(String s) {
 
-    public void setEgdes(String json) {
-        getState().edges = json;
-
+        getState().data = s;
     }
 
     @Override

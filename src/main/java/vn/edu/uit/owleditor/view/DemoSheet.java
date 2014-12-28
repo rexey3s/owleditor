@@ -1,7 +1,10 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.data.Property;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.view.demo.DemoPanel;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
@@ -9,7 +12,10 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-public class DemoSheet extends HorizontalLayout implements Property.ValueChangeListener {
+@UIScope
+@VaadinView(name = DemoSheet.NAME)
+public class DemoSheet extends HorizontalLayout implements View {
+    public static final String NAME = "Demo";
     private ClassHierarchicalPanel hierarchicalPanel;
     private DemoPanel demoPanel;
     public DemoSheet() {
@@ -19,7 +25,11 @@ public class DemoSheet extends HorizontalLayout implements Property.ValueChangeL
     private void initialise() {
         hierarchicalPanel = new ClassHierarchicalPanel();
         demoPanel = new DemoPanel();
-        hierarchicalPanel.addValueChangeListener(this);
+        hierarchicalPanel.addValueChangeListener(event -> {
+            if (event.getProperty().getValue() != null) {
+                demoPanel.setPropertyDataSource(hierarchicalPanel.getSelectedProperty());
+            }
+        });
 
         addComponents(hierarchicalPanel, demoPanel);
         setExpandRatio(hierarchicalPanel, 1.0f);
@@ -29,11 +39,8 @@ public class DemoSheet extends HorizontalLayout implements Property.ValueChangeL
         setSizeFull();
     }
 
-
     @Override
-    public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null) {
-            demoPanel.setPropertyDataSource(hierarchicalPanel.getSelectedProperty());
-        }
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        
     }
 }

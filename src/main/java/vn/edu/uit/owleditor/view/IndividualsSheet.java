@@ -3,6 +3,8 @@ package vn.edu.uit.owleditor.view;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -14,6 +16,7 @@ import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
@@ -35,9 +38,11 @@ import java.util.List;
  *         Faculty of Computer Network and Telecomunication created on 12/3/2014.
  */
 @UIScope
-@VaadinComponent
-public class IndividualsSheet extends HorizontalLayout {
+@VaadinView(name = IndividualsSheet.NAME)
+public class IndividualsSheet extends HorizontalLayout implements View {
 
+    public static final String NAME = "Individuals";
+    
     private ClassHierarchicalPanel hierarchy;
 
     private IndividualList individualsList;
@@ -104,6 +109,11 @@ public class IndividualsSheet extends HorizontalLayout {
         setMargin(true);
         setSpacing(true);
         setSizeFull();
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
     }
 
 

@@ -1,10 +1,14 @@
 package vn.edu.uit.owleditor.view;
 
 import com.vaadin.data.Property;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
@@ -16,16 +20,16 @@ import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 11/21/14.
  */
-public class ObjectPropertiesSheet extends HorizontalLayout implements Property.ValueChangeListener {
-
-    private final OWLEditorKit editorKit;
+@UIScope
+@VaadinView(name = ObjectPropertiesSheet.NAME)
+public class ObjectPropertiesSheet extends HorizontalLayout implements View {
+    public static final String NAME = "ObjectProperties";
     private ObjectPropertyHierarchicalPanel hcLayout;
     private ObjectPropertyAttributes attributes;
     private ObjectPropertyExpressionPanelContainer objectPropertyPanels;
 
 
     public ObjectPropertiesSheet() {
-        editorKit = OWLEditorUI.getEditorKit();
         initialise();
 
     }
@@ -34,7 +38,12 @@ public class ObjectPropertiesSheet extends HorizontalLayout implements Property.
         hcLayout = new ObjectPropertyHierarchicalPanel();
         attributes = new ObjectPropertyAttributes();
         objectPropertyPanels = new ObjectPropertyExpressionPanelContainer();
-        hcLayout.addValueChangeListener(this);
+        hcLayout.addValueChangeListener(event -> {
+            if (event.getProperty().getValue() != null) {
+                attributes.setPropertyDataSource(hcLayout.getSelectedProperty());
+                objectPropertyPanels.setPropertyDataSource(hcLayout.getSelectedProperty());
+            }
+        });
         hcLayout.setImmediate(true);
         VerticalLayout ver = new VerticalLayout();
         ver.addComponents(attributes, objectPropertyPanels);
@@ -57,14 +66,11 @@ public class ObjectPropertiesSheet extends HorizontalLayout implements Property.
         setSizeFull();
     }
 
-
     @Override
-    public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null) {
-            attributes.setPropertyDataSource(hcLayout.getSelectedProperty());
-            objectPropertyPanels.setPropertyDataSource(hcLayout.getSelectedProperty());
-        }
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
     }
+
 
     public static class ObjectPropertyAttributes extends CssLayout implements Property.Viewer {
 

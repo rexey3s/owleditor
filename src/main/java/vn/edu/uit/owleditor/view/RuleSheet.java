@@ -2,9 +2,10 @@ package vn.edu.uit.owleditor.view;
 
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.Action;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
@@ -13,6 +14,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
@@ -25,8 +28,12 @@ import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/9/2014.
  */
-public class RuleSheet extends HorizontalLayout implements Action.Handler, Property.ValueChangeListener {
+@UIScope
+@VaadinView(name = RuleSheet.NAME)
+public class RuleSheet extends HorizontalLayout implements Action.Handler, View {
 
+    public static final String NAME = "Rules";
+    
     private static final Action ADD = new Action("Add");
     private static final Action EDIT = new Action("Edit");
     private static final Action REMOVE = new Action("Remove");
@@ -54,7 +61,11 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
         rulesTable.setContainerDataSource(rulesContainer);
         rulesTable.setSelectable(true);
         rulesTable.addActionHandler(this);
-        rulesTable.addValueChangeListener(this);
+        rulesTable.addValueChangeListener(event -> {
+            if (event.getProperty().getValue() != null) {
+                selectedRow.setValue((SWRLAPIRule) event.getProperty().getValue());
+            }
+        });
         rulesTable.addStyleName(ValoTheme.TABLE_BORDERLESS);
         rulesTable.setSizeFull();
         setMargin(true);
@@ -177,9 +188,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, Prope
     }
 
     @Override
-    public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-        if (valueChangeEvent.getProperty().getValue() != null) {
-            selectedRow.setValue((SWRLAPIRule) valueChangeEvent.getProperty().getValue());
-        }
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        
     }
 }

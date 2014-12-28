@@ -2,6 +2,8 @@ package vn.edu.uit.owleditor.view;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -12,7 +14,7 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.navigator.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
@@ -27,8 +29,9 @@ import java.util.Random;
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
 @UIScope
-@VaadinComponent
-public class DiagramSheet extends VerticalLayout {
+@VaadinView(name = DiagramSheet.NAME)
+public class DiagramSheet extends VerticalLayout implements View {
+    public static final String NAME = "Diagrams";
     private static final int SIZE = 400;
     private static Logger LOG = LoggerFactory.getLogger(DnDTree.class);
     private final TabSheet tabSheet = new TabSheet();
@@ -65,6 +68,11 @@ public class DiagramSheet extends VerticalLayout {
     public void reloadAll() {
         classDnDTree.reload();
         entityDnDTree.reload();
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        
     }
 
 

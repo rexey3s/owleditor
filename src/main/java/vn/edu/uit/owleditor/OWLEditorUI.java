@@ -2,7 +2,6 @@ package vn.edu.uit.owleditor;
 
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
@@ -68,8 +67,7 @@ public class OWLEditorUI extends UI {
         LOG.info("HttpSession Id -> " + httpSession.getId());
 
         updateContent();
-        Page.getCurrent().addBrowserWindowResizeListener(OWLEditorEventBus::post);
-        
+
     }
 
     private void updateContent() {

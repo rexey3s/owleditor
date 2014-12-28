@@ -7,12 +7,11 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
     // Get JSON data
     var SVG_ELEMENT = this.getElement();
     this.onStateChange = function () {
-        new GraphRender(this.getState().api);
 
     }
 
-    GraphRender = d3.json("/api/owl/class", function (error, treeData) {
-        console.log(treeData);
+    d3.json("/api/owl/class", function (error, treeData) {
+        if (error) return console.log(error);
         // Calculate total nodes, max label length
         var totalNodes = 0;
         var maxLabelLength = 0;
@@ -365,7 +364,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 }
             };
             childCount(0, root);
-            var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
+            var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
             tree = tree.size([newHeight, viewerWidth]);
 
             // Compute the new tree layout.

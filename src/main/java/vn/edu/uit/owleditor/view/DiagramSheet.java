@@ -44,9 +44,8 @@ public class DiagramSheet extends VerticalLayout implements View {
 //        classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
 //        entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
         DnDTree classTree = new DnDTree();
-        classTree.setAPI("/api/owl/class");
-        tabSheet.addTab(wrapping(classTree), "Classes");
-        tabSheet.addTab(wrapping(classTree), "Entities");
+        tabSheet.addTab(createWrapper(classTree), "Classes");
+//        tabSheet.addTab(wrapping(classTree), "Entities");
         tabSheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         tabSheet.setSizeFull();
         setMargin(true);
@@ -67,7 +66,7 @@ public class DiagramSheet extends VerticalLayout implements View {
         return randomNum;
     }
 
-    private Component wrapping(DnDTree tree) {
+    private Component createWrapper(DnDTree tree) {
         final HorizontalLayout diagramContainer = new HorizontalLayout();
         addStyleName("diagram-container");
         diagramContainer.addComponent(tree);

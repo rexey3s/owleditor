@@ -2,14 +2,10 @@ package vn.edu.uit.owleditor;
 
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,17 +90,5 @@ public class OWLEditorUI extends UI {
 
     }
 
-    private class ErrorView extends VerticalLayout implements View {
-        private Label message;
 
-        ErrorView() {
-            setMargin(true);
-            addComponent(message = new Label());
-        }
-
-        @Override
-        public void enter(ViewChangeListener.ViewChangeEvent event) {
-            message.setValue(String.format("No such view: %s", event.getViewName()));
-        }
-    }
 }

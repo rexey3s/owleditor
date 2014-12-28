@@ -81,10 +81,11 @@ public class EntryView extends VerticalLayout {
 //            }
             catch (OWLOntologyCreationException e) {
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
             }
+//            catch (Exception e) {
+//                LOG.error(e.getMessage());
+//                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
+//            }
         });
 
         return urlFieldWrapper;

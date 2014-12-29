@@ -11,7 +11,6 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
         "http://d3js.org/d3.v3.min.js", "lib/dagre-d3.min.js", "lib/suggestionRenderer.js"})
 public class SuggestionGraph extends AbstractJavaScriptComponent {
     public void setData(String s) {
-
         getState().data = s;
     }
 

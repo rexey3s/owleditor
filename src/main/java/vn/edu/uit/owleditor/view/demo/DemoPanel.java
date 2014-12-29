@@ -65,9 +65,9 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     private void initialise() {
 
         body.addStyleName(ValoTheme.LAYOUT_WELL);
-        body.addComponent(createSuggestionGraphWrapper(graph));
         body.addComponent(start);
         body.setHeight("100%");
+        addComponent(createSuggestionGraphWrapper(graph));
         addComponent(body);
         setSpacing(true);
         setSizeFull();

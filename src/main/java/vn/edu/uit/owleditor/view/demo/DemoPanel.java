@@ -1,7 +1,5 @@
 package vn.edu.uit.owleditor.view.demo;
 
-import com.google.common.collect.Multimap;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.vaadin.data.Property;
 import com.vaadin.ui.*;
@@ -26,7 +24,6 @@ import vn.edu.uit.owleditor.view.diagram.SuggestionGraph;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -199,42 +196,11 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     public void setPropertyDataSource(Property property) {
         if (property.getValue() != null) {
             dataSource.setValue((OWLClass) property.getValue());
-            Multimap<OWLObjectProperty, Multimap<Set<OWLClass>, Set<SWRLAtom>>> multimap = AtomSearcher
-                    .getObjectPropertySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology());
-            JsonObject root = new JsonObject();
-            JsonArray nodes = new JsonArray();
-            JsonArray edges = new JsonArray();
-
-            JsonObject classNode = new JsonObject();
-            final String className = OWLEditorKitImpl.getShortForm(dataSource.getValue());
-            classNode.addProperty("id", className);
-            classNode.addProperty("label", className);
-            nodes.add(classNode);
-
-            multimap.entries().forEach(entry -> {
-
-                final String edgeLabel = OWLEditorKitImpl.getShortForm(entry.getKey());
-                entry.getValue().entries().forEach(entry2 -> {
-                    entry2.getKey().forEach(clz -> {
-                        final JsonObject node = new JsonObject();
-                        final JsonObject edge = new JsonObject();
-                        final String clzName = OWLEditorKitImpl.getShortForm(clz);
-                        node.addProperty("id", clzName);
-                        node.addProperty("label", clzName);
-                        nodes.add(node);
-                        edge.addProperty("start", className);
-                        edge.addProperty("end", clzName);
-                        edge.addProperty("label", edgeLabel);
-                        edges.add(edge);
-                    });
-                });
-            });
-            root.add("nodes", nodes);
-            root.add("edges", edges);
-            graph.setData(root.toString());
+            final JsonObject data = new JsonObject();
+            data.add("data", AtomSearcher.getDataProperySuggestionAsJson(dataSource.getValue(), editorKit.getSWRLActiveOntology()));
+            data.add("object", AtomSearcher.getObjectPropertySuggestionAsJson(dataSource.getValue(), editorKit.getSWRLActiveOntology()));
+            graph.setData(data.toString());
             
-            LOG.info(AtomSearcher.getDataProperySuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
-//            LOG.info();
         }
     }
 

@@ -6,7 +6,7 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
     var SVG_ELEMENT = this.getElement();
 
     this.onStateChange = function () {
-        var data = JSON.parse(this.getState().data) || {nodes: [], edges: []};
+        var data = JSON.parse(this.getState().data) || {data: {nodes: [], edges: []}, object: {nodes: [], edges: []}};
 
         console.log(data);
         var g = new dagreD3.graphlib.Graph()
@@ -15,17 +15,17 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
                 return {};
             });
 
-        // Set an object for the graph label
-        g.setGraph({});
-        // Default to assigning a new object as a label for each new edge.
-        g.setDefaultEdgeLabel(function () {
-            return {};
+        data.data.nodes.forEach(function (v) {
+            g.setNode(v.id, {label: v.label});
         });
+        data.data.edges.forEach(function (v) {
 
-        data.nodes.forEach(function (v) {
-            g.setNode(v.id, {label: v.label, width: 100, height: 20});
+            g.setEdge(v.start, v.end, {label: v.label});
         });
-        data.edges.forEach(function (v) {            // key = Object.keys(v)[0]
+        data.object.nodes.forEach(function (v) {
+            g.setNode(v.id, {label: v.label});
+        });
+        data.object.edges.forEach(function (v) {
 
             g.setEdge(v.start, v.end, {label: v.label});
         });
@@ -58,13 +58,19 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         svg.attr("height", g.graph().height + 40);
 
 
+        // Set up zoom support
+        var zoom = d3.behavior.zoom().on("zoom", function () {
+            svgGroup.attr("transform", "translate(" + d3.event.translate + ")" +
+            "scale(" + d3.event.scale + ")");
+        });
+        svg.call(zoom);
 
 
-        var initialScale = 0.75;
-        zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
-            .scale(initialScale)
-            .event(svg);
-        svg.attr('height', g.graph().height * initialScale + 40);
+        //var initialScale = 0.75;
+        //zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
+        //    .scale(initialScale)
+        //    .event(svg);
+        //svg.attr('height', g.graph().height * initialScale + 40);
     }
 
 }

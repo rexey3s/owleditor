@@ -6,7 +6,8 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
     var SVG_ELEMENT = this.getElement();
 
     this.onStateChange = function () {
-        var data = JSON.parse(this.getState().data);
+        var data = JSON.parse(this.getState().data) || {nodes: [], edges: []};
+
         console.log(data);
         var g = new dagreD3.graphlib.Graph()
             .setGraph({})

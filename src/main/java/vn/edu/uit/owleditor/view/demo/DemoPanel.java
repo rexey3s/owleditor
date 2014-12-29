@@ -77,8 +77,9 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         final HorizontalLayout container = new HorizontalLayout();
         addStyleName("suggestion-graph-container");
         container.addComponent(graph);
+        container.addStyleName(ValoTheme.LAYOUT_WELL);
+        container.setComponentAlignment(graph, Alignment.MIDDLE_CENTER);
         container.setSizeFull();
-        addComponent(container);
         setSizeFull();
         return container;
         

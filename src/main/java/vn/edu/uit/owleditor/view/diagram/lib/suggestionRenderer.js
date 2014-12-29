@@ -37,6 +37,8 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         });
         var viewerWidth = $(".suggestion-graph-container").width();
         var viewerHeight = $(".suggestion-graph-container").height();
+
+
         // Create the renderer
         var render = new dagreD3.render();
 
@@ -44,36 +46,22 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         var svg = d3.select(SVG_ELEMENT).append("svg")
             .attr("width", viewerWidth)
             .attr("height", viewerHeight)
-            .attr("class", "overlay");
-        inner = svg.append("g");
-        //svg.selectAll
-        // Set up zoom support
-        var zoom = d3.behavior.zoom().on("zoom", function () {
-            inner.attr("transform", "translate(" + d3.event.translate + ")" +
-            "scale(" + d3.event.scale + ")");
-        });
-        svg.call(zoom);
-
-        // Simple function to style the tooltip for the given node.
-        var styleTooltip = function (name, description) {
-            return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
-        };
+                .attr("class", "overlay"),
+            svgGroup = svg.append("g");
 
         // Run the renderer. This is what draws the final graph.
-        render(inner, g);
-
-        inner.selectAll("g.node")
-            .attr("title", function (v) {
-                return styleTooltip(v, g.node(v).description)
-            })
-            .each(function (v) {
-                $(this).tipsy({gravity: "w", opacity: 1, html: true});
-            });
+        render(d3.select("svg g"), g);
 
         // Center the graph
+        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+        svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+        svg.attr("height", g.graph().height + 40);
+
+
+
+
         var initialScale = 0.75;
-        zoom
-            .translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
+        zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
             .scale(initialScale)
             .event(svg);
         svg.attr('height', g.graph().height * initialScale + 40);

@@ -65,12 +65,6 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         });
         svg.call(zoom);
 
-
-        //var initialScale = 0.75;
-        //zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
-        //    .scale(initialScale)
-        //    .event(svg);
-        //svg.attr('height', g.graph().height * initialScale + 40);
     }
 
 }

@@ -32,4 +32,11 @@ public class AtomSearcher {
         return new DataPropertyDependenciesSearcher(ontology).getDataSet(owlClass);
         
     }
+
+    public static JsonObject getSuggestion(OWLClass owlClass, SWRLAPIOWLOntology ontology) {
+        final JsonObject data = new JsonObject();
+        data.add("data", new DataPropertyDependenciesSearcher(ontology).getDataSet(owlClass));
+        data.add("object", new ObjectPropertyDependenciesSearcher(ontology).getDataSet(owlClass));
+        return data;
+    }
 }

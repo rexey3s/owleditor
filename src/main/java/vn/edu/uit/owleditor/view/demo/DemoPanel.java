@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.demo;
 
-import com.google.gson.JsonObject;
 import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -196,11 +195,8 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     public void setPropertyDataSource(Property property) {
         if (property.getValue() != null) {
             dataSource.setValue((OWLClass) property.getValue());
-            final JsonObject data = new JsonObject();
-            data.add("data", AtomSearcher.getDataProperySuggestionAsJson(dataSource.getValue(), editorKit.getSWRLActiveOntology()));
-            data.add("object", AtomSearcher.getObjectPropertySuggestionAsJson(dataSource.getValue(), editorKit.getSWRLActiveOntology()));
-            graph.setData(data.toString());
-            
+
+            graph.setData(AtomSearcher.getSuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()));
         }
     }
 

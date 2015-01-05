@@ -72,7 +72,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
     private Component createSuggestionGraphWrapper(final Component graph) {
         final HorizontalLayout container = new HorizontalLayout();
-        graph.addStyleName("suggestion-graph-container");
+        container.addStyleName("suggestion-graph-container");
         graph.setSizeFull();
         container.addComponent(graph);
         container.addStyleName(ValoTheme.LAYOUT_WELL);

@@ -198,7 +198,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         if (property.getValue() != null) {
             dataSource.setValue((OWLClass) property.getValue());
 
-            graph.setData(AtomSearcher.getSuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()));
+            graph.setData(AtomSearcher.getSuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
         }
     }
 

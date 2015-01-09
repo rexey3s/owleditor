@@ -105,6 +105,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
                 .forEach(op -> uiFactory.getObjectPropertyAssertionCreator(
                         (OWLObjectProperty) op, individual)
                         .forEach(step -> wz.addStep(step, sf((OWLObjectProperty) op))));
+        wz.addStep(new DemoUIFactory.FinishStep());
         return wz;
     }
 
@@ -174,17 +175,15 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
 
     @Override
     public void activeStepChanged(WizardStepActivationEvent event) {
-        if (event.getActivatedStep() instanceof DemoUIFactory.DemoWizardStep) {
-            final DemoUIFactory.DemoWizardStep demoWizardStep =
-                    (DemoUIFactory.DemoWizardStep) event.getActivatedStep();
-            StringBuilder sb = new StringBuilder();
+        if (event.getActivatedStep() instanceof DemoUIFactory.FinishStep) {
+            ((DemoUIFactory.FinishStep) event.getActivatedStep())
+                    .printNewType(editorKit.getReasoner(), individualSource.getValue());
 
         }
     }
 
     @Override
     public void stepSetChanged(WizardStepSetChangedEvent event) {
-
     }
 
     @Override

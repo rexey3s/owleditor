@@ -30,11 +30,14 @@ public class SWRLAtomSearchByDefinedClass {
         final Set<OWLObjectPropertyExpression> retOEs = new HashSet<>();
         ontology.getSWRLAPIRules()
                 .stream().filter(rule -> !rule.isSQWRLQuery())
-                .forEach(rule ->
-                                rule.getBodyAtoms()
-                                        .stream().filter(atom -> atom.getClassesInSignature().contains(owlClass))
-                                        .forEach(atom -> retOEs.addAll(rule.getObjectPropertiesInSignature()))
-                );
+                .forEach(rule -> {
+                    for (SWRLAtom atom : rule.getBodyAtoms()) {
+                        if (atom.getClassesInSignature().contains(owlClass)) {
+                            retOEs.addAll(rule.getObjectPropertiesInSignature());
+                            break;
+                        }
+                    }
+                });
         return retOEs;
 
     }
@@ -43,11 +46,14 @@ public class SWRLAtomSearchByDefinedClass {
         final Set<OWLDataPropertyExpression> retDEs = new HashSet<>();
         ontology.getSWRLAPIRules()
                 .stream().filter(rule -> !rule.isSQWRLQuery())
-                .forEach(rule ->
-                                rule.getBodyAtoms()
-                                        .stream().filter(atom -> atom.getClassesInSignature().contains(owlClass))
-                                        .forEach(atom -> retDEs.addAll(rule.getDataPropertiesInSignature()))
-                );
+                .forEach(rule -> {
+                    for (SWRLAtom atom : rule.getBodyAtoms()) {
+                        if (atom.getClassesInSignature().contains(owlClass)) {
+                            retDEs.addAll(rule.getDataPropertiesInSignature());
+                            break;
+                        }
+                    }
+                });
 
         return retDEs;
     }

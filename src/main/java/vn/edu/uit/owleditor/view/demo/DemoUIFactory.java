@@ -8,6 +8,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.logging.Log;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -201,49 +202,87 @@ public class DemoUIFactory {
         final Set<WizardStep> retSteps = new HashSet<>();
         EntitySearcher.getRanges(property, editorKit.getActiveOntology())
                 .forEach(range -> {
-            retSteps.add(range.accept(new OWLDataRangeVisitorEx<WizardStep>() {
-                @Nonnull
-                @Override
-                public WizardStep visit(@Nonnull OWLDatatype node) {
-                    return new DataAssertionCreator(property, subject,
-                            (new DatatypeExtractor(property, editorKit.getActiveOntology()).getFilter()));
-                }
+                    retSteps.add(range.accept(new OWLDataRangeVisitorEx<WizardStep>() {
+                        @Nonnull
+                        @Override
+                        public WizardStep visit(@Nonnull OWLDatatype node) {
+                            return new DataAssertionCreator(property, subject,
+                                    (new DatatypeExtractor(property, editorKit.getActiveOntology()).getFilter()));
+                        }
 
-                @Nonnull
-                @Override
-                public WizardStep visit(@Nonnull OWLDataOneOf node) {
-                    return new OWLDataOneOfRangeComponent(node, property, subject);
-                }
+                        @Nonnull
+                        @Override
+                        public WizardStep visit(@Nonnull OWLDataOneOf node) {
+                            return new OWLDataOneOfRangeComponent(node, property, subject);
+                        }
 
-                @Nonnull
-                @Override
-                public WizardStep visit(@Nonnull OWLDataComplementOf node) {
-                    return defaultStep;
-                }
+                        @Nonnull
+                        @Override
+                        public WizardStep visit(@Nonnull OWLDataComplementOf node) {
+                            return defaultStep;
+                        }
 
-                @Nonnull
-                @Override
-                public WizardStep visit(@Nonnull OWLDataIntersectionOf node) {
-                    return defaultStep;
-                }
+                        @Nonnull
+                        @Override
+                        public WizardStep visit(@Nonnull OWLDataIntersectionOf node) {
+                            return defaultStep;
+                        }
 
-                @Nonnull
-                @Override
-                public WizardStep visit(@Nonnull OWLDataUnionOf node) {
-                    return defaultStep;
-                }
+                        @Nonnull
+                        @Override
+                        public WizardStep visit(@Nonnull OWLDataUnionOf node) {
+                            return defaultStep;
+                        }
 
-                @Nonnull
-                @Override
-                public WizardStep visit(@Nonnull OWLDatatypeRestriction node) {
-                    return defaultStep;
-                }
-            }));
-        });
+                        @Nonnull
+                        @Override
+                        public WizardStep visit(@Nonnull OWLDatatypeRestriction node) {
+                            return defaultStep;
+                        }
+                    }));
+                });
         return retSteps;
     }
 
     public interface DemoWizardStep extends WizardStep {
+    }
+
+    static class FinishStep extends VerticalLayout implements WizardStep {
+
+        public void printNewType(@Nonnull OWLReasoner reasoner, @Nonnull OWLNamedIndividual individual) {
+            reasoner.flush();
+            Set<OWLClass> types = reasoner.getTypes(individual, false).getFlattened();
+            for (OWLClass type : types) {
+                Label lb = new Label(OWLEditorKitImpl.getShortForm(type));
+                lb.addStyleName(ValoTheme.LABEL_COLORED);
+                lb.addStyleName(ValoTheme.LABEL_H2);
+                addComponent(lb);
+                setComponentAlignment(lb, Alignment.MIDDLE_CENTER);
+            }
+            setSpacing(true);
+            setMargin(true);
+            setSizeFull();
+        }
+
+        @Override
+        public String getCaption() {
+            return "Types Of this Individual";
+        }
+
+        @Override
+        public Component getContent() {
+            return this;
+        }
+
+        @Override
+        public boolean onAdvance() {
+            return true;
+        }
+
+        @Override
+        public boolean onBack() {
+            return true;
+        }
     }
 
     /*

@@ -82,7 +82,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
 
     private Component buildStartButton() {
         final VerticalLayout wrapper = new VerticalLayout();
-        final Button start = new Button("Start recommendation");
+        final Button start = new Button("Suggest me");
         start.addStyleName(ValoTheme.BUTTON_HUGE);
         start.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         start.addClickListener(initStartClickListener());
@@ -200,7 +200,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
             if (dialog.isConfirmed()) {
                 body.removeComponent(event.getWizard());
                 body.addComponent(start);
-                Notification.show("Recommendation Generation Cancelled", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("Suggestion Generation Cancelled", Notification.Type.TRAY_NOTIFICATION);
                 dialog.close();
             } else
                 dialog.close();

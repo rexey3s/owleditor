@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.view.demo.DemoPanel;
 import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
@@ -26,7 +27,7 @@ public class DemoSheet extends HorizontalLayout implements View {
     private DemoPanel demoPanel;
     private OWLEditorKit editorKit;
     public DemoSheet() {
-
+        editorKit = OWLEditorUI.getEditorKit();
         initialise();
     }
 

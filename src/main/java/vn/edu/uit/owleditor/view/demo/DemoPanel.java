@@ -1,11 +1,8 @@
 package vn.edu.uit.owleditor.view.demo;
 
-import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.ChangeApplied;
-import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -17,26 +14,26 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.core.swrlapi.AtomSearcher;
 import vn.edu.uit.owleditor.core.swrlapi.SWRLAtomSearchByDefinedClass;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
+import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 import vn.edu.uit.owleditor.view.diagram.SuggestionGraph;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/17/14.
  */
 
-public class DemoPanel extends VerticalLayout implements Property.Viewer, WizardProgressListener {
+public class DemoPanel extends VerticalLayout implements WizardProgressListener {
     private static final Logger LOG = LoggerFactory.getLogger(DemoPanel.class);
     private final OWLEditorKit editorKit;
 
     private final DemoUIFactory uiFactory;
 
-    private final OWLClassSource dataSource = new OWLClassSource();
+    private final OWLNamedIndividualSource individualSource = new OWLNamedIndividualSource();
 
+    private final OWLClassSource classSource = new OWLClassSource();
     private final SWRLAtomSearchByDefinedClass searcher;
 
     private final VerticalLayout body = new VerticalLayout();
@@ -44,7 +41,6 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     private final Component start;
 
     private SuggestionGraph graph;
-    private Collection<OWLNamedIndividual> individualsToClassify;
 
     public DemoPanel() {
         editorKit = OWLEditorUI.getEditorKit();
@@ -116,33 +112,12 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
     private Button.ClickListener initStartClickListener() {
         return clicked -> {
             try {
-                EditorUtils.checkNotNull(dataSource.getValue(),
-                        "Please choose a Domain (Class) to generate recommendation");
+                EditorUtils.checkNotNull(classSource.getValue(), "Please choose a Class");
+                EditorUtils.checkNotNull(individualSource.getValue(), "Please choose an Individual");
                 EditorUtils.checkNotNull(editorKit.getReasoner(), "Please turn on Reasoning");
-                Collection<OWLIndividual> individuals = EntitySearcher
-                        .getIndividuals(dataSource.getValue(), editorKit.getActiveOntology());
-                if (individuals.isEmpty()) {
-                    Notification.show(sf(dataSource.getValue()) + " does not have any individuals to classify",
-                            Notification.Type.WARNING_MESSAGE);
-                } else
-//                PopulateClassWithDefaultIndividual();
-                ConfirmDialog.show(UI.getCurrent(),
-                        "Generate recommendation for " + OWLEditorKitImpl.getShortForm(dataSource.getValue()),
-                        dialog -> {
-                            individualsToClassify = new HashSet<>();
-                            if (dialog.isConfirmed()) {
-                                individuals.stream().filter(OWLIndividual::isNamed)
-                                        .forEach(i -> individualsToClassify.add((OWLNamedIndividual) i));
-                                if (individualsToClassify.iterator().hasNext()) {
-                                    OWLNamedIndividual i = individualsToClassify.iterator().next();
-                                    body.removeComponent(start);
-                                    body.addComponent(buildWizard(dataSource.getValue(), i));
-                                }
 
-                            } else
-                                dialog.close();
-                        });
-
+                body.removeComponent(start);
+                body.addComponent(buildWizard(classSource.getValue(), individualSource.getValue()));
             } catch (NullPointerException ex) {
                 Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);
             }
@@ -150,7 +125,7 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
         };
     }
 
-
+    /*
     private void PopulateClassWithDefaultIndividual() {
         editorKit.getActiveOntology().getClassesInSignature().forEach(clz -> {
             if (!checkHadDefaultIndividual(clz)) {
@@ -183,22 +158,17 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
         return editorKit.getActiveOntology().isDeclared(individual);
     }
-
+    */
     private String sf(OWLEntity entity) {
         return OWLEditorKitImpl.getShortForm(entity);
     }
 
-    @Override
-    public Property getPropertyDataSource() {
-        return dataSource;
-    }
-
-    @Override
-    public void setPropertyDataSource(Property property) {
-        if (property.getValue() != null) {
-            dataSource.setValue((OWLClass) property.getValue());
-
-            graph.setData(AtomSearcher.getSuggestion(dataSource.getValue(), editorKit.getSWRLActiveOntology()).toString());
+    public void setSuggestionSource(OWLClass cls, OWLNamedIndividual individual) {
+        if (cls != null && individual != null) {
+            classSource.setValue(cls);
+            individualSource.setValue(individual);
+            graph.setData(AtomSearcher.getSuggestion(cls, editorKit.getSWRLActiveOntology()).toString());
+            
         }
     }
 
@@ -219,18 +189,8 @@ public class DemoPanel extends VerticalLayout implements Property.Viewer, Wizard
 
     @Override
     public void wizardCompleted(WizardCompletedEvent event) {
-        individualsToClassify.remove(((DemoWizard) event.getWizard()).getOwner());
         body.removeComponent(event.getWizard());
-        //            body.removeComponent(start);
-
-        if (individualsToClassify.iterator().hasNext()) {
-            OWLNamedIndividual i = individualsToClassify.iterator().next();
-
-            body.addComponent(buildWizard(dataSource.getValue(), i));
-            body.removeComponent(start);
-        } else {
-            Notification.show("Classification completed");
-        }
+        body.addComponent(start);    
 
     }
 

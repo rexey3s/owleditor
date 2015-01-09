@@ -88,17 +88,15 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
-        activeOntology.getDirectImportsDocuments();
+//        activeOntology.getDirectImportsDocuments();
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
         prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
         ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-
         sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
         bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
         parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
         parser.setDefaultOntology(activeOntology);
-
         reasonerToggle();
     }
 

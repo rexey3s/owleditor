@@ -65,7 +65,9 @@ public class DemoUIFactory {
             }
         };
         final Set<WizardStep> retSteps = new HashSet<>();
-        EntitySearcher.getRanges(property, editorKit.getActiveOntology()).forEach(range -> {
+        Collection<OWLClassExpression> ranges = EntitySearcher.getRanges(property, editorKit.getActiveOntology());
+        if (ranges.size() > 0)
+            ranges.forEach(range -> {
             retSteps.add(range.accept(new OWLClassExpressionVisitorEx<WizardStep>() {
                 @Nonnull
                 @Override
@@ -176,6 +178,9 @@ public class DemoUIFactory {
                 }
             }
         ));});
+        else {
+            retSteps.add(new ObjectPropertyAssertionCreator(property, subject));
+        }
         return retSteps;
     }
 
@@ -200,47 +205,52 @@ public class DemoUIFactory {
             }
         };
         final Set<WizardStep> retSteps = new HashSet<>();
-        EntitySearcher.getRanges(property, editorKit.getActiveOntology())
-                .forEach(range -> {
-                    retSteps.add(range.accept(new OWLDataRangeVisitorEx<WizardStep>() {
-                        @Nonnull
-                        @Override
-                        public WizardStep visit(@Nonnull OWLDatatype node) {
-                            return new DataAssertionCreator(property, subject,
-                                    (new DatatypeExtractor(property, editorKit.getActiveOntology()).getFilter()));
-                        }
+        Collection<OWLDataRange> ranges = EntitySearcher.getRanges(property, editorKit.getActiveOntology());
+        if (ranges.size() > 0)
+            ranges.forEach(range -> {
+                retSteps.add(range.accept(new OWLDataRangeVisitorEx<WizardStep>() {
+                    @Nonnull
+                    @Override
+                    public WizardStep visit(@Nonnull OWLDatatype node) {
+                        return new DataAssertionCreator(property, subject,
+                                (new DatatypeExtractor(property, editorKit.getActiveOntology()).getFilter()));
+                    }
 
-                        @Nonnull
-                        @Override
-                        public WizardStep visit(@Nonnull OWLDataOneOf node) {
-                            return new OWLDataOneOfRangeComponent(node, property, subject);
-                        }
+                    @Nonnull
+                    @Override
+                    public WizardStep visit(@Nonnull OWLDataOneOf node) {
+                        return new OWLDataOneOfRangeComponent(node, property, subject);
+                    }
 
-                        @Nonnull
-                        @Override
-                        public WizardStep visit(@Nonnull OWLDataComplementOf node) {
-                            return defaultStep;
-                        }
+                    @Nonnull
+                    @Override
+                    public WizardStep visit(@Nonnull OWLDataComplementOf node) {
+                        return defaultStep;
+                    }
 
-                        @Nonnull
-                        @Override
-                        public WizardStep visit(@Nonnull OWLDataIntersectionOf node) {
-                            return defaultStep;
-                        }
+                    @Nonnull
+                    @Override
+                    public WizardStep visit(@Nonnull OWLDataIntersectionOf node) {
+                        return defaultStep;
+                    }
 
-                        @Nonnull
-                        @Override
-                        public WizardStep visit(@Nonnull OWLDataUnionOf node) {
-                            return defaultStep;
-                        }
+                    @Nonnull
+                    @Override
+                    public WizardStep visit(@Nonnull OWLDataUnionOf node) {
+                        return defaultStep;
+                    }
 
-                        @Nonnull
-                        @Override
-                        public WizardStep visit(@Nonnull OWLDatatypeRestriction node) {
-                            return defaultStep;
-                        }
-                    }));
-                });
+                    @Nonnull
+                    @Override
+                    public WizardStep visit(@Nonnull OWLDatatypeRestriction node) {
+                        return defaultStep;
+                    }
+                }));
+            });
+        else {
+            retSteps.add(new DataAssertionCreator(property, subject,
+                    (new DatatypeExtractor(property, editorKit.getActiveOntology()).getFilter())));
+        }
         return retSteps;
     }
 

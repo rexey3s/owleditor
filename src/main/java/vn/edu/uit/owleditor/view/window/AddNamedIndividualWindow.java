@@ -4,14 +4,16 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 /**
- * Created by Chuong Dang on 18/11/2014.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecommunication created on 18/11/2014.
  */
 public class AddNamedIndividualWindow extends Window {
 
@@ -20,8 +22,7 @@ public class AddNamedIndividualWindow extends Window {
 
     public AddNamedIndividualWindow(OWLExpressionAddHandler<OWLNamedIndividual> addExpression) {
         this.addExpression = addExpression;
-        OWLEditorKitImpl eKit = (OWLEditorKitImpl)
-                UI.getCurrent().getSession().getAttribute("kit");
+        OWLEditorKit eKit = OWLEditorUI.getEditorKit();
 
         OWLNamedIndividualContainer container = eKit.getDataFactory().getOWLIndividualListContainer();
 

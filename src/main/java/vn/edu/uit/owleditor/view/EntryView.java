@@ -53,7 +53,7 @@ public class EntryView extends VerticalLayout {
         final HorizontalLayout urlFieldWrapper = new HorizontalLayout();
         final Button openBtn = new Button("Open");
 
-        urlField.addStyleName(ValoTheme.TEXTFIELD_HUGE);
+        urlField.addStyleName(ValoTheme.TEXTFIELD_LARGE);
         openBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         urlFieldWrapper.addComponents(urlField, openBtn);
@@ -90,6 +90,7 @@ public class EntryView extends VerticalLayout {
     private Component buildUploadEntry() {
         final HorizontalLayout uploadWrapper = new HorizontalLayout();
         final Button openBtn = new Button("Open file");
+//        openBtn.setEnabled(false);
         uploadWrapper.addComponents(uploadField, openBtn);
         uploadWrapper.setSizeUndefined();
 
@@ -97,11 +98,15 @@ public class EntryView extends VerticalLayout {
         uploadWrapper.setComponentAlignment(openBtn, Alignment.BOTTOM_LEFT);
         uploadField.setFieldType(UploadField.FieldType.FILE);
         uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
-        openBtn.addListener((Button.ClickEvent event) -> {
+        uploadField.addValueChangeListener(change -> {
+            openBtn.setEnabled(change.getProperty().getValue() != null);
+        });
+        openBtn.addClickListener(event -> {
             try {
                 File file = (File) uploadField.getValue();
                 LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
+
                     OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
 
                     VaadinSession.getCurrent().setConverterFactory(

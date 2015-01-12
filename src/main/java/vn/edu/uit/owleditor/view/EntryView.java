@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
@@ -54,8 +53,7 @@ public class EntryView extends VerticalLayout {
         final HorizontalLayout urlFieldWrapper = new HorizontalLayout();
         final Button openBtn = new Button("Open");
 
-        urlField.setIcon(FontAwesome.EXTERNAL_LINK);
-        urlField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        urlField.addStyleName(ValoTheme.TEXTFIELD_HUGE);
         openBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         urlFieldWrapper.addComponents(urlField, openBtn);

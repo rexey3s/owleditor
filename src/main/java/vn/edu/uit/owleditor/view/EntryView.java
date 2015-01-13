@@ -25,7 +25,7 @@ import java.io.File;
  */
 @UIScope
 @VaadinComponent
-public class EntryView extends MVerticalLayout {
+public class EntryView extends VerticalLayout {
     public final static String NAME = "entryView";
     private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
@@ -35,9 +35,9 @@ public class EntryView extends MVerticalLayout {
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
         Responsive.makeResponsive(entriesPanel);
-        this.with(entriesPanel)
-                .withAlign(entriesPanel, Alignment.MIDDLE_CENTER)
-                .withStyleName("owleditor-entry-view");
+        addComponent(entriesPanel);
+        setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
+        addStyleName("owleditor-entry-view");
         setSizeFull();
     }
 

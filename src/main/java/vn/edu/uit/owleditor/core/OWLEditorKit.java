@@ -19,7 +19,8 @@ import javax.annotation.Nonnull;
 @Service
 public interface OWLEditorKit {
 
-
+    public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
+    
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
 
     public Boolean getReasonerStatus();
@@ -57,5 +58,6 @@ public interface OWLEditorKit {
     public void removeActiveOntology();
 
     public void addMoreOntology(IRI iri) throws OWLOntologyCreationException;
+    
     
 }

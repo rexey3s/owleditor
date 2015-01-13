@@ -83,7 +83,22 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         return renderer.render(object);
     }
 
-
+    public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
+        initialise();    
+        activeOntology = modelManager.createOntology(documentIRI);
+        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
+//        activeOntology.getDirectImportsDocuments();
+        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
+        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
+        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
+        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
+        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
+        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
+        parser.setDefaultOntology(activeOntology);
+        reasonerToggle();
+    }
+    
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
@@ -99,7 +114,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         parser.setDefaultOntology(activeOntology);
         reasonerToggle();
     }
-
+    
     public ExplanationTree explain(OWLAxiom axiom) {
         EditorUtils.checkNotNull(axiom, "Cannot generate any explanations!");
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));

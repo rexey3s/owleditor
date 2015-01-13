@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
@@ -30,8 +31,6 @@ public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
-    private final UploadField uploadField = new UploadField();
-    private final MTextField urlField = new MTextField().withFullWidth();
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
@@ -44,12 +43,13 @@ public class EntryView extends VerticalLayout {
 
 
     private Layout buildEntryPanel() {
-        return new MVerticalLayout(buildUrlEntry(), buildUploadEntry())
+        return new MVerticalLayout(buildUrlEntry(), buildUploadEntry(), buildCreateEntry())
                 .withStyleName("entry-panel")
                 .withSpacing(true);
     }
 
     private Layout buildUrlEntry() {
+        final MTextField urlField = new MTextField().withFullWidth();
         final MButton openBtn = new MButton("Open", click -> {
             try {
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
@@ -76,11 +76,12 @@ public class EntryView extends VerticalLayout {
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
 
         return new MHorizontalLayout(urlField, openBtn)
-                .withAlign(openBtn, Alignment.BOTTOM_LEFT)
+                .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
                 .withSpacing(true);
     }
 
     private Layout buildUploadEntry() {
+        final UploadField uploadField = new UploadField();
         final MButton openBtn = new MButton("Open file", click -> {
             try {
                 File file = (File) uploadField.getValue();
@@ -111,9 +112,32 @@ public class EntryView extends VerticalLayout {
         });
 
         return new MHorizontalLayout(uploadField, openBtn)
-                .withAlign(openBtn, Alignment.BOTTOM_LEFT)
+                .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
                 .withSpacing(true);
     }
     
+    private Layout buildCreateEntry() {
+        final MTextField iriField = new MTextField()
+                .withFullWidth().withInputPrompt("http://www.semanticweb.org/ontologies/your_ontology_iri");
+        final MButton open = new MButton("Create", click -> {
+           try {
+               Assert.notNull(iriField.getValue(), "Please enter an URI");
+               OWLEditorUI.getEditorKit().createOntologyFromOntologyDocument(IRI.create(iriField.getValue()));
+               VaadinSession.getCurrent().setConverterFactory(
+                       new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
+               OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
+               UI.getCurrent().setContent(new MainView());
+           }
+           catch (NullPointerException emptyURI) {
+               Notification.show(emptyURI.getMessage(), Notification.Type.WARNING_MESSAGE);
+           }
+           catch (OWLOntologyCreationException creationEx) {
+               Notification.show(creationEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+           }
+        });
+        return new MHorizontalLayout(iriField, open)
+                .withAlign(open, Alignment.MIDDLE_CENTER)
+                .withSpacing(true);
+    }
 }

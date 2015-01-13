@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -9,13 +8,13 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.vaadin.alump.columnlayout.ColumnLayout;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
@@ -31,24 +30,33 @@ public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
+    ColumnLayout panel = new ColumnLayout();
 
     public EntryView() {
-        final Component entriesPanel = buildEntryPanel();
-        Responsive.makeResponsive(entriesPanel);
-        addComponent(entriesPanel);
-        setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
+//        final Component entriesPanel = buildEntryPanel();
+//        Responsive.makeResponsive(entriesPanel);
+        panel.setSizeFull();
+        panel.setSpacing(true);
+        buildUrlEntry();
+        buildUploadEntry();
+        buildCreateEntry();
+        final HorizontalLayout hl = new MHorizontalLayout(panel).withFullWidth();
+        addComponent(hl);
+        setComponentAlignment(hl, Alignment.MIDDLE_CENTER);
         addStyleName("owleditor-entry-view");
+        
         setSizeFull();
     }
 
 
-    private Layout buildEntryPanel() {
-        return new MVerticalLayout(buildUrlEntry(), buildUploadEntry(), buildCreateEntry())
-                .withStyleName("entry-panel")
-                .withSpacing(true);
-    }
+//    private Layout buildEntryPanel() {
+//        
+//        return new MVerticalLayout(buildUrlEntry(), buildUploadEntry(), buildCreateEntry())
+//                .withStyleName("entry-panel")
+//                .withSpacing(true);
+//    }
 
-    private Layout buildUrlEntry() {
+    private void buildUrlEntry() {
         final MTextField urlField = new MTextField().withFullWidth();
         final MButton openBtn = new MButton("Open", click -> {
             try {
@@ -74,13 +82,15 @@ public class EntryView extends VerticalLayout {
             }
 
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
-
-        return new MHorizontalLayout(urlField, openBtn)
-                .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
-                .withSpacing(true);
+        
+        panel.addComponent(urlField, 0);
+        panel.addComponent(openBtn, 1);
+//        return new MHorizontalLayout(urlField, openBtn)
+//                .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
+//                .withSpacing(true);
     }
 
-    private Layout buildUploadEntry() {
+    private void buildUploadEntry() {
         final UploadField uploadField = new UploadField();
         final MButton openBtn = new MButton("Open file", click -> {
             try {
@@ -110,13 +120,14 @@ public class EntryView extends VerticalLayout {
         uploadField.addValueChangeListener(change -> {
             openBtn.setEnabled(change.getProperty().getValue() != null);
         });
-
-        return new MHorizontalLayout(uploadField, openBtn)
-                .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
-                .withSpacing(true);
+        panel.addComponent(uploadField, 0);
+        panel.addComponent(openBtn, 1);
+//        return new MHorizontalLayout(uploadField, openBtn)
+//                .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
+//                .withSpacing(true);
     }
     
-    private Layout buildCreateEntry() {
+    private void buildCreateEntry() {
         final MTextField iriField = new MTextField()
                 .withFullWidth().withInputPrompt("http://www.semanticweb.org/ontologies/your_ontology_iri");
         final MButton open = new MButton("Create", click -> {
@@ -136,8 +147,10 @@ public class EntryView extends VerticalLayout {
                Notification.show(creationEx.getMessage(), Notification.Type.ERROR_MESSAGE);
            }
         });
-        return new MHorizontalLayout(iriField, open)
-                .withAlign(open, Alignment.MIDDLE_CENTER)
-                .withSpacing(true);
+        panel.addComponent(iriField, 0);
+        panel.addComponent(open, 1);
+//        return new MHorizontalLayout(iriField, open)
+//                .withAlign(open, Alignment.MIDDLE_CENTER)
+//                .withSpacing(true);
     }
 }

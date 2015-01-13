@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view;
 
+import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -33,10 +34,11 @@ public class EntryView extends MVerticalLayout {
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
+        Responsive.makeResponsive(entriesPanel);
         this.with(entriesPanel)
                 .withAlign(entriesPanel, Alignment.MIDDLE_CENTER)
-                .withStyleName("owleditor-entry-view")
-                .withFullWidth().withFullHeight();
+                .withStyleName("owleditor-entry-view");
+        setSizeFull();
     }
 
 

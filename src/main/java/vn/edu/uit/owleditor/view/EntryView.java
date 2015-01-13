@@ -115,7 +115,5 @@ public class EntryView extends VerticalLayout {
                 .withSpacing(true);
     }
     
-    private Layout buildCreateEntry() {
 
-    }
 }

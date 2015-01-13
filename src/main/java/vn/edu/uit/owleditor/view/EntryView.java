@@ -12,6 +12,7 @@ import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
@@ -30,7 +31,7 @@ public class EntryView extends VerticalLayout {
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
-    private final TextField urlField = new TextField();
+    private final MTextField urlField = new MTextField().withFullWidth();
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
@@ -57,7 +58,6 @@ public class EntryView extends VerticalLayout {
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
-
             } 
             catch (NullPointerException nullEx) {
                 
@@ -114,5 +114,8 @@ public class EntryView extends VerticalLayout {
                 .withAlign(openBtn, Alignment.BOTTOM_LEFT)
                 .withSpacing(true);
     }
+    
+    private Layout buildCreateEntry() {
 
+    }
 }

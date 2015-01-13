@@ -35,7 +35,7 @@ public class EntryView extends VerticalLayout {
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
         Responsive.makeResponsive(entriesPanel);
-
+        addComponent(entriesPanel);
         setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
         addStyleName("owleditor-entry-view");
         

@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view;
 
-import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -11,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
@@ -22,7 +24,7 @@ import java.io.File;
  */
 @UIScope
 @VaadinComponent
-public class EntryView extends VerticalLayout {
+public class EntryView extends MVerticalLayout {
     public final static String NAME = "entryView";
     private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
@@ -31,77 +33,47 @@ public class EntryView extends VerticalLayout {
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
-        addComponent(entriesPanel);
-        setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
-        addStyleName("owleditor-entry-view");
-        setSizeFull();
+        this.with(entriesPanel)
+                .withAlign(entriesPanel, Alignment.MIDDLE_CENTER)
+                .withStyleName("owleditor-entry-view")
+                .withFullWidth().withFullHeight();
     }
 
 
     private Component buildEntryPanel() {
-        final VerticalLayout entryPanel = new VerticalLayout();
-        entryPanel.setSizeUndefined();
-        entryPanel.setSpacing(true);
-        entryPanel.addComponent(buildUrlEntry());
-        entryPanel.addComponent(buildUploadEntry());
-        Responsive.makeResponsive(entryPanel);
-        entryPanel.addStyleName("entry-panel");
-        return entryPanel;
+        return new MVerticalLayout(buildUrlEntry(), buildUploadEntry())
+                .withStyleName("entry-panel")
+                .withSpacing(true);
     }
 
     private Component buildUrlEntry() {
-        final HorizontalLayout urlFieldWrapper = new HorizontalLayout();
-        final Button openBtn = new Button("Open");
-
-        urlField.addStyleName(ValoTheme.TEXTFIELD_LARGE);
-        openBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
-
-        urlFieldWrapper.addComponents(urlField, openBtn);
-        urlFieldWrapper.setComponentAlignment(openBtn, Alignment.BOTTOM_LEFT);
-        urlFieldWrapper.setSpacing(true);
-        urlFieldWrapper.setSizeUndefined();
-
-        openBtn.addListener((Button.ClickEvent event) -> {
+        final MButton openBtn = new MButton("Open", click -> {
             try {
-
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
-
-                VaadinSession.getCurrent().setConverterFactory(
-                        new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
+                VaadinSession.getCurrent()
+                        .setConverterFactory(new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
-                
                 UI.getCurrent().setContent(new MainView());
 
             } catch (NullPointerException nullEx) {
+                Notification.show("The URL is invalid", Notification.Type.WARNING_MESSAGE);
                 LOG.error(nullEx.getMessage());
             }
             catch (OWLOntologyCreationException e) {
-                Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
+                Notification.show("Ontology Creation Error", Notification.Type.ERROR_MESSAGE);
+                LOG.error(e.getMessage());
             } catch (Exception e) {
                 LOG.error(e.getMessage());
-                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
             }
-        });
 
-        return urlFieldWrapper;
+        }).withStyleName(ValoTheme.BUTTON_PRIMARY);
+
+        return new MHorizontalLayout(urlField, openBtn).withAlign(openBtn, Alignment.BOTTOM_LEFT).withSpacing(true);
     }
 
     private Component buildUploadEntry() {
-        final HorizontalLayout uploadWrapper = new HorizontalLayout();
-        final Button openBtn = new Button("Open file");
-//        openBtn.setEnabled(false);
-        uploadWrapper.addComponents(uploadField, openBtn);
-        uploadWrapper.setSizeUndefined();
-
-        openBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        uploadWrapper.setComponentAlignment(openBtn, Alignment.BOTTOM_LEFT);
-        uploadField.setFieldType(UploadField.FieldType.FILE);
-        uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
-        uploadField.addValueChangeListener(change -> {
-            openBtn.setEnabled(change.getProperty().getValue() != null);
-        });
-        openBtn.addClickListener(event -> {
+        final MButton openBtn = new MButton("Open file", click -> {
             try {
                 File file = (File) uploadField.getValue();
                 LOG.info(file.getAbsolutePath());
@@ -120,8 +92,14 @@ public class EntryView extends VerticalLayout {
             } catch (OWLOntologyCreationException e) {
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
+        }).withStyleName(ValoTheme.BUTTON_PRIMARY);
+        uploadField.setFieldType(UploadField.FieldType.FILE);
+        uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
+        uploadField.addValueChangeListener(change -> {
+            openBtn.setEnabled(change.getProperty().getValue() != null);
         });
-        return uploadWrapper;
+
+        return new MHorizontalLayout(uploadField, openBtn).withAlign(openBtn, Alignment.BOTTOM_LEFT).withSpacing(true);
     }
 
 }

@@ -55,5 +55,7 @@ public interface OWLEditorKit {
     public void setPrefixManager(PrefixManager prefixManager);
     
     public void removeActiveOntology();
+
+    public void addMoreOntology(IRI iri) throws OWLOntologyCreationException;
     
 }

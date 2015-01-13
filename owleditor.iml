@@ -166,7 +166,6 @@
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.directory.studio:org.apache.commons.io:2.4" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: net.sf.trove4j:trove4j:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.owldl:pellet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: aterm:aterm-java:1.6" level="project" />
@@ -188,10 +187,11 @@
     <orderEntry type="library" name="Maven: org.vaadin.addons:wizards-for-vaadin:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addon:easyuploads:7.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.peimari:maddon:1.20" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin:viritin:1.22" level="project" />
     <orderEntry type="library" name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.9.2" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin:suggestfield:0.0.3" level="project" />
   </component>
 </module>

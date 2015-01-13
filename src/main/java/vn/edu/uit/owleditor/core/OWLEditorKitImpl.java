@@ -214,4 +214,11 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         }
     }
 
+    public void addMoreOntology(@Nonnull IRI iri) throws OWLOntologyCreationException {
+        if (!modelManager.contains(iri)) {
+            activeOntology = modelManager.loadOntologyFromOntologyDocument(iri);
+        }
+
+    }
+
 }

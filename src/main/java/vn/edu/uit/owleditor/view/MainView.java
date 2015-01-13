@@ -1,12 +1,15 @@
 package vn.edu.uit.owleditor.view;
 
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
+import vn.edu.uit.owleditor.OWLEditorUI;
+
 
 
 /**
@@ -31,17 +34,14 @@ public class MainView extends HorizontalLayout {
         root.addTab(new DemoSheet(), "Demo 1");
         DiagramSheet diagramSheet = new DiagramSheet();
         root.addTab(diagramSheet, "Diagram");
-        root.addSelectedTabChangeListener(event -> {
-//            if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
-//                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
-//            }
-        });
+        root.addSelectedTabChangeListener(event ->
+                        Notification.show("Reasoner is :" + (OWLEditorUI.getEditorKit().getReasonerStatus() ? "on" : "off"))
+        );
         root.setSizeFull();
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
         addComponent(root);
         setSizeFull();
-
-
     }
+
 
 }

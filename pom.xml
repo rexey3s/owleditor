@@ -180,11 +180,11 @@
 			<artifactId>viritin</artifactId>
 			<version>1.22</version>
 		</dependency>
-		<dependency>
-			<groupId>org.vaadin.alump.columnlayout</groupId>
-			<artifactId>columnlayout-addon</artifactId>
-			<version>0.1.6</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.vaadin.alump.columnlayout</groupId>-->
+			<!--<artifactId>columnlayout-addon</artifactId>-->
+			<!--<version>0.1.6</version>-->
+		<!--</dependency>-->
 	</dependencies>
 
 	<build>

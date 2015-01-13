@@ -26,8 +26,8 @@ import java.io.File;
 @UIScope
 @VaadinComponent
 public class EntryView extends VerticalLayout {
-    public final static String NAME = "entryView";
-    private final static Logger LOG = LoggerFactory.getLogger(EntryView.class);
+    public  static final String NAME = "entryView";
+    private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
     private final UploadField uploadField = new UploadField();
     private final TextField urlField = new TextField();
@@ -42,13 +42,13 @@ public class EntryView extends VerticalLayout {
     }
 
 
-    private Component buildEntryPanel() {
+    private Layout buildEntryPanel() {
         return new MVerticalLayout(buildUrlEntry(), buildUploadEntry())
                 .withStyleName("entry-panel")
                 .withSpacing(true);
     }
 
-    private Component buildUrlEntry() {
+    private Layout buildUrlEntry() {
         final MButton openBtn = new MButton("Open", click -> {
             try {
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
@@ -80,11 +80,10 @@ public class EntryView extends VerticalLayout {
                 .withSpacing(true);
     }
 
-    private Component buildUploadEntry() {
+    private Layout buildUploadEntry() {
         final MButton openBtn = new MButton("Open file", click -> {
             try {
                 File file = (File) uploadField.getValue();
-                LOG.info(file.getAbsolutePath());
                 if (file.exists()) {
 
                     OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));

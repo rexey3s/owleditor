@@ -58,20 +58,26 @@ public class EntryView extends MVerticalLayout {
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
 
-            } catch (NullPointerException nullEx) {
+            } 
+            catch (NullPointerException nullEx) {
+                
                 Notification.show("The URL is invalid", Notification.Type.WARNING_MESSAGE);
                 LOG.error(nullEx.getMessage());
             }
             catch (OWLOntologyCreationException e) {
+                
                 Notification.show("Ontology Creation Error", Notification.Type.ERROR_MESSAGE);
                 LOG.error(e.getMessage());
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 LOG.error(e.getMessage());
             }
 
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        return new MHorizontalLayout(urlField, openBtn).withAlign(openBtn, Alignment.BOTTOM_LEFT).withSpacing(true);
+        return new MHorizontalLayout(urlField, openBtn)
+                .withAlign(openBtn, Alignment.BOTTOM_LEFT)
+                .withSpacing(true);
     }
 
     private Component buildUploadEntry() {
@@ -82,26 +88,32 @@ public class EntryView extends MVerticalLayout {
                 if (file.exists()) {
 
                     OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
-
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                     OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                     UI.getCurrent().setContent(new MainView());
                 }
-            } catch (NullPointerException nullEx) {
+            } 
+            catch (NullPointerException nullEx) {
+                
                 Notification.show("Please upload your file", Notification.Type.ERROR_MESSAGE);
-            } catch (OWLOntologyCreationException e) {
+            } 
+            catch (OWLOntologyCreationException e) {
+                
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
+
         uploadField.setFieldType(UploadField.FieldType.FILE);
         uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
         uploadField.addValueChangeListener(change -> {
             openBtn.setEnabled(change.getProperty().getValue() != null);
         });
 
-        return new MHorizontalLayout(uploadField, openBtn).withAlign(openBtn, Alignment.BOTTOM_LEFT).withSpacing(true);
+        return new MHorizontalLayout(uploadField, openBtn)
+                .withAlign(openBtn, Alignment.BOTTOM_LEFT)
+                .withSpacing(true);
     }
 
 }

@@ -1,8 +1,8 @@
 package vn.edu.uit.owleditor.view.component;
 
 import com.vaadin.data.util.converter.StringToIntegerConverter;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -24,7 +24,7 @@ public class ObjectRestrictionCreator extends VerticalLayout {
     private final OWLEditorKit editorKit;
     private ObjectPropertyHierarchicalPanel objectPropertyHierarchy;
     private ClassHierarchicalPanel classHierarchy;
-    private ListSelect wordBox;
+    private ComboBox wordBox;
     private TextField numberField;
 
     public ObjectRestrictionCreator() {
@@ -36,7 +36,7 @@ public class ObjectRestrictionCreator extends VerticalLayout {
     private void initialize() {
         classHierarchy = new ClassHierarchicalPanel();
         objectPropertyHierarchy = new ObjectPropertyHierarchicalPanel();
-        wordBox = new ListSelect();
+        wordBox = new ComboBox();
         numberField = new TextField();
 
         HorizontalLayout hcWrapper = new HorizontalLayout();

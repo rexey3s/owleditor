@@ -47,12 +47,12 @@ public class EntryView extends VerticalLayout {
 
         return new MVerticalLayout(buildUrlEntry(), buildUploadEntry(), buildCreateEntry())
                 .withStyleName("entry-panel")
-                .withWidth("550px")
+                .withWidth("500px")
                 .withSpacing(true);
     }
 
     private Layout buildUrlEntry() {
-        final MTextField urlField = new MTextField().withWidth("400px");
+        final MTextField urlField = new MTextField().withWidth("350px");
         final MButton openBtn = new MButton("Open", click -> {
             try {
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
@@ -114,15 +114,15 @@ public class EntryView extends VerticalLayout {
         uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
         uploadField.addValueChangeListener(change -> openBtn.setEnabled(change.getProperty().getValue() != null));
         MHorizontalLayout fieldWrapper = new MHorizontalLayout(uploadField)
-                .withWidth("400px");
+                .withWidth("350px");
         return new MHorizontalLayout(fieldWrapper, openBtn)
                 .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
                 .withSpacing(true);
     }
     
     private Layout buildCreateEntry() {
-        final MTextField iriField = new MTextField().withWidth("400px")
-                .withInputPrompt("http://www.semanticweb.org/ontologies/your_ontology_iri");
+        final MTextField iriField = new MTextField().withWidth("350px")
+                .withInputPrompt("http://www.semanticweb.org/ontologies/ont_iri");
         final MButton open = new MButton("Create", click -> {
            try {
                Assert.notNull(iriField.getValue(), "Please enter an URI");

@@ -42,7 +42,7 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         setClosable(false);
         setResizable(false);
         setWidth(300.0f, Unit.PIXELS);
-        setHeight(00.0f, Unit.PIXELS);
+        setHeight(200.0f, Unit.PIXELS);
         setContent(buildContent());
     }
 

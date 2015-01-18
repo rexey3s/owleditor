@@ -50,7 +50,9 @@ public class ClassesSheet extends HorizontalLayout implements View {
         setSpacing(true);
         setSizeFull();
     }
-
+    public void setReasonerToggle(Boolean value) {
+        hcLayout.setReasonerToggle(value);
+    }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

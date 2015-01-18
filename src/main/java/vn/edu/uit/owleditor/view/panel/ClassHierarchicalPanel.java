@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.io.StreamDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
+import org.springframework.util.Assert;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
@@ -42,6 +43,7 @@ import java.util.List;
 @VaadinUIScope
 @VaadinComponent
 public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
+    
     // Actions for the context menu
     private static final Action ADD_SUB = new Action("Add SubClass");
     private static final Action ADD_SIBLING = new Action("Add SiblingClass");
@@ -144,7 +146,9 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             handleRemovalNode();
         }
     }
-
+    public void setReasonerToggle(Boolean value) {
+        reasonerToggle.setCheckable(value);
+    }
     private void toggleReasoner(Boolean value) {
         if (value) {
             editorKit.setReasonerStatus(value);
@@ -348,7 +352,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         private final OWLEditorKit eKit;
         private final TextField ontologyName = new TextField();
         private final OWLDocumentFormat documentFormat;
-        private OWLDocumentFormat targetFormat;
+//        private OWLDocumentFormat targetFormat;
         private final ComboBox formats = new ComboBox();
         private OWLXMLDocumentFormat owlxmlFormat = new OWLXMLDocumentFormat();
         private RDFXMLDocumentFormat rdfxmlFormat = new RDFXMLDocumentFormat();
@@ -381,23 +385,48 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             setModal(true);
             setClosable(false);
             setResizable(false);
-            setWidth(400.0f, Unit.PIXELS);
-            setHeight(300.0f, Unit.PIXELS);
+            setWidth(300.0f, Unit.PIXELS);
+            setHeight(200.0f, Unit.PIXELS);
             setContent(buildContent());
         }
-        private StreamResource createResource() {
-            return new StreamResource(() -> {
-                try {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    eKit.getModelManager()
-                            .saveOntology(eKit.getActiveOntology(), targetFormat, new StreamDocumentTarget(bos));
-                    return new ByteArrayInputStream(bos.toByteArray());
+        private OWLDocumentFormat selectFormat() throws NullPointerException {
+            Assert.notNull(formats.getValue(),"Select format");
 
+            if(documentFormat.isPrefixOWLOntologyFormat()) {
+                if(formats.getValue() instanceof RDFXMLDocumentFormat) {
+                    rdfxmlFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                    return rdfxmlFormat;
+                }
+                if(formats.getValue() instanceof OWLXMLDocumentFormat) {
+                    owlxmlFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                    return owlxmlFormat;
+                }
+                if(formats.getValue() instanceof ManchesterSyntaxDocumentFormat) {
+                    manSyntaxFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                    return manSyntaxFormat;
+                }
+                if(formats.getValue() instanceof FunctionalSyntaxDocumentFormat) {
+                    funcSyntaxFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                    return funcSyntaxFormat;
+                }
+            }
+            return documentFormat;
+        }
+        private StreamResource createResource()  {
+            return new StreamResource(() -> {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                try {
+                    Assert.notNull(ontologyName.getValue(), "Enter name");
+//                    Assert.notNull(formats.getValue(), "Select format");
+                    eKit.getModelManager()
+                            .saveOntology(eKit.getActiveOntology(), selectFormat(), new StreamDocumentTarget(bos));
+
+                } catch (NullPointerException nullEx) {
+                    Notification.show(nullEx.getMessage(), Notification.Type.WARNING_MESSAGE);
                 } catch (OWLOntologyStorageException e) {
                     e.printStackTrace();
-                    return null;
                 }
-
+                return new ByteArrayInputStream(bos.toByteArray());
             }, ontologyName.getValue());
         }
         

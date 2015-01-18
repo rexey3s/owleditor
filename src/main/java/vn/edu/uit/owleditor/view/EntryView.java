@@ -112,11 +112,10 @@ public class EntryView extends VerticalLayout {
 
         uploadField.setFieldType(UploadField.FieldType.FILE);
         uploadField.setFileFactory((fileName, mimeType) -> new File(TEMP_FILE_DIR + fileName));
-        uploadField.addValueChangeListener(change -> {
-            openBtn.setEnabled(change.getProperty().getValue() != null);
-        });
-
-        return new MHorizontalLayout(uploadField, openBtn)
+        uploadField.addValueChangeListener(change -> openBtn.setEnabled(change.getProperty().getValue() != null));
+        MHorizontalLayout fieldWrapper = new MHorizontalLayout(uploadField)
+                .withWidth("400px");
+        return new MHorizontalLayout(fieldWrapper, openBtn)
                 .withAlign(openBtn, Alignment.MIDDLE_RIGHT)
                 .withSpacing(true);
     }

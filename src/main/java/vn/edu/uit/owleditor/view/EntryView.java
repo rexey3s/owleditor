@@ -86,7 +86,8 @@ public class EntryView extends VerticalLayout {
 
     private Layout buildUploadEntry() {
         final UploadField uploadField = new UploadField();
-        final MButton openBtn = new MButton("OpenFile", click -> {
+        uploadField.addStyleName("upload-field");
+        final MButton openBtn = new MButton("Open", click -> {
             try {
                 File file = (File) uploadField.getValue();
                 if (file.exists()) {

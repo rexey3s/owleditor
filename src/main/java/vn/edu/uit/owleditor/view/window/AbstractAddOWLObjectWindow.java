@@ -1,19 +1,20 @@
 package vn.edu.uit.owleditor.view.window;
 
 
-import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
-import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import com.vaadin.data.Validator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
+import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
+import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 
 import javax.annotation.Nonnull;
 
 /**
- * Created by Chuong Dang  on 18/11/2014.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecommunication created on 18/11/2014.
  */
 public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> extends Window {
 

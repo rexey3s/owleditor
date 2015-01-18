@@ -6,7 +6,8 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import javax.annotation.Nonnull;
 
 /**
- * Created by Chuong Dang on 11/15/14.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecommunication created on 11/15/14.
  */
 public final class OWLClassExpressionSource implements OWLObjectSource<OWLClassExpression> {
 

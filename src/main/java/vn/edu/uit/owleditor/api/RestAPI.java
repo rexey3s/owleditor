@@ -82,6 +82,7 @@ public class RestAPI {
         return thingObject.toString();
     }
 
+
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
         visited.add(child);
         final JsonObject childObject = new JsonObject();

@@ -37,7 +37,6 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         initialize();
     }
 
-
     private void initialize() {
         setModal(true);
         setClosable(false);

@@ -154,8 +154,8 @@ public class OWLEditorKitImpl implements OWLEditorKit {
             }
 
         } else {
-            if (reasoner != null) reasoner.dispose();
-            if (explanationGenerator != null) explanationGenerator = null;
+//            if (reasoner != null) reasoner.dispose();
+//            if (explanationGenerator != null) explanationGenerator = null;
         }
     }
 

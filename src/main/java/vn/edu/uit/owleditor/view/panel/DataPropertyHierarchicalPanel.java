@@ -311,6 +311,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
         public buildAddDataPropertyWindow(@Nonnull OWLEntityActionHandler handler, @Nonnull OWLEntityAddHandler<OWLDataProperty> adder, @Nonnull Boolean isSub) {
             super(handler, adder, isSub);
+            nameField.setCaption("DataProperty");
             nameField.setConverter(new StringToOWLDataPropertyConverter(editorKit));
             nameField.addValidator(new OWLDataPropertyValidator(editorKit));
         }

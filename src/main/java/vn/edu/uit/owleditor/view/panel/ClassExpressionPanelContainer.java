@@ -42,7 +42,8 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     private AbstractExpressionPanel subClsOfPanel;
 
     private AbstractExpressionPanel disjointPanel;
-
+    
+    private Boolean reasonerStatus = false;
 
     @Override
     protected Component buildContent() {
@@ -69,7 +70,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                 modEx -> editorKit.getDataFactory().getEquivalentClassesModEvent(
                                         dataSource.getValue(), modEx, ce))
                 ));
-                if (editorKit.getReasonerStatus()) {
+                if (reasonerStatus) {
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getEquivalentClasses(dataSource.getValue())
                             .getEntities();
@@ -109,7 +110,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                             dataSource.getValue(), modEx, ce))
                     );
                 }
-                if (editorKit.getReasonerStatus()) {
+                if (reasonerStatus) {
 
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getSuperClasses(dataSource.getValue(), false).getFlattened();
@@ -141,7 +142,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                                 dataSource.getValue(), ind.asOWLNamedIndividual())
                                 ))
                 );
-                if (editorKit.getReasonerStatus()) {
+                if (reasonerStatus) {
                     editorKit.getReasoner()
                             .getInstances(dataSource.getValue(), true)
                             .getFlattened().forEach(i -> root.addComponent(new InferredLabel(i,
@@ -170,7 +171,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                 modEx -> editorKit.getDataFactory().getDisjointClassesModEvent(
                                         dataSource.getValue(), modEx, ce))
                 ));
-                if (editorKit.getReasonerStatus()) {
+                if (reasonerStatus) {
                     Set<OWLClass> implicitClasses = editorKit.getReasoner()
                             .getDisjointClasses(dataSource.getValue()).getFlattened();
 
@@ -194,12 +195,12 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
     @Override
     public void setPropertyDataSource(@Nonnull Property newDataSource) {
-        if (newDataSource.getValue() != null) {
-            equivPanel.setPropertyDataSource(newDataSource);
-            subClsOfPanel.setPropertyDataSource(newDataSource);
-            indPanel.setPropertyDataSource(newDataSource);
-            disjointPanel.setPropertyDataSource(newDataSource);
-        }
+        reasonerStatus = editorKit.getReasonerStatus();
+        if(reasonerStatus) editorKit.getReasoner().flush();
+        equivPanel.setPropertyDataSource(newDataSource);
+        subClsOfPanel.setPropertyDataSource(newDataSource);
+        indPanel.setPropertyDataSource(newDataSource);
+        disjointPanel.setPropertyDataSource(newDataSource);
     }
 
     private OWLAxiomVisitor addHelper(OWLLogicalAxiom addAxiom, OWLClass owner) {

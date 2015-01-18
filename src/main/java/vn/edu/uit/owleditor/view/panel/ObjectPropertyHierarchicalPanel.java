@@ -296,6 +296,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
         public buildAddObjectPropertyWindow(@Nonnull OWLEntityActionHandler handler, @Nonnull OWLEntityAddHandler<OWLObjectProperty> adder, @Nonnull Boolean isSub) {
             super(handler, adder, isSub);
+            nameField.setCaption("ObjectProperty");
             nameField.setConverter(new StringToOWLObjectPropertyConverter(editorKit));
             nameField.addValidator(new OWLObjectPropertyValidator(editorKit));
         }

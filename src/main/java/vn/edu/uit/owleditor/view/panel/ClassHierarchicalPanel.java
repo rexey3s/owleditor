@@ -2,11 +2,17 @@ package vn.edu.uit.owleditor.view.panel;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Sizeable;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
+import org.semanticweb.owlapi.formats.ManchesterSyntaxDocumentFormat;
+import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.io.StreamDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
@@ -44,7 +50,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             ADD_SIBLING, REMOVE};
     //    private static int eventCount = 0;
     private final OWLClassTree owlTree;
-
+    private MenuBar.MenuItem reasonerToggle;
     public ClassHierarchicalPanel() {
         owlTree = new OWLClassTree();
         owlTree.addActionHandler(this);
@@ -77,14 +83,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         dwn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         dwn.setIcon(FontAwesome.DOWNLOAD);
         dwn.addClickListener(selected -> {
-            try {
-                StreamResource rs = createResource();
-                FileDownloader fd = new FileDownloader(rs);
-                fd.extend(dwn);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
-            }
+           UI.getCurrent().addWindow(new DownloadOntologyWindow());
         });
         CssLayout configWrapper = new CssLayout();
         configWrapper.addComponents(dwn, buildMenuBar());
@@ -122,7 +121,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
-        act.addItem("Start reasoner", selected -> toggleReasoner(!editorKit.getReasonerStatus()));
+        reasonerToggle = act.addItem("Start reasoner", selected -> toggleReasoner(!editorKit.getReasonerStatus()));
+        reasonerToggle.setCheckable(true);
         act.addItem("Add SubClass", selectedItem -> handleSubNodeCreation());
         act.addItem("Add SiblingClass", selectedItem -> handleSiblingNodeCreation());
         act.addItem("Remove", selectedItem -> handleRemovalNode());
@@ -148,9 +148,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     private void toggleReasoner(Boolean value) {
         if (value) {
             editorKit.setReasonerStatus(value);
+            reasonerToggle.setChecked(value);
             Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
         } else {
             editorKit.setReasonerStatus(value);
+            reasonerToggle.setChecked(value);
             Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
         }
     }
@@ -337,9 +339,117 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                                       @Nonnull OWLEntityAddHandler<OWLClass> adder,
                                       @Nonnull Boolean isSub) {
             super(handler, adder, isSub);
+            nameField.setCaption("Class");
             nameField.setConverter(new StringToOWLClassConverter(editorKit));
             nameField.addValidator(new OWLClassValidator(editorKit));
         }
+    }
+    public static class DownloadOntologyWindow extends Window {
+        private final OWLEditorKit eKit;
+        private final TextField ontologyName = new TextField();
+        private final OWLDocumentFormat documentFormat;
+        private OWLDocumentFormat targetFormat;
+        private final ComboBox formats = new ComboBox();
+        private OWLXMLDocumentFormat owlxmlFormat = new OWLXMLDocumentFormat();
+        private RDFXMLDocumentFormat rdfxmlFormat = new RDFXMLDocumentFormat();
+        private ManchesterSyntaxDocumentFormat manSyntaxFormat = new ManchesterSyntaxDocumentFormat();
+        private FunctionalSyntaxDocumentFormat funcSyntaxFormat = new FunctionalSyntaxDocumentFormat();
+        public DownloadOntologyWindow() {
+            eKit = OWLEditorUI.getEditorKit();
+            documentFormat = eKit.getModelManager().getOntologyFormat(eKit.getActiveOntology());
+            formats.setNullSelectionAllowed(false);
+            formats.addContainerProperty("FORMAT", String.class, null);
+            formats.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+            formats.setItemCaptionPropertyId("FORMAT");
+            initFormatsBox();
+            initialize();
+        
+
+        }
+        @SuppressWarnings("unchecked")
+        private void initFormatsBox() {
+            formats.addItem(rdfxmlFormat);
+            formats.getContainerProperty(rdfxmlFormat, "FORMAT").setValue("RDF/XML");
+            formats.addItem(owlxmlFormat);
+            formats.getContainerProperty(owlxmlFormat, "FORMAT").setValue("OWL/XML");
+            formats.addItem(manSyntaxFormat);
+            formats.getContainerProperty(manSyntaxFormat, "FORMAT").setValue("ManchesterSyntax");
+            formats.addItem(funcSyntaxFormat);
+            formats.getContainerProperty(funcSyntaxFormat, "FORMAT").setValue("FunctionalSyntax");
+        }
+        private void initialize() {
+            setModal(true);
+            setClosable(false);
+            setResizable(false);
+            setWidth(400.0f, Unit.PIXELS);
+            setHeight(300.0f, Unit.PIXELS);
+            setContent(buildContent());
+        }
+        private StreamResource createResource() {
+            return new StreamResource(() -> {
+                try {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    eKit.getModelManager()
+                            .saveOntology(eKit.getActiveOntology(), targetFormat, new StreamDocumentTarget(bos));
+                    return new ByteArrayInputStream(bos.toByteArray());
+
+                } catch (OWLOntologyStorageException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }, ontologyName.getValue());
+        }
+        
+        private Component buildContent() {
+            final VerticalLayout result = new VerticalLayout();
+            result.setMargin(true);
+            result.setSpacing(true);
+            FormLayout form = new FormLayout();
+            ontologyName.focus();
+            ontologyName.setCaption("FileName");
+            ontologyName.setValue("ontology.owl");
+            formats.setCaption("Format");
+            
+            form.addComponent(ontologyName);
+            form.addComponent(formats);
+            result.addComponent(form);
+            result.addComponent(buildFooter());
+
+            return result;
+        }
+
+        private Component buildFooter() {
+            final HorizontalLayout footer = new HorizontalLayout();
+            footer.setSpacing(true);
+            footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+            footer.setWidth(100.0f, Sizeable.Unit.PERCENTAGE);
+
+            Button cancel = new Button("Cancel");
+            cancel.addClickListener(event -> close());
+            cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
+
+            Button save = new Button("Save");
+            save.addStyleName(ValoTheme.BUTTON_PRIMARY);
+            save.addClickListener(click -> {
+                try {
+                    StreamResource rs = createResource();
+                    FileDownloader fd = new FileDownloader(rs);
+                    fd.extend(save);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
+                }
+            });
+            save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
+
+            footer.addComponents(cancel, save);
+            footer.setExpandRatio(cancel, 1);
+            footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
+            return footer;
+
+        }
+
     }
 
 }

@@ -342,6 +342,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     @Override
     public void setPropertyDataSource(@Nonnull Property property) {
+        if(editorKit.getReasonerStatus()) editorKit.getReasoner().flush();
         typePn.setPropertyDataSource(property);
         samePn.setPropertyDataSource(property);
         diffPn.setPropertyDataSource(property);

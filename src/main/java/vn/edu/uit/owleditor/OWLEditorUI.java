@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.annotation.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;

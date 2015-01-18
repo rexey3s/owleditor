@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -25,7 +25,7 @@ import java.io.File;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-@UIScope
+@VaadinUIScope
 @VaadinComponent
 public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";

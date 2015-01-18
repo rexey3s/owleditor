@@ -14,8 +14,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
@@ -28,7 +28,7 @@ import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/9/2014.
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = RuleSheet.NAME)
 public class RuleSheet extends HorizontalLayout implements Action.Handler, View {
 

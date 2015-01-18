@@ -14,9 +14,9 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinComponent;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
@@ -37,7 +37,7 @@ import java.util.List;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/3/2014.
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = IndividualsSheet.NAME)
 public class IndividualsSheet extends HorizontalLayout implements View {
 
@@ -116,8 +116,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
 
     }
 
-
-    @UIScope
+    @VaadinUIScope
     @VaadinComponent
     public static class IndividualList extends VerticalLayout implements
             OWLEntityActionHandler<OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualRemoved>,

@@ -15,8 +15,8 @@ import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
@@ -29,7 +29,7 @@ import java.util.Random;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/23/14.
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = DiagramSheet.NAME)
 public class DiagramSheet extends VerticalLayout implements View {
     public static final String NAME = "Diagrams";

@@ -6,8 +6,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.view.demo.DemoPanel;
@@ -17,7 +17,7 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-@UIScope
+@VaadinUIScope
 @VaadinView(name = DemoSheet.NAME)
 public class DemoSheet extends HorizontalLayout implements View {
     public static final String NAME = "Demo";

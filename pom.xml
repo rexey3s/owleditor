@@ -335,13 +335,13 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
-		<!--<repository>-->
-			<!--<id>spring-snapshots</id>-->
-			<!--<url>http://repo.spring.io/libs-snapshot</url>-->
-			<!--<snapshots>-->
-				<!--<enabled>true</enabled>-->
-			<!--</snapshots>-->
-		<!--</repository>-->
+		<repository>
+			<id>spring-snapshots</id>
+			<url>http://repo.spring.io/libs-snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>on.cs.unibas.ch</id>
 			<name>DBIS Maven Releases Repository</name>

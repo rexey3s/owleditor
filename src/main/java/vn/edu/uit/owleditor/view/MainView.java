@@ -6,8 +6,8 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinComponent;
+import org.vaadin.spring.annotation.VaadinUIScope;
 import vn.edu.uit.owleditor.OWLEditorUI;
 
 
@@ -16,7 +16,7 @@ import vn.edu.uit.owleditor.OWLEditorUI;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-@UIScope
+@VaadinUIScope
 @VaadinComponent
 public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";

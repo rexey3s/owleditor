@@ -110,7 +110,9 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         setSpacing(true);
         setSizeFull();
     }
-
+    public void setReasonerToggle(Boolean value) {
+        hierarchy.setReasonerToggle(value);
+    }
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
 

@@ -102,22 +102,6 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         setSizeFull();
     }
 
-    private StreamResource createResource() {
-        return new StreamResource(() -> {
-            try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                editorKit.getModelManager()
-                        .saveOntology(editorKit.getActiveOntology(), new StreamDocumentTarget(bos));
-                return new ByteArrayInputStream(bos.toByteArray());
-
-            } catch (OWLOntologyStorageException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-        }, "embedded_ontology.owl");
-    }
-
     private Component buildMenuBar() {
 
         final MenuBar tools = new MenuBar();

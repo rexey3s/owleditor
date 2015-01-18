@@ -57,11 +57,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-push</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
@@ -340,13 +335,13 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
-		<repository>
-			<id>spring-snapshots</id>
-			<url>http://repo.spring.io/libs-snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
+		<!--<repository>-->
+			<!--<id>spring-snapshots</id>-->
+			<!--<url>http://repo.spring.io/libs-snapshot</url>-->
+			<!--<snapshots>-->
+				<!--<enabled>true</enabled>-->
+			<!--</snapshots>-->
+		<!--</repository>-->
 		<repository>
 			<id>on.cs.unibas.ch</id>
 			<name>DBIS Maven Releases Repository</name>

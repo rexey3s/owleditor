@@ -386,29 +386,35 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             setClosable(false);
             setResizable(false);
             setWidth(300.0f, Unit.PIXELS);
-            setHeight(200.0f, Unit.PIXELS);
+            setHeight(250.0f, Unit.PIXELS);
             setContent(buildContent());
         }
-        private OWLDocumentFormat selectFormat() throws NullPointerException {
-            Assert.notNull(formats.getValue(),"Select format");
+        private OWLDocumentFormat selectFormat()  {
+            try {
+                Assert.notNull(formats.getValue(), "Select format");
 
-            if(documentFormat.isPrefixOWLOntologyFormat()) {
-                if(formats.getValue() instanceof RDFXMLDocumentFormat) {
-                    rdfxmlFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
-                    return rdfxmlFormat;
+                if (documentFormat.isPrefixOWLOntologyFormat()) {
+                    if (formats.getValue() instanceof RDFXMLDocumentFormat) {
+                        rdfxmlFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                        return rdfxmlFormat;
+                    }
+                    if (formats.getValue() instanceof OWLXMLDocumentFormat) {
+                        owlxmlFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                        return owlxmlFormat;
+                    }
+                    if (formats.getValue() instanceof ManchesterSyntaxDocumentFormat) {
+                        manSyntaxFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                        return manSyntaxFormat;
+                    }
+                    if (formats.getValue() instanceof FunctionalSyntaxDocumentFormat) {
+                        funcSyntaxFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
+                        return funcSyntaxFormat;
+                    }
                 }
-                if(formats.getValue() instanceof OWLXMLDocumentFormat) {
-                    owlxmlFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
-                    return owlxmlFormat;
-                }
-                if(formats.getValue() instanceof ManchesterSyntaxDocumentFormat) {
-                    manSyntaxFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
-                    return manSyntaxFormat;
-                }
-                if(formats.getValue() instanceof FunctionalSyntaxDocumentFormat) {
-                    funcSyntaxFormat.copyPrefixesFrom(documentFormat.asPrefixOWLOntologyFormat());
-                    return funcSyntaxFormat;
-                }
+            }
+            catch (NullPointerException e) {
+                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
+
             }
             return documentFormat;
         }
@@ -421,10 +427,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     eKit.getModelManager()
                             .saveOntology(eKit.getActiveOntology(), selectFormat(), new StreamDocumentTarget(bos));
 
-                } catch (NullPointerException nullEx) {
+                } catch (NullPointerException | OWLOntologyStorageException nullEx) {
                     Notification.show(nullEx.getMessage(), Notification.Type.WARNING_MESSAGE);
-                } catch (OWLOntologyStorageException e) {
-                    e.printStackTrace();
                 }
                 return new ByteArrayInputStream(bos.toByteArray());
             }, ontologyName.getValue());

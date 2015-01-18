@@ -50,8 +50,10 @@
       }
     }
     .upload-field {
-      width: 400px;
-      text-align: -webkit-center;
+      .v-button {
+        width: 400px;
+        text-align: -webkit-center;
+      }
     }
   }
 

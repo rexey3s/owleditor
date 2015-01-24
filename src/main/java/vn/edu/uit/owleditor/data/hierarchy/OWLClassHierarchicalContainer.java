@@ -32,10 +32,11 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
                 OWLClass subCls = axiom.getSubClass().asOWLClass();
 
                 setParent(subCls, thing);
-
-                if (EntitySearcher.getSubClasses(supCls,
-                        activeOntology).size() == 0) {
-                    setChildrenAllowed(supCls, false);
+                if(!supCls.isOWLThing()) {
+                    if (EntitySearcher.getSubClasses(supCls,
+                            activeOntology).size() == 0) {
+                        setChildrenAllowed(supCls, false);
+                    }
                 }
             }
         }

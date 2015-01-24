@@ -57,9 +57,9 @@ public class OWLEditorUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
 
-        LOG.info("Notice: VaadinRequest WrapSession is equivalent to HttpSession");
+        LOG.info("Note: VaadinRequest WrapSession is equivalent to HttpSession");
         LOG.info("This VaadinRequest SessionId -> " + request.getWrappedSession().getId());
-        LOG.info("HttpSession Id -> " + httpSession.getId());
+        LOG.info("HttpSessionId -> " + httpSession.getId());
 
         updateContent();
 

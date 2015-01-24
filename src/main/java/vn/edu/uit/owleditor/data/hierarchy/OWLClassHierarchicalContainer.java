@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -53,11 +54,9 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
             if (!axiom.getSubClass().isAnonymous() && !axiom.getSuperClass().isAnonymous()) {
                 OWLClass subCls = axiom.getSubClass().asOWLClass();
                 OWLClass supCls = axiom.getSuperClass().asOWLClass();
-                getItem(subCls)
-                        .getItemProperty(OWLEditorData.OWLClassName)
-                        .setValue(sf(subCls));
-                    setChildrenAllowed(subCls, false);
-                    setChildrenAllowed(supCls, true);
+                getContainerProperty(subCls, OWLEditorData.OWLClassName).setValue(sf(subCls));
+                setChildrenAllowed(subCls, false);
+                setChildrenAllowed(supCls, true);
 
 
                 setParent(subCls, supCls);
@@ -70,23 +69,21 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
     @SuppressWarnings("unchecked")
     public OWLClassHierarchicalContainer(@Nonnull OWLOntology ontology) {
         super(ontology);
-        addContainerProperty(OWLEditorData.OWLClassName, String.class, "Unknown");
+        addContainerProperty(OWLEditorData.OWLClassName, String.class, "");
+        
         addItem(thing);
         getItem(thing).getItemProperty(OWLEditorData.OWLClassName).setValue("Thing");
         setChildrenAllowed(thing, true);
-        activeOntology.accept(getPopulationEngine());
+        
+        Set<OWLClass> allClasses = ontology.getClassesInSignature();
+        allClasses.remove(thing);
+        allClasses.forEach(c -> c.accept(getPopulationEngine()));
     }
 
 
     @Override
     protected OWLObjectVisitorAdapter initPopulationEngine() {
         return new OWLObjectVisitorAdapter() {
-            @Override
-            public void visit(@Nonnull OWLOntology ontology) {
-                ontology.getClassesInSignature()
-                        .stream().filter(c -> !c.isOWLThing())
-                        .forEach(c -> c.accept(this));
-            }
 
             @Override
             public void visit(@Nonnull OWLClass owlClass) {
@@ -117,7 +114,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
     @SuppressWarnings("unchecked")
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {
         addItem(child);
-        getItem(child).getItemProperty(OWLEditorData.OWLClassName).setValue(sf(child));
+        getContainerProperty(child, OWLEditorData.OWLClassName).setValue(sf(child));
         setChildrenAllowed(child, false);
 
         if (parent != null) {
@@ -126,12 +123,13 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         } else {
             setParent(child, thing);
         }
+        
         EntitySearcher.getSubClasses(child, ontology).forEach(
             ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
                public void visit(OWLClass owlClass) {
                    recursive(ontology, owlClass, child);
                }
-           })
+            })
         );
     }
 

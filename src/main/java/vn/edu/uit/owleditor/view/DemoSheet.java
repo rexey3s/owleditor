@@ -30,9 +30,6 @@ public class DemoSheet extends HorizontalLayout implements View {
         editorKit = OWLEditorUI.getEditorKit();
         initialise();
     }
-    public void setReasonerToggle(Boolean value) {
-        hierarchy.setReasonerToggle(value);
-    }
     private void initialise() {
         hierarchy = new ClassHierarchicalPanel();
         individualsList = new IndividualsSheet.IndividualList();

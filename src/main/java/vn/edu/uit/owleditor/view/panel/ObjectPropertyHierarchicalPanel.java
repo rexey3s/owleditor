@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
@@ -14,6 +15,7 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -36,6 +38,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     private static final Action REMOVE = new Action("Remove");
     private static final Action[] ACTIONS = new Action[]{ADD_SUB,
             ADD_SIBLING, REMOVE};
+    private MenuBar.MenuItem reasonerToggle;
 
     private final OWLObjectPropertyTree tree = new OWLObjectPropertyTree();
 
@@ -44,6 +47,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         buildComponents();
         tree.addActionHandler(this);
         Responsive.makeResponsive(this);
+        OWLEditorEventBus.register(this);
     }
 
     @Override
@@ -81,6 +85,11 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
+        reasonerToggle = act.addItem("Start reasoner", selected ->
+                OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
+                        !editorKit.getReasonerStatus(), tree.getCurrentProperty().getValue())));
+
+        reasonerToggle.setCheckable(true);
         act.addItem("Add Sub Property", selectedItem -> handleSubNodeCreation());
         act.addItem("Add Sibling Property", selectedItem -> handleSiblingNodeCreation());
         act.addItem("Remove", selectedItem -> handleRemovalNode());
@@ -107,7 +116,17 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         return prop.getValue().isOWLTopObjectProperty();
     }
 
-
+    @Subscribe
+    public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
+        editorKit.setReasonerStatus(event.getReasonerStatus());
+        reasonerToggle.setChecked(editorKit.getReasonerStatus());
+        if (editorKit.getReasonerStatus()) {
+            Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
+        } else {
+            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
+        }
+    }
+    
     @Override
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(

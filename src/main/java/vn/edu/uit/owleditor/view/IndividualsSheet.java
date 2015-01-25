@@ -111,9 +111,6 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         addStyleName("owl-sheet");
         setSizeFull();
     }
-    public void setReasonerToggle(Boolean value) {
-        hierarchy.setReasonerToggle(value);
-    }
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
 

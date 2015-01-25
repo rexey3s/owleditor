@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
@@ -61,9 +62,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     public ClassHierarchicalPanel() {
         owlTree = new OWLClassTree();
         owlTree.addActionHandler(this);
-
         buildComponents();
-
+        OWLEditorEventBus.register(this);
     }
 
     @Override
@@ -109,7 +109,10 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
-        reasonerToggle = act.addItem("Start reasoner", selected ->  toggleReasoner(!editorKit.getReasonerStatus()));
+        reasonerToggle = act.addItem("Start reasoner", selected ->
+                OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
+                !editorKit.getReasonerStatus(), owlTree.getCurrentProperty().getValue())));
+        
         reasonerToggle.setCheckable(true);
         act.addItem("Add SubClass", selectedItem -> handleSubNodeCreation());
         act.addItem("Add SiblingClass", selectedItem -> handleSiblingNodeCreation());
@@ -132,14 +135,12 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             handleRemovalNode();
         }
     }
-    public void setReasonerToggle(Boolean value) {
-        reasonerToggle.setCheckable(value);
-    }
-    private void toggleReasoner(Boolean value) {
-        editorKit.setReasonerStatus(value);
-        reasonerToggle.setChecked(value);
-        OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(value, owlTree.getCurrentProperty().getValue()));
-        if (value) {          
+    
+    @Subscribe
+    public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
+        editorKit.setReasonerStatus(event.getReasonerStatus());
+        reasonerToggle.setChecked(editorKit.getReasonerStatus());
+        if (editorKit.getReasonerStatus()) {          
             Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
         } else {            
             Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);

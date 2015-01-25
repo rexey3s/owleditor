@@ -35,15 +35,6 @@ public class MainView extends HorizontalLayout {
         DiagramSheet diagramSheet = new DiagramSheet();
         root.addTab(diagramSheet, "Diagram");
         root.addSelectedTabChangeListener(event -> {
-            if(event.getTabSheet().getSelectedTab() instanceof ClassesSheet) {
-                ((ClassesSheet)event.getTabSheet().getSelectedTab()).setReasonerToggle(OWLEditorUI.getEditorKit().getReasonerStatus());
-            }
-            if(event.getTabSheet().getSelectedTab() instanceof IndividualsSheet) {
-                ((IndividualsSheet)event.getTabSheet().getSelectedTab()).setReasonerToggle(OWLEditorUI.getEditorKit().getReasonerStatus());
-            }
-            if(event.getTabSheet().getSelectedTab() instanceof DemoSheet) {
-                ((DemoSheet)event.getTabSheet().getSelectedTab()).setReasonerToggle(OWLEditorUI.getEditorKit().getReasonerStatus());
-            }
             Notification.show("Reasoner status: "+ (OWLEditorUI.getEditorKit().getReasonerStatus() ? "On":"Off"));
         });
         root.setSizeFull();

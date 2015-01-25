@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
@@ -13,6 +14,7 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLDataPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -35,6 +37,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     private static final Action REMOVE = new Action("Remove");
     private static final Action[] ACTIONS = new Action[]{ADD_SUB,
             ADD_SIBLING, FUNCTIONAL_MARK, REMOVE};
+    private MenuBar.MenuItem reasonerToggle;
 
     private final OWLDataPropertyTree tree = new OWLDataPropertyTree();
 
@@ -42,6 +45,8 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         buildComponents();
 
         tree.addActionHandler(this);
+        OWLEditorEventBus.register(this);
+
     }
 
     private void buildComponents() {
@@ -74,12 +79,28 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
+        reasonerToggle = act.addItem("Start reasoner", selected ->
+                OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
+                        !editorKit.getReasonerStatus(), tree.getCurrentProperty().getValue())));
+
+        reasonerToggle.setCheckable(true);
         act.addItem("Add Sub DataProperty", selectedItem -> handleSubNodeCreation());
         act.addItem("Add Sibling DataProperty", selectedItem -> handleSiblingNodeCreation());
         act.addItem("Remove", selectedItem -> handleRemovalNode());
         return tools;
     }
 
+    @Subscribe
+    public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
+        editorKit.setReasonerStatus(event.getReasonerStatus());
+        reasonerToggle.setChecked(editorKit.getReasonerStatus());
+        if (editorKit.getReasonerStatus()) {
+            Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
+        } else {
+            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
+        }
+    }
+    
     private boolean checkTopDataProp(OWLDataPropertySource prop) {
         return prop.getValue().isOWLTopDataProperty();
     }

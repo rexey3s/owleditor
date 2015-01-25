@@ -69,6 +69,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
                    public void visit(OWLClass cls) {
                        addItem(cls);
                        getContainerProperty(cls, OWLEditorData.OWLClassName).setValue(sf(cls));
+                       setParent(cls, thing);
                    }
                });
 

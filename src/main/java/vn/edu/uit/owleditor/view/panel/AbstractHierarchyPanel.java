@@ -27,6 +27,7 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     public void setCaption(String cpt) {
         super.setCaption(null);
         caption.setValue(cpt);
+        caption.setSizeUndefined();
     }
 
     public abstract Property<T> getSelectedProperty();

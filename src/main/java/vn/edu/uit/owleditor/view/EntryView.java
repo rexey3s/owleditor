@@ -98,8 +98,9 @@ public class EntryView extends VerticalLayout {
         uploadField.setAcceptFilter("text/plain");
         uploadField.addStyleName("upload-field");
         uploadField.setFileFactory((fileName, mimeType) -> {
-            File tmpFile = new File(TEMP_FILE_DIR + fileName);
-            return tmpFile;
+            LOG.info("MIME -> " + mimeType);
+
+            return new File(TEMP_FILE_DIR + fileName);
         });
         final MButton openBtn = new MButton("Open", click -> {
             try {

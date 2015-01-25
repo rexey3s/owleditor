@@ -21,6 +21,7 @@ import org.springframework.util.Assert;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
@@ -84,15 +85,12 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         dwn.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         dwn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         dwn.setIcon(FontAwesome.DOWNLOAD);
-        dwn.addClickListener(selected -> {
-           UI.getCurrent().addWindow(new DownloadOntologyWindow());
-        });
-        CssLayout configWrapper = new CssLayout();
-        configWrapper.addComponents(dwn, buildMenuBar());
-        configWrapper.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
+        dwn.addClickListener(selected -> UI.getCurrent().addWindow(new DownloadOntologyWindow()));
+        MHorizontalLayout configWrapper = new MHorizontalLayout(dwn, buildMenuBar());
+        
         toolbar.addComponents(caption, configWrapper);
-        toolbar.setExpandRatio(caption, 1.0f);
+//        toolbar.setExpandRatio(caption, 1.0f);
+        toolbar.setComponentAlignment(configWrapper, Alignment.MIDDLE_RIGHT);
         toolbar.setComponentAlignment(caption, Alignment.MIDDLE_LEFT);
         addStyleName(ValoTheme.LAYOUT_CARD);
         addStyleName("hierarchy-view");
@@ -134,13 +132,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         reasonerToggle.setCheckable(value);
     }
     private void toggleReasoner(Boolean value) {
-        if (value) {
-            editorKit.setReasonerStatus(value);
-            reasonerToggle.setChecked(value);
+        editorKit.setReasonerStatus(value);
+        reasonerToggle.setChecked(value);
+        if (value) {          
             Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
-        } else {
-            editorKit.setReasonerStatus(value);
-            reasonerToggle.setChecked(value);
+        } else {            
             Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
         }
     }

@@ -29,11 +29,15 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         
         Set<OWLClass> allClasses = ontology.getClassesInSignature();
         allClasses.remove(thing);
-        allClasses.forEach(c ->  recursive(activeOntology, c, null));
+        
+        allClasses.forEach(c -> {
+            if(!containsId(c)) {
+                recursive(activeOntology, c, null);
+            }
+        });
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {
-        if(!containsId(child)) {
             addItem(child);
             getContainerProperty(child, OWLEditorData.OWLClassName).setValue(sf(child));
             setChildrenAllowed(child, false);
@@ -52,7 +56,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
                         }
                     })
             );
-        }
+
     }
 
 

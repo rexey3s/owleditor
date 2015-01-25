@@ -79,16 +79,21 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                         ))
                 );
                 if (editorKit.getReasonerStatus()) {
-                    Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                            .getTypes(dataSource.getValue(), false).getFlattened();
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                                    () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                            .getOWLClassAssertionAxiom(c, dataSource.getValue()))
-                            ))
-                    );
+                   addInferredExpressions();
                 }
             }
+
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit.getReasoner()
+                        .getTypes(dataSource.getValue(), false).getFlattened();
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
+                                () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                        .getOWLClassAssertionAxiom(c, dataSource.getValue()))
+                        ))
+                );
+            }
+
         };
 
         samePn = new IndividualPanel("Same Individuals: ") {
@@ -118,17 +123,22 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                                                 .getValue(), i.asOWLNamedIndividual()))));
                 
                 if (editorKit.getReasonerStatus()) {
-                    Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
-                            .getSameIndividuals(dataSource.getValue()).getEntities();
-
-                    implicitIndividuals.removeAll(individuals);
-                    implicitIndividuals.forEach(i -> root
-                            .addComponent(new
-                                    InferredLabel(i, () -> editorKit
-                                    .explain(editorKit.getOWLDataFactory()
-                                            .getOWLSameIndividualAxiom(i, dataSource.getValue())))));
+                    addInferredExpressions();
                 }
             }
+
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
+                        .getSameIndividuals(dataSource.getValue()).getEntities();
+
+                implicitIndividuals.forEach(i -> root
+                        .addComponent(new
+                                InferredLabel(i, () -> editorKit
+                                .explain(editorKit.getOWLDataFactory()
+                                        .getOWLSameIndividualAxiom(i, dataSource.getValue())))));
+            }
+
         };
 
         diffPn = new IndividualPanel("Different Individuals: ") {
@@ -156,15 +166,19 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                                                 dataSource.getValue(), i.asOWLNamedIndividual()))
                         ));
                 if (editorKit.getReasonerStatus()) {
-                    Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
-                            .getDifferentIndividuals(dataSource.getValue()).getFlattened();
-                    implicitIndividuals.removeAll(individuals);
-                    implicitIndividuals.forEach(e -> root.addComponent(new InferredLabel(e,
-                                    () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                            .getOWLDifferentIndividualsAxiom(e, dataSource.getValue()))
-                            ))
-                    );
+                    addInferredExpressions();
                 }
+            }
+
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
+                        .getDifferentIndividuals(dataSource.getValue()).getFlattened();
+                implicitIndividuals.forEach(e -> root.addComponent(new InferredLabel(e,
+                                () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                        .getOWLDifferentIndividualsAxiom(e, dataSource.getValue()))
+                        ))
+                );
             }
         };
         objAssertPn = new IndividualPanel("Object Property Assertions: ") {
@@ -193,26 +207,31 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
                 });
                 if(editorKit.getReasonerStatus()) {
-                    editorKit.getActiveOntology().getDataPropertiesInSignature()
-                            .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
-                                public void visit(OWLObjectProperty property) {
-                                    Set<OWLNamedIndividual> individuals = editorKit.getReasoner()
-                                            .getObjectPropertyValues(dataSource.getValue(), property).getFlattened();
-
-                                    individuals.forEach(individual -> {
-                                        if(!map.containsEntry(property, individual)) {
-                                            OWLObjectPropertyAssertionAxiom axiom = editorKit.getOWLDataFactory()
-                                                    .getOWLObjectPropertyAssertionAxiom(
-                                                            property,
-                                                            dataSource.getValue(), individual);
-
-                                            root.addComponent(new InferredLabel(axiom.getProperty(),
-                                                    () -> editorKit.explain(axiom)));
-                                        }
-                                    });
-                                }
-                            }));
+                    addInferredExpressions();
                 }
+            }
+
+            @Override
+            public void addInferredExpressions() {
+                editorKit.getActiveOntology().getDataPropertiesInSignature()
+                        .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
+                            public void visit(OWLObjectProperty property) {
+                                Set<OWLNamedIndividual> individuals = editorKit.getReasoner()
+                                        .getObjectPropertyValues(dataSource.getValue(), property).getFlattened();
+
+                                individuals.forEach(individual -> {
+//                                    if (!map.containsEntry(property, individual)) {
+                                        OWLObjectPropertyAssertionAxiom axiom = editorKit.getOWLDataFactory()
+                                                .getOWLObjectPropertyAssertionAxiom(
+                                                        property,
+                                                        dataSource.getValue(), individual);
+
+                                        root.addComponent(new InferredLabel(axiom.getProperty(),
+                                                () -> editorKit.explain(axiom)));
+//                                    }
+                                });
+                            }
+                        }));
             }
         };
         dataAssertPn = new IndividualPanel("Data Property Assertions: ") {
@@ -241,24 +260,29 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
                 });
                 if(editorKit.getReasonerStatus()) {
-                    editorKit.getActiveOntology().getDataPropertiesInSignature()
+                   addInferredExpressions();
+                }
+            }
+
+            @Override
+            public void addInferredExpressions() {
+                editorKit.getActiveOntology().getDataPropertiesInSignature()
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLDataProperty property) {
                                 Set<OWLLiteral> literals = editorKit.getReasoner()
                                         .getDataPropertyValues(dataSource.getValue(), property);
                                 literals.forEach(literal -> {
-                                    if(!map.containsEntry(property, literal)) {
+//                                    if (!map.containsEntry(property, literal)) {
                                         OWLDataPropertyAssertionAxiom axiom = editorKit.getOWLDataFactory()
                                                 .getOWLDataPropertyAssertionAxiom(
                                                         property,
                                                         dataSource.getValue(), literal);
                                         root.addComponent(new InferredLabel(axiom.getProperty(),
                                                 () -> editorKit.explain(axiom)));
-                                    }
+//                                    }
                                 });
                             }
-                    }));
-                }
+                        }));
             }
         };
         negObjAssertPn = new IndividualPanel("Negative Object Property Assertions: ") {
@@ -351,7 +375,23 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
         negDataAssertPn.setPropertyDataSource(property);
         negObjAssertPn.setPropertyDataSource(property);
     }
-
+    @Subscribe
+    public void afterReasonerToggleInd(OWLEditorEvent.ReasonerToggleEvent event) {
+        if(event.getReasonerStatus()) {
+            typePn.addInferredExpressions();
+            samePn.addInferredExpressions();
+            diffPn.addInferredExpressions();
+            objAssertPn.addInferredExpressions();
+            dataAssertPn.addInferredExpressions();
+        }
+        else {
+            typePn.removeInferredExpressions();
+            samePn.removeInferredExpressions();
+            diffPn.removeInferredExpressions();
+            objAssertPn.removeInferredExpressions();
+            dataAssertPn.removeInferredExpressions();
+        }
+    }
     private OWLAxiomVisitor addHelper(OWLNamedIndividual owner) {
         return new OWLAxiomVisitorAdapter() {
             @Override

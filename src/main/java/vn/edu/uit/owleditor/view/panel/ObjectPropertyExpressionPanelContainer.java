@@ -171,15 +171,19 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                         ))
                 );
                 if (editorKit.getReasonerStatus()) {
-                    Set<OWLClass> implicitClasses = editorKit
-                            .getReasoner().getObjectPropertyDomains(dataSource.getValue(), false).getFlattened();
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.remove(thing);
-                    implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                            () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                    .getOWLObjectPropertyDomainAxiom(dataSource.getValue(), c))
-                    )));
-                }
+                   addInferredExpressions();
+                }                
+            }
+
+            @Override
+            public void removeInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit
+                        .getReasoner().getObjectPropertyDomains(dataSource.getValue(), false).getFlattened();
+                implicitClasses.remove(thing);
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
+                        () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                .getOWLObjectPropertyDomainAxiom(dataSource.getValue(), c))
+                )));
             }
         };
         rangesPanel = new ObjectPropertyPanel("Range (intersection): ") {
@@ -201,16 +205,19 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                         ))
                 );
                 if (editorKit.getReasonerStatus()) {
-                    Set<OWLClass> implicitClasses = editorKit
-                            .getReasoner().getObjectPropertyRanges(dataSource.getValue(), false).getFlattened();
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.remove(thing);
-                    implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                                    () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                            .getOWLObjectPropertyRangeAxiom(dataSource.getValue(), c))
-                            ))
-                    );
+                    addInferredExpressions();
                 }
+            }
+            @Override
+            public void removeInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit
+                        .getReasoner().getObjectPropertyRanges(dataSource.getValue(), false).getFlattened();
+                implicitClasses.remove(thing);
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
+                                () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                        .getOWLObjectPropertyRangeAxiom(dataSource.getValue(), c))
+                        ))
+                );
             }
         };
         disjointPanel = new ObjectPropertyPanel("Mutual Disjoint With: ") {
@@ -268,7 +275,18 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         rangesPanel.setPropertyDataSource(newDataSource);
         disjointPanel.setPropertyDataSource(newDataSource);
     }
+    @Subscribe
+    public void afterReasonerToggleOP(OWLEditorEvent.ReasonerToggleEvent event) {
+        if(event.getReasonerStatus()) {
+            domainsPanel.addInferredExpressions();
+            rangesPanel.addInferredExpressions();
 
+        }
+        else {
+            domainsPanel.removeInferredExpressions();
+            rangesPanel.removeInferredExpressions();
+        }
+    }
     private OWLAxiomVisitor addHelper(OWLObjectPropertyAxiom addAxiom, OWLObjectProperty owner) {
         OWLEditorEvent.ObjectPropertyAxiomRemoved removeEvent =
                 new OWLEditorEvent.ObjectPropertyAxiomRemoved(addAxiom, owner);

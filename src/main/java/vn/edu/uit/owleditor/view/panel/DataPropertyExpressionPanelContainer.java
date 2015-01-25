@@ -162,17 +162,22 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
                                 newEx -> editorKit.getDataFactory().getDomainsModEvent(dataSource.getValue(), newEx, ce)))
                 );
                 if (editorKit.getReasonerStatus()) {
-                    Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                            .getDataPropertyDomains(dataSource.getValue(), false).getFlattened();
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.remove(thing);
-                    implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                                    () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                                    .getOWLDataPropertyDomainAxiom(dataSource.getValue(), c)
-                                    )))
-                    );
+                    addInferredExpressions();
                 }
             }
+
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit.getReasoner()
+                        .getDataPropertyDomains(dataSource.getValue(), false).getFlattened();
+                implicitClasses.remove(thing);
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
+                                () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                                .getOWLDataPropertyDomainAxiom(dataSource.getValue(), c)
+                                )))
+                );
+            }
+
         };
         rangesPn = new DataPropertyPanel("Range (intersection): ") {
 
@@ -206,7 +211,16 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
         return descriptionPanels;
     }
+    @Subscribe
+    public void afterReasonerToggleDP(OWLEditorEvent.ReasonerToggleEvent event) {
+        if(event.getReasonerStatus()) {
+            domainsPn.addInferredExpressions();
 
+        }
+        else {
+            domainsPn.removeInferredExpressions();
+        }
+    }
     private OWLAxiomVisitor addHelper(OWLDataPropertyAxiom axiom, OWLDataProperty owner) {
         return new OWLAxiomVisitorAdapter() {
 

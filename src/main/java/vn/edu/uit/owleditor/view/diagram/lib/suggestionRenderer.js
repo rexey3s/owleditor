@@ -4,8 +4,7 @@
  */
 window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
     var SVG_ELEMENT = this.getElement();
-    var svg;
-    
+
     this.onStateChange = function () {
         var data = JSON.parse(this.getState().data) || {data: {nodes: [], edges: []}, object: {nodes: [], edges: []}};
 
@@ -45,7 +44,7 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         var render = new dagreD3.render();
 
         // Set up an SVG group so that we can translate the final graph.
-        svg = d3.select(SVG_ELEMENT).append("svg"),
+        var svg = d3.select(SVG_ELEMENT).append("svg"),
             //.attr("width", viewerWidth)
             //.attr("height", viewerHeight)
             //.attr("class", "overlay"),

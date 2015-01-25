@@ -7,14 +7,13 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -24,51 +23,7 @@ import java.util.List;
 public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer<OWLDataProperty> {
 
     private final OWLDataProperty topDataProp = OWLManager.getOWLDataFactory().getOWLTopDataProperty();
-    private final OWLAxiomVisitor nodeAdder = new OWLAxiomVisitorAdapter() {
 
-        @Override
-        public void visit(@Nonnull OWLDeclarationAxiom axiom) {
-            axiom.getEntity().accept(getPopulationEngine());
-        }
-
-        @Override
-        public void visit(@Nonnull OWLSubDataPropertyOfAxiom axiom) {
-            if (!axiom.getSubProperty().isAnonymous() && !axiom.getSuperProperty().isAnonymous()) {
-                OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
-                OWLDataProperty supProp = axiom.getSuperProperty().asOWLDataProperty();
-
-                getItem(subProp)
-                        .getItemProperty(OWLEditorData.OWLDataPropertyName)
-                        .setValue(sf(subProp));
-
-                setChildrenAllowed(subProp, false);
-                setChildrenAllowed(supProp, true);
-
-                setParent(subProp, supProp);
-            }
-        }
-    };
-    private final OWLAxiomVisitor nodeRemover = new OWLAxiomVisitorAdapter() {
-
-        @Override
-        public void visit(@Nonnull OWLDeclarationAxiom axiom) {
-            removeItem(axiom.getEntity());
-        }
-
-        @Override
-        public void visit(@Nonnull OWLSubDataPropertyOfAxiom axiom) {
-            if (!axiom.getSubProperty().isAnonymous() && !axiom.getSuperProperty().isAnonymous()) {
-                OWLDataProperty supProp = axiom.getSuperProperty().asOWLDataProperty();
-                OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
-
-                setParent(subProp, topDataProp);
-
-                if (EntitySearcher.getSubProperties(supProp, activeOntology).size() == 0) {
-                    setChildrenAllowed(supProp, false);
-                }
-            }
-        }
-    };
 
     private final OWLDataFactory factory = OWLManager.getOWLDataFactory();
     private final OWLOntologyManager manager;
@@ -87,72 +42,40 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
         getContainerProperty(topDataProp, OWLEditorData.OWLFunctionalProperty)
                 .setValue(containedInOntology(factory.getOWLFunctionalDataPropertyAxiom(topDataProp)));
         checkFunctionalIcon(topDataProp);
-
         setChildrenAllowed(topDataProp, true);
-        activeOntology.accept(getPopulationEngine());
+        Set<OWLDataProperty> allProperties = ontology.getDataPropertiesInSignature();
+        allProperties.remove(topDataProp);
+        allProperties.forEach(d ->  recursive(activeOntology, d, null));
+        
     }
 
 
-    @Override
-    protected OWLObjectVisitorAdapter initPopulationEngine() {
-        return new OWLObjectVisitorAdapter() {
-            @Override
-            public void visit(@Nonnull OWLOntology ontology) {
-                ontology.getDataPropertiesInSignature().stream().filter(obj -> !obj.isOWLTopDataProperty())
-                        .forEach(obj -> obj.accept(this));
-            }
-
-            @Override
-            public void visit(@Nonnull OWLDataProperty dataProperty) {
-                if (!containsId(dataProperty)) {
-                    recursive(activeOntology, dataProperty, null);
-                }
-            }
-        };
-    }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public OWLOntologyChangeVisitor initChangeListener() {
-        return new OWLOntologyChangeVisitorAdapter() {
+    private void recursive(OWLOntology ontology, OWLDataProperty child, OWLDataProperty parent) {
+        if(!containsId(child)) {
+            addItem(child);
+            getContainerProperty(child, OWLEditorData.OWLDataPropertyName).setValue(sf(child));
+            getContainerProperty(child, OWLEditorData.OWLFunctionalProperty)
+                    .setValue(containedInOntology(factory.getOWLFunctionalDataPropertyAxiom(child)));
+            checkFunctionalIcon(child);
 
-            @Override
-            public void visit(@Nonnull AddAxiom change) {
-                change.getAxiom().accept(nodeAdder);
+            setChildrenAllowed(child, false);
+
+            if (parent != null) {
+                setChildrenAllowed(parent, true);
+                setParent(child, parent);
+            } else {
+                setParent(child, topDataProp);
             }
-
-            @Override
-            public void visit(@Nonnull RemoveAxiom change) {
-                change.getAxiom().accept(nodeRemover);
-            }
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    private void recursive(OWLOntology ontology,
-                           OWLDataProperty child, OWLDataProperty parent) {
-
-        addItem(child);
-        getContainerProperty(child, OWLEditorData.OWLDataPropertyName).setValue(sf(child));
-        getContainerProperty(child, OWLEditorData.OWLFunctionalProperty)
-                .setValue(containedInOntology(factory.getOWLFunctionalDataPropertyAxiom(child)));
-        checkFunctionalIcon(child);
-
-        setChildrenAllowed(child, false);
-
-        if (parent != null) {
-            setChildrenAllowed(parent, true);
-            setParent(child, parent);
-        } else {
-            setParent(child, topDataProp);
+            EntitySearcher.getSubProperties(child, ontology).forEach(
+                    pe -> pe.accept(new OWLPropertyExpressionVisitorAdapter() {
+                        public void visit(OWLDataProperty property) {
+                            recursive(ontology, property, child);
+                        }
+                    })
+            );
         }
-        EntitySearcher.getSubProperties(child, ontology).forEach(
-            pe -> pe.accept(new OWLPropertyExpressionVisitorAdapter() {
-                public void visit(OWLDataProperty property) {
-                    recursive(ontology, property, child);
-                }
-            })
-        );
     }
 
     public Boolean containedInOntology(OWLAxiom axiom) {
@@ -174,13 +97,64 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
             ChangeApplied applied = manager.addAxiom(activeOntology, axiom);
 
         } else {
-            List<OWLOntologyChange> changes =
-                    manager.removeAxiom(activeOntology,
-                            axiom);
+            List<OWLOntologyChange> changes = manager.removeAxiom(activeOntology, axiom);
             manager.applyChanges(changes);
-            for (OWLOntologyChange change : changes) {
-                System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-            }
+            
         }
+    }
+
+    @Override
+    public OWLAxiomVisitor initNodeAdder() {
+        return new OWLAxiomVisitorAdapter() {
+            @Override
+            public void visit(@Nonnull OWLDeclarationAxiom axiom) {
+                axiom.getEntity().accept(new OWLEntityVisitorAdapter() {
+                    public void visit(OWLDataProperty property) {
+                        recursive(activeOntology, property, null);
+                    }
+                });
+            }
+
+            @Override
+            public void visit(@Nonnull OWLSubDataPropertyOfAxiom axiom) {
+                if (!axiom.getSubProperty().isAnonymous() && !axiom.getSuperProperty().isAnonymous()) {
+                    OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
+                    OWLDataProperty supProp = axiom.getSuperProperty().asOWLDataProperty();
+
+                    getItem(subProp)
+                            .getItemProperty(OWLEditorData.OWLDataPropertyName)
+                            .setValue(sf(subProp));
+
+                    setChildrenAllowed(subProp, false);
+                    setChildrenAllowed(supProp, true);
+
+                    setParent(subProp, supProp);
+                }
+            }
+        };
+    }
+
+    @Override
+    public OWLAxiomVisitor initNodeRemover() {
+        return  new OWLAxiomVisitorAdapter() {
+            @Override
+            public void visit(@Nonnull OWLDeclarationAxiom axiom) {
+                removeItem(axiom.getEntity());
+            }
+
+            @Override
+            public void visit(@Nonnull OWLSubDataPropertyOfAxiom axiom) {
+                if (!axiom.getSubProperty().isAnonymous() && !axiom.getSuperProperty().isAnonymous()) {
+                    OWLDataProperty supProp = axiom.getSuperProperty().asOWLDataProperty();
+                    OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
+
+                    setParent(subProp, topDataProp);
+
+                    if (EntitySearcher.getSubProperties(supProp, activeOntology).size() == 0) {
+                        setChildrenAllowed(supProp, false);
+                    }
+                }
+            }
+        };
     }
 }

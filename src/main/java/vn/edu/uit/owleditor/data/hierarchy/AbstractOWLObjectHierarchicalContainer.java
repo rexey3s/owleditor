@@ -2,11 +2,9 @@ package vn.edu.uit.owleditor.data.hierarchy;
 
 
 import com.vaadin.data.util.HierarchicalContainer;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLNamedObjectVisitor;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
+import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
 import vn.edu.uit.owleditor.data.OWLObjectContainer;
@@ -25,32 +23,39 @@ public abstract class AbstractOWLObjectHierarchicalContainer<T extends OWLEntity
 
     private final OWLEntityRemover entityRemover;
 
-    private final OWLNamedObjectVisitor populationEngine;
-
-    private final OWLOntologyChangeVisitor changeListener;
-
+    private final OWLOntologyChangeVisitor changeListener ;
+    
+    private final OWLAxiomVisitor nodeAdder;
+    
+    private final OWLAxiomVisitor nodeRemover;
+    
     protected OWLOntology activeOntology;
 
     public AbstractOWLObjectHierarchicalContainer(@Nonnull OWLOntology ontology) {
         activeOntology = ontology;
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-        populationEngine = initPopulationEngine();
-        changeListener = initChangeListener();
+        nodeAdder = initNodeAdder();
+        nodeRemover = initNodeRemover();
+        changeListener = new OWLOntologyChangeVisitorAdapter() {
+            @Override
+            public void visit(@Nonnull AddAxiom change) {
+                change.getAxiom().accept(nodeAdder);
+            }
+
+            @Override
+            public void visit(@Nonnull RemoveAxiom change) {
+                change.getAxiom().accept(nodeRemover);
+            }
+        };
     }
 
 
 
-
-    abstract OWLNamedObjectVisitor initPopulationEngine();
 
 
 
     public OWLEntityRemover getEntityRemover() {
         return entityRemover;
-    }
-
-    public OWLNamedObjectVisitor getPopulationEngine() {
-        return populationEngine;
     }
 
     public OWLOntologyChangeVisitor getOWLOntologyChangeListener() {

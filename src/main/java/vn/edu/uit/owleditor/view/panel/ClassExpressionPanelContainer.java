@@ -114,17 +114,19 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                     );
                 }
                 if (reasonerStatus) {
-
-                    Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                            .getSuperClasses(dataSource.getValue(), false).getFlattened();
-                    implicitClasses.remove(thing);
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.forEach(c -> root.addComponent(new InferredLabel(
-                                    c, () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                    .getOWLSubClassOfAxiom(dataSource.getValue(), c))))
-                    );
+                    addInferredExpressions();
                 }
 
+            }
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit.getReasoner()
+                        .getSuperClasses(dataSource.getValue(), false).getFlattened();
+                implicitClasses.remove(thing);
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(
+                                c, () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                .getOWLSubClassOfAxiom(dataSource.getValue(), c))))
+                );
             }
         };
         indPanel = new ClassPanel("Members: ") {
@@ -146,12 +148,16 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                 ))
                 );
                 if (reasonerStatus) {
-                    editorKit.getReasoner()
-                            .getInstances(dataSource.getValue(), true)
-                            .getFlattened().forEach(i -> root.addComponent(new InferredLabel(i,
-                            () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                    .getOWLClassAssertionAxiom(dataSource.getValue(), i)))));
+                    addInferredExpressions();
                 }
+            }
+            @Override
+            public void addInferredExpressions() {
+                editorKit.getReasoner()
+                        .getInstances(dataSource.getValue(), true)
+                        .getFlattened().forEach(i -> root.addComponent(new InferredLabel(i,
+                        () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                .getOWLClassAssertionAxiom(dataSource.getValue(), i)))));
             }
         };
         disjointPanel = new ClassPanel("Mutual Disjoint With: ") {
@@ -175,16 +181,18 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                         dataSource.getValue(), modEx, ce))
                 ));
                 if (reasonerStatus) {
-                    Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                            .getDisjointClasses(dataSource.getValue()).getFlattened();
-
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.remove(nothing);
-
-                    implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                            () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                    .getOWLDisjointClassesAxiom(dataSource.getValue(), c)))));
+                   addInferredExpressions();
                 }
+            }
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit.getReasoner()
+                        .getDisjointClasses(dataSource.getValue()).getFlattened();
+                implicitClasses.remove(nothing);
+
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
+                        () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                .getOWLDisjointClassesAxiom(dataSource.getValue(), c)))));
             }
         };
         descriptionPanels.addStyleName("dashboard-panels");
@@ -286,6 +294,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             }
         };
     }
+    
     @Subscribe
     public void afterReasonerToggle(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {

@@ -30,7 +30,7 @@ import java.io.File;
 public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
-    private static final String TEMP_FILE_DIR = "./";
+    private static final String TEMP_FILE_DIR = "./tmp/";
 
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();

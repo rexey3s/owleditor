@@ -4,7 +4,8 @@
  */
 window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
     var SVG_ELEMENT = this.getElement();
-
+    var svg, aspect;
+    
     this.onStateChange = function () {
         var data = JSON.parse(this.getState().data) || {data: {nodes: [], edges: []}, object: {nodes: [], edges: []}};
 
@@ -37,13 +38,13 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         });
         var viewerWidth = $(".suggestion-graph-container").width();
         var viewerHeight = $(".suggestion-graph-container").height();
-
+        aspect = viewerWidth / viewerHeight;
 
         // Create the renderer
         var render = new dagreD3.render();
 
         // Set up an SVG group so that we can translate the final graph.
-        var svg = d3.select(SVG_ELEMENT).append("svg")
+        svg = d3.select(SVG_ELEMENT).append("svg")
             .attr("width", viewerWidth)
             .attr("height", viewerHeight)
                 .attr("class", "overlay"),
@@ -66,6 +67,12 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         svg.call(zoom);
 
     }
+    
+    $(window).on("resize", function() {
+        var targetWidth = svg.parent().width();
+        svg.attr("width", targetWidth);
+        svg.attr("height", targetWidth / aspect);
+    });
 
 }
 

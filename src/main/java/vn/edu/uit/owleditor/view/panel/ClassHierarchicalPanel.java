@@ -29,6 +29,7 @@ import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassCreated;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -105,7 +106,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
-        reasonerToggle = act.addItem("Start reasoner", selected -> toggleReasoner(!editorKit.getReasonerStatus()));
+        reasonerToggle = act.addItem("Start reasoner", selected ->  toggleReasoner(!editorKit.getReasonerStatus()));
         reasonerToggle.setCheckable(true);
         act.addItem("Add SubClass", selectedItem -> handleSubNodeCreation());
         act.addItem("Add SiblingClass", selectedItem -> handleSiblingNodeCreation());
@@ -134,6 +135,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     private void toggleReasoner(Boolean value) {
         editorKit.setReasonerStatus(value);
         reasonerToggle.setChecked(value);
+        OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(value, owlTree.getCurrentProperty().getValue()));
         if (value) {          
             Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
         } else {            

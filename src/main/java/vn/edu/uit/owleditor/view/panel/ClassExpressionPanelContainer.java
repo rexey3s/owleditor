@@ -71,21 +71,24 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                         dataSource.getValue(), modEx, ce))
                 ));
                 if (reasonerStatus) {
-                    Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                            .getEquivalentClasses(dataSource.getValue())
-                            .getEntities();
-
-                    implicitClasses.remove(dataSource.getValue());
-                    /* Obviously,  class is a thing, so remove it */
-                    implicitClasses.remove(thing);
-                    ces.stream().filter(ce -> (ce instanceof OWLClass)).forEach(ce -> implicitClasses.remove((OWLClass) ce));
-                    implicitClasses.forEach(ce -> root.addComponent(new InferredLabel(ce,
-                                    () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                            .getOWLEquivalentClassesAxiom(dataSource.getValue(), ce))))
-                    );
-
+                    addInferredExpressions();
                 }
             }
+            @Override
+            public void addInferredExpressions() {
+                Set<OWLClass> implicitClasses = editorKit.getReasoner()
+                        .getEquivalentClasses(dataSource.getValue())
+                        .getEntities();
+
+                implicitClasses.remove(dataSource.getValue());
+                    /* Obviously,  class is a thing, so remove it */
+                implicitClasses.remove(thing);
+                implicitClasses.forEach(ce -> root.addComponent(new InferredLabel(ce,
+                                () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                        .getOWLEquivalentClassesAxiom(dataSource.getValue(), ce))))
+                );
+                
+            } 
         };
         subClsOfPanel = new ClassPanel("SubClass Of: ") {
             @Override
@@ -283,6 +286,22 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             }
         };
     }
+    @Subscribe
+    public void afterReasonerToggle(OWLEditorEvent.ReasonerToggleEvent event) {
+        if(event.getReasonerStatus()) {
+            equivPanel.addInferredExpressions();
+            subClsOfPanel.addInferredExpressions();
+            indPanel.addInferredExpressions();
+            disjointPanel.addInferredExpressions();
+        }
+        else {
+            equivPanel.removeInferredExpressions();
+            subClsOfPanel.removeInferredExpressions();
+            indPanel.removeInferredExpressions();
+            disjointPanel.removeInferredExpressions();
+        }         
+        
+    }
 
     @Subscribe
     public void afterClassAxiomAdded(OWLEditorEvent.ClassAxiomAdded event) {
@@ -334,7 +353,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                     Notification.Type.WARNING_MESSAGE);
         }
     }
-
+    
     public static class ClassLabel extends AbstractEditableOWLObjectLabel<OWLClassExpression> {
         public ClassLabel(@Nonnull OWLObjectSource<OWLClassExpression> expressionSource,
                           @Nonnull OWLExpressionRemoveHandler removeExpression1,

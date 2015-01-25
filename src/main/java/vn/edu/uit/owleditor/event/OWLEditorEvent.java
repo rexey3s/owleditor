@@ -391,7 +391,7 @@ public final class OWLEditorEvent {
             super(newAxiom, old, owner);
         }
     }
-
+    
     /**
      * SWRLAPI Rule addition and removal events
      */
@@ -414,6 +414,22 @@ public final class OWLEditorEvent {
         public RuleModified(SWRLAPIRule newAxiom, SWRLAPIRule old, OWLOntology owner) {
             super(newAxiom, old, owner);
         }
+    }
+    
+    public static  class ReasonerToggleEvent {
+        private final Boolean reasonerStatus;
+        private final OWLEntity currentEntity;
+        public ReasonerToggleEvent(Boolean status, OWLEntity entity) {
+            reasonerStatus = status;
+            currentEntity = entity;            
+        }
+        public Boolean getReasonerStatus() {
+            return reasonerStatus;            
+        }
+        public OWLEntity getCurrentEntity() {
+            return currentEntity;
+            
+        }        
     }
 
 

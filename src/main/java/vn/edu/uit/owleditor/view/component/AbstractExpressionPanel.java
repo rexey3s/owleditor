@@ -1,10 +1,10 @@
 package vn.edu.uit.owleditor.view.component;
 
-import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
+import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 
 import javax.annotation.Nonnull;
 import java.util.Iterator;
@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/4/2014.
  */
-public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel {
+public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel implements HasReasoning {
 
     protected final VerticalLayout root = new VerticalLayout();
     protected OWLObjectSource<T> dataSource = initDataSource();
@@ -62,7 +62,19 @@ public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel
             }
         }
     }
-
+    public void removeInferredExpressions() {
+        Iterator<Component> labels = root.iterator();
+        while (labels.hasNext()) {
+            Component label = labels.next();
+            if (label instanceof InferredLabel) {               
+                labels.remove();
+                root.removeComponent(label);                
+            }
+        }
+        
+    }
+    public void addInferredExpressions() { }
+    
     public void setPropertyDataSource(@Nonnull Property property) {
         if (property.getValue() != null) {
             dataSource = (OWLObjectSource<T>) property;

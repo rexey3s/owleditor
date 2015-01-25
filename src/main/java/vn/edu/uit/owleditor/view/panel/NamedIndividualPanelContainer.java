@@ -10,6 +10,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
@@ -79,12 +80,12 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                         ))
                 );
                 if (editorKit.getReasonerStatus()) {
-                   addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
 
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException{
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getTypes(dataSource.getValue(), false).getFlattened();
                 implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
@@ -123,12 +124,12 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                                                 .getValue(), i.asOWLNamedIndividual()))));
                 
                 if (editorKit.getReasonerStatus()) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
 
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
                         .getSameIndividuals(dataSource.getValue()).getEntities();
 
@@ -166,12 +167,12 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                                                 dataSource.getValue(), i.asOWLNamedIndividual()))
                         ));
                 if (editorKit.getReasonerStatus()) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
 
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
                         .getDifferentIndividuals(dataSource.getValue()).getFlattened();
                 implicitIndividuals.forEach(e -> root.addComponent(new InferredLabel(e,
@@ -207,12 +208,12 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
                 });
                 if(editorKit.getReasonerStatus()) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
 
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException{
                 editorKit.getActiveOntology().getDataPropertiesInSignature()
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLObjectProperty property) {
@@ -260,12 +261,12 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
                 });
                 if(editorKit.getReasonerStatus()) {
-                   addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
 
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException{
                 editorKit.getActiveOntology().getDataPropertiesInSignature()
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLDataProperty property) {
@@ -378,11 +379,11 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     @Subscribe
     public void afterReasonerToggleInd(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {
-            typePn.addInferredExpressions();
-            samePn.addInferredExpressions();
-            diffPn.addInferredExpressions();
-            objAssertPn.addInferredExpressions();
-            dataAssertPn.addInferredExpressions();
+            typePn.addInferredExpressionsWithConsistency();
+            samePn.addInferredExpressionsWithConsistency();
+            diffPn.addInferredExpressionsWithConsistency();
+            objAssertPn.addInferredExpressionsWithConsistency();
+            dataAssertPn.addInferredExpressionsWithConsistency();
         }
         else {
             typePn.removeInferredExpressions();

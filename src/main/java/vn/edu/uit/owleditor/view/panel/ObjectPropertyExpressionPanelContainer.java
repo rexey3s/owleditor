@@ -7,6 +7,7 @@ import com.vaadin.ui.*;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
@@ -171,12 +172,12 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                         ))
                 );
                 if (editorKit.getReasonerStatus()) {
-                   addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }                
             }
 
             @Override
-            public void removeInferredExpressions() {
+            public void removeInferredExpressions() throws InconsistentOntologyException{
                 Set<OWLClass> implicitClasses = editorKit
                         .getReasoner().getObjectPropertyDomains(dataSource.getValue(), false).getFlattened();
                 implicitClasses.remove(thing);
@@ -205,11 +206,11 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                         ))
                 );
                 if (editorKit.getReasonerStatus()) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
             @Override
-            public void removeInferredExpressions() {
+            public void removeInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit
                         .getReasoner().getObjectPropertyRanges(dataSource.getValue(), false).getFlattened();
                 implicitClasses.remove(thing);

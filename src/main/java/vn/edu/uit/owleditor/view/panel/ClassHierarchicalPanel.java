@@ -448,16 +448,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
             Button save = new Button("Save");
             save.addStyleName(ValoTheme.BUTTON_PRIMARY);
-            save.addClickListener(click -> {
-                try {
-                    StreamResource rs = createResource();
-                    FileDownloader fd = new FileDownloader(rs);
-                    fd.extend(save);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
-                }
-            });
+
+            StreamResource rs = createResource();
+            FileDownloader fd = new FileDownloader(rs);
+            fd.extend(save);
+
             save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
 
             footer.addComponents(cancel, save);

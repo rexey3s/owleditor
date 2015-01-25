@@ -17,6 +17,8 @@ import org.semanticweb.owlapi.io.StreamDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinComponent;
@@ -45,7 +47,8 @@ import java.util.List;
 @VaadinUIScope
 @VaadinComponent
 public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
-    
+    private static final Logger LOG = LoggerFactory.getLogger(ClassHierarchicalPanel.class);
+
     // Actions for the context menu
     private static final Action ADD_SUB = new Action("Add SubClass");
     private static final Action ADD_SIBLING = new Action("Add SiblingClass");
@@ -219,6 +222,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
                 for (OWLOntologyChange chg : changes) {
                     chg.accept(dataContainer.getOWLOntologyChangeListener());
+                    LOG.info(chg.toString());
                 }
             });
 

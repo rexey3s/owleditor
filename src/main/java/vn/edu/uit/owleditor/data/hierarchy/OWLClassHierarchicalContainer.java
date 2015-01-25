@@ -15,7 +15,7 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
-public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer<OWLClass> {
+public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
     private final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
 
     @SuppressWarnings("unchecked")
@@ -103,11 +103,11 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
                     OWLClass subCls = axiom.getSubClass().asOWLClass();
 
                     setParent(subCls, thing);
-//                    if(!supCls.isOWLThing()) {
-//                        if (EntitySearcher.getSubClasses(supCls, activeOntology).size() == 0) {
-//                            setChildrenAllowed(supCls, false);
-//                        }
-//                    }
+                    if(!supCls.isOWLThing()) {
+                        if (EntitySearcher.getSubClasses(supCls, activeOntology).size() == 0) {
+                            setChildrenAllowed(supCls, false);
+                        }
+                    }
                 }
             }
         };

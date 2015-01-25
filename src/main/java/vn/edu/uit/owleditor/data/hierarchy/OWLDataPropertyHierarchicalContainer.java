@@ -20,7 +20,7 @@ import java.util.Set;
  *         Faculty of Computer Network and Telecommunication created on 11/22/2014.
  */
 @SuppressWarnings({"unchecked"})
-public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer<OWLDataProperty> {
+public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
 
     private final OWLDataProperty topDataProp = OWLManager.getOWLDataFactory().getOWLTopDataProperty();
 

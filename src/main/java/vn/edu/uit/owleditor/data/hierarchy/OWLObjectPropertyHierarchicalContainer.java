@@ -15,7 +15,7 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
-public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer<OWLObjectProperty> {
+public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
 
     private final OWLObjectProperty topObjectProp = OWLManager.getOWLDataFactory().getOWLTopObjectProperty();
 

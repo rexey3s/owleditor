@@ -86,7 +86,21 @@ public class EntryView extends VerticalLayout {
 
     private Layout buildUploadEntry() {
         final UploadField uploadField = new UploadField();
+        uploadField.setFieldType(UploadField.FieldType.FILE);
+        uploadField.setStorageMode(UploadField.StorageMode.FILE);
+        uploadField.setButtonCaption("Upload ontology file");
+        uploadField.setMaxFileSize(10000000);
+        uploadField.setAcceptFilter("application/rdf+xml");
+        uploadField.setAcceptFilter("application/owl+xml");
+        uploadField.setAcceptFilter("text/owl-functional");
+        uploadField.setAcceptFilter("text/owl-manchester");
+        uploadField.setAcceptFilter("application/xml");
+        uploadField.setAcceptFilter("text/plain");
         uploadField.addStyleName("upload-field");
+        uploadField.setFileFactory((fileName, mimeType) -> {
+            File tmpFile = new File(TEMP_FILE_DIR + fileName);
+            return tmpFile;
+        });
         final MButton openBtn = new MButton("Open", click -> {
             try {
                 File file = (File) uploadField.getValue();

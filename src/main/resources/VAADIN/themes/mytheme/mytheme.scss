@@ -112,7 +112,9 @@ $valo-menu-background-color: #414B56;
   .hierarchy-view {
     min-width: 250px;
     .hierarchy-view-toolbar {
-      padding: 1px 0 1px round($v-unit-size / 1.8);
+      .v-label {
+        padding-left: round($v-unit-size / 1.8);
+      }
     }
   }
 

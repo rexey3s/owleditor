@@ -55,8 +55,9 @@ public class EntryView extends VerticalLayout {
         final MTextField urlField = new MTextField().withWidth("350px");
         final MButton openBtn = new MButton("Open", click -> {
             try {
-                if (!urlField.getValue().matches("^(?:f|ht)tps?://")) {
-                    urlField.setValue("http://" + urlField.getValue());
+                if (!urlField.getValue().matches("~^(?:f|ht)tps?://~i")) {
+                    String  s = urlField.getValue();
+                    urlField.setValue("http://" + s);
                 }
                 
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));

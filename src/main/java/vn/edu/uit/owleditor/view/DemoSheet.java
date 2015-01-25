@@ -15,7 +15,7 @@ import vn.edu.uit.owleditor.view.panel.ClassHierarchicalPanel;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/13/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/13/14.
  */
 @VaadinUIScope
 @VaadinView(name = DemoSheet.NAME)
@@ -45,13 +45,13 @@ public class DemoSheet extends HorizontalLayout implements View {
                     individualsList.setContainerDataSource(editorKit
                             .getDataFactory()
                             .getOWLIndividualListContainer(clz));
+                demoPanel.setSuggestionSource(clz);
 
             }
         });
         individualsList.addValueChangeListener(event -> {
             if (event.getProperty().getValue() != null && hierarchy.getSelectedProperty().getValue() != null) {
-                demoPanel.setSuggestionSource(
-                        hierarchy.getSelectedProperty().getValue(), (OWLNamedIndividual) event.getProperty().getValue());
+                demoPanel.setIndividualSource((OWLNamedIndividual) event.getProperty().getValue());
             }
         });
         hierarchy.setImmediate(true);

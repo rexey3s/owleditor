@@ -50,7 +50,6 @@ public class DataPropertiesSheet extends HorizontalLayout implements View {
         setExpandRatio(tabs, 3.0f);
         setMargin(true);
         setSpacing(true);
-        addStyleName("owl-sheet");
         setSizeFull();
     }
 

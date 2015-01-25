@@ -293,8 +293,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
                                 event.getDeclareProperty(),
                                 pe.asOWLDataProperty());
 
-                editorKit
-                        .getModelManager()
+                editorKit.getModelManager()
                         .addAxiom(editorKit.getActiveOntology(), siblingAxiom);
             }
             if (ok == ChangeApplied.SUCCESSFULLY)

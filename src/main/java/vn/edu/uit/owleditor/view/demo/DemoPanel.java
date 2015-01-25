@@ -164,15 +164,20 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
         return OWLEditorKitImpl.getShortForm(entity);
     }
 
-    public void setSuggestionSource(OWLClass cls, OWLNamedIndividual individual) {
-        if (cls != null && individual != null) {
+    public void setSuggestionSource(OWLClass cls) {
+        if (cls != null) {
             classSource.setValue(cls);
-            individualSource.setValue(individual);
             graph.setData(AtomSearcher.getSuggestion(cls, editorKit.getSWRLActiveOntology()).toString());
             
         }
     }
-
+    
+    public void setIndividualSource(OWLNamedIndividual individual) {
+        if(individual != null) {
+            individualSource.setValue(individual);
+        }
+        
+    }
     @Override
     public void activeStepChanged(WizardStepActivationEvent event) {
         if (event.getActivatedStep() instanceof DemoUIFactory.FinishStep) {

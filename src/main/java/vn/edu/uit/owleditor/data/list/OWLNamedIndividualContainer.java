@@ -15,7 +15,8 @@ import vn.edu.uit.owleditor.utils.OWLEditorData;
 import javax.annotation.Nonnull;
 
 /**
- * Created by Chuong Dang on 18/11/2014.
+ * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
+ *         Faculty of Computer Network and Telecommunication created on 18/11/2014.
  */
 public class OWLNamedIndividualContainer extends IndexedContainer implements
         OWLObjectContainer, HasOntologyChangeListener {
@@ -35,7 +36,7 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
             @Override
             public void visit(@Nonnull OWLNamedIndividual owlIndividual) {
                 addItem(owlIndividual);
-                getItem(owlIndividual).getItemProperty(OWLEditorData.OWLNamedIndividualName).setValue(sf(owlIndividual));
+                getContainerProperty(owlIndividual, OWLEditorData.OWLNamedIndividualName).setValue(sf(owlIndividual));
             }
 
             @Override
@@ -81,33 +82,42 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
     }
 
 
-    @Override
     public OWLOntologyChangeVisitor initChangeListener() {
         return new OWLOntologyChangeVisitorAdapter() {
             @Override
             public void visit(@Nonnull AddAxiom change) {
-                change.getAxiom().accept(new OWLAxiomVisitorAdapter() {
-                    @Override
-                    public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
-                        if (axiom.getIndividual().isNamed()) {
-                            addItem(axiom.getIndividual().asOWLNamedIndividual());
-                            getContainerProperty(axiom.getIndividual().asOWLNamedIndividual(),
-                                    OWLEditorData.OWLNamedIndividualName).setValue(
-                                    OWLEditorKitImpl.getShortForm(axiom.getIndividual().asOWLNamedIndividual())
-                            );
-                        }
-                    }
-                });
+                change.getAxiom().accept(initNodeAdder());
             }
 
             @Override
             public void visit(@Nonnull RemoveAxiom change) {
-                change.getAxiom().accept(new OWLAxiomVisitorAdapter() {
-                    @Override
-                    public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
-                        removeItem(axiom.getIndividual());
-                    }
-                });
+                change.getAxiom().accept(initNodeRemover());
+            }
+        };
+    }
+
+    @Override
+    public OWLAxiomVisitor initNodeAdder() {
+        return new OWLAxiomVisitorAdapter() {
+            @Override
+            public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
+                if (axiom.getIndividual().isNamed()) {
+                    addItem(axiom.getIndividual().asOWLNamedIndividual());
+                    getContainerProperty(axiom.getIndividual().asOWLNamedIndividual(),
+                            OWLEditorData.OWLNamedIndividualName).setValue(
+                            OWLEditorKitImpl.getShortForm(axiom.getIndividual().asOWLNamedIndividual())
+                    );
+                }
+            }
+        };
+    }
+
+    @Override
+    public OWLAxiomVisitor initNodeRemover() {
+        return new OWLAxiomVisitorAdapter() {
+            @Override
+            public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
+                removeItem(axiom.getIndividual());
             }
         };
     }

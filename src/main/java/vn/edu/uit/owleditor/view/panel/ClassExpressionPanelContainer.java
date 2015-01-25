@@ -9,6 +9,7 @@ import com.vaadin.ui.UI;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
@@ -71,11 +72,11 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                         dataSource.getValue(), modEx, ce))
                 ));
                 if (reasonerStatus) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getEquivalentClasses(dataSource.getValue())
                         .getEntities();
@@ -114,12 +115,12 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                     );
                 }
                 if (reasonerStatus) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
 
             }
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getSuperClasses(dataSource.getValue(), false).getFlattened();
                 implicitClasses.remove(thing);
@@ -148,11 +149,11 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                 ))
                 );
                 if (reasonerStatus) {
-                    addInferredExpressions();
+                    addInferredExpressionsWithConsistency();
                 }
             }
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException{
                 editorKit.getReasoner()
                         .getInstances(dataSource.getValue(), true)
                         .getFlattened().forEach(i -> root.addComponent(new InferredLabel(i,
@@ -181,11 +182,11 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                         dataSource.getValue(), modEx, ce))
                 ));
                 if (reasonerStatus) {
-                   addInferredExpressions();
+                   addInferredExpressionsWithConsistency();
                 }
             }
             @Override
-            public void addInferredExpressions() {
+            public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getDisjointClasses(dataSource.getValue()).getFlattened();
                 implicitClasses.remove(nothing);
@@ -298,10 +299,10 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     @Subscribe
     public void afterReasonerToggle(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {
-            equivPanel.addInferredExpressions();
-            subClsOfPanel.addInferredExpressions();
-            indPanel.addInferredExpressions();
-            disjointPanel.addInferredExpressions();
+            equivPanel.addInferredExpressionsWithConsistency();
+            subClsOfPanel.addInferredExpressionsWithConsistency();
+            indPanel.addInferredExpressionsWithConsistency();
+            disjointPanel.addInferredExpressionsWithConsistency();
         }
         else {
             equivPanel.removeInferredExpressions();

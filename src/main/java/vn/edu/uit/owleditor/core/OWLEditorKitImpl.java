@@ -150,12 +150,12 @@ public class OWLEditorKitImpl implements OWLEditorKit {
 
                 explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
             } catch (InconsistentOntologyException iconsEx) {
-                Notification.show(iconsEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+                Notification.show("Inconsistent Ontology", iconsEx.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
 
         } else {
-//            if (reasoner != null) reasoner.dispose();
-//            if (explanationGenerator != null) explanationGenerator = null;
+            if (reasoner != null) reasoner.dispose();
+            if (explanationGenerator != null) explanationGenerator = null;
         }
     }
 

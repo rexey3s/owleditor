@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 
 import javax.annotation.Nonnull;
@@ -73,7 +74,16 @@ public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel
         }
         
     }
-    public void addInferredExpressions() { }
+    public void addInferredExpressionsWithConsistency() {
+        try {
+            addInferredExpressions();
+        }
+        catch (InconsistentOntologyException iEx) {
+            Notification.show("Inconsistency ontology", iEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+        }
+        
+    }
+    public void addInferredExpressions() throws InconsistentOntologyException { }
     
     public void setPropertyDataSource(@Nonnull Property property) {
         if (property.getValue() != null) {

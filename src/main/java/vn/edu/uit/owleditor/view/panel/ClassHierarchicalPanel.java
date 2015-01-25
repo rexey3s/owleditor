@@ -193,12 +193,12 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     public void handleRemovalNode() {
         if (!checkOWLThing(owlTree.getCurrentProperty()))
 
-            ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", components1 -> {
-                if (components1.isConfirmed()) {
+            ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", dialog -> {
+                if (dialog.isConfirmed()) {
                     owlTree.afterRemoved(new OWLEditorEvent.ClassRemoved(
                             owlTree.getCurrentProperty().getValue()));
                 } else {
-                    components1.close();
+                    dialog.close();
                 }
             });
 
@@ -219,13 +219,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             dataContainer = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
 
             editorKit.getModelManager().addOntologyChangeListener(changes -> {
-
                 for (OWLOntologyChange chg : changes) {
-                    chg.accept(dataContainer.getOWLOntologyChangeListener());
+                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
                     LOG.info(chg.toString());
                 }
             });
-
             setContainerDataSource(dataContainer);
 
             addValueChangeListener(this);
@@ -294,7 +292,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
             for (OWLOntologyChange axiom : changes) {
 
-                axiom.accept(dataContainer.getOWLOntologyChangeListener());
+                axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
             }
             dataContainer.getEntityRemover().reset();
         }

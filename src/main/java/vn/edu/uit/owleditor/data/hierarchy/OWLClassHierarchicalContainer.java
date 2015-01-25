@@ -67,7 +67,8 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
             public void visit(@Nonnull OWLDeclarationAxiom axiom) {
                axiom.getEntity().accept(new OWLEntityVisitorAdapter() {
                    public void visit(OWLClass cls) {
-                       recursive(activeOntology, cls, null);
+                       addItem(cls);
+                       getContainerProperty(cls, OWLEditorData.OWLClassName).setValue(sf(cls));
                    }
                });
 
@@ -78,9 +79,9 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
                 if (!axiom.getSubClass().isAnonymous() && !axiom.getSuperClass().isAnonymous()) {
                     OWLClass subCls = axiom.getSubClass().asOWLClass();
                     OWLClass supCls = axiom.getSuperClass().asOWLClass();
-                    getContainerProperty(subCls, OWLEditorData.OWLClassName).setValue(sf(subCls));
-                    setChildrenAllowed(subCls, false);
+//                    getContainerProperty(subCls, OWLEditorData.OWLClassName).setValue(sf(subCls));
                     setChildrenAllowed(supCls, true);
+                    setChildrenAllowed(subCls, false);
                     setParent(subCls, supCls);
                 }
             }

@@ -27,7 +27,7 @@ public abstract class AbstractOWLObjectHierarchicalContainer
 
     private final OWLEntityRemover entityRemover;
 
-    private final OWLOntologyChangeVisitor changeListener ;
+    private final OWLOntologyChangeVisitor changeVisitor;
     
     private final OWLAxiomVisitor nodeAdder;
     
@@ -40,7 +40,7 @@ public abstract class AbstractOWLObjectHierarchicalContainer
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
         nodeAdder = initNodeAdder();
         nodeRemover = initNodeRemover();
-        changeListener = new OWLOntologyChangeVisitorAdapter() {
+        changeVisitor = new OWLOntologyChangeVisitorAdapter() {
             @Override
             public void visit(@Nonnull AddAxiom change) {
                 change.getAxiom().accept(nodeAdder);
@@ -70,8 +70,8 @@ public abstract class AbstractOWLObjectHierarchicalContainer
         return entityRemover;
     }
 
-    public OWLOntologyChangeVisitor getOWLOntologyChangeListener() {
-        return changeListener;
+    public OWLOntologyChangeVisitor getOWLOntologyChangeVisitor() {
+        return changeVisitor;
     }
 
     @Override

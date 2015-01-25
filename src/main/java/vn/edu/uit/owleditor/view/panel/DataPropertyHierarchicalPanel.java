@@ -185,7 +185,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
             editorKit.getModelManager().addOntologyChangeListener(changes -> {
 
                 for (OWLOntologyChange chg : changes) {
-                    chg.accept(dataContainer.getOWLOntologyChangeListener());
+                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
                 }
             });
 
@@ -295,7 +295,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
             for (OWLOntologyChange axiom : changes) {
 
-                axiom.accept(dataContainer.getOWLOntologyChangeListener());
+                axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
 
             }
             dataContainer.getEntityRemover().reset();

@@ -4,17 +4,23 @@
  */
 window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
     var SVG_ELEMENT = this.getElement();
+    var viewerWidth = $(".suggestion-graph-container").width();
+    var viewerHeight = $(".suggestion-graph-container").height();
 
+    
     this.onStateChange = function () {
         var data = JSON.parse(this.getState().data) || {data: {nodes: [], edges: []}, object: {nodes: [], edges: []}};
 
         console.log(data);
+        d3.select("svg")
+            .remove();
+
         var g = new dagreD3.graphlib.Graph()
             .setGraph({})
             .setDefaultEdgeLabel(function () {
                 return {};
             });
-
+        d3.select
         data.data.nodes.forEach(function (v) {
             g.setNode(v.id, {label: v.label});
         });
@@ -35,18 +41,17 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         g.edges().forEach(function (e) {
             console.log("Edge " + e.v + " -> " + e.w + ": " + JSON.stringify(g.edge(e)));
         });
-        var viewerWidth = $(".suggestion-graph-container").width();
-        var viewerHeight = $(".suggestion-graph-container").height();
 
+        var svg = d3.select(SVG_ELEMENT).append("svg")
+                .attr("width", viewerWidth)
+                .attr("height", viewerHeight),
+            svgGroup = svg.append("g");
 
         // Create the renderer
         var render = new dagreD3.render();
 
         // Set up an SVG group so that we can translate the final graph.
-        var svg = d3.select(SVG_ELEMENT).append("svg")
-                .attr("width", viewerWidth)
-                .attr("height", viewerHeight),
-            svgGroup = svg.append("g");
+        
 
         // Run the renderer. This is what draws the final graph.
         render(d3.select("svg g"), g);

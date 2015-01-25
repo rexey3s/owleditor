@@ -44,8 +44,8 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
 
         // Set up an SVG group so that we can translate the final graph.
         var svg = d3.select(SVG_ELEMENT).append("svg")
-                //.attr("width", viewerWidth)
-                //.attr("height", viewerHeight)
+                .attr("width", viewerWidth)
+                .attr("height", viewerHeight)
                 .attr("class", "overlay"),
             svgGroup = svg.append("g");
 

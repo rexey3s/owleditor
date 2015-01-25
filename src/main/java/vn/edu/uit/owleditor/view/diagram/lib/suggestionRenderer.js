@@ -18,19 +18,17 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         data.data.nodes.forEach(function (v) {
             g.setNode(v.id, {label: v.label});
         });
-        
         data.data.edges.forEach(function (v) {
+
             g.setEdge(v.start, v.end, {label: v.label});
         });
-        
         data.object.nodes.forEach(function (v) {
             g.setNode(v.id, {label: v.label});
         });
-        
         data.object.edges.forEach(function (v) {
+
             g.setEdge(v.start, v.end, {label: v.label});
         });
-        
         g.nodes().forEach(function (v) {
             console.log("Node " + v + ": " + JSON.stringify(g.node(v)));
         });
@@ -40,37 +38,36 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
         var viewerWidth = $(".suggestion-graph-container").width();
         var viewerHeight = $(".suggestion-graph-container").height();
 
+
         // Create the renderer
         var render = new dagreD3.render();
 
         // Set up an SVG group so that we can translate the final graph.
-        var svg = d3.select(SVG_ELEMENT).append("svg"),
-            //.attr("width", viewerWidth)
-            //.attr("height", viewerHeight)
-            //.attr("class", "overlay"),
-            inner = svg.select("g");
+        var svg = d3.select(SVG_ELEMENT).append("svg")
+                //.attr("width", viewerWidth)
+                //.attr("height", viewerHeight)
+                .attr("class", "overlay"),
+            svgGroup = svg.append("g");
 
         // Run the renderer. This is what draws the final graph.
-        render(inner, g);
+        render(d3.select("svg g"), g);
 
+        // Center the graph
+        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+        svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+        svg.attr("height", g.graph().height + 40);
 
 
         // Set up zoom support
-        var zoom = d3.behavior.zoom().on("zoom", function() {
-            inner.attr("transform", "translate(" + d3.event.translate + ")" +
+        var zoom = d3.behavior.zoom().on("zoom", function () {
+            svgGroup.attr("transform", "translate(" + d3.event.translate + ")" +
             "scale(" + d3.event.scale + ")");
         });
         svg.call(zoom);
-        
-        // Center the graph
-        var initialScale = 0.75;
-        zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
-            .scale(initialScale)
-            .event(svg);
-        svg.attr('height', g.graph().height * initialScale + 40);
 
     }
-    
+
+
     //$(window).on("resize", function() {
     //    var targetWidth = svg.parent().width();
     //    svg.attr("width", targetWidth);

@@ -59,7 +59,8 @@ public class EntryView extends VerticalLayout {
 
                 if (!s.substring(0,7).equals("http://")) {
                     urlField.setValue("http://"+s);
-                } else if(!s.substring(0,8).equals("https://")) {
+                } 
+                if(!s.substring(0,8).equals("https://")) {
                     urlField.setValue("https://" + s);
                 }
                 

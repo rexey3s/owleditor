@@ -108,6 +108,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         setExpandRatio(ver, 3.0f);
         setMargin(true);
         setSpacing(true);
+        addStyleName("owl-sheet");
         setSizeFull();
     }
     public void setReasonerToggle(Boolean value) {

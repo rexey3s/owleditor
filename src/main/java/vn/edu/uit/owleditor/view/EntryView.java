@@ -1,5 +1,7 @@
 package vn.edu.uit.owleditor.view;
 
+import com.vaadin.data.Validator;
+import com.vaadin.data.validator.AbstractStringValidator;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
@@ -52,9 +54,20 @@ public class EntryView extends VerticalLayout {
     }
 
     private Layout buildUrlEntry() {
-        final MTextField urlField = new MTextField().withWidth("350px");
+        final MTextField urlField = new MTextField().withWidth("350px")
+                .withValidator(new AbstractStringValidator("Not an URL") {
+                    @Override
+                    protected boolean isValidValue(String s) {
+                       
+                        return s.matches("^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$");
+                    }
+                });
         final MButton openBtn = new MButton("Open", click -> {
             try {
+                if (urlField.getValue().matches("~^(?:f|ht)tps?://~i")) {
+                    urlField.setValue("http://" + urlField.getValue());
+                }
+                urlField.commit();
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
                 VaadinSession.getCurrent()
                         .setConverterFactory(new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
@@ -62,9 +75,11 @@ public class EntryView extends VerticalLayout {
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
             } 
+            catch (Validator.InvalidValueException invalid) {
+                Notification.show(invalid.getMessage(), Notification.Type.WARNING_MESSAGE);
+            }
             catch (NullPointerException nullEx) {
                 
-                Notification.show("The URL is invalid", Notification.Type.WARNING_MESSAGE);
                 LOG.error(nullEx.getMessage());
             }
             catch (OWLOntologyCreationException e) {

@@ -70,6 +70,7 @@ public class DemoSheet extends HorizontalLayout implements View {
         setExpandRatio(demoPanel, 3.0f);
         setMargin(true);
         setSpacing(true);
+        addStyleName("owl-sheet");
         setSizeFull();
     }
 

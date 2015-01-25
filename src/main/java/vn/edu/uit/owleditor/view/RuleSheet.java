@@ -71,6 +71,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, View 
         setMargin(true);
         addStyleName(ValoTheme.LAYOUT_CARD);
         addComponent(rulesTable);
+        addStyleName("owl-sheet");
         setSizeFull();
     }
 

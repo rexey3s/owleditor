@@ -86,8 +86,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         dwn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         dwn.setIcon(FontAwesome.DOWNLOAD);
         dwn.addClickListener(selected -> UI.getCurrent().addWindow(new DownloadOntologyWindow()));
-        MHorizontalLayout configWrapper = new MHorizontalLayout(dwn, buildMenuBar());
-        
+        MHorizontalLayout configWrapper = new MHorizontalLayout(dwn, buildMenuBar()).withSpacing(false);
+
         toolbar.addComponents(caption, configWrapper);
 //        toolbar.setExpandRatio(caption, 1.0f);
         toolbar.setComponentAlignment(configWrapper, Alignment.MIDDLE_RIGHT);

@@ -53,12 +53,9 @@ public class EntryView extends VerticalLayout {
 
     private Layout buildUrlEntry() {
         final MTextField urlField = new MTextField().withWidth("350px");
-              
-        
-        urlField.setImmediate(false);
         final MButton openBtn = new MButton("Open", click -> {
             try {
-                if (urlField.getValue().matches("^(?:f|ht)tps?://")) {
+                if (!urlField.getValue().matches("^(?:f|ht)tps?://")) {
                     urlField.setValue("http://" + urlField.getValue());
                 }
                 
@@ -78,6 +75,7 @@ public class EntryView extends VerticalLayout {
                 LOG.error(e.getMessage());
             } 
             catch (Exception e) {
+                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
                 LOG.error(e.getMessage());
             }
 
@@ -102,11 +100,7 @@ public class EntryView extends VerticalLayout {
         uploadField.setAcceptFilter("application/xml");
         uploadField.setAcceptFilter("text/plain");
         uploadField.addStyleName("upload-field");
-        uploadField.setFileFactory((fileName, mimeType) -> {
-            LOG.info("MIME -> " + mimeType);
 
-            return new File(TEMP_FILE_DIR + fileName);
-        });
         final MButton openBtn = new MButton("Open", click -> {
             try {
                 File file = (File) uploadField.getValue();

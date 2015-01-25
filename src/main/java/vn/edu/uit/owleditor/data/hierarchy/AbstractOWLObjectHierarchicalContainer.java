@@ -43,7 +43,9 @@ public abstract class AbstractOWLObjectHierarchicalContainer
         changeVisitor = new OWLOntologyChangeVisitorAdapter() {
             @Override
             public void visit(@Nonnull AddAxiom change) {
-                change.getAxiom().accept(nodeAdder);
+                if(!reasonerStatus) {
+                    change.getAxiom().accept(nodeAdder);
+                }
             }
 
             @Override

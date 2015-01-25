@@ -69,7 +69,10 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
             public void visit(OWLDeclarationAxiom axiom) {
                 axiom.getEntity().accept(new OWLEntityVisitorAdapter() {
                     public void visit(OWLObjectProperty property) {
-                        recursive(activeOntology, property, null);
+//                        recursive(activeOntology, property, null);
+                        addItem(property);
+                        getContainerProperty(property, OWLEditorData.OWLObjectPropertyName).setValue(sf(property));
+                        setParent(property, topObjectProp);
                     }
                 });
             }
@@ -81,8 +84,8 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
 
                     OWLObjectProperty subProp = axiom.getSubProperty().asOWLObjectProperty();
 
-                    getContainerProperty(subProp, OWLEditorData.OWLObjectPropertyName)
-                            .setValue(sf(subProp));
+//                    getContainerProperty(subProp, OWLEditorData.OWLObjectPropertyName)
+//                            .setValue(sf(subProp));
 
                     setChildrenAllowed(subProp, false);
                     setChildrenAllowed(supProp, true);
@@ -113,11 +116,12 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
                             .asOWLObjectProperty();
 
                     setParent(subProp, topObjectProp);
+                    if(!subProp.isOWLTopObjectProperty()) {
+                        if (EntitySearcher.getSubProperties(supProp,
+                                activeOntology).size() == 0) {
 
-                    if (EntitySearcher.getSubProperties(supProp,
-                            activeOntology).size() == 0) {
-
-                        setChildrenAllowed(supProp, false);
+                            setChildrenAllowed(supProp, false);
+                        }
                     }
                 }
             }

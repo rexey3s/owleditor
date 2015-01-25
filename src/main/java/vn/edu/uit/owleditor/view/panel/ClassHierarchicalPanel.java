@@ -224,6 +224,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     LOG.info(chg.toString());
                 }
             });
+            
             setContainerDataSource(dataContainer);
 
             addValueChangeListener(this);
@@ -288,8 +289,6 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             List<OWLOntologyChange> changes = editorKit
                     .getModelManager()
                     .applyChanges(dataContainer.getEntityRemover().getChanges());
-
-
             for (OWLOntologyChange axiom : changes) {
 
                 axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
@@ -309,6 +308,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             ChangeApplied declareOk = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), clsDeclaration);
             ChangeApplied subClzOk = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), subClsAxiom);
             if (ChangeApplied.SUCCESSFULLY == declareOk && ChangeApplied.SUCCESSFULLY == subClzOk) {
+
                 expandItem(event.getSuperClass());
                     Notification.show("Successfully create "
                                     + OWLEditorKitImpl.getShortForm(event.getSubClass()),

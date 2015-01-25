@@ -110,7 +110,10 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
             public void visit(@Nonnull OWLDeclarationAxiom axiom) {
                 axiom.getEntity().accept(new OWLEntityVisitorAdapter() {
                     public void visit(OWLDataProperty property) {
-                        recursive(activeOntology, property, null);
+//                        recursive(activeOntology, property, null);
+                        addItem(property);
+                        getContainerProperty(property, OWLEditorData.OWLDataPropertyName).setValue(sf(property));
+                        setParent(property, topDataProp);
                     }
                 });
             }
@@ -121,9 +124,9 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                     OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
                     OWLDataProperty supProp = axiom.getSuperProperty().asOWLDataProperty();
 
-                    getItem(subProp)
-                            .getItemProperty(OWLEditorData.OWLDataPropertyName)
-                            .setValue(sf(subProp));
+//                    getItem(subProp)
+//                            .getItemProperty(OWLEditorData.OWLDataPropertyName)
+//                            .setValue(sf(subProp));
 
                     setChildrenAllowed(subProp, false);
                     setChildrenAllowed(supProp, true);
@@ -149,9 +152,10 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                     OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
 
                     setParent(subProp, topDataProp);
-
-                    if (EntitySearcher.getSubProperties(supProp, activeOntology).size() == 0) {
-                        setChildrenAllowed(supProp, false);
+                    if(!supProp.isOWLTopDataProperty()) {
+                        if (EntitySearcher.getSubProperties(supProp, activeOntology).size() == 0) {
+                            setChildrenAllowed(supProp, false);
+                        }
                     }
                 }
             }

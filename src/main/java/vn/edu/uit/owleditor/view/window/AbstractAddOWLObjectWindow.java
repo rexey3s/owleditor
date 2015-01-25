@@ -23,7 +23,6 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
     protected OWLEntityAddHandler<T> adder;
     private OWLEntityActionHandler handler;
     private Boolean isSub;
-
     public AbstractAddOWLObjectWindow() {
         initialize();
     }

@@ -58,12 +58,12 @@ public class EntryView extends VerticalLayout {
                 String  s = urlField.getValue();
 
                 if (!s.substring(0,7).equals("http://")) {
-                    urlField.setValue("http://"+s);
+                    urlField.setValue("http://" + s);
                 } 
-                if(!s.substring(0,8).equals("https://")) {
-                    urlField.setValue("https://" + s);
-                }
-                
+//                if(!s.substring(0,8).equals("https://")) {
+//                    urlField.setValue("https://" + s);
+//                }
+
                 
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
                 VaadinSession.getCurrent()

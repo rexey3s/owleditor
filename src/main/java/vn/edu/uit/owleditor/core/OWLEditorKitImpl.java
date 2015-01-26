@@ -152,7 +152,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
                 reasoner.precomputeInferences();
 
                 explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
-                Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("Notice", "Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
 
             } catch (InconsistentOntologyException iconsEx) {
                 LOG.error(iconsEx.getMessage(), this);
@@ -160,7 +160,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         } else {
             if (reasoner != null) reasoner.dispose();
             if (explanationGenerator != null) explanationGenerator = null;
-            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
+            Notification.show("Notice", "Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
 
         }
     }

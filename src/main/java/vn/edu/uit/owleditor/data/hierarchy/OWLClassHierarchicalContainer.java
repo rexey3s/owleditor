@@ -32,14 +32,15 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         
         allClasses.forEach(c -> {
             if(!containsId(c)) {
+                addItem(c);
+                getContainerProperty(c, OWLEditorData.OWLClassName).setValue(sf(c));
                 recursive(activeOntology, c, null);
             }
         });
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {
-            addItem(child);
-            getContainerProperty(child, OWLEditorData.OWLClassName).setValue(sf(child));
+//            addItem(child);
             setChildrenAllowed(child, false);
 
             if (parent != null) {
@@ -81,9 +82,11 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
                     OWLClass subCls = axiom.getSubClass().asOWLClass();
                     OWLClass supCls = axiom.getSuperClass().asOWLClass();
 //                    getContainerProperty(subCls, OWLEditorData.OWLClassName).setValue(sf(subCls));
-                    setChildrenAllowed(supCls, true);
-                    setChildrenAllowed(subCls, false);
-                    setParent(subCls, supCls);
+                    
+//                    setChildrenAllowed(supCls, true);
+//                    setChildrenAllowed(subCls, false);
+//                    setParent(subCls, supCls);
+                    recursive(activeOntology, subCls, supCls);
                 }
             }
         };

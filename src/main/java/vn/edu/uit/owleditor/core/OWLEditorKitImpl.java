@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.io.OWLParserException;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxPrefixNameShortFormProvider;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
@@ -100,7 +101,8 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
         parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
         parser.setDefaultOntology(activeOntology);
-        reasonerToggle();
+        reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
+        explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
     }
     
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
@@ -116,7 +118,9 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
         parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
         parser.setDefaultOntology(activeOntology);
-        reasonerToggle();
+        reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
+        explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
+
     }
     
     public ExplanationTree explain(OWLAxiom axiom) {
@@ -148,19 +152,21 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private void reasonerToggle() {
         if (reasonerStatus) {
             try {
-                reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
-                reasoner.precomputeInferences();
+                reasoner.flush();
+                reasoner.precomputeInferences(
+                        InferenceType.CLASS_HIERARCHY,
+                        InferenceType.CLASS_ASSERTIONS);
 
-                explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
-                Notification.show("Notice", "Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("Reasoner activated");
 
             } catch (InconsistentOntologyException iconsEx) {
                 LOG.error(iconsEx.getMessage(), this);
             }
         } else {
-            if (reasoner != null) reasoner.dispose();
-            if (explanationGenerator != null) explanationGenerator = null;
-            Notification.show("Notice", "Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
+//            if (reasoner != null) reasoner.dispose();
+//            if (explanationGenerator != null) explanationGenerator = null;
+            
+            Notification.show("Reasoner deactivated");
 
         }
     }

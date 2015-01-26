@@ -45,15 +45,18 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
         setChildrenAllowed(topDataProp, true);
         Set<OWLDataProperty> allProperties = ontology.getDataPropertiesInSignature();
         allProperties.remove(topDataProp);
-        allProperties.forEach(d ->  recursive(activeOntology, d, null));
-        
+        allProperties.forEach(d -> {
+            if (!containsId(d)) {
+                recursive(activeOntology, d, null);
+            }
+        });
+
     }
 
 
 
     @SuppressWarnings("unchecked")
     private void recursive(OWLOntology ontology, OWLDataProperty child, OWLDataProperty parent) {
-        if(!containsId(child)) {
             addItem(child);
             getContainerProperty(child, OWLEditorData.OWLDataPropertyName).setValue(sf(child));
             getContainerProperty(child, OWLEditorData.OWLFunctionalProperty)
@@ -75,9 +78,24 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                         }
                     })
             );
-        }
     }
 
+    private void recursive2(OWLOntology ontology, OWLDataProperty child, OWLDataProperty parent) {
+        if (parent != null) {
+            setChildrenAllowed(parent, true);
+            setParent(child, parent);
+        } else {
+            setParent(child, topDataProp);
+        }
+        EntitySearcher.getSubProperties(child, ontology).forEach(
+                pe -> pe.accept(new OWLPropertyExpressionVisitorAdapter() {
+                    public void visit(OWLDataProperty property) {
+                        recursive(ontology, property, child);
+                    }
+                })
+        );
+
+    }
     public Boolean containedInOntology(OWLAxiom axiom) {
         return activeOntology.containsAxiom(axiom);
     }
@@ -128,10 +146,11 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
 //                            .getItemProperty(OWLEditorData.OWLDataPropertyName)
 //                            .setValue(sf(subProp));
 
-                    setChildrenAllowed(subProp, false);
-                    setChildrenAllowed(supProp, true);
-
-                    setParent(subProp, supProp);
+//                    setChildrenAllowed(subProp, false);
+//                    setChildrenAllowed(supProp, true);
+//
+//                    setParent(subProp, supProp);
+                    recursive2(activeOntology, subProp, supProp);
                 }
             }
         };

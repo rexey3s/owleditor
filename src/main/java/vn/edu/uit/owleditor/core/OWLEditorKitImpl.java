@@ -155,7 +155,9 @@ public class OWLEditorKitImpl implements OWLEditorKit {
                 reasoner.flush();
                 reasoner.precomputeInferences(
                         InferenceType.CLASS_HIERARCHY,
-                        InferenceType.CLASS_ASSERTIONS);
+                        InferenceType.CLASS_ASSERTIONS,
+                        InferenceType.OBJECT_PROPERTY_ASSERTIONS,
+                        InferenceType.DATA_PROPERTY_ASSERTIONS);
 
                 Notification.show("Reasoner activated");
 

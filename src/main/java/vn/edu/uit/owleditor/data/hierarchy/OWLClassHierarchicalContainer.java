@@ -29,37 +29,53 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         
         Set<OWLClass> allClasses = ontology.getClassesInSignature();
         allClasses.remove(thing);
-        
+
         allClasses.forEach(c -> {
             if(!containsId(c)) {
-                addItem(c);
-                getContainerProperty(c, OWLEditorData.OWLClassName).setValue(sf(c));
                 recursive(activeOntology, c, null);
             }
         });
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {
-//            addItem(child);
-            setChildrenAllowed(child, false);
+        addItem(child);
+        getContainerProperty(child, OWLEditorData.OWLClassName).setValue(sf(child));
+        setChildrenAllowed(child, false);
 
-            if (parent != null) {
-                setChildrenAllowed(parent, true);
-                setParent(child, parent);
-            } else {
-                setParent(child, thing);
-            }
+        if (parent != null) {
+            setChildrenAllowed(parent, true);
+            setParent(child, parent);
+        } else {
+            setParent(child, thing);
+        }
 
-            EntitySearcher.getSubClasses(child, ontology).forEach(
-                    ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
+        EntitySearcher.getSubClasses(child, ontology).forEach(
+                ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
                         public void visit(OWLClass owlClass) {
                             recursive(ontology, owlClass, child);
                         }
-                    })
-            );
+                })
+        );
 
     }
+    private void recursive2(OWLOntology ontology, OWLClass child, OWLClass parent) {
 
+        if (parent != null) {
+            setChildrenAllowed(parent, true);
+            setParent(child, parent);
+        } else {
+            setParent(child, thing);
+        }
+
+        EntitySearcher.getSubClasses(child, ontology).forEach(
+                ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
+                    public void visit(OWLClass owlClass) {
+                        recursive(ontology, owlClass, child);
+                    }
+                })
+        );
+
+    }
 
     @Override
     public OWLAxiomVisitor initNodeAdder() {
@@ -86,7 +102,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
 //                    setChildrenAllowed(supCls, true);
 //                    setChildrenAllowed(subCls, false);
 //                    setParent(subCls, supCls);
-                    recursive(activeOntology, subCls, supCls);
+                    recursive2(activeOntology, subCls, supCls);
                 }
             }
         };

@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/21/14.
+ *         Faculty of Computer Network and Telecommunication created on 11/21/14.
  */
 public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLObjectProperty> {
 
@@ -85,14 +85,11 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
-        reasonerToggle = act.addItem("Start reasoner", selected ->
-                OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
-                        !editorKit.getReasonerStatus(), tree.getCurrentProperty().getValue())));
-
+        reasonerToggle = act.addItem("Start reasoner", select -> startReasonerClickListener());
         reasonerToggle.setCheckable(true);
-        act.addItem("Add Sub Property", selectedItem -> handleSubNodeCreation());
-        act.addItem("Add Sibling Property", selectedItem -> handleSiblingNodeCreation());
-        act.addItem("Remove", selectedItem -> handleRemovalNode());
+        act.addItem("Add Sub Property", select -> handleSubNodeCreation());
+        act.addItem("Add Sibling Property", select -> handleSiblingNodeCreation());
+        act.addItem("Remove", select -> handleRemovalNode());
         return tools;
     }
 
@@ -118,13 +115,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
     @Subscribe
     public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
-        editorKit.setReasonerStatus(event.getReasonerStatus());
-        reasonerToggle.setChecked(editorKit.getReasonerStatus());
-        if (editorKit.getReasonerStatus()) {
-            Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
-        } else {
-            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
-        }
+        reasonerToggle.setChecked(event.getReasonerStatus());
     }
     
     @Override

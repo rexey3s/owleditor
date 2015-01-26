@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLLogicalEntitySource;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -18,7 +20,6 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
 
     protected Label caption = new Label();
     protected OWLEditorKit editorKit;
-
     public AbstractHierarchyPanel() {
         editorKit = OWLEditorUI.getEditorKit();
     }
@@ -41,5 +42,12 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     static interface TreeKit<T extends OWLLogicalEntitySource> extends Property.ValueChangeListener {
 
         public T getCurrentProperty();
+    }
+    
+    protected void startReasonerClickListener() {
+        editorKit.setReasonerStatus(!editorKit.getReasonerStatus());
+        OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
+                editorKit.getReasonerStatus(), getSelectedProperty().getValue()));
+
     }
 }

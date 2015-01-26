@@ -109,14 +109,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
-        reasonerToggle = act.addItem("Start reasoner", selected ->
-                OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
-                !editorKit.getReasonerStatus(), owlTree.getCurrentProperty().getValue())));
-        
+        reasonerToggle = act.addItem("Start reasoner", select -> startReasonerClickListener());
         reasonerToggle.setCheckable(true);
-        act.addItem("Add SubClass", selectedItem -> handleSubNodeCreation());
-        act.addItem("Add SiblingClass", selectedItem -> handleSiblingNodeCreation());
-        act.addItem("Remove", selectedItem -> handleRemovalNode());
+        act.addItem("Add SubClass", select -> handleSubNodeCreation());
+        act.addItem("Add SiblingClass", select-> handleSiblingNodeCreation());
+        act.addItem("Remove", select -> handleRemovalNode());
         return tools;
     }
 
@@ -138,13 +135,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     
     @Subscribe
     public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
-        editorKit.setReasonerStatus(event.getReasonerStatus());
-        reasonerToggle.setChecked(editorKit.getReasonerStatus());
-        if (editorKit.getReasonerStatus()) {          
-            Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
-        } else {            
-            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
-        }
+        reasonerToggle.setChecked(event.getReasonerStatus());
     }
 
     private boolean checkOWLThing(OWLClassSource prop) {

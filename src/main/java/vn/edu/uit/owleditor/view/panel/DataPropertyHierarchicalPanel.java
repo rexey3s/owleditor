@@ -79,26 +79,17 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         final MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
-        reasonerToggle = act.addItem("Start reasoner", selected ->
-                OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
-                        !editorKit.getReasonerStatus(), tree.getCurrentProperty().getValue())));
-
+        reasonerToggle = act.addItem("Start reasoner", select -> startReasonerClickListener());
         reasonerToggle.setCheckable(true);
-        act.addItem("Add Sub DataProperty", selectedItem -> handleSubNodeCreation());
-        act.addItem("Add Sibling DataProperty", selectedItem -> handleSiblingNodeCreation());
-        act.addItem("Remove", selectedItem -> handleRemovalNode());
+        act.addItem("Add Sub DataProperty", select -> handleSubNodeCreation());
+        act.addItem("Add Sibling DataProperty", select -> handleSiblingNodeCreation());
+        act.addItem("Remove", select -> handleRemovalNode());
         return tools;
     }
 
     @Subscribe
     public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
-        editorKit.setReasonerStatus(event.getReasonerStatus());
-        reasonerToggle.setChecked(editorKit.getReasonerStatus());
-        if (editorKit.getReasonerStatus()) {
-            Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
-        } else {
-            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
-        }
+        reasonerToggle.setChecked(event.getReasonerStatus());
     }
     
     private boolean checkTopDataProp(OWLDataPropertySource prop) {

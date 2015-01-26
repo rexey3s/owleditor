@@ -79,7 +79,7 @@ public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel
             addInferredExpressions();
         }
         catch (InconsistentOntologyException iEx) {
-            Notification.show("Inconsistency ontology", iEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+            Notification.show("Warning", iEx.getMessage(), Notification.Type.ERROR_MESSAGE);
         }
         
     }

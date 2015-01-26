@@ -76,12 +76,11 @@ public class EntryView extends VerticalLayout {
                 LOG.error(nullEx.getMessage());
             }
             catch (OWLOntologyCreationException e) {
-                
                 Notification.show("Ontology Creation Error", Notification.Type.ERROR_MESSAGE);
                 LOG.error(e.getMessage());
             } 
             catch (Exception e) {
-                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
+//                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
                 LOG.error(e.getMessage());
             }
 

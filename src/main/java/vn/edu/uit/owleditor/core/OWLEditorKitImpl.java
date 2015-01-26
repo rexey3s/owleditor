@@ -19,6 +19,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIFactory;
@@ -42,6 +44,8 @@ import java.util.Collections;
 @Repository
 @Scope(value = "session")
 public class OWLEditorKitImpl implements OWLEditorKit {
+
+    private static final Logger LOG = LoggerFactory.getLogger(OWLEditorKitImpl.class);
 
     private static final ShortFormProvider sfp = new SimpleShortFormProvider();
 
@@ -147,15 +151,17 @@ public class OWLEditorKitImpl implements OWLEditorKit {
                 reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
                 reasoner.precomputeInferences();
 
-
                 explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
-            } catch (InconsistentOntologyException iconsEx) {
-                Notification.show("Inconsistent Ontology", iconsEx.getMessage(), Notification.Type.ERROR_MESSAGE);
-            }
+                Notification.show("Reasoner activated", Notification.Type.TRAY_NOTIFICATION);
 
+            } catch (InconsistentOntologyException iconsEx) {
+                LOG.error(iconsEx.getMessage(), this);
+            }
         } else {
             if (reasoner != null) reasoner.dispose();
             if (explanationGenerator != null) explanationGenerator = null;
+            Notification.show("Reasoner deactivated", Notification.Type.TRAY_NOTIFICATION);
+
         }
     }
 

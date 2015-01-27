@@ -24,7 +24,6 @@ import org.springframework.util.Assert;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinComponent;
 import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
@@ -84,11 +83,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         caption.addStyleName(ValoTheme.LABEL_COLORED);
         caption.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         caption.setSizeUndefined();
-        MButton dwn = new MButton()
-                .withStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED)
-                .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
-                .withIcon(FontAwesome.DOWNLOAD)
-                .withListener(selected -> UI.getCurrent().addWindow(new DownloadOntologyWindow()));
+        Button dwn = new Button();
+        dwn.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+        dwn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+        dwn.setIcon(FontAwesome.DOWNLOAD);
+        dwn.addClickListener(selected -> UI.getCurrent().addWindow(new DownloadOntologyWindow()));
         MHorizontalLayout configWrapper = new MHorizontalLayout(dwn, buildMenuBar()).withSpacing(false);
 
         toolbar.addComponents(caption, configWrapper);

@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.component;
 
-import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -44,8 +43,7 @@ public abstract class AbstractExpressionPanel<T extends OWLEntity> extends Panel
             if (dataSource.getValue() != null) {
                 initActionADD();
             } else {
-                Notification.show("Notification",
-                        "Please choose an " + dataSource.getType(),
+                Notification.show("Notification", "Please choose an " + dataSource.getType(),
                         Notification.Type.WARNING_MESSAGE);
             }
         };
@@ -92,8 +90,8 @@ public abstract class AbstractExpressionPanel<T extends OWLEntity> extends Panel
     public void addInferredExpressions() throws InconsistentOntologyException {
     }
 
-    public void setPropertyDataSource(@Nonnull Property newDataSource) {
-        if (dataSource.getValue() != null) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
+        if (newDataSource.getValue() != null) {
             this.dataSource = (OWLObjectSource<T>) newDataSource;
             root.removeAllComponents();
             initActionVIEW();
@@ -101,5 +99,5 @@ public abstract class AbstractExpressionPanel<T extends OWLEntity> extends Panel
 
     }
 
-    ;
+
 }

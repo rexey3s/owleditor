@@ -2,7 +2,6 @@ package vn.edu.uit.owleditor.view.panel;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -271,7 +270,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     }
 
     @Override
-    public void setPropertyDataSource(@Nonnull Property newDataSource) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
         if (editorKit.getReasonerStatus()) editorKit.getReasoner().flush();
         objPropEquivPanel.setPropertyDataSource(newDataSource);
         subObjPropPanel.setPropertyDataSource(newDataSource);

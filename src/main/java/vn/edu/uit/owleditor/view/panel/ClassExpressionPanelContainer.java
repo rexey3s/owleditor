@@ -2,7 +2,6 @@ package vn.edu.uit.owleditor.view.panel;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
@@ -204,7 +203,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Override
-    public void setPropertyDataSource(@Nonnull Property newDataSource) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
         reasonerStatus = editorKit.getReasonerStatus();
         if(reasonerStatus) editorKit.getReasoner().flush();
         equivPanel.setPropertyDataSource(newDataSource);

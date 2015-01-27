@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -372,7 +373,8 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     }
 
-    public void setPropertyDataSource(@Nonnull OWLObjectSource property) {
+    @Override
+    public void setPropertyDataSource(@Nonnull Property property) {
         if(editorKit.getReasonerStatus()) editorKit.getReasoner().flush();
         typePn.setPropertyDataSource(property);
         samePn.setPropertyDataSource(property);

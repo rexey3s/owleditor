@@ -16,4 +16,6 @@ public interface OWLEntityAddHandler<T extends OWLLogicalEntity> extends Seriali
                     OWLLogicalEntity.class);
 
     public OWLEditorEvent.OWLEntityCreatedEvent addingEntity(T subject);
+
+
 }

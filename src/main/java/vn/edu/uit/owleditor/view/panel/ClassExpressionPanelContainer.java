@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
@@ -262,6 +263,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                 modEx -> editorKit.getDataFactory().getSubClassOfModEvent(
                                         dataSource.getValue(), modEx, axiom.getSuperClass()))
                 );
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubClassOfAxiomAddEvent(axiom, owner));
             }
         };
     }
@@ -314,7 +316,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    public void afterClassAxiomAdded(OWLEditorEvent.ClassAxiomAddEvent event) {
+    public void handleClassAxiomAddEvent(OWLEditorEvent.ClassAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new AddAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -330,7 +332,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    public void afterClassAxiomRemoved(OWLEditorEvent.ClassAxiomRemoveEvent event) {
+    public void handleClassAxiomRemoveEvent(OWLEditorEvent.ClassAxiomRemoveEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -347,7 +349,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    public void afterClassAxiomModified(OWLEditorEvent.ClassAxiomModifyEvent event) {
+    public void handleClassAxiomModifyEvent(OWLEditorEvent.ClassAxiomModifyEvent event) {
         ChangeApplied RemoveOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));
         ChangeApplied AddOk = editorKit.getModelManager()

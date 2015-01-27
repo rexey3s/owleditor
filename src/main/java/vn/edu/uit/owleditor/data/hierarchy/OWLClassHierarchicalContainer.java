@@ -58,7 +58,8 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         );
 
     }
-    private void recursive2(OWLOntology ontology, OWLClass child, OWLClass parent) {
+
+    private void rearrange(OWLClass child, OWLClass parent) {
         setChildrenAllowed(child, false);
         if (parent != null) {
             setChildrenAllowed(parent, true);
@@ -67,10 +68,10 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
             setParent(child, thing);
         }
 
-        EntitySearcher.getSubClasses(child, ontology).forEach(
+        EntitySearcher.getSubClasses(child, activeOntology).forEach(
                 ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
                     public void visit(OWLClass owlClass) {
-                        recursive(ontology, owlClass, child);
+                        rearrange(owlClass, child);
                     }
                 })
         );
@@ -78,7 +79,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
     }
 
     @Override
-    public OWLAxiomVisitor initNodeAdder() {
+    public OWLAxiomVisitor initOWLAxiomAdder() {
         return new OWLAxiomVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLDeclarationAxiom axiom) {
@@ -102,7 +103,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
 //                    setChildrenAllowed(supCls, true);
 //                    setChildrenAllowed(subCls, false);
 //                    setParent(subCls, supCls);
-                    recursive2(activeOntology, subCls, supCls);
+                    rearrange(subCls, supCls);
                 }
             }
         };
@@ -110,7 +111,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
     }
 
     @Override
-    public OWLAxiomVisitor initNodeRemover() {
+    public OWLAxiomVisitor initOWLAxiomRemover() {
         return new OWLAxiomVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLDeclarationAxiom axiom) {

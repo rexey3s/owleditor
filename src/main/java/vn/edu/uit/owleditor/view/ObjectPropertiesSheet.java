@@ -40,8 +40,8 @@ public class ObjectPropertiesSheet extends HorizontalLayout implements View {
         objectPropertyPanels = new ObjectPropertyExpressionPanelContainer();
         hcLayout.addValueChangeListener(event -> {
             if (event.getProperty().getValue() != null) {
-                attributes.setPropertyDataSource(hcLayout.getSelectedProperty());
-                objectPropertyPanels.setPropertyDataSource(hcLayout.getSelectedProperty());
+                attributes.setPropertyDataSource(hcLayout.getSelectedItem());
+                objectPropertyPanels.setPropertyDataSource(hcLayout.getSelectedItem());
             }
         });
         hcLayout.setImmediate(true);

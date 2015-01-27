@@ -96,8 +96,8 @@ public abstract class DataPropertyAssertionEditorWindow extends Window {
     }
 
     public OWLDataPropertyExpression getSelectedDataProperty() {
-        EditorUtils.checkNotNull(hierarchy.getSelectedProperty().getValue(), "Please select a Data Property");
-        return hierarchy.getSelectedProperty().getValue();
+        EditorUtils.checkNotNull(hierarchy.getSelectedItem().getValue(), "Please select a Data Property");
+        return hierarchy.getSelectedItem().getValue();
     }
 
     abstract Button.ClickListener initSaveListener();

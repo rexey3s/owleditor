@@ -64,7 +64,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
 
         hierarchy.addValueChangeListener(event -> {
             if (event.getProperty().getValue() != null) {
-                OWLClass clz = hierarchy.getSelectedProperty().getValue();
+                OWLClass clz = hierarchy.getSelectedItem().getValue();
                 if (clz.isOWLThing()) {
                     individualsList.setContainerDataSource(editorKit
                             .getDataFactory()

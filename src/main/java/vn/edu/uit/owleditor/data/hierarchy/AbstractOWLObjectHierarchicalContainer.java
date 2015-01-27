@@ -23,36 +23,27 @@ public abstract class AbstractOWLObjectHierarchicalContainer
         extends HierarchicalContainer
         implements OWLObjectContainer, HasOntologyChangeListener {
     
-    private Boolean reasonerStatus = false;
-
     private final OWLEntityRemover entityRemover;
-
     private final OWLOntologyChangeVisitor changeVisitor;
-    
     private final OWLAxiomVisitor nodeAdder;
-    
     private final OWLAxiomVisitor nodeRemover;
-    
     protected OWLOntology activeOntology;
+    private Boolean reasonerStatus = false;
 
     public AbstractOWLObjectHierarchicalContainer(@Nonnull OWLOntology ontology) {
         activeOntology = ontology;
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-        nodeAdder = initNodeAdder();
-        nodeRemover = initNodeRemover();
+        nodeAdder = initOWLAxiomAdder();
+        nodeRemover = initOWLAxiomRemover();
         changeVisitor = new OWLOntologyChangeVisitorAdapter() {
             @Override
             public void visit(@Nonnull AddAxiom change) {
-                if(!reasonerStatus) {
-                    change.getAxiom().accept(nodeAdder);
-                }
+                change.getAxiom().accept(nodeAdder);
             }
 
             @Override
             public void visit(@Nonnull RemoveAxiom change) {
-                if(!reasonerStatus) {
-                    change.getAxiom().accept(nodeRemover);
-                }
+                change.getAxiom().accept(nodeRemover);
             }
         };
         OWLEditorEventBus.register(this);
@@ -63,6 +54,9 @@ public abstract class AbstractOWLObjectHierarchicalContainer
         reasonerStatus = event.getReasonerStatus();
     }
 
+    protected abstract OWLAxiomVisitor initOWLAxiomAdder();
+
+    protected abstract OWLAxiomVisitor initOWLAxiomRemover();
 
 
 
@@ -93,4 +87,13 @@ public abstract class AbstractOWLObjectHierarchicalContainer
     }
 
 
+    @Override
+    public OWLAxiomVisitor getOWLAxiomAdder() {
+        return nodeAdder;
+    }
+
+    @Override
+    public OWLAxiomVisitor getOWLAxiomRemover() {
+        return nodeRemover;
+    }
 }

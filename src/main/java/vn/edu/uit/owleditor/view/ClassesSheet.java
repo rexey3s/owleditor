@@ -34,7 +34,7 @@ public class ClassesSheet extends HorizontalLayout implements View {
         TabSheet tabs = new TabSheet();
         hcLayout.addValueChangeListener(event -> {
             if (event.getProperty().getValue() != null) {
-                clLayout.setPropertyDataSource(hcLayout.getSelectedProperty());
+                clLayout.setPropertyDataSource(hcLayout.getSelectedItem());
             }
         });
         tabs.setSizeFull();

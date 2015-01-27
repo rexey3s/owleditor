@@ -2,7 +2,7 @@ package vn.edu.uit.owleditor.event;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/12/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/12/14.
  */
 
 public interface OWLEntityActionHandler<SUB extends OWLEditorEvent.OWLEntityCreatedEvent,

@@ -63,8 +63,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     }
 
     @Override
-    public OWLClassSource getSelectedProperty() {
-        return tree.getCurrentProperty();
+    public OWLClassSource getSelectedItem() {
+        return tree.getSelectedItem();
     }
 
     private void buildComponents() {
@@ -157,152 +157,32 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     @Override
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddOWLClassWindow(
-                tree, c -> new OWLEditorEvent.SubClassCreatedEvent(c, tree.getCurrentProperty().getValue()), true));
+                tree, c -> new OWLEditorEvent.SubClassCreatedEvent(c, tree.getSelectedItem().getValue()), true));
 
     }
 
     @Override
     public void handleSiblingNodeCreation() {
-        if (!checkOWLThing(tree.currentProperty))
+        if (!checkOWLThing(tree.selectedItem))
             UI.getCurrent().addWindow(new buildAddOWLClassWindow(
-                    tree, c -> new SiblingClassCreatedEvent(c, tree.getCurrentProperty().getValue()), false));
+                    tree, c -> new SiblingClassCreatedEvent(c, tree.getSelectedItem().getValue()), false));
 
-        else
-            Notification
-                    .show("Warning", "Cannot create sibling for OWLThing",
-                            Notification.Type.WARNING_MESSAGE);
+        else Notification.show("Warning", "Cannot create sibling for OWLThing", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
     public void handleRemovalNode() {
-        if (!checkOWLThing(tree.getCurrentProperty()))
+        if (!checkOWLThing(tree.getSelectedItem()))
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", dialog -> {
                 if (dialog.isConfirmed()) {
                     tree.afterRemoved(new OWLEditorEvent.ClassRemovedEvent(
-                            tree.getCurrentProperty().getValue()));
+                            tree.getSelectedItem().getValue()));
                 } else {
                     dialog.close();
                 }
             });
-
-        else Notification.show("Warning",
-                "Cannot remove OWLThing",
-                Notification.Type.WARNING_MESSAGE);
-    }
-
-    public static class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubClassCreatedEvent, SiblingClassCreatedEvent, OWLEditorEvent.ClassRemovedEvent> {
-
-        private final OWLClassHierarchicalContainer dataContainer;
-        private final OWLClassSource currentProperty = new OWLClassSource();
-        private final OWLEditorKit editorKit;
-
-        public OWLClassTree() {
-            editorKit = OWLEditorUI.getEditorKit();
-            dataContainer = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
-
-            editorKit.getModelManager().addOntologyChangeListener(changes -> {
-                for (OWLOntologyChange chg : changes) {
-                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
-                    LOG.info(chg.toString());
-                }
-            });
-            
-            setContainerDataSource(dataContainer);
-
-            addValueChangeListener(this);
-
-            setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-
-            setItemCaptionPropertyId(OWLEditorData.OWLClassName);
-
-        }
-
-        @Override
-        public OWLClassSource getCurrentProperty() {
-            return currentProperty;
-        }
-
-        @Override
-        public void valueChange(Property.ValueChangeEvent event) {
-            if (event.getProperty().getValue() != null) {
-                currentProperty.setValue((OWLClass) event.getProperty().getValue());
-            }
-        }
-
-
-        @Override
-        public void afterAddSiblingSaved(SiblingClassCreatedEvent event) {
-            OWLAxiom clsDeclaration = editorKit
-                    .getOWLDataFactory()
-                    .getOWLDeclarationAxiom(event.getDeclareClass());
-
-            ChangeApplied ok = editorKit
-                    .getModelManager()
-                    .addAxiom(editorKit.getActiveOntology(), clsDeclaration);
-
-            for (OWLClassExpression ce : EntitySearcher.getSuperClasses(event
-                    .getSiblingClass(), editorKit
-                    .getActiveOntology())) {
-
-                OWLAxiom siblingAxiom = editorKit
-                        .getOWLDataFactory()
-                        .getOWLSubClassOfAxiom(event
-                                        .getDeclareClass(),
-                                ce.asOWLClass());
-
-                ok = editorKit
-                        .getModelManager()
-                        .addAxiom(editorKit.getActiveOntology(), siblingAxiom);
-            }
-            if (ok == ChangeApplied.SUCCESSFULLY)
-                Notification.show("Successfully create "
-                                + OWLEditorKitImpl.getShortForm(event.getDeclareClass()),
-                        Notification.Type.TRAY_NOTIFICATION);
-            else {
-                Notification.show("Cannot create " + OWLEditorKitImpl.getShortForm(
-                                event.getDeclareClass()),
-                        Notification.Type.WARNING_MESSAGE);
-            }
-        }
-
-        @Override
-        public void afterRemoved(OWLEditorEvent.ClassRemovedEvent event) {
-            event.getRemovedObject().accept(dataContainer.getEntityRemover());
-            List<OWLOntologyChange> changes = editorKit
-                    .getModelManager()
-                    .applyChanges(dataContainer.getEntityRemover().getChanges());
-            for (OWLOntologyChange axiom : changes) {
-
-                axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
-            }
-            dataContainer.getEntityRemover().reset();
-        }
-
-        @Override
-        public void afterAddSubSaved(OWLEditorEvent.SubClassCreatedEvent event) {
-            OWLDeclarationAxiom clsDeclaration = editorKit
-                    .getOWLDataFactory()
-                    .getOWLDeclarationAxiom(event.getSubClass());
-            OWLSubClassOfAxiom subClsAxiom = editorKit
-                    .getOWLDataFactory()
-                    .getOWLSubClassOfAxiom(event.getSubClass(), event.getSuperClass());
-
-            ChangeApplied declareOk = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), clsDeclaration);
-            ChangeApplied subClzOk = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), subClsAxiom);
-            if (ChangeApplied.SUCCESSFULLY == declareOk && ChangeApplied.SUCCESSFULLY == subClzOk) {
-
-                expandItem(event.getSuperClass());
-                    Notification.show("Successfully create "
-                                    + OWLEditorKitImpl.getShortForm(event.getSubClass()),
-                            Notification.Type.TRAY_NOTIFICATION);
-            } else {
-                    Notification.show("Cannot create "
-                                    + OWLEditorKitImpl.getShortForm(event.getSubClass()),
-                            Notification.Type.WARNING_MESSAGE);
-            }
-        }
+        else Notification.show("Warning", "Cannot remove OWLThing", Notification.Type.WARNING_MESSAGE);
     }
 
     public static class DownloadOntologyWindow extends Window {
@@ -439,6 +319,112 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         }
 
+    }
+
+    public class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
+            OWLEntityActionHandler<OWLEditorEvent.SubClassCreatedEvent, SiblingClassCreatedEvent, OWLEditorEvent.ClassRemovedEvent> {
+
+        private final OWLClassHierarchicalContainer dataContainer;
+        private final OWLClassSource selectedItem = new OWLClassSource();
+
+        public OWLClassTree() {
+            dataContainer = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
+
+//            editorKit.getModelManager().addOntologyChangeListener(changes -> {
+//                for (OWLOntologyChange chg : changes) {
+//                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
+//                }
+//            });
+
+            setContainerDataSource(dataContainer);
+
+            addValueChangeListener(this);
+            setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+            setItemCaptionPropertyId(OWLEditorData.OWLClassName);
+
+        }
+
+        @Override
+        public OWLClassSource getSelectedItem() {
+            return selectedItem;
+        }
+
+        @Override
+        public void valueChange(Property.ValueChangeEvent event) {
+            if (event.getProperty().getValue() != null) {
+                selectedItem.setValue((OWLClass) event.getProperty().getValue());
+            }
+        }
+
+
+        @Override
+        public void afterAddSiblingSaved(SiblingClassCreatedEvent event) {
+            Boolean success = false;
+            OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getDeclareClass());
+
+            ChangeApplied ok1 = editorKit
+                    .getModelManager()
+                    .addAxiom(editorKit.getActiveOntology(), clsDeclaration);
+            if (ChangeApplied.SUCCESSFULLY == ok1) {
+                success = true;
+                clsDeclaration.accept(dataContainer.getOWLAxiomAdder());
+            }
+
+            for (OWLClassExpression ce : EntitySearcher
+                    .getSuperClasses(event.getSiblingClass(), editorKit.getActiveOntology())) {
+
+                if (!ce.isAnonymous()) {
+                    OWLAxiom siblingAxiom = owlFactory.getOWLSubClassOfAxiom(event.getDeclareClass(), ce.asOWLClass());
+
+                    ChangeApplied ok2 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), siblingAxiom);
+                    if (ChangeApplied.SUCCESSFULLY == ok2 && success) {
+                        siblingAxiom.accept(dataContainer.getOWLAxiomAdder());
+                        expandItem(ce.asOWLClass());
+                    } else success = false;
+                    break;
+                }
+            }
+            if (success)
+                Notification.show("Successfully create " + OWLEditorKitImpl.getShortForm(event.getDeclareClass()),
+                        Notification.Type.TRAY_NOTIFICATION);
+            else Notification.show("Cannot create " + OWLEditorKitImpl.getShortForm(event.getDeclareClass()),
+                        Notification.Type.WARNING_MESSAGE);
+
+        }
+
+        @Override
+        public void afterRemoved(OWLEditorEvent.ClassRemovedEvent event) {
+            event.getRemovedObject().accept(dataContainer.getEntityRemover());
+            List<OWLOntologyChange> changes = editorKit
+                    .getModelManager()
+                    .applyChanges(dataContainer.getEntityRemover().getChanges());
+            for (OWLOntologyChange axiom : changes) {
+                axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
+            }
+            dataContainer.getEntityRemover().reset();
+        }
+
+        @Override
+        public void afterAddSubSaved(OWLEditorEvent.SubClassCreatedEvent event) {
+            OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getSubClass());
+            OWLAxiom subClsAxiom = owlFactory.getOWLSubClassOfAxiom(event.getSubClass(), event.getSuperClass());
+
+            ChangeApplied ok1 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), clsDeclaration);
+            ChangeApplied ok2 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), subClsAxiom);
+
+            if (ChangeApplied.SUCCESSFULLY == ok1 && ChangeApplied.SUCCESSFULLY == ok2) {
+                clsDeclaration.accept(dataContainer.getOWLAxiomAdder());
+                subClsAxiom.accept(dataContainer.getOWLAxiomAdder());
+                expandItem(event.getSuperClass());
+                Notification.show("Successfully create "
+                                    + OWLEditorKitImpl.getShortForm(event.getSubClass()),
+                            Notification.Type.TRAY_NOTIFICATION);
+            } else {
+                    Notification.show("Cannot create "
+                                    + OWLEditorKitImpl.getShortForm(event.getSubClass()),
+                            Notification.Type.WARNING_MESSAGE);
+            }
+        }
     }
     
     public class buildAddOWLClassWindow extends AbstractAddOWLObjectWindow<OWLClass> {

@@ -6,6 +6,8 @@ import com.vaadin.event.Action;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.VerticalLayout;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
@@ -25,6 +27,7 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     protected Label caption = new Label();
     protected OWLEditorKit editorKit;
     protected MenuBar.MenuItem reasonerToggle;
+    protected OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
     public AbstractHierarchyPanel() {
         editorKit = OWLEditorUI.getEditorKit();
     }
@@ -40,8 +43,8 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     protected void registerWithEventBus() {
         OWLEditorEventBus.register(this);
     }
-    
-    public abstract Property<T> getSelectedProperty();
+
+    public abstract Property<T> getSelectedItem();
 
     abstract void handleSubNodeCreation();
 
@@ -52,7 +55,7 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     protected void startReasonerClickListener() {
         editorKit.setReasonerStatus(!editorKit.getReasonerStatus());
         OWLEditorEventBus.post(new OWLEditorEvent.ReasonerToggleEvent(
-                editorKit.getReasonerStatus(), getSelectedProperty().getValue()));
+                editorKit.getReasonerStatus(), getSelectedItem().getValue()));
 
     }
 
@@ -63,6 +66,6 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
 
     static interface TreeKit<T extends OWLLogicalEntitySource> extends Property.ValueChangeListener {
 
-        public T getCurrentProperty();
+        public T getSelectedItem();
     }
 }

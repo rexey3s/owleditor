@@ -83,7 +83,7 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
 
 
     @Override
-    public OWLAxiomVisitor initNodeAdder() {
+    public OWLAxiomVisitor initOWLAxiomAdder() {
         return new OWLObjectVisitorAdapter() {
 
             @Override
@@ -112,7 +112,7 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
     }
 
     @Override
-    public OWLAxiomVisitor initNodeRemover() {
+    public OWLAxiomVisitor initOWLAxiomRemover() {
         return new OWLObjectVisitorAdapter() {
 
             @Override

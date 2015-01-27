@@ -59,7 +59,7 @@ public class buildAddClassExpressionWindow extends AbstractOWLExpressionEditorWi
 
             } else if (getSelectedTab() instanceof ClassHierarchicalPanel) {
                 OWLEditorEventBus.post(addExpression
-                        .addingExpression(hierarchy.getSelectedProperty().getValue()));
+                        .addingExpression(hierarchy.getSelectedItem().getValue()));
                 close();
             }
         };

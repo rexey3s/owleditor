@@ -47,8 +47,8 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     }
 
     @Override
-    public OWLObjectPropertySource getSelectedProperty() {
-        return tree.getCurrentProperty();
+    public OWLObjectPropertySource getSelectedItem() {
+        return tree.getSelectedItem();
     }
 
     private void buildComponents() {
@@ -115,17 +115,17 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(
                 tree,
-                subject -> new OWLEditorEvent.SubObjectPropertyCreatedEvent(subject, tree.getCurrentProperty().getValue()),
+                subject -> new OWLEditorEvent.SubObjectPropertyCreatedEvent(subject, tree.getSelectedItem().getValue()),
                 true));
 
     }
 
     @Override
     public void handleSiblingNodeCreation() {
-        if (!checkTopObjectProperty(tree.getCurrentProperty()))
+        if (!checkTopObjectProperty(tree.getSelectedItem()))
             UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(
                     tree,
-                    subject -> new OWLEditorEvent.SiblingObjectPropertyCreatedEvent(subject, tree.getCurrentProperty().getValue()),
+                    subject -> new OWLEditorEvent.SiblingObjectPropertyCreatedEvent(subject, tree.getSelectedItem().getValue()),
                     false));
 
         else
@@ -136,12 +136,12 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
     @Override
     public void handleRemovalNode() {
-        if (!checkTopObjectProperty(tree.getCurrentProperty()))
+        if (!checkTopObjectProperty(tree.getSelectedItem()))
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", components1 -> {
                 if (components1.isConfirmed()) {
                     tree.afterRemoved(new OWLEditorEvent.ObjectPropertyRemoved(
-                            tree.getCurrentProperty().getValue()));
+                            tree.getSelectedItem().getValue()));
                 } else {
                     components1.close();
                 }
@@ -209,7 +209,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         }
 
 
-        public OWLObjectPropertySource getCurrentProperty() {
+        public OWLObjectPropertySource getSelectedItem() {
             return currentProperty;
         }
 

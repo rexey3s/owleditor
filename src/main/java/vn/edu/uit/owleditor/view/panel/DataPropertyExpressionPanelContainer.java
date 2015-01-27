@@ -398,7 +398,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
             return click -> {
                 if (getSelectedTab() instanceof DataPropertyHierarchicalPanel) {
                     OWLEditorEventBus.post(
-                            addExpression.addingExpression(hierarchy.getSelectedProperty().getValue()));
+                            addExpression.addingExpression(hierarchy.getSelectedItem().getValue()));
                     close();
                 }
             };

@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/22/2014.
+ *         Faculty of Computer Network and Telecommunication created on 11/22/2014.
  */
 public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDataProperty> {
     // Actions for the context menu
@@ -95,6 +95,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     @SuppressWarnings({"unchecked"})
     @Override
     public void handleAction(Action action, Object sender, Object target) {
+
         if (action == ADD_SUB) {
             handleSubNodeCreation();
         } else if (action == ADD_SIBLING) {
@@ -103,32 +104,32 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
             handleRemovalNode();
         } else if (action == FUNCTIONAL_MARK) {
             Boolean checked = (Boolean)
-                    tree.getContainerProperty(getSelectedProperty().getValue(),
+                    tree.getContainerProperty(getSelectedItem().getValue(),
                             OWLEditorData.OWLFunctionalProperty).getValue();
-            tree.getContainerProperty(getSelectedProperty().getValue(), OWLEditorData.OWLFunctionalProperty)
+            tree.getContainerProperty(getSelectedItem().getValue(), OWLEditorData.OWLFunctionalProperty)
                     .setValue(!checked);
         }
     }
 
     @Override
-    public Property<OWLDataProperty> getSelectedProperty() {
-        return tree.getCurrentProperty();
+    public Property<OWLDataProperty> getSelectedItem() {
+        return tree.getSelectedItem();
     }
 
     @Override
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddDataPropertyWindow(
                 tree,
-                s -> new OWLEditorEvent.SubDataPropertyCreatedEvent(s, tree.getCurrentProperty().getValue()),
+                s -> new OWLEditorEvent.SubDataPropertyCreatedEvent(s, tree.getSelectedItem().getValue()),
                 true));
     }
 
     @Override
     public void handleSiblingNodeCreation() {
-        if (!checkTopDataProp(tree.getCurrentProperty()))
+        if (!checkTopDataProp(tree.getSelectedItem()))
             UI.getCurrent().addWindow(new buildAddDataPropertyWindow(
                     tree,
-                    s -> new OWLEditorEvent.SiblingDataPropertyCreatedEvent(s, tree.getCurrentProperty().getValue()),
+                    s -> new OWLEditorEvent.SiblingDataPropertyCreatedEvent(s, tree.getSelectedItem().getValue()),
                     false));
         else
             Notification
@@ -138,12 +139,12 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
     @Override
     public void handleRemovalNode() {
-        if (!checkTopDataProp(tree.getCurrentProperty()))
+        if (!checkTopDataProp(tree.getSelectedItem()))
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", components1 -> {
                 if (components1.isConfirmed()) {
                     tree.afterRemoved(new OWLEditorEvent.DataPropertyRemovedEvent(
-                            tree.getCurrentProperty().getValue()));
+                            tree.getSelectedItem().getValue()));
                 } else {
                     components1.close();
                 }
@@ -199,11 +200,11 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
             dataContainer.addValueChangeListener(valueChangeEvent -> {
                 if (valueChangeEvent.getProperty().getType() == Boolean.class) {
                     dataContainer.toggle((Boolean) valueChangeEvent.getProperty().getValue(),
-                            editorKit.getOWLDataFactory().getOWLFunctionalDataPropertyAxiom(getCurrentProperty().getValue()));
-                    dataContainer.checkFunctionalIcon(getCurrentProperty().getValue());
+                            editorKit.getOWLDataFactory().getOWLFunctionalDataPropertyAxiom(getSelectedItem().getValue()));
+                    dataContainer.checkFunctionalIcon(getSelectedItem().getValue());
 
                     Notification.show(OWLEditorKitImpl.getShortForm(
-                                    getCurrentProperty().getValue())
+                                    getSelectedItem().getValue())
                                     + " is functional: "
                                     + valueChangeEvent.getProperty().getValue(),
                             Notification.Type.TRAY_NOTIFICATION);
@@ -304,7 +305,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public OWLDataPropertySource getCurrentProperty() {
+        public OWLDataPropertySource getSelectedItem() {
             return currentProperty;
         }
     }

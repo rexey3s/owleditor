@@ -123,7 +123,7 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     }
 
     @Override
-    public OWLAxiomVisitor initNodeAdder() {
+    public OWLAxiomVisitor initOWLAxiomAdder() {
         return new OWLAxiomVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLDeclarationAxiom axiom) {
@@ -150,7 +150,7 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     }
 
     @Override
-    public OWLAxiomVisitor initNodeRemover() {
+    public OWLAxiomVisitor initOWLAxiomRemover() {
         return  new OWLAxiomVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLDeclarationAxiom axiom) {

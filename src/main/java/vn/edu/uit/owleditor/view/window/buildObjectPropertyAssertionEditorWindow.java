@@ -25,7 +25,7 @@ public class buildObjectPropertyAssertionEditorWindow extends ObjectPropertyAsse
         return clicked -> {
             try {
                 OWLEditorEventBus.post(adder.addingRestriction(
-                        hierarchy.getSelectedProperty().getValue(), owlIndividualList.getSelectedProperty().getValue()
+                        hierarchy.getSelectedItem().getValue(), owlIndividualList.getSelectedProperty().getValue()
                 ));
                 close();
             } catch (NullPointerException nullEx) {

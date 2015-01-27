@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLAxiomVisitor;
  *         Faculty of Computer Network and Telecommunication created on 12/8/2014.
  */
 public interface HasOntologyChangeListener {
-    OWLAxiomVisitor initNodeAdder();
-    OWLAxiomVisitor initNodeRemover();
+    OWLAxiomVisitor getOWLAxiomAdder();
+
+    OWLAxiomVisitor getOWLAxiomRemover();
 }

@@ -35,7 +35,7 @@ public class DataPropertiesSheet extends HorizontalLayout implements View {
         TabSheet tabs = new TabSheet();
         hcLayout.addValueChangeListener(event -> {
             if (event.getProperty().getValue() != null) {
-                panels.setPropertyDataSource(hcLayout.getSelectedProperty());
+                panels.setPropertyDataSource(hcLayout.getSelectedItem());
             }
         });
         tabs.setSizeFull();

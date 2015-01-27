@@ -79,35 +79,35 @@ public class ObjectRestrictionCreator extends VerticalLayout {
     }
 
     private OWLClassExpression buildExpression() {
-        EditorUtils.checkNotNull(objectPropertyHierarchy.getSelectedProperty().getValue(),
+        EditorUtils.checkNotNull(objectPropertyHierarchy.getSelectedItem().getValue(),
                 "Please select an Object Property");
-        EditorUtils.checkNotNull(classHierarchy.getSelectedProperty().getValue(),
+        EditorUtils.checkNotNull(classHierarchy.getSelectedItem().getValue(),
                 "Please select a Class");
 //        EditorUtils.checkNotNull(wordBox.getValue(),"Please select your quantizer");
         if (wordBox.getValue() == ObjectRestrictionVocabulary.OBJECT_ALL_VALUES_FROM) {
             return editorKit.getOWLDataFactory().getOWLObjectAllValuesFrom(
-                    objectPropertyHierarchy.getSelectedProperty().getValue(),
-                    classHierarchy.getSelectedProperty().getValue()
+                    objectPropertyHierarchy.getSelectedItem().getValue(),
+                    classHierarchy.getSelectedItem().getValue()
             );
         } else if (wordBox.getValue() == ObjectRestrictionVocabulary.OBJECT_MIN_CARDINALITY) {
             return editorKit.getOWLDataFactory().getOWLObjectMinCardinality((Integer) numberField.getConvertedValue(),
-                    objectPropertyHierarchy.getSelectedProperty().getValue(),
-                    classHierarchy.getSelectedProperty().getValue()
+                    objectPropertyHierarchy.getSelectedItem().getValue(),
+                    classHierarchy.getSelectedItem().getValue()
             );
         } else if (wordBox.getValue() == ObjectRestrictionVocabulary.OBJECT_MAX_CARDINALITY) {
             return editorKit.getOWLDataFactory().getOWLObjectMaxCardinality((Integer) numberField.getConvertedValue(),
-                    objectPropertyHierarchy.getSelectedProperty().getValue(),
-                    classHierarchy.getSelectedProperty().getValue()
+                    objectPropertyHierarchy.getSelectedItem().getValue(),
+                    classHierarchy.getSelectedItem().getValue()
             );
         } else if (wordBox.getValue() == ObjectRestrictionVocabulary.OBJECT_EXACT_CARDINALITY) {
             return editorKit.getOWLDataFactory().getOWLObjectExactCardinality((Integer) numberField.getConvertedValue(),
-                    objectPropertyHierarchy.getSelectedProperty().getValue(),
-                    classHierarchy.getSelectedProperty().getValue()
+                    objectPropertyHierarchy.getSelectedItem().getValue(),
+                    classHierarchy.getSelectedItem().getValue()
             );
         } else {
             return editorKit.getOWLDataFactory().getOWLObjectSomeValuesFrom(
-                    objectPropertyHierarchy.getSelectedProperty().getValue(),
-                    classHierarchy.getSelectedProperty().getValue()
+                    objectPropertyHierarchy.getSelectedItem().getValue(),
+                    classHierarchy.getSelectedItem().getValue()
             );
         }
     }

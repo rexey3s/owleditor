@@ -36,7 +36,7 @@ public class DemoSheet extends HorizontalLayout implements View {
         demoPanel = new DemoPanel();
         hierarchy.addValueChangeListener(event -> {
             if (event.getProperty().getValue() != null) {
-                OWLClass clz = hierarchy.getSelectedProperty().getValue();
+                OWLClass clz = hierarchy.getSelectedItem().getValue();
                 if (clz.isOWLThing()) {
                     individualsList.setContainerDataSource(editorKit
                             .getDataFactory()
@@ -50,7 +50,7 @@ public class DemoSheet extends HorizontalLayout implements View {
             }
         });
         individualsList.addValueChangeListener(event -> {
-            if (event.getProperty().getValue() != null && hierarchy.getSelectedProperty().getValue() != null) {
+            if (event.getProperty().getValue() != null && hierarchy.getSelectedItem().getValue() != null) {
                 demoPanel.setIndividualSource((OWLNamedIndividual) event.getProperty().getValue());
             }
         });

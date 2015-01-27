@@ -86,18 +86,18 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
         return new OWLOntologyChangeVisitorAdapter() {
             @Override
             public void visit(@Nonnull AddAxiom change) {
-                change.getAxiom().accept(initNodeAdder());
+                change.getAxiom().accept(getOWLAxiomAdder());
             }
 
             @Override
             public void visit(@Nonnull RemoveAxiom change) {
-                change.getAxiom().accept(initNodeRemover());
+                change.getAxiom().accept(getOWLAxiomRemover());
             }
         };
     }
 
     @Override
-    public OWLAxiomVisitor initNodeAdder() {
+    public OWLAxiomVisitor getOWLAxiomAdder() {
         return new OWLAxiomVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
@@ -113,7 +113,7 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
     }
 
     @Override
-    public OWLAxiomVisitor initNodeRemover() {
+    public OWLAxiomVisitor getOWLAxiomRemover() {
         return new OWLAxiomVisitorAdapter() {
             @Override
             public void visit(@Nonnull OWLClassAssertionAxiom axiom) {

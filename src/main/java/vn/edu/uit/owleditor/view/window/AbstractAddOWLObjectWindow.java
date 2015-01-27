@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
  *         Faculty of Computer Network and Telecommunication created on 18/11/2014.
  */
 public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> extends Window {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractAddOWLObjectWindow.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractAddOWLObjectWindow.class);
 
     protected final MTextField nameField = new MTextField().withInputPrompt("Enter entity name").withFullWidth();
     protected OWLEntityAddHandler<T> adder;
@@ -72,7 +72,18 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
 
 
-        Button save = new MButton("Save", click -> {
+        Button save = new MButton("Save", click -> getSaveListener())
+                .withStyleName(ValoTheme.BUTTON_PRIMARY);
+        save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
+
+        footer.addComponents(cancel, save);
+        footer.setExpandRatio(cancel, 1);
+        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
+        return footer;       
+    }
+
+    protected Button.ClickListener getSaveListener() {
+        return clicked -> {
             try {
                 nameField.validate();
                 if (isSub)
@@ -85,16 +96,8 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
             } catch (Exception e) {
                 LOG.error(e.getMessage(), this);
             }
-        }).withStyleName(ValoTheme.BUTTON_PRIMARY);
-        
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
-
-        footer.addComponents(cancel, save);
-        footer.setExpandRatio(cancel, 1);
-        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
-        return footer;       
+        };
     }
-
 
 
 }

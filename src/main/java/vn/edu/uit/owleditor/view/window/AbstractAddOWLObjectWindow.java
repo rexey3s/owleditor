@@ -72,8 +72,7 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
 
 
-        Button save = new MButton("Save", click -> getSaveListener())
-                .withStyleName(ValoTheme.BUTTON_PRIMARY);
+        Button save = new MButton("Save", getSaveListener()).withStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
 
         footer.addComponents(cancel, save);
@@ -83,7 +82,7 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
     }
 
     protected Button.ClickListener getSaveListener() {
-        return clicked -> {
+        return click -> {
             try {
                 nameField.validate();
                 if (isSub)

@@ -262,7 +262,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
             }
             @Override
             protected Button.ClickListener getSaveListener() {
-                return clicked -> {
+                return click -> {
                     try {
                         nameField.validate();
                         handler.afterAddSiblingSaved(new OWLEditorEvent.IndividualAdded((OWLNamedIndividual) nameField.getConvertedValue()));

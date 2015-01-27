@@ -8,8 +8,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
-import org.vaadin.viritin.layouts.MFormLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
@@ -41,6 +39,7 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
     }
 
     private void initialize() {
+
         setModal(true);
         setClosable(false);
         setResizable(false);
@@ -59,18 +58,18 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
 //        form.addComponent(nameField);
 //        result.addComponent(form);
 //        result.addComponent(buildFooter());
-
 //        return result;
-        return new MVerticalLayout(new MFormLayout(nameField), buildFooter())
+
+        return new MVerticalLayout(nameField, buildFooter())
                 .withMargin(true)
                 .withSpacing(true);
     }
 
     private Component buildFooter() {
-//        final HorizontalLayout footer = new HorizontalLayout();
-//        footer.setSpacing(true);
-//        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-//        footer.setWidth(100.0f, Sizeable.Unit.PERCENTAGE);
+        final HorizontalLayout footer = new HorizontalLayout();
+        footer.setSpacing(true);
+        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+        footer.setWidth("100%");
 
         MButton cancel = new MButton("Cancel", click -> close());
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
@@ -80,17 +79,10 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
                 .withStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
 
-//        footer.addComponents(cancel, save);
-//        footer.setExpandRatio(cancel, 1);
-//        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
-//        return footer;
-
-        return new MHorizontalLayout(cancel, save)
-                .withAlign(cancel, Alignment.BOTTOM_RIGHT)
-                .withAlign(save, Alignment.BOTTOM_RIGHT)
-                .withStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR)
-                .withSpacing(true)
-                .withWidth("100%");
+        footer.addComponents(cancel, save);
+        footer.setExpandRatio(cancel, 1);
+        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
+        return footer;       
     }
 
     protected Button.ClickListener getSaveListener() {

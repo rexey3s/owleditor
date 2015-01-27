@@ -59,7 +59,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
 
     }
     private void recursive2(OWLOntology ontology, OWLClass child, OWLClass parent) {
-
+        setChildrenAllowed(child, false);
         if (parent != null) {
             setChildrenAllowed(parent, true);
             setParent(child, parent);

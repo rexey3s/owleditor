@@ -3,10 +3,14 @@ package vn.edu.uit.owleditor.view.window;
 
 import com.vaadin.data.Validator;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.layouts.MFormLayout;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 
@@ -19,7 +23,7 @@ import javax.annotation.Nonnull;
 public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> extends Window {
 
 
-    protected final TextField nameField = new TextField();
+    protected final MTextField nameField = new MTextField().withInputPrompt("Enter entity name");
     protected OWLEntityAddHandler<T> adder;
     private OWLEntityActionHandler handler;
     private Boolean isSub;
@@ -40,45 +44,53 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         setModal(true);
         setClosable(false);
         setResizable(false);
-        setWidth(300.0f, Unit.PIXELS);
+//        setWidth(300.0f, Unit.PIXELS);
         setHeight(200.0f, Unit.PIXELS);
         setContent(buildContent());
     }
 
     private Component buildContent() {
-        final VerticalLayout result = new VerticalLayout();
-        result.setMargin(true);
-        result.setSpacing(true);
-        FormLayout form = new FormLayout();
-        nameField.focus();
-        nameField.setValue("");
-        form.addComponent(nameField);
-        result.addComponent(form);
-        result.addComponent(buildFooter());
+//        final VerticalLayout result = new VerticalLayout();
+//        result.setMargin(true);
+//        result.setSpacing(true);
+//        FormLayout form = new FormLayout();
+//        nameField.focus();
+//        nameField.setValue("");
+//        form.addComponent(nameField);
+//        result.addComponent(form);
+//        result.addComponent(buildFooter());
 
-        return result;
+//        return result;
+        return new MVerticalLayout(new MFormLayout(nameField), buildFooter())
+                .withMargin(true)
+                .withSpacing(true);
     }
 
     private Component buildFooter() {
-        final HorizontalLayout footer = new HorizontalLayout();
-        footer.setSpacing(true);
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Sizeable.Unit.PERCENTAGE);
+//        final HorizontalLayout footer = new HorizontalLayout();
+//        footer.setSpacing(true);
+//        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+//        footer.setWidth(100.0f, Sizeable.Unit.PERCENTAGE);
 
-        Button cancel = new Button("Cancel");
-        cancel.addClickListener(event -> close());
+        MButton cancel = new MButton("Cancel", click -> close());
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
 
-        Button save = new Button("Save");
-        save.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.addClickListener(getSaveListener());
+
+        MButton save = new MButton("Save", click -> getSaveListener())
+                .withStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
 
-        footer.addComponents(cancel, save);
-        footer.setExpandRatio(cancel, 1);
-        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
-        return footer;
+//        footer.addComponents(cancel, save);
+//        footer.setExpandRatio(cancel, 1);
+//        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
+//        return footer;
 
+        return new MHorizontalLayout(cancel, save)
+                .withAlign(cancel, Alignment.BOTTOM_RIGHT)
+                .withAlign(save, Alignment.BOTTOM_RIGHT)
+                .withStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR)
+                .withSpacing(true)
+                .withWidth("100%");
     }
 
     protected Button.ClickListener getSaveListener() {

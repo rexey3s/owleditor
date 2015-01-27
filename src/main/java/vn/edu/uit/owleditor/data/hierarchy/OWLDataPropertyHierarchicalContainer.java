@@ -81,6 +81,7 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     }
 
     private void recursive2(OWLOntology ontology, OWLDataProperty child, OWLDataProperty parent) {
+        setChildrenAllowed(child, false);
         if (parent != null) {
             setChildrenAllowed(parent, true);
             setParent(child, parent);
@@ -142,14 +143,6 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                     OWLDataProperty subProp = axiom.getSubProperty().asOWLDataProperty();
                     OWLDataProperty supProp = axiom.getSuperProperty().asOWLDataProperty();
 
-//                    getItem(subProp)
-//                            .getItemProperty(OWLEditorData.OWLDataPropertyName)
-//                            .setValue(sf(subProp));
-
-//                    setChildrenAllowed(subProp, false);
-//                    setChildrenAllowed(supProp, true);
-//
-//                    setParent(subProp, supProp);
                     recursive2(activeOntology, subProp, supProp);
                 }
             }

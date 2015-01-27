@@ -313,27 +313,17 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         }
     }
 
-    public class buildAddOWLClassWindow extends AbstractAddOWLObjectWindow<OWLClass> {
-
-        public buildAddOWLClassWindow(@Nonnull OWLEntityActionHandler handler,
-                                      @Nonnull OWLEntityAddHandler<OWLClass> adder,
-                                      @Nonnull Boolean isSub) {
-            super(handler, adder, isSub);
-            nameField.setCaption("Class");
-            nameField.setConverter(new StringToOWLClassConverter(editorKit));
-            nameField.addValidator(new OWLClassValidator(editorKit));
-        }
-    }
     public static class DownloadOntologyWindow extends Window {
         private final OWLEditorKit eKit;
         private final TextField ontologyName = new TextField();
         private final OWLDocumentFormat documentFormat;
-//        private OWLDocumentFormat targetFormat;
+        //        private OWLDocumentFormat targetFormat;
         private final ComboBox formats = new ComboBox();
         private OWLXMLDocumentFormat owlxmlFormat = new OWLXMLDocumentFormat();
         private RDFXMLDocumentFormat rdfxmlFormat = new RDFXMLDocumentFormat();
         private ManchesterSyntaxDocumentFormat manSyntaxFormat = new ManchesterSyntaxDocumentFormat();
         private FunctionalSyntaxDocumentFormat funcSyntaxFormat = new FunctionalSyntaxDocumentFormat();
+
         public DownloadOntologyWindow() {
             eKit = OWLEditorUI.getEditorKit();
             documentFormat = eKit.getModelManager().getOntologyFormat(eKit.getActiveOntology());
@@ -343,9 +333,10 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             formats.setItemCaptionPropertyId("FORMAT");
             initFormatsBox();
             initialize();
-        
+
 
         }
+
         @SuppressWarnings("unchecked")
         private void initFormatsBox() {
             formats.addItem(rdfxmlFormat);
@@ -357,6 +348,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             formats.addItem(funcSyntaxFormat);
             formats.getContainerProperty(funcSyntaxFormat, "FORMAT").setValue("FunctionalSyntax");
         }
+
         private void initialize() {
             setModal(true);
             setClosable(false);
@@ -365,7 +357,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             setHeight(250.0f, Unit.PIXELS);
             setContent(buildContent());
         }
-        private OWLDocumentFormat selectFormat()  {
+
+        private OWLDocumentFormat selectFormat() {
             try {
                 Assert.notNull(formats.getValue(), "Select format");
 
@@ -387,14 +380,14 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                         return funcSyntaxFormat;
                     }
                 }
-            }
-            catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
 
             }
             return documentFormat;
         }
-        private StreamResource createResource()  {
+
+        private StreamResource createResource() {
             return new StreamResource(() -> {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 try {
@@ -409,7 +402,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                 return new ByteArrayInputStream(bos.toByteArray());
             }, ontologyName.getValue());
         }
-        
+
         private Component buildContent() {
             final VerticalLayout result = new VerticalLayout();
             result.setMargin(true);
@@ -419,7 +412,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             ontologyName.setCaption("FileName");
             ontologyName.setValue("ontology.owl");
             formats.setCaption("Format");
-            
+
             form.addComponent(ontologyName);
             form.addComponent(formats);
             result.addComponent(form);
@@ -454,6 +447,18 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         }
 
+    }
+    
+    public class buildAddOWLClassWindow extends AbstractAddOWLObjectWindow<OWLClass> {
+
+        public buildAddOWLClassWindow(@Nonnull OWLEntityActionHandler handler,
+                                      @Nonnull OWLEntityAddHandler<OWLClass> adder,
+                                      @Nonnull Boolean isSub) {
+            super(handler, adder, isSub);
+            nameField.setCaption("Class");
+            nameField.setConverter(new StringToOWLClassConverter(editorKit));
+            nameField.addValidator(new OWLClassValidator(editorKit));
+        }
     }
 
 }

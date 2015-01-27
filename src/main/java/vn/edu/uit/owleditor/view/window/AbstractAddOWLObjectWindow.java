@@ -6,6 +6,8 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
@@ -18,9 +20,10 @@ import javax.annotation.Nonnull;
  *         Faculty of Computer Network and Telecommunication created on 18/11/2014.
  */
 public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> extends Window {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractAddOWLObjectWindow.class);
 
 
-    protected final MTextField nameField = new MTextField().withInputPrompt("Enter entity name");
+    protected final MTextField nameField = new MTextField().withInputPrompt("Enter entity name").withFullWidth();
     protected OWLEntityAddHandler<T> adder;
     private OWLEntityActionHandler handler;
     private Boolean isSub;
@@ -65,22 +68,11 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footer.setWidth("100%");
 
-        MButton cancel = new MButton("Cancel", click -> close());
+        Button cancel = new Button("Cancel", click -> close());
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
 
 
-        MButton save = new MButton("Save", click -> getSaveListener())
-                .withStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
-
-        footer.addComponents(cancel, save);
-        footer.setExpandRatio(cancel, 1);
-        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
-        return footer;       
-    }
-
-    protected Button.ClickListener getSaveListener() {
-        return clicked -> {
+        Button save = new MButton("Save", click -> {
             try {
                 nameField.validate();
                 if (isSub)
@@ -90,9 +82,19 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
                 close();
             } catch (Validator.InvalidValueException ex) {
                 Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);
+            } catch (Exception e) {
+                LOG.error(e.getMessage(), this);
             }
-        };
+        }).withStyleName(ValoTheme.BUTTON_PRIMARY);
+        
+        save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
+
+        footer.addComponents(cancel, save);
+        footer.setExpandRatio(cancel, 1);
+        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
+        return footer;       
     }
+
 
 
 }

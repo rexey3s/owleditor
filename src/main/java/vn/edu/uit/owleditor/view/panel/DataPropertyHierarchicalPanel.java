@@ -113,7 +113,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     }
 
     @Override
-    public Property<OWLDataProperty> getSelectedItem() {
+    public OWLDataPropertySource getSelectedItem() {
         return tree.getSelectedItem();
     }
 

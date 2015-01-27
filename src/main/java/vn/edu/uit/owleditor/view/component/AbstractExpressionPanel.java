@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.component;
 
+import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -9,17 +10,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 
+import javax.annotation.Nonnull;
 import java.util.Iterator;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/4/2014.
  */
-public abstract class AbstractExpressionPanel<OWNER extends OWLEntity> extends Panel implements HasReasoning {
+public abstract class AbstractExpressionPanel<T extends OWLEntity> extends Panel implements HasReasoning {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractExpressionPanel.class);
 
     protected final VerticalLayout root = new VerticalLayout();
-    protected OWLObjectSource<OWNER> dataSource = initDataSource();
+    protected OWLObjectSource<T> dataSource = initDataSource();
 
 
     public AbstractExpressionPanel(String caption) {
@@ -31,7 +33,7 @@ public abstract class AbstractExpressionPanel<OWNER extends OWLEntity> extends P
         root.setSpacing(true);
     }
 
-    protected abstract OWLObjectSource<OWNER> initDataSource();
+    protected abstract OWLObjectSource<T> initDataSource();
 
     protected abstract void initActionADD();
 
@@ -90,9 +92,9 @@ public abstract class AbstractExpressionPanel<OWNER extends OWLEntity> extends P
     public void addInferredExpressions() throws InconsistentOntologyException {
     }
 
-    public void setPropertyDataSource(OWLObjectSource newDataSource) {
+    public void setPropertyDataSource(@Nonnull Property newDataSource) {
         if (dataSource.getValue() != null) {
-            this.dataSource = (OWLObjectSource<OWNER>) newDataSource;
+            this.dataSource = (OWLObjectSource<T>) newDataSource;
             root.removeAllComponents();
             initActionVIEW();
         }

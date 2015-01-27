@@ -2,6 +2,7 @@ package vn.edu.uit.owleditor.view.panel;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -269,8 +270,8 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         return descriptionPanels;
     }
 
-
-    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
+    @Override
+    public void setPropertyDataSource(@Nonnull Property newDataSource) {
         if (editorKit.getReasonerStatus()) editorKit.getReasoner().flush();
         objPropEquivPanel.setPropertyDataSource(newDataSource);
         subObjPropPanel.setPropertyDataSource(newDataSource);
@@ -379,8 +380,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
 
     @Subscribe
-    public void afterObjectPropertyAxiomAdded(
-            OWLEditorEvent.ObjectPropertyAxiomAddEvent event) {
+    public void handleObjectPropertyAxiomAddEvent(OWLEditorEvent.ObjectPropertyAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new AddAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -396,8 +396,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     }
 
     @Subscribe
-    public void afterObjectPropertyAxiomRemoved(
-            OWLEditorEvent.ObjectPropertyAxiomRemoveEvent event) {
+    public void handleObjectPropertyAxiomRemoveEvent(OWLEditorEvent.ObjectPropertyAxiomRemoveEvent event) {
 
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
@@ -415,8 +414,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     }
 
     @Subscribe
-    public void afterObjectPropertyAxiomModified(
-            OWLEditorEvent.ObjectPropertyAxiomModifyEvent event) {
+    public void handleObjectPropertyAxiomModifyEvent(OWLEditorEvent.ObjectPropertyAxiomModifyEvent event) {
 
         ChangeApplied removeOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));

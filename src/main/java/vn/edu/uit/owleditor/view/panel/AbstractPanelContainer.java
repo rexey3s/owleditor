@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
@@ -10,6 +11,8 @@ import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -115,6 +118,7 @@ public abstract class AbstractPanelContainer extends Panel {
 
     protected abstract Component buildContent();
 
+    public abstract void setPropertyDataSource(@Nonnull Property newDataSource);
 
 
 }

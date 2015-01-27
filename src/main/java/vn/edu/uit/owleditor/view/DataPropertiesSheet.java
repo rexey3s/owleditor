@@ -13,7 +13,7 @@ import vn.edu.uit.owleditor.view.panel.DataPropertyHierarchicalPanel;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/22/2014.
+ *         Faculty of Computer Network and Telecommunication created on 11/22/2014.
  */
 @VaadinUIScope
 @VaadinView(name = DataPropertiesSheet.NAME)

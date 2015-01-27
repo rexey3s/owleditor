@@ -84,7 +84,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         caption.addStyleName(ValoTheme.LABEL_COLORED);
         caption.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         caption.setSizeUndefined();
-        Button dwn = new MButton()
+        MButton dwn = new MButton()
                 .withStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED)
                 .withStyleName(ValoTheme.BUTTON_ICON_ONLY)
                 .withIcon(FontAwesome.DOWNLOAD)

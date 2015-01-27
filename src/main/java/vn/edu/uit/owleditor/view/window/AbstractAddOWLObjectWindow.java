@@ -8,7 +8,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 
@@ -39,30 +38,25 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
     }
 
     private void initialize() {
-
         setModal(true);
         setClosable(false);
         setResizable(false);
-//        setWidth(300.0f, Unit.PIXELS);
+        setWidth(400.0f, Unit.PIXELS);
         setHeight(200.0f, Unit.PIXELS);
         setContent(buildContent());
     }
 
     private Component buildContent() {
-//        final VerticalLayout result = new VerticalLayout();
-//        result.setMargin(true);
-//        result.setSpacing(true);
-//        FormLayout form = new FormLayout();
-//        nameField.focus();
-//        nameField.setValue("");
-//        form.addComponent(nameField);
-//        result.addComponent(form);
-//        result.addComponent(buildFooter());
-//        return result;
-
-        return new MVerticalLayout(nameField, buildFooter())
-                .withMargin(true)
-                .withSpacing(true);
+        final VerticalLayout result = new VerticalLayout();
+        result.setMargin(true);
+        result.setSpacing(true);
+        FormLayout form = new FormLayout();
+        nameField.focus();
+        nameField.setValue("");
+        form.addComponent(nameField);
+        result.addComponent(form);
+        result.addComponent(buildFooter());
+        return result;
     }
 
     private Component buildFooter() {

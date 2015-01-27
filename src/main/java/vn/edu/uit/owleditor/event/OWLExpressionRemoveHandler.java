@@ -13,5 +13,5 @@ public interface OWLExpressionRemoveHandler extends Serializable {
     public static final Method REMOVE_EXPRESSION_METHOD = ReflectTools
             .findMethod(OWLExpressionRemoveHandler.class, "removingExpression");
 
-    public OWLEditorEvent.OWLAxiomRemoved removingExpression();
+    public OWLEditorEvent.OWLAxiomRemoveEvent removingExpression();
 }

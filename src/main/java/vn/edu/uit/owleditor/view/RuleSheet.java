@@ -147,7 +147,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, View 
     }
 
     @Subscribe
-    public void afterRuleAdded(OWLEditorEvent.RuleAdded event) {
+    public void afterRuleAdded(OWLEditorEvent.RuleAddEvent event) {
 
         if (editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getAxiom().getAxiomWithoutAnnotations())) {
             handleAddRule(event.getAxiom());
@@ -160,7 +160,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, View 
 
 
     @Subscribe
-    public void afterRuleRemoved(OWLEditorEvent.RuleRemoved event) {
+    public void afterRuleRemoved(OWLEditorEvent.RuleRemoveEvent event) {
         activeOntology.deleteSWRLRule(event.getAxiom().getRuleName());
 
         if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getAxiom().getAxiomWithoutAnnotations())) {
@@ -173,7 +173,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, View 
     }
 
     @Subscribe
-    public void afterRuleModified(OWLEditorEvent.RuleModified event) {
+    public void afterRuleModified(OWLEditorEvent.RuleModifyEvent event) {
         activeOntology.deleteSWRLRule(event.getOldAxiom().getRuleName());
 
         if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getOldAxiom().getAxiomWithoutAnnotations())

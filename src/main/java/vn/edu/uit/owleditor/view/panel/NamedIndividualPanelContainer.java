@@ -203,7 +203,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                             entry.getValue()
                     );
                     root.addComponent(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                            new OWLEditorEvent.IndividualAxiomRemoved(axiom, dataSource.getValue())
+                            new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, dataSource.getValue())
                     ));
 
                 });
@@ -256,7 +256,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                             entry.getValue()
                     );
                     root.addComponent(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                            new OWLEditorEvent.IndividualAxiomRemoved(axiom, dataSource.getValue())
+                            new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, dataSource.getValue())
                     ));
 
                 });
@@ -307,7 +307,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                             entry.getValue()
                     );
                     root.addComponent(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                            new OWLEditorEvent.IndividualAxiomRemoved(axiom, dataSource.getValue())
+                            new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, dataSource.getValue())
                     ));
 
                 });
@@ -335,7 +335,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                             entry.getValue()
                     );
                     root.addComponent(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                            new OWLEditorEvent.IndividualAxiomRemoved(axiom, dataSource.getValue())
+                            new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, dataSource.getValue())
                     ));
 
                 });
@@ -436,28 +436,28 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             public void visit(OWLDataPropertyAssertionAxiom axiom) {
 
                 dataAssertPn.addMoreExpression(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                        new OWLEditorEvent.IndividualAxiomRemoved(axiom, owner)
+                        new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, owner)
                 ));
             }
 
             @Override
             public void visit(OWLObjectPropertyAssertionAxiom axiom) {
                 objAssertPn.addMoreExpression(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                        new OWLEditorEvent.IndividualAxiomRemoved(axiom, owner)
+                        new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, owner)
                 ));
             }
 
             @Override
             public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
                 negDataAssertPn.addMoreExpression(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                        new OWLEditorEvent.IndividualAxiomRemoved(axiom, owner)
+                        new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, owner)
                 ));
             }
 
             @Override
             public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
                 negObjAssertPn.addMoreExpression(new OWLIndividualAxiomLabel(new OWLIndividualAxiomSource(axiom), () ->
-                        new OWLEditorEvent.IndividualAxiomRemoved(axiom, owner)
+                        new OWLEditorEvent.IndividualAxiomRemoveEvent(axiom, owner)
                 ));
             }
 
@@ -466,7 +466,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void afterIndividualAxiomAdded(OWLEditorEvent.IndividualAxiomAdded event) {
+    public void afterIndividualAxiomAdded(OWLEditorEvent.IndividualAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .addAxiom(editorKit.getActiveOntology(), event.getAxiom());
 
@@ -526,7 +526,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void afterIndividualAxiomRemoved(OWLEditorEvent.IndividualAxiomRemoved event) {
+    public void afterIndividualAxiomRemoved(OWLEditorEvent.IndividualAxiomRemoveEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
 
@@ -544,7 +544,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     @Subscribe
     @SuppressWarnings("unused")
-    public void afterIndividualAxiomModified(OWLEditorEvent.IndividualAxiomModified event) {
+    public void afterIndividualAxiomModified(OWLEditorEvent.IndividualAxiomModifyEvent event) {
         ChangeApplied removeOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));
 

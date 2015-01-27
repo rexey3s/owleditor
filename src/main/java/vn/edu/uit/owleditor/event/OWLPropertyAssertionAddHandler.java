@@ -17,5 +17,5 @@ public interface OWLPropertyAssertionAddHandler<EXPRESSION extends OWLPropertyEx
             .findMethod(OWLPropertyAssertionAddHandler.class, "addingRestriction",
                     OWLProperty.class, OWLObject.class);
 
-    public OWLEditorEvent.OWLAxiomAdded addingRestriction(EXPRESSION expression, OBJECT restriction);
+    public OWLEditorEvent.OWLAxiomAddEvent addingRestriction(EXPRESSION expression, OBJECT restriction);
 }

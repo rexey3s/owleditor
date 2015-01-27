@@ -15,5 +15,5 @@ public interface OWLExpressionAddHandler<EXPRESSION extends OWLObject> extends S
             .findMethod(OWLExpressionAddHandler.class, "addingExpression",
                     OWLObject.class);
 
-    public OWLEditorEvent.OWLAxiomAdded addingExpression(EXPRESSION expression);
+    public OWLEditorEvent.OWLAxiomAddEvent addingExpression(EXPRESSION expression);
 }

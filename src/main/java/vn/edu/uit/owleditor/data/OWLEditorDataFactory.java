@@ -1,12 +1,12 @@
 package vn.edu.uit.owleditor.data;
 
+import org.semanticweb.owlapi.model.*;
+import org.swrlapi.core.SWRLAPIRule;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import org.semanticweb.owlapi.model.*;
-import org.swrlapi.core.SWRLAPIRule;
 
 import javax.annotation.Nonnull;
 
@@ -43,112 +43,111 @@ public interface OWLEditorDataFactory {
     /**
      * Events factory
      */
-    OWLEditorEvent.ClassAxiomAdded getEquivalentClassesAddEvent(OWLClass owner, OWLClassExpression expression);
+    OWLEditorEvent.ClassAxiomAddEvent getEquivalentClassesAddEvent(OWLClass owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ClassAxiomAdded getSubClassOfAddEvent(OWLClass owner, OWLClassExpression supCls);
+    OWLEditorEvent.ClassAxiomAddEvent getSubClassOfAddEvent(OWLClass owner, OWLClassExpression supCls);
 
-    OWLEditorEvent.ClassAxiomAdded getDisjointClassesAddEvent(OWLClass owner, OWLClassExpression expression);
+    OWLEditorEvent.ClassAxiomAddEvent getDisjointClassesAddEvent(OWLClass owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ClassAxiomAdded getClassAssertionAddEvent(OWLClass owner, OWLNamedIndividual expression);
+    OWLEditorEvent.ClassAxiomAddEvent getClassAssertionAddEvent(OWLClass owner, OWLNamedIndividual expression);
 
-    OWLEditorEvent.ClassAxiomRemoved getEquivalentClassesRemoveEvent(OWLClass owner, OWLClassExpression expression);
+    OWLEditorEvent.ClassAxiomRemoveEvent getEquivalentClassesRemoveEvent(OWLClass owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ClassAxiomRemoved getSubClassOfRemoveEvent(OWLClass owner, OWLClassExpression supCls);
+    OWLEditorEvent.ClassAxiomRemoveEvent getSubClassOfRemoveEvent(OWLClass owner, OWLClassExpression supCls);
 
-    OWLEditorEvent.ClassAxiomRemoved getDisjointClassesRemoveEvent(OWLClass owner, OWLClassExpression expression);
+    OWLEditorEvent.ClassAxiomRemoveEvent getDisjointClassesRemoveEvent(OWLClass owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ClassAxiomRemoved getClassAssertionRemoveEvent(OWLClass owner, OWLNamedIndividual expression);
+    OWLEditorEvent.ClassAxiomRemoveEvent getClassAssertionRemoveEvent(OWLClass owner, OWLNamedIndividual expression);
 
-    OWLEditorEvent.ClassAxiomModified getEquivalentClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx);
+    OWLEditorEvent.ClassAxiomModifyEvent getEquivalentClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx);
 
-    OWLEditorEvent.ClassAxiomModified getSubClassOfModEvent(OWLClass owner, OWLClassExpression newSupCls, OWLClassExpression oldSupCls);
+    OWLEditorEvent.ClassAxiomModifyEvent getSubClassOfModEvent(OWLClass owner, OWLClassExpression newSupCls, OWLClassExpression oldSupCls);
 
-    OWLEditorEvent.ClassAxiomModified getDisjointClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx);
+    OWLEditorEvent.ClassAxiomModifyEvent getDisjointClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx);
 
-    OWLEditorEvent.IndividualAxiomAdded getIndividualTypesAxiomAddEvent(OWLNamedIndividual owner, OWLClassExpression expression);
+    OWLEditorEvent.IndividualAxiomAddEvent getIndividualTypesAxiomAddEvent(OWLNamedIndividual owner, OWLClassExpression expression);
 
-    OWLEditorEvent.IndividualAxiomRemoved getIndividualTypesAxiomRemoveEvent(OWLNamedIndividual owner, OWLClassExpression expression);
+    OWLEditorEvent.IndividualAxiomRemoveEvent getIndividualTypesAxiomRemoveEvent(OWLNamedIndividual owner, OWLClassExpression expression);
 
-    OWLEditorEvent.IndividualAxiomModified getIndividualTypesAxiomModEvent(OWLNamedIndividual owner, OWLClassExpression newEx, OWLClassExpression oldEx);
+    OWLEditorEvent.IndividualAxiomModifyEvent getIndividualTypesAxiomModEvent(OWLNamedIndividual owner, OWLClassExpression newEx, OWLClassExpression oldEx);
 
-    OWLEditorEvent.IndividualAxiomAdded getSamesIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
+    OWLEditorEvent.IndividualAxiomAddEvent getSamesIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
 
-    OWLEditorEvent.IndividualAxiomRemoved getSamesIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
+    OWLEditorEvent.IndividualAxiomRemoveEvent getSamesIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
 
-    OWLEditorEvent.IndividualAxiomAdded getDifferentIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
+    OWLEditorEvent.IndividualAxiomAddEvent getDifferentIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
 
-    OWLEditorEvent.IndividualAxiomRemoved getDifferentIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
+    OWLEditorEvent.IndividualAxiomRemoveEvent getDifferentIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression);
 
-    OWLEditorEvent.IndividualAxiomAdded getIndividualDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction);
+    OWLEditorEvent.IndividualAxiomAddEvent getIndividualDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction);
 
-    OWLEditorEvent.IndividualAxiomAdded getIndividualNegativeDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction);
+    OWLEditorEvent.IndividualAxiomAddEvent getIndividualNegativeDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction);
 
-    OWLEditorEvent.IndividualAxiomAdded getIndividualDataAssertionAxiomRemoveEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral object);
+    OWLEditorEvent.IndividualAxiomAddEvent getIndividualDataAssertionAxiomRemoveEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral object);
 
-    OWLEditorEvent.IndividualAxiomAdded getIndividualObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object);
+    OWLEditorEvent.IndividualAxiomAddEvent getIndividualObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object);
 
-    OWLEditorEvent.IndividualAxiomAdded getIndividualNegativeObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object);
+    OWLEditorEvent.IndividualAxiomAddEvent getIndividualNegativeObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object);
 
 
+    OWLEditorEvent.ObjectPropertyAxiomAddEvent getEquivalentObjectPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomAdded getEquivalentObjectPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomAddEvent getSubPropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomAdded getSubPropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomAddEvent getInversePropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomAdded getInversePropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomAddEvent getDomainsAddEvent(OWLObjectProperty owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomAdded getDomainsAddEvent(OWLObjectProperty owner, OWLClassExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomAddEvent getRangesAddEvent(OWLObjectProperty owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomAdded getRangesAddEvent(OWLObjectProperty owner, OWLClassExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomAddEvent getDisjointPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomAdded getDisjointPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getEquivalentObjectPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomRemoved getEquivalentObjectPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getSubPropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomRemoved getSubPropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getInversePropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomRemoved getInversePropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getDomainsRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomRemoved getDomainsRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getRangesRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomRemoved getRangesRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression);
+    OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getDisjointPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
 
-    OWLEditorEvent.ObjectPropertyAxiomRemoved getDisjointPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomAddEvent getEquivalentDataPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomAdded getEquivalentDataPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomAddEvent getSubPropertyOfAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomAdded getSubPropertyOfAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomAddEvent getDisjointPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomAdded getDisjointPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomAddEvent getDomainsAddEvent(OWLDataProperty owner, OWLClassExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomAdded getDomainsAddEvent(OWLDataProperty owner, OWLClassExpression expression);
+    OWLEditorEvent.DataPropertyAxiomAddEvent getRangesAddEvent(OWLDataProperty owner, OWLDataRange expression);
 
-    OWLEditorEvent.DataPropertyAxiomAdded getRangesAddEvent(OWLDataProperty owner, OWLDataRange expression);
+    OWLEditorEvent.DataPropertyAxiomRemoveEvent getEquivalentDataPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomRemoved getEquivalentDataPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomRemoveEvent getSubPropertyOfRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomRemoved getSubPropertyOfRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomRemoveEvent getDisjointPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomRemoved getDisjointPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression);
+    OWLEditorEvent.DataPropertyAxiomRemoveEvent getDomainsRemoveEvent(OWLDataProperty owner, OWLClassExpression expression);
 
-    OWLEditorEvent.DataPropertyAxiomRemoved getDomainsRemoveEvent(OWLDataProperty owner, OWLClassExpression expression);
+    OWLEditorEvent.DataPropertyAxiomRemoveEvent getRangesRemoveEvent(OWLDataProperty owner, OWLDataRange expression);
 
-    OWLEditorEvent.DataPropertyAxiomRemoved getRangesRemoveEvent(OWLDataProperty owner, OWLDataRange expression);
+    OWLEditorEvent.ObjectPropertyAxiomModifyEvent getDomainsModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx);
 
-    OWLEditorEvent.ObjectPropertyAxiomModified getDomainsModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx);
+    OWLEditorEvent.ObjectPropertyAxiomModifyEvent getRangesModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx);
 
-    OWLEditorEvent.ObjectPropertyAxiomModified getRangesModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx);
+    OWLEditorEvent.DataPropertyAxiomModifyEvent getDomainsModEvent(OWLDataProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx);
 
-    OWLEditorEvent.DataPropertyAxiomModified getDomainsModEvent(OWLDataProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx);
-
-    OWLEditorEvent.DataPropertyAxiomModified getRangesModEvent(OWLDataProperty owner, OWLDataRange newEx, OWLDataRange oldEx);
+    OWLEditorEvent.DataPropertyAxiomModifyEvent getRangesModEvent(OWLDataProperty owner, OWLDataRange newEx, OWLDataRange oldEx);
 
     /**
      * Rule
      */
-    OWLEditorEvent.RuleAdded getRuleAddEvent(SWRLAPIRule rule, OWLOntology sourceOntology);
+    OWLEditorEvent.RuleAddEvent getRuleAddEvent(SWRLAPIRule rule, OWLOntology sourceOntology);
 
-    OWLEditorEvent.RuleRemoved getRuleRemoveEvent(SWRLAPIRule rule, OWLOntology sourceOntology);
+    OWLEditorEvent.RuleRemoveEvent getRuleRemoveEvent(SWRLAPIRule rule, OWLOntology sourceOntology);
 
-    OWLEditorEvent.RuleModified getRuleMofifyEvent(SWRLAPIRule newRule, SWRLAPIRule oldRule, OWLOntology sourceOntology);
+    OWLEditorEvent.RuleModifyEvent getRuleMofifyEvent(SWRLAPIRule newRule, SWRLAPIRule oldRule, OWLOntology sourceOntology);
 }

@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
@@ -14,7 +13,6 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLDataPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -37,16 +35,13 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     private static final Action REMOVE = new Action("Remove");
     private static final Action[] ACTIONS = new Action[]{ADD_SUB,
             ADD_SIBLING, FUNCTIONAL_MARK, REMOVE};
-    private MenuBar.MenuItem reasonerToggle;
 
     private final OWLDataPropertyTree tree = new OWLDataPropertyTree();
 
     public DataPropertyHierarchicalPanel() {
+        super();
         buildComponents();
-
         tree.addActionHandler(this);
-        OWLEditorEventBus.register(this);
-
     }
 
     private void buildComponents() {
@@ -87,10 +82,6 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         return tools;
     }
 
-    @Subscribe
-    public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
-        reasonerToggle.setChecked(event.getReasonerStatus());
-    }
     
     private boolean checkTopDataProp(OWLDataPropertySource prop) {
         return prop.getValue().isOWLTopDataProperty();
@@ -128,7 +119,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddDataPropertyWindow(
                 tree,
-                s -> new OWLEditorEvent.SubDataPropertyCreated(s, tree.getCurrentProperty().getValue()),
+                s -> new OWLEditorEvent.SubDataPropertyCreatedEvent(s, tree.getCurrentProperty().getValue()),
                 true));
     }
 
@@ -137,7 +128,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         if (!checkTopDataProp(tree.getCurrentProperty()))
             UI.getCurrent().addWindow(new buildAddDataPropertyWindow(
                     tree,
-                    s -> new OWLEditorEvent.SiblingDataPropertyCreated(s, tree.getCurrentProperty().getValue()),
+                    s -> new OWLEditorEvent.SiblingDataPropertyCreatedEvent(s, tree.getCurrentProperty().getValue()),
                     false));
         else
             Notification
@@ -151,7 +142,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", components1 -> {
                 if (components1.isConfirmed()) {
-                    tree.afterRemoved(new OWLEditorEvent.DataPropertyRemoved(
+                    tree.afterRemoved(new OWLEditorEvent.DataPropertyRemovedEvent(
                             tree.getCurrentProperty().getValue()));
                 } else {
                     components1.close();
@@ -184,7 +175,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     }
 
     public class OWLDataPropertyTree extends Tree implements TreeKit<OWLDataPropertySource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubDataPropertyCreated, OWLEditorEvent.SiblingDataPropertyCreated, OWLEditorEvent.DataPropertyRemoved> {
+            OWLEntityActionHandler<OWLEditorEvent.SubDataPropertyCreatedEvent, OWLEditorEvent.SiblingDataPropertyCreatedEvent, OWLEditorEvent.DataPropertyRemovedEvent> {
 
         private final OWLDataPropertyHierarchicalContainer dataContainer;
 
@@ -236,7 +227,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public void afterAddSubSaved(OWLEditorEvent.SubDataPropertyCreated event) {
+        public void afterAddSubSaved(OWLEditorEvent.SubDataPropertyCreatedEvent event) {
 
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
@@ -266,7 +257,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public void afterAddSiblingSaved(OWLEditorEvent.SiblingDataPropertyCreated event) {
+        public void afterAddSiblingSaved(OWLEditorEvent.SiblingDataPropertyCreatedEvent event) {
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getDeclareProperty());
@@ -297,7 +288,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public void afterRemoved(OWLEditorEvent.DataPropertyRemoved event) {
+        public void afterRemoved(OWLEditorEvent.DataPropertyRemovedEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
 
             List<OWLOntologyChange> changes = editorKit

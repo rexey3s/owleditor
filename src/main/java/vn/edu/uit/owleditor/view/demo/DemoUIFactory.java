@@ -496,7 +496,7 @@ public class DemoUIFactory {
                     "Are you sure about adding \"" + OWLEditorKitImpl.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
-                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
+                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAddEvent(newAxiom, subject));
                             dialog.close();
                         } else
                             dialog.close();
@@ -559,7 +559,7 @@ public class DemoUIFactory {
                     "Are you sure about adding \"" + OWLEditorKitImpl.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
-                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(newAxiom, subject));
+                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAddEvent(newAxiom, subject));
                             dialog.close();
 
                         } else
@@ -602,7 +602,7 @@ public class DemoUIFactory {
             EditorUtils.checkNotNull(selectedProperty.getValue(), "Please select an option");
             OWLIndividualAxiom axiom = factory
                     .getOWLDataPropertyAssertionAxiom(property, subject, selectedProperty.getValue());
-            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAdded(axiom, subject));
+            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAddEvent(axiom, subject));
 
         }
 

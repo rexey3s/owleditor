@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
@@ -15,7 +14,6 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -38,7 +36,6 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     private static final Action REMOVE = new Action("Remove");
     private static final Action[] ACTIONS = new Action[]{ADD_SUB,
             ADD_SIBLING, REMOVE};
-    private MenuBar.MenuItem reasonerToggle;
 
     private final OWLObjectPropertyTree tree = new OWLObjectPropertyTree();
 
@@ -47,7 +44,6 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         buildComponents();
         tree.addActionHandler(this);
         Responsive.makeResponsive(this);
-        OWLEditorEventBus.register(this);
     }
 
     @Override
@@ -113,16 +109,13 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         return prop.getValue().isOWLTopObjectProperty();
     }
 
-    @Subscribe
-    public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
-        reasonerToggle.setChecked(event.getReasonerStatus());
-    }
+
     
     @Override
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(
                 tree,
-                subject -> new OWLEditorEvent.SubObjectPropertyCreated(subject, tree.getCurrentProperty().getValue()),
+                subject -> new OWLEditorEvent.SubObjectPropertyCreatedEvent(subject, tree.getCurrentProperty().getValue()),
                 true));
 
     }
@@ -132,7 +125,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         if (!checkTopObjectProperty(tree.getCurrentProperty()))
             UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(
                     tree,
-                    subject -> new OWLEditorEvent.SiblingObjectPropertyCreated(subject, tree.getCurrentProperty().getValue()),
+                    subject -> new OWLEditorEvent.SiblingObjectPropertyCreatedEvent(subject, tree.getCurrentProperty().getValue()),
                     false));
 
         else
@@ -180,8 +173,8 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     }
 
     public class OWLObjectPropertyTree extends Tree implements TreeKit<OWLObjectPropertySource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubObjectPropertyCreated,
-                    OWLEditorEvent.SiblingObjectPropertyCreated, OWLEditorEvent.ObjectPropertyRemoved> {
+            OWLEntityActionHandler<OWLEditorEvent.SubObjectPropertyCreatedEvent,
+                    OWLEditorEvent.SiblingObjectPropertyCreatedEvent, OWLEditorEvent.ObjectPropertyRemoved> {
 
         private final OWLObjectPropertyHierarchicalContainer dataContainer;
 
@@ -222,7 +215,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
 
         @Override
-        public void afterAddSubSaved(OWLEditorEvent.SubObjectPropertyCreated event) {
+        public void afterAddSubSaved(OWLEditorEvent.SubObjectPropertyCreatedEvent event) {
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getSubProperty());
@@ -252,7 +245,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         }
 
         @Override
-        public void afterAddSiblingSaved(OWLEditorEvent.SiblingObjectPropertyCreated event) {
+        public void afterAddSiblingSaved(OWLEditorEvent.SiblingObjectPropertyCreatedEvent event) {
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getDeclareProperty());

@@ -328,7 +328,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     }
 
     @Subscribe
-    public void afterDataPropertyAxiomAdded(OWLEditorEvent.DataPropertyAxiomAdded event) {
+    public void afterDataPropertyAxiomAdded(OWLEditorEvent.DataPropertyAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager().applyChange(new AddAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
             event.getAxiom().accept(addHelper(event.getAxiom(), event.getOwner()));
@@ -341,7 +341,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     }
 
     @Subscribe
-    public void afterDataPropertyAxiomRemoved(OWLEditorEvent.DataPropertyAxiomRemoved event) {
+    public void afterDataPropertyAxiomRemoved(OWLEditorEvent.DataPropertyAxiomRemoveEvent event) {
         ChangeApplied ok = editorKit.getModelManager().applyChange(new RemoveAxiom(
                 editorKit.getActiveOntology(), event.getAxiom()));
 
@@ -356,7 +356,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     }
 
     @Subscribe
-    public void afterDataPropertyAxiomModified(OWLEditorEvent.DataPropertyAxiomModified event) {
+    public void afterDataPropertyAxiomModified(OWLEditorEvent.DataPropertyAxiomModifyEvent event) {
         ChangeApplied removeOk = editorKit.getModelManager().applyChange(new RemoveAxiom(
                 editorKit.getActiveOntology(), event.getOldAxiom()));
         ChangeApplied addOk = editorKit.getModelManager().applyChange(new AddAxiom(

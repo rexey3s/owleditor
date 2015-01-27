@@ -289,8 +289,8 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         }
     }
     private OWLAxiomVisitor addHelper(OWLObjectPropertyAxiom addAxiom, OWLObjectProperty owner) {
-        OWLEditorEvent.ObjectPropertyAxiomRemoved removeEvent =
-                new OWLEditorEvent.ObjectPropertyAxiomRemoved(addAxiom, owner);
+        OWLEditorEvent.ObjectPropertyAxiomRemoveEvent removeEvent =
+                new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(addAxiom, owner);
         return new OWLAxiomVisitorAdapter() {
 
             @Override
@@ -377,7 +377,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
     @Subscribe
     public void afterObjectPropertyAxiomAdded(
-            OWLEditorEvent.ObjectPropertyAxiomAdded event) {
+            OWLEditorEvent.ObjectPropertyAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new AddAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -394,7 +394,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
     @Subscribe
     public void afterObjectPropertyAxiomRemoved(
-            OWLEditorEvent.ObjectPropertyAxiomRemoved event) {
+            OWLEditorEvent.ObjectPropertyAxiomRemoveEvent event) {
 
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
@@ -413,7 +413,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
     @Subscribe
     public void afterObjectPropertyAxiomModified(
-            OWLEditorEvent.ObjectPropertyAxiomModified event) {
+            OWLEditorEvent.ObjectPropertyAxiomModifyEvent event) {
 
         ChangeApplied removeOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));

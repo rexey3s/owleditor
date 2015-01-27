@@ -235,7 +235,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 ces.remove(owner);
                 ces.forEach(ce -> disjointPanel.addMoreExpression(new ClassLabel(
                                 new OWLClassExpressionSource(ce),
-                                () -> new OWLEditorEvent.ClassAxiomRemoved(addAxiom, owner),
+                                () -> new OWLEditorEvent.ClassAxiomRemoveEvent(addAxiom, owner),
                                 modEx -> editorKit.getDataFactory().getDisjointClassesModEvent(
                                         dataSource.getValue(), modEx, ce))
                 ));
@@ -248,7 +248,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 ces.remove(owner);
                 ces.forEach(ce -> equivPanel.addMoreExpression(new ClassLabel(
                                 new OWLClassExpressionSource(ce),
-                                () -> new OWLEditorEvent.ClassAxiomRemoved(addAxiom, owner),
+                                () -> new OWLEditorEvent.ClassAxiomRemoveEvent(addAxiom, owner),
                                 modEx -> editorKit.getDataFactory().getEquivalentClassesModEvent(
                                         dataSource.getValue(), modEx, ce))
                 ));
@@ -258,7 +258,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             public void visit(OWLSubClassOfAxiom axiom) {
                 subClsOfPanel.addMoreExpression(new ClassLabel(
                                 new OWLClassExpressionSource(axiom.getSuperClass()),
-                                () -> new OWLEditorEvent.ClassAxiomRemoved(addAxiom, owner),
+                                () -> new OWLEditorEvent.ClassAxiomRemoveEvent(addAxiom, owner),
                                 modEx -> editorKit.getDataFactory().getSubClassOfModEvent(
                                         dataSource.getValue(), modEx, axiom.getSuperClass()))
                 );
@@ -314,7 +314,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    public void afterClassAxiomAdded(OWLEditorEvent.ClassAxiomAdded event) {
+    public void afterClassAxiomAdded(OWLEditorEvent.ClassAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new AddAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -330,7 +330,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    public void afterClassAxiomRemoved(OWLEditorEvent.ClassAxiomRemoved event) {
+    public void afterClassAxiomRemoved(OWLEditorEvent.ClassAxiomRemoveEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
@@ -347,7 +347,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    public void afterClassAxiomModified(OWLEditorEvent.ClassAxiomModified event) {
+    public void afterClassAxiomModified(OWLEditorEvent.ClassAxiomModifyEvent event) {
         ChangeApplied RemoveOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));
         ChangeApplied AddOk = editorKit.getModelManager()

@@ -87,64 +87,64 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
 
     @Override
-    public OWLEditorEvent.ClassAxiomAdded getEquivalentClassesAddEvent(OWLClass owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ClassAxiomAdded(
+    public OWLEditorEvent.ClassAxiomAddEvent getEquivalentClassesAddEvent(OWLClass owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ClassAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentClassesAxiom(owner, expression),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomAdded getSubClassOfAddEvent(OWLClass owner, OWLClassExpression supCls) {
-        return new OWLEditorEvent.ClassAxiomAdded(
+    public OWLEditorEvent.ClassAxiomAddEvent getSubClassOfAddEvent(OWLClass owner, OWLClassExpression supCls) {
+        return new OWLEditorEvent.ClassAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLSubClassOfAxiom(owner, supCls),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomAdded getDisjointClassesAddEvent(OWLClass owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ClassAxiomAdded(
+    public OWLEditorEvent.ClassAxiomAddEvent getDisjointClassesAddEvent(OWLClass owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ClassAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointClassesAxiom(owner, expression),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomAdded getClassAssertionAddEvent(OWLClass owner, OWLNamedIndividual expression) {
-        return new OWLEditorEvent.ClassAxiomAdded(
+    public OWLEditorEvent.ClassAxiomAddEvent getClassAssertionAddEvent(OWLClass owner, OWLNamedIndividual expression) {
+        return new OWLEditorEvent.ClassAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLClassAssertionAxiom(owner, expression),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomRemoved getEquivalentClassesRemoveEvent(OWLClass owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ClassAxiomRemoved(
+    public OWLEditorEvent.ClassAxiomRemoveEvent getEquivalentClassesRemoveEvent(OWLClass owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ClassAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentClassesAxiom(owner, expression),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomRemoved getSubClassOfRemoveEvent(OWLClass owner, OWLClassExpression supCls) {
-        return new OWLEditorEvent.ClassAxiomRemoved(
+    public OWLEditorEvent.ClassAxiomRemoveEvent getSubClassOfRemoveEvent(OWLClass owner, OWLClassExpression supCls) {
+        return new OWLEditorEvent.ClassAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLSubClassOfAxiom(owner, supCls),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomRemoved getDisjointClassesRemoveEvent(OWLClass owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ClassAxiomRemoved(
+    public OWLEditorEvent.ClassAxiomRemoveEvent getDisjointClassesRemoveEvent(OWLClass owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ClassAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointClassesAxiom(owner, expression),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomRemoved getClassAssertionRemoveEvent(OWLClass owner, OWLNamedIndividual expression) {
-        return new OWLEditorEvent.ClassAxiomRemoved(
+    public OWLEditorEvent.ClassAxiomRemoveEvent getClassAssertionRemoveEvent(OWLClass owner, OWLNamedIndividual expression) {
+        return new OWLEditorEvent.ClassAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLClassAssertionAxiom(owner, expression),
                 owner);
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomModified getEquivalentClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
-        return new OWLEditorEvent.ClassAxiomModified(
+    public OWLEditorEvent.ClassAxiomModifyEvent getEquivalentClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
+        return new OWLEditorEvent.ClassAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentClassesAxiom(owner, newEx),
                 editorKit.getOWLDataFactory().getOWLEquivalentClassesAxiom(owner, oldEx),
                 owner
@@ -152,8 +152,8 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomModified getSubClassOfModEvent(OWLClass owner, OWLClassExpression newSupCls, OWLClassExpression oldSupCls) {
-        return new OWLEditorEvent.ClassAxiomModified(
+    public OWLEditorEvent.ClassAxiomModifyEvent getSubClassOfModEvent(OWLClass owner, OWLClassExpression newSupCls, OWLClassExpression oldSupCls) {
+        return new OWLEditorEvent.ClassAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLSubClassOfAxiom(owner, newSupCls),
                 editorKit.getOWLDataFactory().getOWLSubClassOfAxiom(owner, oldSupCls),
                 owner
@@ -161,8 +161,8 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.ClassAxiomModified getDisjointClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
-        return new OWLEditorEvent.ClassAxiomModified(
+    public OWLEditorEvent.ClassAxiomModifyEvent getDisjointClassesModEvent(OWLClass owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
+        return new OWLEditorEvent.ClassAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointClassesAxiom(owner, newEx),
                 editorKit.getOWLDataFactory().getOWLDisjointClassesAxiom(owner, oldEx),
                 owner
@@ -170,24 +170,24 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getIndividualTypesAxiomAddEvent(OWLNamedIndividual owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getIndividualTypesAxiomAddEvent(OWLNamedIndividual owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLClassAssertionAxiom(expression, owner),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomRemoved getIndividualTypesAxiomRemoveEvent(OWLNamedIndividual owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.IndividualAxiomRemoved(
+    public OWLEditorEvent.IndividualAxiomRemoveEvent getIndividualTypesAxiomRemoveEvent(OWLNamedIndividual owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.IndividualAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLClassAssertionAxiom(expression, owner),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomModified getIndividualTypesAxiomModEvent(OWLNamedIndividual owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
-        return new OWLEditorEvent.IndividualAxiomModified(
+    public OWLEditorEvent.IndividualAxiomModifyEvent getIndividualTypesAxiomModEvent(OWLNamedIndividual owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
+        return new OWLEditorEvent.IndividualAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLClassAssertionAxiom(newEx, owner),
                 editorKit.getOWLDataFactory().getOWLClassAssertionAxiom(oldEx, owner),
                 owner
@@ -195,69 +195,69 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getSamesIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getSamesIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLSameIndividualAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomRemoved getSamesIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
-        return new OWLEditorEvent.IndividualAxiomRemoved(
+    public OWLEditorEvent.IndividualAxiomRemoveEvent getSamesIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
+        return new OWLEditorEvent.IndividualAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLSameIndividualAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getDifferentIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getDifferentIndividualsAxiomAddEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDifferentIndividualsAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomRemoved getDifferentIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
-        return new OWLEditorEvent.IndividualAxiomRemoved(
+    public OWLEditorEvent.IndividualAxiomRemoveEvent getDifferentIndividualsAxiomRemoveEvent(OWLNamedIndividual owner, OWLNamedIndividual expression) {
+        return new OWLEditorEvent.IndividualAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLDifferentIndividualsAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getIndividualDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getIndividualDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyAssertionAxiom(expression, owner, restriction),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getIndividualNegativeDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getIndividualNegativeDataAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLNegativeDataPropertyAssertionAxiom(expression, owner, restriction),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getIndividualDataAssertionAxiomRemoveEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction) {
+    public OWLEditorEvent.IndividualAxiomAddEvent getIndividualDataAssertionAxiomRemoveEvent(OWLNamedIndividual owner, OWLDataPropertyExpression expression, OWLLiteral restriction) {
         return null;
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getIndividualObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getIndividualObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(expression, owner, object),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.IndividualAxiomAdded getIndividualNegativeObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object) {
-        return new OWLEditorEvent.IndividualAxiomAdded(
+    public OWLEditorEvent.IndividualAxiomAddEvent getIndividualNegativeObjectPropertyAssertionAxiomAddEvent(OWLNamedIndividual owner, OWLObjectPropertyExpression expression, OWLIndividual object) {
+        return new OWLEditorEvent.IndividualAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLNegativeObjectPropertyAssertionAxiom(expression, owner, object),
                 owner
         );
@@ -266,184 +266,184 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomAdded getEquivalentObjectPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomAdded(
+    public OWLEditorEvent.ObjectPropertyAxiomAddEvent getEquivalentObjectPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomAdded getSubPropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomAdded(
+    public OWLEditorEvent.ObjectPropertyAxiomAddEvent getSubPropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomAdded getInversePropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomAdded(
+    public OWLEditorEvent.ObjectPropertyAxiomAddEvent getInversePropertyOfAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomAdded getDomainsAddEvent(OWLObjectProperty owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomAdded(
+    public OWLEditorEvent.ObjectPropertyAxiomAddEvent getDomainsAddEvent(OWLObjectProperty owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyDomainAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomAdded getRangesAddEvent(OWLObjectProperty owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomAdded(
+    public OWLEditorEvent.ObjectPropertyAxiomAddEvent getRangesAddEvent(OWLObjectProperty owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyRangeAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomAdded getDisjointPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomAdded(
+    public OWLEditorEvent.ObjectPropertyAxiomAddEvent getDisjointPropertiesAddEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomRemoved getEquivalentObjectPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomRemoved(
+    public OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getEquivalentObjectPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentObjectPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomRemoved getSubPropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomRemoved(
+    public OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getSubPropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomRemoved getInversePropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomRemoved(
+    public OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getInversePropertyOfRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomRemoved getDomainsRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomRemoved(
+    public OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getDomainsRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyDomainAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomRemoved getRangesRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomRemoved(
+    public OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getRangesRemoveEvent(OWLObjectProperty owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyRangeAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomRemoved getDisjointPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
-        return new OWLEditorEvent.ObjectPropertyAxiomRemoved(
+    public OWLEditorEvent.ObjectPropertyAxiomRemoveEvent getDisjointPropertiesRemoveEvent(OWLObjectProperty owner, OWLObjectPropertyExpression expression) {
+        return new OWLEditorEvent.ObjectPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointObjectPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomAdded getEquivalentDataPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomAdded(
+    public OWLEditorEvent.DataPropertyAxiomAddEvent getEquivalentDataPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomAdded getSubPropertyOfAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomAdded(
+    public OWLEditorEvent.DataPropertyAxiomAddEvent getSubPropertyOfAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLSubDataPropertyOfAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomAdded getDisjointPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomAdded(
+    public OWLEditorEvent.DataPropertyAxiomAddEvent getDisjointPropertiesAddEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomAdded getDomainsAddEvent(OWLDataProperty owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomAdded(
+    public OWLEditorEvent.DataPropertyAxiomAddEvent getDomainsAddEvent(OWLDataProperty owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyDomainAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomAdded getRangesAddEvent(OWLDataProperty owner, OWLDataRange expression) {
-        return new OWLEditorEvent.DataPropertyAxiomAdded(
+    public OWLEditorEvent.DataPropertyAxiomAddEvent getRangesAddEvent(OWLDataProperty owner, OWLDataRange expression) {
+        return new OWLEditorEvent.DataPropertyAxiomAddEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyRangeAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomRemoved getEquivalentDataPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomRemoved(
+    public OWLEditorEvent.DataPropertyAxiomRemoveEvent getEquivalentDataPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomRemoved getSubPropertyOfRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomRemoved(
+    public OWLEditorEvent.DataPropertyAxiomRemoveEvent getSubPropertyOfRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLSubDataPropertyOfAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomRemoved getDisjointPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomRemoved(
+    public OWLEditorEvent.DataPropertyAxiomRemoveEvent getDisjointPropertiesRemoveEvent(OWLDataProperty owner, OWLDataPropertyExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLDisjointDataPropertiesAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomRemoved getDomainsRemoveEvent(OWLDataProperty owner, OWLClassExpression expression) {
-        return new OWLEditorEvent.DataPropertyAxiomRemoved(
+    public OWLEditorEvent.DataPropertyAxiomRemoveEvent getDomainsRemoveEvent(OWLDataProperty owner, OWLClassExpression expression) {
+        return new OWLEditorEvent.DataPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyDomainAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomRemoved getRangesRemoveEvent(OWLDataProperty owner, OWLDataRange expression) {
-        return new OWLEditorEvent.DataPropertyAxiomRemoved(
+    public OWLEditorEvent.DataPropertyAxiomRemoveEvent getRangesRemoveEvent(OWLDataProperty owner, OWLDataRange expression) {
+        return new OWLEditorEvent.DataPropertyAxiomRemoveEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyRangeAxiom(owner, expression),
                 owner
         );
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomModified getDomainsModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
-        return new OWLEditorEvent.ObjectPropertyAxiomModified(
+    public OWLEditorEvent.ObjectPropertyAxiomModifyEvent getDomainsModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
+        return new OWLEditorEvent.ObjectPropertyAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyDomainAxiom(owner, newEx),
                 editorKit.getOWLDataFactory().getOWLObjectPropertyDomainAxiom(owner, oldEx),
                 owner
@@ -451,8 +451,8 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.ObjectPropertyAxiomModified getRangesModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
-        return new OWLEditorEvent.ObjectPropertyAxiomModified(
+    public OWLEditorEvent.ObjectPropertyAxiomModifyEvent getRangesModEvent(OWLObjectProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
+        return new OWLEditorEvent.ObjectPropertyAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLObjectPropertyRangeAxiom(owner, newEx),
                 editorKit.getOWLDataFactory().getOWLObjectPropertyRangeAxiom(owner, oldEx),
                 owner
@@ -460,8 +460,8 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomModified getDomainsModEvent(OWLDataProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
-        return new OWLEditorEvent.DataPropertyAxiomModified(
+    public OWLEditorEvent.DataPropertyAxiomModifyEvent getDomainsModEvent(OWLDataProperty owner, OWLClassExpression newEx, OWLClassExpression oldEx) {
+        return new OWLEditorEvent.DataPropertyAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyDomainAxiom(owner, newEx),
                 editorKit.getOWLDataFactory().getOWLDataPropertyDomainAxiom(owner, oldEx),
                 owner
@@ -469,8 +469,8 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.DataPropertyAxiomModified getRangesModEvent(OWLDataProperty owner, OWLDataRange newEx, OWLDataRange oldEx) {
-        return new OWLEditorEvent.DataPropertyAxiomModified(
+    public OWLEditorEvent.DataPropertyAxiomModifyEvent getRangesModEvent(OWLDataProperty owner, OWLDataRange newEx, OWLDataRange oldEx) {
+        return new OWLEditorEvent.DataPropertyAxiomModifyEvent(
                 editorKit.getOWLDataFactory().getOWLDataPropertyRangeAxiom(owner, newEx),
                 editorKit.getOWLDataFactory().getOWLDataPropertyRangeAxiom(owner, oldEx),
                 owner
@@ -478,18 +478,18 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     }
 
     @Override
-    public OWLEditorEvent.RuleAdded getRuleAddEvent(SWRLAPIRule rule, OWLOntology sourceOntology) {
-        return new OWLEditorEvent.RuleAdded(rule, sourceOntology);
+    public OWLEditorEvent.RuleAddEvent getRuleAddEvent(SWRLAPIRule rule, OWLOntology sourceOntology) {
+        return new OWLEditorEvent.RuleAddEvent(rule, sourceOntology);
     }
 
     @Override
-    public OWLEditorEvent.RuleRemoved getRuleRemoveEvent(SWRLAPIRule rule, OWLOntology sourceOntology) {
-        return new OWLEditorEvent.RuleRemoved(rule, sourceOntology);
+    public OWLEditorEvent.RuleRemoveEvent getRuleRemoveEvent(SWRLAPIRule rule, OWLOntology sourceOntology) {
+        return new OWLEditorEvent.RuleRemoveEvent(rule, sourceOntology);
     }
 
     @Override
-    public OWLEditorEvent.RuleModified getRuleMofifyEvent(SWRLAPIRule newRule, SWRLAPIRule oldRule, OWLOntology sourceOntology) {
-        return new OWLEditorEvent.RuleModified(newRule, oldRule, sourceOntology);
+    public OWLEditorEvent.RuleModifyEvent getRuleMofifyEvent(SWRLAPIRule newRule, SWRLAPIRule oldRule, OWLOntology sourceOntology) {
+        return new OWLEditorEvent.RuleModifyEvent(newRule, oldRule, sourceOntology);
     }
 
 }

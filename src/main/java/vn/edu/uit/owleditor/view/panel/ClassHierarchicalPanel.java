@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
@@ -31,8 +30,7 @@ import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassCreated;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
+import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassCreatedEvent;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -49,32 +47,30 @@ import java.util.List;
 @VaadinComponent
 public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     private static final Logger LOG = LoggerFactory.getLogger(ClassHierarchicalPanel.class);
-
     // Actions for the context menu
     private static final Action ADD_SUB = new Action("Add SubClass");
     private static final Action ADD_SIBLING = new Action("Add SiblingClass");
     private static final Action REMOVE = new Action("Remove");
     private static final Action[] ACTIONS = new Action[]{ADD_SUB,
             ADD_SIBLING, REMOVE};
-    //    private static int eventCount = 0;
-    private final OWLClassTree owlTree;
-    private MenuBar.MenuItem reasonerToggle;
+
+    private final OWLClassTree tree;
     public ClassHierarchicalPanel() {
-        owlTree = new OWLClassTree();
-        owlTree.addActionHandler(this);
+        super();
+        tree = new OWLClassTree();
+        tree.addActionHandler(this);
         buildComponents();
-        OWLEditorEventBus.register(this);
     }
 
     @Override
     public OWLClassSource getSelectedProperty() {
-        return owlTree.getCurrentProperty();
+        return tree.getCurrentProperty();
     }
 
     private void buildComponents() {
 
         Panel treePanel = new Panel();
-        treePanel.setContent(owlTree);
+        treePanel.setContent(tree);
         treePanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
         treePanel.setSizeFull();
         HorizontalLayout toolbar = new HorizontalLayout();
@@ -132,11 +128,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             handleRemovalNode();
         }
     }
-    
-    @Subscribe
-    public void toggleReasoner(OWLEditorEvent.ReasonerToggleEvent event) {
-        reasonerToggle.setChecked(event.getReasonerStatus());
-    }
+
 
     private boolean checkOWLThing(OWLClassSource prop) {
         return prop.getValue().isOWLThing();
@@ -144,36 +136,36 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
     @Override
     public void addValueChangeListener(Property.ValueChangeListener listener) {
-        owlTree.addValueChangeListener(listener);
+        tree.addValueChangeListener(listener);
     }
 
     @Deprecated
     public void addListener(Property.ValueChangeListener listener) {
-        owlTree.addValueChangeListener(listener);
+        tree.addValueChangeListener(listener);
     }
 
     @Override
     public void removeValueChangeListener(Property.ValueChangeListener listener) {
-        owlTree.removeValueChangeListener(listener);
+        tree.removeValueChangeListener(listener);
     }
 
     @Deprecated
     public void removeListener(Property.ValueChangeListener listener) {
-        owlTree.removeValueChangeListener(listener);
+        tree.removeValueChangeListener(listener);
     }
 
     @Override
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddOWLClassWindow(
-                owlTree, c -> new OWLEditorEvent.SubClassCreated(c, owlTree.getCurrentProperty().getValue()), true));
+                tree, c -> new OWLEditorEvent.SubClassCreatedEvent(c, tree.getCurrentProperty().getValue()), true));
 
     }
 
     @Override
     public void handleSiblingNodeCreation() {
-        if (!checkOWLThing(owlTree.currentProperty))
+        if (!checkOWLThing(tree.currentProperty))
             UI.getCurrent().addWindow(new buildAddOWLClassWindow(
-                    owlTree, c -> new OWLEditorEvent.SiblingClassCreated(c, owlTree.getCurrentProperty().getValue()), false));
+                    tree, c -> new SiblingClassCreatedEvent(c, tree.getCurrentProperty().getValue()), false));
 
         else
             Notification
@@ -183,12 +175,12 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
     @Override
     public void handleRemovalNode() {
-        if (!checkOWLThing(owlTree.getCurrentProperty()))
+        if (!checkOWLThing(tree.getCurrentProperty()))
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", dialog -> {
                 if (dialog.isConfirmed()) {
-                    owlTree.afterRemoved(new OWLEditorEvent.ClassRemoved(
-                            owlTree.getCurrentProperty().getValue()));
+                    tree.afterRemoved(new OWLEditorEvent.ClassRemovedEvent(
+                            tree.getCurrentProperty().getValue()));
                 } else {
                     dialog.close();
                 }
@@ -200,7 +192,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     }
 
     public static class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubClassCreated, SiblingClassCreated, OWLEditorEvent.ClassRemoved> {
+            OWLEntityActionHandler<OWLEditorEvent.SubClassCreatedEvent, SiblingClassCreatedEvent, OWLEditorEvent.ClassRemovedEvent> {
 
         private final OWLClassHierarchicalContainer dataContainer;
         private final OWLClassSource currentProperty = new OWLClassSource();
@@ -241,7 +233,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
 
         @Override
-        public void afterAddSiblingSaved(SiblingClassCreated event) {
+        public void afterAddSiblingSaved(SiblingClassCreatedEvent event) {
             OWLAxiom clsDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getDeclareClass());
@@ -276,7 +268,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         }
 
         @Override
-        public void afterRemoved(OWLEditorEvent.ClassRemoved event) {
+        public void afterRemoved(OWLEditorEvent.ClassRemovedEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
             List<OWLOntologyChange> changes = editorKit
                     .getModelManager()
@@ -289,7 +281,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         }
 
         @Override
-        public void afterAddSubSaved(OWLEditorEvent.SubClassCreated event) {
+        public void afterAddSubSaved(OWLEditorEvent.SubClassCreatedEvent event) {
             OWLDeclarationAxiom clsDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getSubClass());

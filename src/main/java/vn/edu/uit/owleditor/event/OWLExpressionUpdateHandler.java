@@ -15,5 +15,5 @@ public interface OWLExpressionUpdateHandler<EXPRESSION extends OWLObject> extend
             .findMethod(OWLExpressionUpdateHandler.class, "modifyingExpression",
                     OWLObject.class);
 
-    public OWLEditorEvent.OWLAxiomModified modifyingExpression(EXPRESSION expression);
+    public OWLEditorEvent.OWLAxiomModifyEvent modifyingExpression(EXPRESSION expression);
 }

@@ -16,7 +16,7 @@ import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/27/2014.
+ *         Faculty of Computer Network and Telecommunication created on 11/27/2014.
  */
 public class ClassExpressionEditor extends VerticalLayout {
     private final AbsoluteLayout root = new AbsoluteLayout();
@@ -50,15 +50,15 @@ public class ClassExpressionEditor extends VerticalLayout {
                 entitiesList.focus();
             }
         });
-        input.addTextChangeListener(textChangeEvent -> {
-            final String text = textChangeEvent.getText();
-            final String lastWord = text.substring(text.lastIndexOf(" ") + 1);
-            if (lastWord.length() > 1) {
-                root.addComponent(entitiesList, EditorUtils.writePixelCoordinator(textChangeEvent.getCursorPosition()));
-                entitiesList.setValue(lastWord);
-                entitiesList.focus();
-            }
-        });
+//        input.addTextChangeListener(textChangeEvent -> {
+//            final String text = textChangeEvent.getText();
+//            final String lastWord = text.substring(text.lastIndexOf(" ") + 1);
+//            if (lastWord.length() > 1) {
+//                root.addComponent(entitiesList, EditorUtils.writePixelCoordinator(textChangeEvent.getCursorPosition()));
+//                entitiesList.setValue(lastWord);
+//                entitiesList.focus();
+//            }
+//        });
         input.addShortcutListener(new ShortcutListener("Cancel", ShortcutAction.KeyCode.ESCAPE, null) {
             @Override
             public void handleAction(Object o, Object o1) {

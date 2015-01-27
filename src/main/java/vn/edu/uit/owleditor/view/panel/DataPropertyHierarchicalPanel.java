@@ -1,11 +1,15 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -181,6 +185,12 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         tree.removeValueChangeListener(listener);
     }
 
+    @Subscribe
+    public void handleAfterSubDataPropertyOfAxiomAddEvent(OWLEditorEvent.afterSubDataPropertyOfAxiomAddEvent event) {
+        event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomAdder());
+        tree.expandItem(event.getOwner());
+    }
+    
     public class OWLDataPropertyTree extends Tree implements TreeKit<OWLDataPropertySource>,
             OWLEntityActionHandler<OWLEditorEvent.SubDataPropertyAddEvent, OWLEditorEvent.SiblingDataPropertyAddEvent, OWLEditorEvent.DataPropertyRemoveEvent> {
 
@@ -192,12 +202,12 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
             dataContainer = editorKit.getDataFactory().getOWLDataPropertyHierarchicalContainer();
 
-            editorKit.getModelManager().addOntologyChangeListener(changes -> {
-
-                for (OWLOntologyChange chg : changes) {
-                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
-                }
-            });
+//            editorKit.getModelManager().addOntologyChangeListener(changes -> {
+//
+//                for (OWLOntologyChange chg : changes) {
+//                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
+//                }
+//            });
 
             setContainerDataSource(dataContainer);
 
@@ -235,24 +245,18 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
         @Override
         public void handleAddSubEntityEvent(OWLEditorEvent.SubDataPropertyAddEvent event) {
-
-            OWLDeclarationAxiom objPropDeclaration = editorKit
-                    .getOWLDataFactory()
-                    .getOWLDeclarationAxiom(event.getSubProperty());
-
-            OWLSubDataPropertyOfAxiom subPropAxiom = editorKit
-                    .getOWLDataFactory()
+            OWLAxiom dataPropDeclaration = owlFactory.getOWLDeclarationAxiom(event.getSubProperty());
+            OWLAxiom subPropAxiom = owlFactory
                     .getOWLSubDataPropertyOfAxiom(event.getSubProperty(), event.getSuperProperty());
 
-            if (editorKit
-                    .getModelManager()
-                    .addAxiom(editorKit.getActiveOntology(), objPropDeclaration)
-                    == ChangeApplied.SUCCESSFULLY
-                    &&
-                    editorKit.getModelManager()
-                            .addAxiom(editorKit.getActiveOntology(), subPropAxiom)
-                            == ChangeApplied.SUCCESSFULLY) {
+            ChangeApplied ok1 = editorKit.getModelManager()
+                    .addAxiom(editorKit.getActiveOntology(), dataPropDeclaration);
+            ChangeApplied ok2 = editorKit.getModelManager()
+                    .addAxiom(editorKit.getActiveOntology(), subPropAxiom);
 
+            if (ok1 == ChangeApplied.SUCCESSFULLY && ok2 == ChangeApplied.SUCCESSFULLY) {
+                dataPropDeclaration.accept(dataContainer.getOWLAxiomAdder());
+                subPropAxiom.accept(dataContainer.getOWLAxiomAdder());
                 expandItem(event.getSuperProperty());
                 Notification.show("Successfully create "
                         + OWLEditorKitImpl.getShortForm(event.getSubProperty()));
@@ -265,27 +269,32 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
         @Override
         public void handleAddSiblingEntityEvent(OWLEditorEvent.SiblingDataPropertyAddEvent event) {
-            OWLDeclarationAxiom objPropDeclaration = editorKit
-                    .getOWLDataFactory()
-                    .getOWLDeclarationAxiom(event.getDeclareProperty());
+            Boolean success = false;
+            OWLAxiom dataPropDeclaration = owlFactory.getOWLDeclarationAxiom(event.getDeclareProperty());
 
-            ChangeApplied ok = editorKit
-                    .getModelManager()
-                    .addAxiom(editorKit.getActiveOntology(), objPropDeclaration);
-
-
-            for (OWLDataPropertyExpression pe : EntitySearcher.getSuperProperties(
-                    event.getSiblingProperty(), editorKit.getActiveOntology())) {
-
-                OWLSubDataPropertyOfAxiom siblingAxiom = editorKit
-                        .getOWLDataFactory().getOWLSubDataPropertyOfAxiom(
-                                event.getDeclareProperty(),
-                                pe.asOWLDataProperty());
-
-                editorKit.getModelManager()
-                        .addAxiom(editorKit.getActiveOntology(), siblingAxiom);
+            ChangeApplied ok1 = editorKit.getModelManager()
+                    .addAxiom(editorKit.getActiveOntology(), dataPropDeclaration);
+            if (ChangeApplied.SUCCESSFULLY == ok1) {
+                success = true;
+                dataPropDeclaration.accept(dataContainer.getOWLAxiomAdder());
             }
-            if (ok == ChangeApplied.SUCCESSFULLY)
+
+            for (OWLDataPropertyExpression de : EntitySearcher.getSuperProperties(
+                    event.getSiblingProperty(), editorKit.getActiveOntology())) {
+                if (!de.isAnonymous()) {
+                    OWLAxiom siblingAxiom = owlFactory.getOWLSubDataPropertyOfAxiom(
+                            event.getDeclareProperty(), de.asOWLDataProperty());
+
+                    ChangeApplied ok2 = editorKit.getModelManager()
+                            .addAxiom(editorKit.getActiveOntology(), siblingAxiom);
+                    if (ChangeApplied.SUCCESSFULLY == ok2 && success) {
+                        siblingAxiom.accept(dataContainer.getOWLAxiomAdder());
+                        expandItem(de.asOWLDataProperty());
+                    } else success = false;
+                    break;
+                }
+            }
+            if (success)
                 Notification.show("Successfully create "
                         + OWLEditorKitImpl.getShortForm(event.getDeclareProperty()));
             else

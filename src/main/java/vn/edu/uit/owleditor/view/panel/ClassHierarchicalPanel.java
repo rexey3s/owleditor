@@ -4,10 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Sizeable;
-import com.vaadin.server.StreamResource;
+import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormat;
@@ -94,6 +91,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 //        toolbar.setExpandRatio(caption, 1.0f);
         toolbar.setComponentAlignment(configWrapper, Alignment.MIDDLE_RIGHT);
         toolbar.setComponentAlignment(caption, Alignment.MIDDLE_LEFT);
+        Responsive.makeResponsive(toolbar);
         addStyleName(ValoTheme.LAYOUT_CARD);
         addStyleName("hierarchy-view");
         addComponent(toolbar);
@@ -203,6 +201,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     @Subscribe
     public void handleAfterSubClassOfAxiomAddEvent(OWLEditorEvent.afterSubClassOfAxiomAddEvent event) {
         event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomAdder());
+        tree.expandItem(event.getOwner());
     }
 
     public static class DownloadOntologyWindow extends Window {
@@ -417,9 +416,10 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         public void handleRemoveEntityEvent(OWLEditorEvent.ClassRemoveEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
-            List<OWLOntologyChange> changes = editorKit
-                    .getModelManager()
+
+            List<OWLOntologyChange> changes = editorKit.getModelManager()
                     .applyChanges(dataContainer.getEntityRemover().getChanges());
+
             for (OWLOntologyChange axiom : changes) {
                 axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
             }

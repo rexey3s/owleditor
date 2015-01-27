@@ -10,7 +10,6 @@ import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 
 import javax.annotation.Nonnull;
 

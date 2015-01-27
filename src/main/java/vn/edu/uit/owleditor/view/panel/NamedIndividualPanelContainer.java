@@ -18,7 +18,6 @@ import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 import vn.edu.uit.owleditor.view.component.AbstractNonEditableOWLObjectLabel;
 import vn.edu.uit.owleditor.view.component.InferredLabel;
 import vn.edu.uit.owleditor.view.component.OWLIndividualAxiomLabel;

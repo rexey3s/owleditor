@@ -13,7 +13,6 @@ import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import vn.edu.uit.owleditor.data.property.*;
 import vn.edu.uit.owleditor.event.*;
 import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 import vn.edu.uit.owleditor.view.component.AbstractNonEditableOWLObjectLabel;
 import vn.edu.uit.owleditor.view.component.InferredLabel;
 import vn.edu.uit.owleditor.view.window.AbstractOWLExpressionEditorWindow;

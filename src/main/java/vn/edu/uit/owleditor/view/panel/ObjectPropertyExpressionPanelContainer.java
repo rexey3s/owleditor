@@ -15,7 +15,6 @@ import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionAddHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 import vn.edu.uit.owleditor.view.component.AbstractNonEditableOWLObjectLabel;
 import vn.edu.uit.owleditor.view.component.InferredLabel;
 import vn.edu.uit.owleditor.view.window.AbstractOWLExpressionEditorWindow;
@@ -305,6 +304,15 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                 ));
             }
 
+            @Override
+            public void visit(OWLSubObjectPropertyOfAxiom axiom) {
+                subObjPropPanel.addMoreExpression(new simplePropertyLabel(
+                                new OWLObjectPropertyExpressionSource(axiom.getSuperProperty()), () -> removeEvent)
+                );
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubObjectPropertyOfAxiomAddEvent(axiom,
+                        axiom.getSuperProperty().asOWLObjectProperty()));
+            }
+            
             @Override
             public void visit(OWLInverseObjectPropertiesAxiom axiom) {
                 inversePropsPanel.addMoreExpression(new simplePropertyLabel(

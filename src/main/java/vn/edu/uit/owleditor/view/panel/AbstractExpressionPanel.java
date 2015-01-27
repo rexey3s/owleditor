@@ -1,4 +1,4 @@
-package vn.edu.uit.owleditor.view.component;
+package vn.edu.uit.owleditor.view.panel;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -8,6 +8,9 @@ import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
+import vn.edu.uit.owleditor.view.component.HasReasoning;
+import vn.edu.uit.owleditor.view.component.InferredLabel;
+import vn.edu.uit.owleditor.view.component.OWLLabel;
 
 import javax.annotation.Nonnull;
 import java.util.Iterator;
@@ -69,7 +72,7 @@ public abstract class AbstractExpressionPanel<T extends OWLEntity> extends Panel
         Iterator<Component> labels = root.iterator();
         while (labels.hasNext()) {
             Component label = labels.next();
-            if (label instanceof InferredLabel) {               
+            if (label instanceof InferredLabel) {
                 labels.remove();
                 root.removeComponent(label);                
             }

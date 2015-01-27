@@ -7,7 +7,10 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -177,8 +180,9 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     }
 
     @Subscribe
-    public void handleafterSubObjectPropertyOfAxiomAddEvent(OWLEditorEvent.afterSubObjectPropertyOfAxiomAddEvent event) {
+    public void handleAfterSubObjectPropertyOfAxiomAddEvent(OWLEditorEvent.afterSubObjectPropertyOfAxiomAddEvent event) {
         event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomAdder());
+        tree.expandItem(event.getOwner());
     }
     public class OWLObjectPropertyTree extends Tree implements TreeKit<OWLObjectPropertySource>,
             OWLEntityActionHandler<OWLEditorEvent.SubObjectPropertyAddEvent,
@@ -245,50 +249,51 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
         @Override
         public void handleAddSiblingEntityEvent(OWLEditorEvent.SiblingObjectPropertyAddEvent event) {
-            OWLDeclarationAxiom objPropDeclaration = editorKit
-                    .getOWLDataFactory()
-                    .getOWLDeclarationAxiom(event.getDeclareProperty());
+            Boolean success = false;
 
-            ChangeApplied ok = editorKit
-                    .getModelManager()
+            OWLAxiom objPropDeclaration = owlFactory.getOWLDeclarationAxiom(event.getDeclareProperty());
+
+            ChangeApplied ok1 = editorKit.getModelManager()
                     .addAxiom(editorKit.getActiveOntology(), objPropDeclaration);
 
-
-            for (OWLObjectPropertyExpression pe : EntitySearcher.getSuperProperties(
-                    event.getSiblingProperty(), editorKit.getActiveOntology())) {
-
-                OWLSubObjectPropertyOfAxiom siblingAxiom = editorKit
-                        .getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(
-                                event.getDeclareProperty(),
-                                pe.asOWLObjectProperty());
-
-                ok = editorKit
-                        .getModelManager()
-                        .addAxiom(editorKit.getActiveOntology(), siblingAxiom);
+            if (ChangeApplied.SUCCESSFULLY == ok1) {
+                success = true;
+                objPropDeclaration.accept(dataContainer.getOWLAxiomAdder());
             }
-            if (ok == ChangeApplied.SUCCESSFULLY) {
+
+            for (OWLObjectPropertyExpression oe : EntitySearcher.getSuperProperties(
+                    event.getSiblingProperty(), editorKit.getActiveOntology())) {
+                if (!oe.isAnonymous()) {
+                    OWLAxiom siblingAxiom = owlFactory.getOWLSubObjectPropertyOfAxiom(
+                            event.getDeclareProperty(), oe.asOWLObjectProperty());
+
+                    ChangeApplied ok2 = editorKit.getModelManager()
+                            .addAxiom(editorKit.getActiveOntology(), siblingAxiom);
+                    if (ChangeApplied.SUCCESSFULLY == ok2 && success) {
+                        siblingAxiom.accept(dataContainer.getOWLAxiomAdder());
+                        expandItem(oe.asOWLObjectProperty());
+                    } else success = false;
+                    break;
+                }
+            }
+            if (success)
                 Notification.show("Successfully create "
                                 + OWLEditorKitImpl.getShortForm(event.getDeclareProperty()),
                         Notification.Type.TRAY_NOTIFICATION);
-            } else
+            else
                 Notification.show("Cannot create " + OWLEditorKitImpl.getShortForm(
-                                event.getDeclareProperty()),
-                        Notification.Type.WARNING_MESSAGE);
+                        event.getDeclareProperty()), Notification.Type.WARNING_MESSAGE);
         }
 
         @Override
         public void handleRemoveEntityEvent(OWLEditorEvent.ObjectPropertyRemove event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
 
-            List<OWLOntologyChange> changes = editorKit
-                    .getModelManager()
+            List<OWLOntologyChange> changes = editorKit.getModelManager()
                     .applyChanges(dataContainer.getEntityRemover().getChanges());
 
             for (OWLOntologyChange axiom : changes) {
-
                 axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
-
-                System.out.println(OWLEditorKitImpl.render(axiom.getAxiom()));
             }
             dataContainer.getEntityRemover().reset();
         }

@@ -17,7 +17,6 @@ import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionRemoveHandler;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 import vn.edu.uit.owleditor.view.component.AbstractEditableOWLObjectLabel;
-import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
 import vn.edu.uit.owleditor.view.component.InferredLabel;
 import vn.edu.uit.owleditor.view.window.AddNamedIndividualWindow;
 import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
@@ -259,7 +258,8 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                                 modEx -> editorKit.getDataFactory().getSubClassOfModEvent(
                                         dataSource.getValue(), modEx, axiom.getSuperClass()))
                 );
-                OWLEditorEventBus.post(new OWLEditorEvent.afterSubClassOfAxiomAddEvent(axiom, owner));
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubClassOfAxiomAddEvent(axiom,
+                        axiom.getSuperClass().asOWLClass()));
             }
         };
     }

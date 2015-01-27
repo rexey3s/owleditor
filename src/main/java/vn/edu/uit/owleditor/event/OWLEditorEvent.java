@@ -12,12 +12,11 @@ import javax.annotation.Nullable;
  */
 public final class OWLEditorEvent {
 
-    public static abstract class OWLEntityCreatedEvent<T extends OWLLogicalEntity> {
+    public static abstract class EntityAddEvent<T extends OWLLogicalEntity> {
 
         private final T subject, object;
 
-        public OWLEntityCreatedEvent(@Nonnull T subject,
-                                     @Nullable T object) {
+        public EntityAddEvent(@Nonnull T subject, @Nullable T object) {
             this.subject = subject;
             this.object = object;
         }
@@ -38,11 +37,11 @@ public final class OWLEditorEvent {
      *
      * @param <T>
      */
-    public static abstract class OWLEntityRemovedEvent<T extends OWLLogicalEntity> {
+    public static abstract class EntityRemoveEvent<T extends OWLLogicalEntity> {
 
         private final T removedObject;
 
-        public OWLEntityRemovedEvent(T removedObject) {
+        public EntityRemoveEvent(T removedObject) {
             this.removedObject = removedObject;
         }
 
@@ -55,10 +54,10 @@ public final class OWLEditorEvent {
     /**
      * OWLClass creation and removal events
      */
-    public static final class SubClassCreatedEvent extends
-            OWLEntityCreatedEvent<OWLClass> {
+    public static final class SubClassAddEvent extends
+            EntityAddEvent<OWLClass> {
 
-        public SubClassCreatedEvent(OWLClass subClz, OWLClass superClz) {
+        public SubClassAddEvent(OWLClass subClz, OWLClass superClz) {
             super(subClz, superClz);
         }
 
@@ -71,10 +70,10 @@ public final class OWLEditorEvent {
         }
     }
 
-    public static final class SiblingClassCreatedEvent extends
-            OWLEntityCreatedEvent<OWLClass> {
+    public static final class SiblingClassAddEvent extends
+            EntityAddEvent<OWLClass> {
 
-        public SiblingClassCreatedEvent(OWLClass owlNamedObject, OWLClass siblingObject) {
+        public SiblingClassAddEvent(OWLClass owlNamedObject, OWLClass siblingObject) {
             super(owlNamedObject, siblingObject);
         }
 
@@ -87,10 +86,10 @@ public final class OWLEditorEvent {
         }
     }
 
-    public static final class ClassRemovedEvent extends
-            OWLEntityRemovedEvent<OWLClass> {
+    public static final class ClassRemoveEvent extends
+            EntityRemoveEvent<OWLClass> {
 
-        public ClassRemovedEvent(OWLClass removedObject) {
+        public ClassRemoveEvent(OWLClass removedObject) {
             super(removedObject);
         }
     }
@@ -98,10 +97,10 @@ public final class OWLEditorEvent {
     /**
      * OWLObjectProperty creation and removal events
      */
-    public static final class SubObjectPropertyCreatedEvent extends
-            OWLEntityCreatedEvent<OWLObjectProperty> {
+    public static final class SubObjectPropertyAddEvent extends
+            EntityAddEvent<OWLObjectProperty> {
 
-        public SubObjectPropertyCreatedEvent(OWLObjectProperty child, OWLObjectProperty parent) {
+        public SubObjectPropertyAddEvent(OWLObjectProperty child, OWLObjectProperty parent) {
             super(child, parent);
         }
 
@@ -114,10 +113,10 @@ public final class OWLEditorEvent {
         }
     }
 
-    public static final class SiblingObjectPropertyCreatedEvent extends
-            OWLEntityCreatedEvent<OWLObjectProperty> {
+    public static final class SiblingObjectPropertyAddEvent extends
+            EntityAddEvent<OWLObjectProperty> {
 
-        public SiblingObjectPropertyCreatedEvent(OWLObjectProperty owlNamedObject, OWLObjectProperty siblingObject) {
+        public SiblingObjectPropertyAddEvent(OWLObjectProperty owlNamedObject, OWLObjectProperty siblingObject) {
             super(owlNamedObject, siblingObject);
         }
 
@@ -130,10 +129,10 @@ public final class OWLEditorEvent {
         }
     }
 
-    public static final class ObjectPropertyRemoved extends
-            OWLEntityRemovedEvent<OWLObjectProperty> {
+    public static final class ObjectPropertyRemove extends
+            EntityRemoveEvent<OWLObjectProperty> {
 
-        public ObjectPropertyRemoved(OWLObjectProperty removedObject) {
+        public ObjectPropertyRemove(OWLObjectProperty removedObject) {
             super(removedObject);
         }
     }
@@ -141,10 +140,10 @@ public final class OWLEditorEvent {
     /**
      * OWLDataProperty creation and removal events
      */
-    public static final class SubDataPropertyCreatedEvent extends
-            OWLEntityCreatedEvent<OWLDataProperty> {
+    public static final class SubDataPropertyAddEvent extends
+            EntityAddEvent<OWLDataProperty> {
 
-        public SubDataPropertyCreatedEvent(OWLDataProperty child, OWLDataProperty parent) {
+        public SubDataPropertyAddEvent(OWLDataProperty child, OWLDataProperty parent) {
             super(child, parent);
         }
 
@@ -157,10 +156,10 @@ public final class OWLEditorEvent {
         }
     }
 
-    public static final class SiblingDataPropertyCreatedEvent extends
-            OWLEntityCreatedEvent<OWLDataProperty> {
+    public static final class SiblingDataPropertyAddEvent extends
+            EntityAddEvent<OWLDataProperty> {
 
-        public SiblingDataPropertyCreatedEvent(OWLDataProperty owlNamedObject, OWLDataProperty siblingObject) {
+        public SiblingDataPropertyAddEvent(OWLDataProperty owlNamedObject, OWLDataProperty siblingObject) {
             super(owlNamedObject, siblingObject);
         }
 
@@ -173,10 +172,10 @@ public final class OWLEditorEvent {
         }
     }
 
-    public static final class DataPropertyRemovedEvent extends
-            OWLEntityRemovedEvent<OWLDataProperty> {
+    public static final class DataPropertyRemoveEvent extends
+            EntityRemoveEvent<OWLDataProperty> {
 
-        public DataPropertyRemovedEvent(OWLDataProperty removedObject) {
+        public DataPropertyRemoveEvent(OWLDataProperty removedObject) {
             super(removedObject);
         }
     }
@@ -300,7 +299,7 @@ public final class OWLEditorEvent {
      * OWLNamedIndividual creation and removal events
      */
     public static final class IndividualAdded extends
-            OWLEntityCreatedEvent<OWLNamedIndividual> {
+            EntityAddEvent<OWLNamedIndividual> {
         private final OWLNamedIndividual subject;
 
         public IndividualAdded(OWLNamedIndividual subject) {
@@ -314,11 +313,11 @@ public final class OWLEditorEvent {
 
     }
 
-    public static final class IndividualRemoved extends
-            OWLEntityRemovedEvent<OWLNamedIndividual> {
+    public static final class IndividualRemove extends
+            EntityRemoveEvent<OWLNamedIndividual> {
         private final OWLNamedIndividual individual;
 
-        public IndividualRemoved(OWLNamedIndividual individual) {
+        public IndividualRemove(OWLNamedIndividual individual) {
             super(individual);
             this.individual = individual;
         }
@@ -339,6 +338,14 @@ public final class OWLEditorEvent {
         }
     }
 
+    public static final class afterSubObjectPropertyOfAxiomAddEvent
+            extends OWLAxiomAddEvent<OWLObjectPropertyAxiom, OWLObjectProperty> {
+
+        public afterSubObjectPropertyOfAxiomAddEvent(OWLObjectPropertyAxiom axiom, OWLObjectProperty owner) {
+            super(axiom, owner);
+        }
+    }
+    
     public static final class ObjectPropertyAxiomRemoveEvent extends OWLAxiomRemoveEvent<OWLObjectPropertyAxiom, OWLObjectProperty> {
 
         public ObjectPropertyAxiomRemoveEvent(OWLObjectPropertyAxiom axiom, OWLObjectProperty owner) {
@@ -363,6 +370,13 @@ public final class OWLEditorEvent {
         }
     }
 
+    public static final class afterSubDataPropertyOfAxiomAddEvent
+            extends OWLAxiomAddEvent<OWLDataPropertyAxiom, OWLDataProperty> {
+
+        public afterSubDataPropertyOfAxiomAddEvent(OWLDataPropertyAxiom axiom, OWLDataProperty owner) {
+            super(axiom, owner);
+        }
+    }
     public static final class DataPropertyAxiomRemoveEvent extends OWLAxiomRemoveEvent<OWLDataPropertyAxiom, OWLDataProperty> {
 
         public DataPropertyAxiomRemoveEvent(OWLDataPropertyAxiom axiom, OWLDataProperty owner) {

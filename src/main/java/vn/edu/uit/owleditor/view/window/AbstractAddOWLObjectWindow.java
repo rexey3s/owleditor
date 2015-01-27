@@ -86,9 +86,9 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
             try {
                 nameField.validate();
                 if (isSub)
-                    handler.afterAddSubSaved(adder.addingEntity((T) nameField.getConvertedValue()));
+                    handler.handleAddSubEntityEvent(adder.addingEntity((T) nameField.getConvertedValue()));
                 else
-                    handler.afterAddSiblingSaved(adder.addingEntity((T) nameField.getConvertedValue()));
+                    handler.handleAddSiblingEntityEvent(adder.addingEntity((T) nameField.getConvertedValue()));
                 close();
             } catch (Validator.InvalidValueException ex) {
                 Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);

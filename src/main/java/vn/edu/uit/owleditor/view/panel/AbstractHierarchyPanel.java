@@ -13,6 +13,7 @@ import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.hierarchy.AbstractOWLObjectHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLLogicalEntitySource;
+import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 
@@ -40,13 +41,13 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     }
 
 
-    public abstract Property<T> getSelectedItem();
+    public abstract OWLObjectSource<T> getSelectedItem();
 
-    abstract void handleSubNodeCreation();
+    abstract void handleSubItemCreate();
 
-    abstract void handleSiblingNodeCreation();
+    abstract void handleSiblingItemCreate();
 
-    abstract void handleRemovalNode();
+    abstract void handleItemRemove();
 
     protected void startReasonerClickListener() {
         editorKit.setReasonerStatus(!editorKit.getReasonerStatus());

@@ -32,7 +32,7 @@ import vn.edu.uit.owleditor.data.hierarchy.AbstractOWLObjectHierarchicalContaine
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassCreatedEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassAddEvent;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -109,9 +109,9 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
         reasonerToggle = act.addItem("Start reasoner", select -> startReasonerClickListener());
         reasonerToggle.setCheckable(true);
-        act.addItem("Add SubClass", select -> handleSubNodeCreation());
-        act.addItem("Add SiblingClass", select-> handleSiblingNodeCreation());
-        act.addItem("Remove", select -> handleRemovalNode());
+        act.addItem("Add SubClass", select -> handleSubItemCreate());
+        act.addItem("Add SiblingClass", select -> handleSiblingItemCreate());
+        act.addItem("Remove", select -> handleItemRemove());
         return tools;
     }
 
@@ -123,11 +123,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     @Override
     public void handleAction(Action action, Object sender, Object target) {
         if (action == ADD_SUB) {
-            handleSubNodeCreation();
+            handleSubItemCreate();
         } else if (action == ADD_SIBLING) {
-            handleSiblingNodeCreation();
+            handleSiblingItemCreate();
         } else if (action == REMOVE) {
-            handleRemovalNode();
+            handleItemRemove();
         }
     }
 
@@ -157,36 +157,47 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     }
 
     @Override
-    public void handleSubNodeCreation() {
+    public void handleSubItemCreate() {
         if (getSelectedItem().getValue() != null) {
             UI.getCurrent().addWindow(new buildAddOWLClassWindow(tree,
-                    c -> new OWLEditorEvent.SubClassCreatedEvent(c, tree.getSelectedItem().getValue()), true));
-        } else Notification.show("Warning", "Please choose a class", Notification.Type.WARNING_MESSAGE);
+                    c -> new OWLEditorEvent.SubClassAddEvent(c, tree.getSelectedItem().getValue()), true));
+        } else Notification.show("Notice",
+                "Please select a Super Class for your Class", Notification.Type.WARNING_MESSAGE);
 
     }
 
     @Override
-    public void handleSiblingNodeCreation() {
-        if (!checkOWLThing(tree.selectedItem))
+    public void handleSiblingItemCreate() {
+        if (getSelectedItem().getValue() == null)
+            Notification.show("Notice",
+                    "Please select a Sibling Class for your Class", Notification.Type.WARNING_MESSAGE);
+
+        else if (!checkOWLThing(tree.selectedItem))
             UI.getCurrent().addWindow(new buildAddOWLClassWindow(tree,
-                    c -> new SiblingClassCreatedEvent(c, tree.getSelectedItem().getValue()), false));
-        
-        else Notification.show("Warning", "Cannot create sibling for OWLThing", Notification.Type.WARNING_MESSAGE);
+                    c -> new SiblingClassAddEvent(c, tree.getSelectedItem().getValue()), false));
+
+        else Notification.show("Notice",
+                    "You can not create any sibling for OWLThing", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
-    public void handleRemovalNode() {
-        if (!checkOWLThing(tree.getSelectedItem()))
+    public void handleItemRemove() {
+        if (getSelectedItem().getValue() == null)
+            Notification.show("Notice",
+                    "Please select a Class to remove", Notification.Type.WARNING_MESSAGE);
 
-            ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", dialog -> {
+        else if (!checkOWLThing(tree.getSelectedItem()))
+            ConfirmDialog.show(UI.getCurrent(),
+                    "Are you sure ?", dialog -> {
                 if (dialog.isConfirmed()) {
-                    tree.afterRemoved(new OWLEditorEvent.ClassRemovedEvent(
+                    tree.handleRemoveEntityEvent(new OWLEditorEvent.ClassRemoveEvent(
                             tree.getSelectedItem().getValue()));
                 } else {
                     dialog.close();
                 }
-            });
-        else Notification.show("Warning", "Cannot remove OWLThing", Notification.Type.WARNING_MESSAGE);
+                    });
+
+        else Notification.show("Notice", "You can not remove OWLThing", Notification.Type.WARNING_MESSAGE);
     }
 
     @Subscribe
@@ -331,7 +342,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     }
 
     public class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubClassCreatedEvent, SiblingClassCreatedEvent, OWLEditorEvent.ClassRemovedEvent> {
+            OWLEntityActionHandler<OWLEditorEvent.SubClassAddEvent, SiblingClassAddEvent, OWLEditorEvent.ClassRemoveEvent> {
 
         private final OWLClassHierarchicalContainer dataContainer;
         private final OWLClassSource selectedItem = new OWLClassSource();
@@ -370,7 +381,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         }
 
 
-        public void afterAddSiblingSaved(SiblingClassCreatedEvent event) {
+        public void handleAddSiblingEntityEvent(SiblingClassAddEvent event) {
             Boolean success = false;
             OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getDeclareClass());
 
@@ -404,7 +415,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         }
 
-        public void afterRemoved(OWLEditorEvent.ClassRemovedEvent event) {
+        public void handleRemoveEntityEvent(OWLEditorEvent.ClassRemoveEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
             List<OWLOntologyChange> changes = editorKit
                     .getModelManager()
@@ -415,7 +426,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             dataContainer.getEntityRemover().reset();
         }
 
-        public void afterAddSubSaved(OWLEditorEvent.SubClassCreatedEvent event) {
+        public void handleAddSubEntityEvent(OWLEditorEvent.SubClassAddEvent event) {
             OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getSubClass());
             OWLAxiom subClsAxiom = owlFactory.getOWLSubClassOfAxiom(event.getSubClass(), event.getSuperClass());
 

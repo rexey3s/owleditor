@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
@@ -84,9 +85,9 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
         reasonerToggle = act.addItem("Start reasoner", select -> startReasonerClickListener());
         reasonerToggle.setCheckable(true);
-        act.addItem("Add Sub Property", select -> handleSubNodeCreation());
-        act.addItem("Add Sibling Property", select -> handleSiblingNodeCreation());
-        act.addItem("Remove", select -> handleRemovalNode());
+        act.addItem("Add Sub Property", select -> handleSubItemCreate());
+        act.addItem("Add Sibling Property", select -> handleSiblingItemCreate());
+        act.addItem("Remove", select -> handleItemRemove());
         return tools;
     }
 
@@ -98,11 +99,11 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
     @Override
     public void handleAction(Action action, Object sender, Object target) {
         if (action == ADD_SUB) {
-            handleSubNodeCreation();
+            handleSubItemCreate();
         } else if (action == ADD_SIBLING) {
-            handleSiblingNodeCreation();
+            handleSiblingItemCreate();
         } else if (action == REMOVE) {
-            handleRemovalNode();
+            handleItemRemove();
         }
     }
 
@@ -113,44 +114,46 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
     
     @Override
-    public void handleSubNodeCreation() {
-        UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(
-                tree,
-                subject -> new OWLEditorEvent.SubObjectPropertyCreatedEvent(subject, tree.getSelectedItem().getValue()),
-                true));
-
+    public void handleSubItemCreate() {
+        if (getSelectedItem().getValue() != null) {
+            UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(tree,
+                    subject -> new OWLEditorEvent.SubObjectPropertyAddEvent(subject,
+                            tree.getSelectedItem().getValue()), true));
+        } else Notification.show("Notice",
+                "Please select a Super ObjectProperty for your ObjectProperty", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
-    public void handleSiblingNodeCreation() {
-        if (!checkTopObjectProperty(tree.getSelectedItem()))
-            UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(
-                    tree,
-                    subject -> new OWLEditorEvent.SiblingObjectPropertyCreatedEvent(subject, tree.getSelectedItem().getValue()),
-                    false));
+    public void handleSiblingItemCreate() {
+        if (getSelectedItem().getValue() == null)
+            Notification.show("Notice",
+                    "Please select a Sibling ObjectProperty for your ObjectProperty", Notification.Type.WARNING_MESSAGE);
+        else if (!checkTopObjectProperty(tree.getSelectedItem()))
+            UI.getCurrent().addWindow(new buildAddObjectPropertyWindow(tree,
+                    subject -> new OWLEditorEvent.SiblingObjectPropertyAddEvent(subject,
+                            tree.getSelectedItem().getValue()), false));
 
-        else
-            Notification
-                    .show("Warning", "Cannot create sibling for TopObjectProperty",
-                            Notification.Type.WARNING_MESSAGE);
+        else Notification.show("Notice",
+                    "You can not create any sibling for TopObjectProperty", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
-    public void handleRemovalNode() {
-        if (!checkTopObjectProperty(tree.getSelectedItem()))
-
+    public void handleItemRemove() {
+        if (getSelectedItem().getValue() == null)
+            Notification.show("Notice",
+                    "Please select a ObjectProperty to remove", Notification.Type.WARNING_MESSAGE);
+        else if (!checkTopObjectProperty(tree.getSelectedItem()))
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", components1 -> {
                 if (components1.isConfirmed()) {
-                    tree.afterRemoved(new OWLEditorEvent.ObjectPropertyRemoved(
+                    tree.handleRemoveEntityEvent(new OWLEditorEvent.ObjectPropertyRemove(
                             tree.getSelectedItem().getValue()));
                 } else {
                     components1.close();
                 }
             });
 
-        else Notification.show("Warning",
-                "Cannot remove TopObjectProperty",
-                Notification.Type.WARNING_MESSAGE);
+        else Notification.show("Notice",
+                    "You can not remove TopObjectProperty", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
@@ -173,31 +176,30 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         tree.removeValueChangeListener(listener);
     }
 
+    @Subscribe
+    public void handleafterSubObjectPropertyOfAxiomAddEvent(OWLEditorEvent.afterSubObjectPropertyOfAxiomAddEvent event) {
+        event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomAdder());
+    }
     public class OWLObjectPropertyTree extends Tree implements TreeKit<OWLObjectPropertySource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubObjectPropertyCreatedEvent,
-                    OWLEditorEvent.SiblingObjectPropertyCreatedEvent, OWLEditorEvent.ObjectPropertyRemoved> {
+            OWLEntityActionHandler<OWLEditorEvent.SubObjectPropertyAddEvent,
+                    OWLEditorEvent.SiblingObjectPropertyAddEvent, OWLEditorEvent.ObjectPropertyRemove> {
 
         private final OWLObjectPropertyHierarchicalContainer dataContainer;
 
         private final OWLObjectPropertySource currentProperty = new OWLObjectPropertySource();
 
         public OWLObjectPropertyTree() {
-
-
             dataContainer = editorKit.getDataFactory().getOWLObjectPropertyHierarchicalContainer();
 
-            editorKit.getModelManager().addOntologyChangeListener(changes -> {
-
-                for (OWLOntologyChange chg : changes) {
-                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
-                }
-            });
+//            editorKit.getModelManager().addOntologyChangeListener(changes -> {
+//
+//                for (OWLOntologyChange chg : changes) {
+//                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
+//                }
+//            });
             setContainerDataSource(dataContainer);
-
             addValueChangeListener(this);
-
             setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-
             setItemCaptionPropertyId(OWLEditorData.OWLObjectPropertyName);
 
         }
@@ -221,37 +223,28 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
 
 
         @Override
-        public void afterAddSubSaved(OWLEditorEvent.SubObjectPropertyCreatedEvent event) {
-            OWLDeclarationAxiom objPropDeclaration = editorKit
-                    .getOWLDataFactory()
-                    .getOWLDeclarationAxiom(event.getSubProperty());
-
-            OWLSubObjectPropertyOfAxiom subPropAxiom = editorKit
-                    .getOWLDataFactory()
+        public void handleAddSubEntityEvent(OWLEditorEvent.SubObjectPropertyAddEvent event) {
+            OWLAxiom objPropDeclaration = owlFactory.getOWLDeclarationAxiom(event.getSubProperty());
+            OWLAxiom subPropAxiom = owlFactory
                     .getOWLSubObjectPropertyOfAxiom(event.getSubProperty(), event.getSuperProperty());
-
-            if (editorKit
-                    .getModelManager()
-                    .addAxiom(editorKit.getActiveOntology(), objPropDeclaration)
-                    == ChangeApplied.SUCCESSFULLY
-                    &&
-                    editorKit.getModelManager()
-                            .addAxiom(editorKit.getActiveOntology(), subPropAxiom)
-                            == ChangeApplied.SUCCESSFULLY) {
-
+            ChangeApplied ok1 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), objPropDeclaration);
+            ChangeApplied ok2 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), subPropAxiom);
+            if (ok1 == ChangeApplied.SUCCESSFULLY && ok2 == ChangeApplied.SUCCESSFULLY) {
+                objPropDeclaration.accept(dataContainer.getOWLAxiomAdder());
+                subPropAxiom.accept(dataContainer.getOWLAxiomAdder());
                 expandItem(event.getSuperProperty());
                 Notification.show("Successfully create "
                                 + OWLEditorKitImpl.getShortForm(event.getSubProperty()),
                         Notification.Type.TRAY_NOTIFICATION);
             } else {
-                Notification.show("Cannot create "
+                Notification.show("Can not create "
                                 + OWLEditorKitImpl.getShortForm(event.getSubProperty()),
                         Notification.Type.WARNING_MESSAGE);
             }
         }
 
         @Override
-        public void afterAddSiblingSaved(OWLEditorEvent.SiblingObjectPropertyCreatedEvent event) {
+        public void handleAddSiblingEntityEvent(OWLEditorEvent.SiblingObjectPropertyAddEvent event) {
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getDeclareProperty());
@@ -284,7 +277,7 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         }
 
         @Override
-        public void afterRemoved(OWLEditorEvent.ObjectPropertyRemoved event) {
+        public void handleRemoveEntityEvent(OWLEditorEvent.ObjectPropertyRemove event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
 
             List<OWLOntologyChange> changes = editorKit

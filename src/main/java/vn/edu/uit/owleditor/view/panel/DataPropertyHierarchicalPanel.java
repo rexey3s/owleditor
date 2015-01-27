@@ -77,9 +77,9 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         MenuBar.MenuItem act = tools.addItem("", FontAwesome.COG, null);
         reasonerToggle = act.addItem("Start reasoner", select -> startReasonerClickListener());
         reasonerToggle.setCheckable(true);
-        act.addItem("Add Sub DataProperty", select -> handleSubNodeCreation());
-        act.addItem("Add Sibling DataProperty", select -> handleSiblingNodeCreation());
-        act.addItem("Remove", select -> handleRemovalNode());
+        act.addItem("Add Sub DataProperty", select -> handleSubItemCreate());
+        act.addItem("Add Sibling DataProperty", select -> handleSiblingItemCreate());
+        act.addItem("Remove", select -> handleItemRemove());
         return tools;
     }
 
@@ -98,11 +98,11 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     public void handleAction(Action action, Object sender, Object target) {
 
         if (action == ADD_SUB) {
-            handleSubNodeCreation();
+            handleSubItemCreate();
         } else if (action == ADD_SIBLING) {
-            handleSiblingNodeCreation();
+            handleSiblingItemCreate();
         } else if (action == REMOVE) {
-            handleRemovalNode();
+            handleItemRemove();
         } else if (action == FUNCTIONAL_MARK) {
             Boolean checked = (Boolean)
                     tree.getContainerProperty(getSelectedItem().getValue(),
@@ -118,42 +118,47 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     }
 
     @Override
-    public void handleSubNodeCreation() {
-        UI.getCurrent().addWindow(new buildAddDataPropertyWindow(
-                tree,
-                s -> new OWLEditorEvent.SubDataPropertyCreatedEvent(s, tree.getSelectedItem().getValue()),
-                true));
+    public void handleSubItemCreate() {
+        if (getSelectedItem().getValue() != null) {
+            UI.getCurrent().addWindow(new buildAddDataPropertyWindow(tree,
+                    s -> new OWLEditorEvent.SubDataPropertyAddEvent(s,
+                            tree.getSelectedItem().getValue()), true));
+        } else Notification.show("Notice",
+                "Please select a Super DataProperty for your DataProperty", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
-    public void handleSiblingNodeCreation() {
-        if (!checkTopDataProp(tree.getSelectedItem()))
+    public void handleSiblingItemCreate() {
+        if (getSelectedItem().getValue() == null)
+            Notification.show("Notice",
+                    "Please select a Sibling DataProperty for your DataProperty", Notification.Type.WARNING_MESSAGE);
+        else if (!checkTopDataProp(tree.getSelectedItem()))
             UI.getCurrent().addWindow(new buildAddDataPropertyWindow(
                     tree,
-                    s -> new OWLEditorEvent.SiblingDataPropertyCreatedEvent(s, tree.getSelectedItem().getValue()),
+                    s -> new OWLEditorEvent.SiblingDataPropertyAddEvent(s, tree.getSelectedItem().getValue()),
                     false));
-        else
-            Notification
-                    .show("Warning", "Cannot create sibling for TopDataProperty",
-                            Notification.Type.WARNING_MESSAGE);
+        else Notification.show("Warning",
+                    "You can not create any sibling for TopDataProperty", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
-    public void handleRemovalNode() {
-        if (!checkTopDataProp(tree.getSelectedItem()))
+    public void handleItemRemove() {
+        if (getSelectedItem().getValue() == null)
+            Notification.show("Notice",
+                    "Please select a DataProperty to remove", Notification.Type.WARNING_MESSAGE);
+        else if (!checkTopDataProp(tree.getSelectedItem()))
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", components1 -> {
                 if (components1.isConfirmed()) {
-                    tree.afterRemoved(new OWLEditorEvent.DataPropertyRemovedEvent(
+                    tree.handleRemoveEntityEvent(new OWLEditorEvent.DataPropertyRemoveEvent(
                             tree.getSelectedItem().getValue()));
                 } else {
                     components1.close();
                 }
             });
 
-        else Notification.show("Warning",
-                "Cannot remove TopDataProperty",
-                Notification.Type.WARNING_MESSAGE);
+        else Notification.show("Notice",
+                    "You can not remove TopDataProperty", Notification.Type.WARNING_MESSAGE);
     }
 
     @Override
@@ -177,7 +182,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
     }
 
     public class OWLDataPropertyTree extends Tree implements TreeKit<OWLDataPropertySource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubDataPropertyCreatedEvent, OWLEditorEvent.SiblingDataPropertyCreatedEvent, OWLEditorEvent.DataPropertyRemovedEvent> {
+            OWLEntityActionHandler<OWLEditorEvent.SubDataPropertyAddEvent, OWLEditorEvent.SiblingDataPropertyAddEvent, OWLEditorEvent.DataPropertyRemoveEvent> {
 
         private final OWLDataPropertyHierarchicalContainer dataContainer;
 
@@ -229,7 +234,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public void afterAddSubSaved(OWLEditorEvent.SubDataPropertyCreatedEvent event) {
+        public void handleAddSubEntityEvent(OWLEditorEvent.SubDataPropertyAddEvent event) {
 
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
@@ -259,7 +264,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public void afterAddSiblingSaved(OWLEditorEvent.SiblingDataPropertyCreatedEvent event) {
+        public void handleAddSiblingEntityEvent(OWLEditorEvent.SiblingDataPropertyAddEvent event) {
             OWLDeclarationAxiom objPropDeclaration = editorKit
                     .getOWLDataFactory()
                     .getOWLDeclarationAxiom(event.getDeclareProperty());
@@ -290,7 +295,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         }
 
         @Override
-        public void afterRemoved(OWLEditorEvent.DataPropertyRemovedEvent event) {
+        public void handleRemoveEntityEvent(OWLEditorEvent.DataPropertyRemoveEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
 
             List<OWLOntologyChange> changes = editorKit

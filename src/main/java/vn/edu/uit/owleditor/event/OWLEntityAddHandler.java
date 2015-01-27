@@ -15,7 +15,7 @@ public interface OWLEntityAddHandler<T extends OWLLogicalEntity> extends Seriali
             .findMethod(OWLEntityAddHandler.class, "addingEntity",
                     OWLLogicalEntity.class);
 
-    public OWLEditorEvent.OWLEntityCreatedEvent addingEntity(T subject);
+    public OWLEditorEvent.EntityAddEvent addingEntity(T subject);
 
 
 }

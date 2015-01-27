@@ -1,12 +1,11 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
@@ -26,16 +25,18 @@ import vn.edu.uit.owleditor.view.window.buildEditClassExpressionWindow;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 11/16/2014.
+ *         Faculty of Computer Network and Telecommunication created on 11/16/2014.
  */
 public class ClassExpressionPanelContainer extends AbstractPanelContainer {
-    private static final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
-    private static final OWLClass nothing = OWLManager.getOWLDataFactory().getOWLNothing();
+
+    private final OWLClass thing = owlFactory.getOWLThing();
+    private final OWLClass nothing = owlFactory.getOWLNothing();
 
     private AbstractExpressionPanel equivPanel;
 
@@ -49,7 +50,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
     @Override
     protected Component buildContent() {
-        equivPanel = new ClassPanel("Equivalent To: ") {
+        equivPanel = new ClassExpressionPanel("Equivalent To: ") {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddClassExpressionWindow(
@@ -61,7 +62,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher
+                ces = EntitySearcher
                         .getEquivalentClasses(dataSource.getValue(), editorKit.getActiveOntology());
 
                 ces.remove(dataSource.getValue());
@@ -79,20 +80,18 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                        .getEquivalentClasses(dataSource.getValue())
-                        .getEntities();
-
+                        .getEquivalentClasses(Preconditions.checkNotNull(dataSource.getValue()))
+                        .getEntitiesMinusTop();
                 implicitClasses.remove(dataSource.getValue());
-                    /* Obviously,  class is a thing, so remove it */
-                implicitClasses.remove(thing);
+                implicitClasses.removeAll(ces);
                 implicitClasses.forEach(ce -> root.addComponent(new InferredLabel(ce,
-                                () -> editorKit.explain(editorKit.getOWLDataFactory()
+                                () -> editorKit.explain(owlFactory
                                         .getOWLEquivalentClassesAxiom(dataSource.getValue(), ce))))
                 );
                 
             } 
         };
-        subClsOfPanel = new ClassPanel("SubClass Of: ") {
+        subClsOfPanel = new ClassExpressionPanel("SubClass Of: ") {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddClassExpressionWindow(expression ->
@@ -103,12 +102,11 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher
-                        .getSuperClasses(dataSource.getValue(),
-                                editorKit.getActiveOntology());
+                ces = EntitySearcher
+                        .getSuperClasses(dataSource.getValue(), editorKit.getActiveOntology());
+                
                 for (OWLClassExpression ce : ces) {
-                    root.addComponent(new ClassLabel(
-                                    new OWLClassExpressionSource(ce),
+                    root.addComponent(new ClassLabel(new OWLClassExpressionSource(ce),
                                     () -> editorKit.getDataFactory().getSubClassOfRemoveEvent(
                                             dataSource.getValue(), ce),
                                     modEx -> editorKit.getDataFactory().getSubClassOfModEvent(
@@ -123,15 +121,15 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                        .getSuperClasses(dataSource.getValue(), false).getFlattened();
+                        .getSuperClasses(Preconditions.checkNotNull(dataSource.getValue()), false)
+                        .getFlattened();
                 implicitClasses.remove(thing);
-                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(
-                                c, () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                .getOWLSubClassOfAxiom(dataSource.getValue(), c))))
-                );
+                implicitClasses.removeAll(ces);
+                implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
+                        () -> editorKit.explain(owlFactory.getOWLSubClassOfAxiom(dataSource.getValue(), c)))));
             }
         };
-        indPanel = new ClassPanel("Members: ") {
+        indPanel = new ClassExpressionPanel("Members: ") {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new AddNamedIndividualWindow(owlNamedIndividual ->
@@ -155,14 +153,12 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             }
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException{
-                editorKit.getReasoner()
-                        .getInstances(dataSource.getValue(), true)
+                editorKit.getReasoner().getInstances(Preconditions.checkNotNull(dataSource.getValue()), true)
                         .getFlattened().forEach(i -> root.addComponent(new InferredLabel(i,
-                        () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                .getOWLClassAssertionAxiom(dataSource.getValue(), i)))));
+                        () -> editorKit.explain(owlFactory.getOWLClassAssertionAxiom(dataSource.getValue(), i)))));
             }
         };
-        disjointPanel = new ClassPanel("Mutual Disjoint With: ") {
+        disjointPanel = new ClassExpressionPanel("Mutual Disjoint With: ") {
             @Override
             protected void initActionADD() {
                 UI.getCurrent().addWindow(new buildAddClassExpressionWindow(expression ->
@@ -172,7 +168,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher.getDisjointClasses(dataSource.getValue(),
+                ces = EntitySearcher.getDisjointClasses(dataSource.getValue(),
                         editorKit.getActiveOntology());
                 ces.remove(dataSource.getValue());
                 ces.forEach(ce -> root.addComponent(new ClassLabel(
@@ -189,9 +185,9 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                        .getDisjointClasses(dataSource.getValue()).getFlattened();
-                implicitClasses.remove(nothing);
-
+                        .getDisjointClasses(Preconditions.checkNotNull(dataSource.getValue()))
+                        .getFlattened();
+                implicitClasses.removeAll(ces);                
                 implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                         () -> editorKit.explain(editorKit.getOWLDataFactory()
                                 .getOWLDisjointClassesAxiom(dataSource.getValue(), c)))));
@@ -206,8 +202,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
         return descriptionPanels;
     }
 
-    @Override
-    public void setPropertyDataSource(@Nonnull Property newDataSource) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
         reasonerStatus = editorKit.getReasonerStatus();
         if(reasonerStatus) editorKit.getReasoner().flush();
         equivPanel.setPropertyDataSource(newDataSource);
@@ -299,7 +294,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
     
     @Subscribe
-    public void afterReasonerToggle(OWLEditorEvent.ReasonerToggleEvent event) {
+    public void handleReasonerToggleEventCE(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {
             equivPanel.addInferredExpressionsWithConsistency();
             subClsOfPanel.addInferredExpressionsWithConsistency();
@@ -321,13 +316,9 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 .applyChange(new AddAxiom(editorKit.getActiveOntology(), event.getAxiom()));
         if (ok == ChangeApplied.SUCCESSFULLY) {
             event.getAxiom().accept(addHelper(event.getAxiom(), event.getOwner()));
-            Notification.show(
-                    "Successfully created OWLClassExpression",
-                    Notification.Type.TRAY_NOTIFICATION);
+            Notification.show("Successfully created OWLClassExpression", Notification.Type.TRAY_NOTIFICATION);
         } else {
-            Notification.show(
-                    "Cannot create OWLClassExpression",
-                    Notification.Type.WARNING_MESSAGE);
+            Notification.show("Cannot create OWLClassExpression", Notification.Type.WARNING_MESSAGE);
         }
     }
 
@@ -338,13 +329,9 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
         if (ok == ChangeApplied.SUCCESSFULLY) {
             event.getAxiom().accept(removeHelper(event.getOwner()));
 
-            Notification.show(
-                    "Successfully removed OWLClassExpression",
-                    Notification.Type.TRAY_NOTIFICATION);
+            Notification.show("Successfully removed OWLClassExpression", Notification.Type.TRAY_NOTIFICATION);
         } else {
-            Notification.show(
-                    "Cannot remove OWLClassExpression",
-                    Notification.Type.WARNING_MESSAGE);
+            Notification.show("Cannot remove OWLClassExpression", Notification.Type.WARNING_MESSAGE);
         }
     }
 
@@ -380,9 +367,11 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
     }
 
 
-    private abstract class ClassPanel extends AbstractExpressionPanel<OWLClass> {
+    private abstract class ClassExpressionPanel extends AbstractExpressionPanel<OWLClass> {
 
-        public ClassPanel(String caption) {
+        protected Collection<OWLClassExpression> ces = new HashSet<>();
+
+        public ClassExpressionPanel(String caption) {
             super(caption);
         }
 
@@ -390,6 +379,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
         protected OWLLogicalEntitySource<OWLClass> initDataSource() {
             return new OWLClassSource();
         }
+
     }
 
 

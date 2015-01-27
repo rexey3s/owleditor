@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -22,6 +22,7 @@ import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -155,7 +156,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher
+                ces = EntitySearcher
                         .getDomains(dataSource.getValue(), editorKit.getActiveOntology());
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
                                 new OWLClassExpressionSource(ce),
@@ -170,8 +171,10 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                        .getDataPropertyDomains(dataSource.getValue(), false).getFlattened();
+                        .getDataPropertyDomains(Preconditions.checkNotNull(dataSource.getValue()), false)
+                        .getFlattened();
                 implicitClasses.remove(thing);
+                implicitClasses.removeAll(ces);
                 implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                                 () -> editorKit.explain(editorKit.getOWLDataFactory()
                                                 .getOWLDataPropertyDomainAxiom(dataSource.getValue(), c)
@@ -213,10 +216,9 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
         return descriptionPanels;
     }
     @Subscribe
-    public void afterReasonerToggleDP(OWLEditorEvent.ReasonerToggleEvent event) {
+    public void handleReasonerToggleEventDP(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {
             domainsPn.addInferredExpressions();
-
         }
         else {
             domainsPn.removeInferredExpressions();
@@ -374,8 +376,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
         }
     }
 
-    @Override
-    public void setPropertyDataSource(@Nonnull Property newDataSource) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
         equivPn.setPropertyDataSource(newDataSource);
         subOfPn.setPropertyDataSource(newDataSource);
         disjointPn.setPropertyDataSource(newDataSource);
@@ -428,6 +429,7 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
     }
 
     private abstract class DataPropertyPanel extends AbstractExpressionPanel<OWLDataProperty> {
+        protected Collection<OWLClassExpression> ces = new HashSet<>();
 
         public DataPropertyPanel(String caption) {
             super(caption);

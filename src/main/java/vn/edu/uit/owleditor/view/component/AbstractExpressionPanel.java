@@ -1,23 +1,25 @@
 package vn.edu.uit.owleditor.view.component;
 
-import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.data.property.OWLObjectSource;
 
-import javax.annotation.Nonnull;
 import java.util.Iterator;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/4/2014.
+ *         Faculty of Computer Network and Telecommunication created on 12/4/2014.
  */
-public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel implements HasReasoning {
+public abstract class AbstractExpressionPanel<OWNER extends OWLEntity> extends Panel implements HasReasoning {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractExpressionPanel.class);
 
     protected final VerticalLayout root = new VerticalLayout();
-    protected OWLObjectSource<T> dataSource = initDataSource();
+    protected OWLObjectSource<OWNER> dataSource = initDataSource();
 
 
     public AbstractExpressionPanel(String caption) {
@@ -29,7 +31,7 @@ public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel
         root.setSpacing(true);
     }
 
-    protected abstract OWLObjectSource<T> initDataSource();
+    protected abstract OWLObjectSource<OWNER> initDataSource();
 
     protected abstract void initActionADD();
 
@@ -77,19 +79,25 @@ public abstract class AbstractExpressionPanel<T extends OWLObject> extends Panel
     public void addInferredExpressionsWithConsistency() {
         try {
             addInferredExpressions();
-        }
-        catch (InconsistentOntologyException iEx) {
-            Notification.show("Warning", iEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+        } catch (InconsistentOntologyException inconsistentEx) {
+            Notification.show("Inconsistent Ontology", "Please check your ontology axioms!", Notification.Type.ERROR_MESSAGE);
+        } catch (NullPointerException nullEx) {
+            LOG.error(nullEx.getMessage(), this);
         }
         
     }
-    public void addInferredExpressions() throws InconsistentOntologyException { }
-    
-    public void setPropertyDataSource(@Nonnull Property property) {
-        if (property.getValue() != null) {
-            dataSource = (OWLObjectSource<T>) property;
+
+    public void addInferredExpressions() throws InconsistentOntologyException {
+    }
+
+    public void setPropertyDataSource(OWLObjectSource newDataSource) {
+        if (dataSource.getValue() != null) {
+            this.dataSource = (OWLObjectSource<OWNER>) newDataSource;
             root.removeAllComponents();
             initActionVIEW();
         }
+
     }
+
+    ;
 }

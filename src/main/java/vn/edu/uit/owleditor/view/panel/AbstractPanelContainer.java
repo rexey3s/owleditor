@@ -1,16 +1,15 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.component.AbstractExpressionPanel;
-
-import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -19,8 +18,8 @@ import javax.annotation.Nonnull;
 public abstract class AbstractPanelContainer extends Panel {
 
     protected final OWLEditorKit editorKit;
+    protected final OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
     private final VerticalLayout root = new VerticalLayout();
-
     protected CssLayout descriptionPanels = new CssLayout();
 
 
@@ -116,7 +115,6 @@ public abstract class AbstractPanelContainer extends Panel {
 
     protected abstract Component buildContent();
 
-    public abstract void setPropertyDataSource(@Nonnull Property newDataSource);
 
 
 }

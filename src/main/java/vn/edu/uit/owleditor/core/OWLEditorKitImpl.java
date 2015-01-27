@@ -33,7 +33,6 @@ import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
-import vn.edu.uit.owleditor.utils.EditorUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -124,7 +123,6 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     }
     
     public ExplanationTree explain(OWLAxiom axiom) {
-        EditorUtils.checkNotNull(axiom, "Cannot generate any explanations!");
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));
     }
     private void initialise() {
@@ -132,7 +130,6 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         explanationOrderer = new ExplanationOrdererImpl(modelManager);
         parser = OWLManager.createManchesterParser();
         editorDataFactory = new OWLEditorDataFactoryImpl(this);
-
     }
 
 

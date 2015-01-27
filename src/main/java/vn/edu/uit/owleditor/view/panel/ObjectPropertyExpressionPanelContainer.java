@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -23,6 +23,7 @@ import vn.edu.uit.owleditor.view.window.buildAddClassExpressionWindow;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -162,7 +163,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher
+                ces = EntitySearcher
                         .getDomains(dataSource.getValue(), editorKit.getActiveOntology());
 
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
@@ -179,11 +180,12 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
             @Override
             public void removeInferredExpressions() throws InconsistentOntologyException{
                 Set<OWLClass> implicitClasses = editorKit
-                        .getReasoner().getObjectPropertyDomains(dataSource.getValue(), false).getFlattened();
+                        .getReasoner().getObjectPropertyDomains(Preconditions.checkNotNull(dataSource.getValue()), false)
+                        .getFlattened();
                 implicitClasses.remove(thing);
+                implicitClasses.removeAll(ces);
                 implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                        () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                .getOWLObjectPropertyDomainAxiom(dataSource.getValue(), c))
+                        () -> editorKit.explain(owlFactory.getOWLObjectPropertyDomainAxiom(dataSource.getValue(), c))
                 )));
             }
         };
@@ -197,7 +199,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher
+                ces = EntitySearcher
                         .getRanges(dataSource.getValue(), editorKit.getActiveOntology());
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
                                 new OWLClassExpressionSource(ce),
@@ -212,11 +214,12 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
             @Override
             public void removeInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLClass> implicitClasses = editorKit
-                        .getReasoner().getObjectPropertyRanges(dataSource.getValue(), false).getFlattened();
+                        .getReasoner().getObjectPropertyRanges(Preconditions.checkNotNull(dataSource.getValue()), false)
+                        .getFlattened();
                 implicitClasses.remove(thing);
+                implicitClasses.removeAll(ces);
                 implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
-                                () -> editorKit.explain(editorKit.getOWLDataFactory()
-                                        .getOWLObjectPropertyRangeAxiom(dataSource.getValue(), c))
+                                () -> editorKit.explain(owlFactory.getOWLObjectPropertyRangeAxiom(dataSource.getValue(), c))
                         ))
                 );
             }
@@ -267,8 +270,8 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     }
 
 
-    @Override
-    public void setPropertyDataSource(@Nonnull Property newDataSource) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {
+        if (editorKit.getReasonerStatus()) editorKit.getReasoner().flush();
         objPropEquivPanel.setPropertyDataSource(newDataSource);
         subObjPropPanel.setPropertyDataSource(newDataSource);
         inversePropsPanel.setPropertyDataSource(newDataSource);
@@ -277,7 +280,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
         disjointPanel.setPropertyDataSource(newDataSource);
     }
     @Subscribe
-    public void afterReasonerToggleOP(OWLEditorEvent.ReasonerToggleEvent event) {
+    public void handleReasonerToggleEventOP(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {
             domainsPanel.addInferredExpressions();
             rangesPanel.addInferredExpressions();
@@ -464,7 +467,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
     }
 
     private abstract class ObjectPropertyPanel extends AbstractExpressionPanel<OWLObjectProperty> {
-
+        protected Collection<OWLClassExpression> ces = new HashSet<>();
         public ObjectPropertyPanel(String caption) {
             super(caption);
         }

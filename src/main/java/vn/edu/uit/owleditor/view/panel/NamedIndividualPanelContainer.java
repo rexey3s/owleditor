@@ -1,8 +1,9 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.data.Property;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -29,15 +30,18 @@ import vn.edu.uit.owleditor.view.window.buildObjectPropertyAssertionEditorWindow
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/3/2014.
+ *         Faculty of Computer Network and Telecommunication created on 12/3/2014.
  */
 
 public class NamedIndividualPanelContainer extends AbstractPanelContainer {
+
+    private final OWLClass thing = owlFactory.getOWLThing();
 
     private AbstractExpressionPanel typePn;
 
@@ -69,7 +73,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Collection<OWLClassExpression> ces = EntitySearcher
+                ces = EntitySearcher
                         .getTypes(dataSource.getValue(), editorKit.getActiveOntology());
                 ces.forEach(ce -> root.addComponent(new ClassExpressionPanelContainer.ClassLabel(
                                 new OWLClassExpressionSource(ce),
@@ -87,7 +91,10 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException{
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                        .getTypes(dataSource.getValue(), false).getFlattened();
+                        .getTypes(Preconditions.checkNotNull(dataSource.getValue()), false)
+                        .getFlattened();
+                implicitClasses.removeAll(ces);
+                implicitClasses.remove(thing);
                 implicitClasses.forEach(c -> root.addComponent(new InferredLabel(c,
                                 () -> editorKit.explain(editorKit.getOWLDataFactory()
                                         .getOWLClassAssertionAxiom(c, dataSource.getValue()))
@@ -131,8 +138,8 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
-                        .getSameIndividuals(dataSource.getValue()).getEntities();
-
+                        .getSameIndividuals(Preconditions.checkNotNull(dataSource.getValue()))
+                        .getEntitiesMinusTop();
                 implicitIndividuals.forEach(i -> root
                         .addComponent(new
                                 InferredLabel(i, () -> editorKit
@@ -174,7 +181,8 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException {
                 Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
-                        .getDifferentIndividuals(dataSource.getValue()).getFlattened();
+                        .getDifferentIndividuals(Preconditions.checkNotNull(dataSource.getValue()))
+                        .getFlattened();
                 implicitIndividuals.forEach(e -> root.addComponent(new InferredLabel(e,
                                 () -> editorKit.explain(editorKit.getOWLDataFactory()
                                         .getOWLDifferentIndividualsAxiom(e, dataSource.getValue()))
@@ -194,8 +202,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Multimap<OWLObjectPropertyExpression, OWLIndividual> map = EntitySearcher
-                        .getObjectPropertyValues(dataSource.getValue(), editorKit.getActiveOntology());
+                map = EntitySearcher.getObjectPropertyValues(dataSource.getValue(), editorKit.getActiveOntology());
                 map.entries().forEach(entry -> {
                     OWLIndividualAxiom axiom = editorKit.getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(
                             entry.getKey(),
@@ -218,18 +225,18 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLObjectProperty property) {
                                 Set<OWLNamedIndividual> individuals = editorKit.getReasoner()
-                                        .getObjectPropertyValues(dataSource.getValue(), property).getFlattened();
+                                        .getObjectPropertyValues(Preconditions.checkNotNull(dataSource.getValue()), property)
+                                        .getFlattened();
 
                                 individuals.forEach(individual -> {
-//                                    if (!map.containsEntry(property, individual)) {
+                                    if (!map.containsEntry(property, individual)) {
                                         OWLObjectPropertyAssertionAxiom axiom = editorKit.getOWLDataFactory()
                                                 .getOWLObjectPropertyAssertionAxiom(
-                                                        property,
-                                                        dataSource.getValue(), individual);
+                                                        property, dataSource.getValue(), individual);
 
                                         root.addComponent(new InferredLabel(axiom.getProperty(),
                                                 () -> editorKit.explain(axiom)));
-//                                    }
+                                    }
                                 });
                             }
                         }));
@@ -247,9 +254,9 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Multimap<OWLDataPropertyExpression, OWLLiteral> map = EntitySearcher
+                map2 = EntitySearcher
                         .getDataPropertyValues(dataSource.getValue(), editorKit.getActiveOntology());
-                map.entries().forEach(entry -> {
+                map2.entries().forEach(entry -> {
                     OWLIndividualAxiom axiom = editorKit.getOWLDataFactory().getOWLDataPropertyAssertionAxiom(
                             entry.getKey(),
                             dataSource.getValue(),
@@ -271,16 +278,16 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLDataProperty property) {
                                 Set<OWLLiteral> literals = editorKit.getReasoner()
-                                        .getDataPropertyValues(dataSource.getValue(), property);
+                                        .getDataPropertyValues(Preconditions.checkNotNull(dataSource.getValue()), property);
                                 literals.forEach(literal -> {
-//                                    if (!map.containsEntry(property, literal)) {
+                                    if (!map2.containsEntry(property, literal)) {
                                         OWLDataPropertyAssertionAxiom axiom = editorKit.getOWLDataFactory()
                                                 .getOWLDataPropertyAssertionAxiom(
                                                         property,
                                                         dataSource.getValue(), literal);
                                         root.addComponent(new InferredLabel(axiom.getProperty(),
                                                 () -> editorKit.explain(axiom)));
-//                                    }
+                                    }
                                 });
                             }
                         }));
@@ -298,7 +305,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Multimap<OWLObjectPropertyExpression, OWLIndividual> map = EntitySearcher
+                map = EntitySearcher
                         .getNegativeObjectPropertyValues(dataSource.getValue(), editorKit.getActiveOntology());
                 map.entries().forEach(entry -> {
                     OWLIndividualAxiom axiom = editorKit.getOWLDataFactory().getOWLNegativeObjectPropertyAssertionAxiom(
@@ -326,9 +333,9 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
             @Override
             protected void initActionVIEW() {
-                Multimap<OWLDataPropertyExpression, OWLLiteral> map = EntitySearcher
+                map2 = EntitySearcher
                         .getNegativeDataPropertyValues(dataSource.getValue(), editorKit.getActiveOntology());
-                map.entries().forEach(entry -> {
+                map2.entries().forEach(entry -> {
                     OWLIndividualAxiom axiom = editorKit.getOWLDataFactory().getOWLNegativeDataPropertyAssertionAxiom(
                             entry.getKey(),
                             dataSource.getValue(),
@@ -365,8 +372,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
 
     }
 
-    @Override
-    public void setPropertyDataSource(@Nonnull Property property) {
+    public void setPropertyDataSource(@Nonnull OWLObjectSource property) {
         if(editorKit.getReasonerStatus()) editorKit.getReasoner().flush();
         typePn.setPropertyDataSource(property);
         samePn.setPropertyDataSource(property);
@@ -377,7 +383,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
         negObjAssertPn.setPropertyDataSource(property);
     }
     @Subscribe
-    public void afterReasonerToggleInd(OWLEditorEvent.ReasonerToggleEvent event) {
+    public void handleReasonerToggleEventIND(OWLEditorEvent.ReasonerToggleEvent event) {
         if(event.getReasonerStatus()) {
             typePn.addInferredExpressionsWithConsistency();
             samePn.addInferredExpressionsWithConsistency();
@@ -465,8 +471,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
-    public void afterIndividualAxiomAdded(OWLEditorEvent.IndividualAxiomAddEvent event) {
+    public void handleIndividualAxiomAddEvent(OWLEditorEvent.IndividualAxiomAddEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .addAxiom(editorKit.getActiveOntology(), event.getAxiom());
 
@@ -525,8 +530,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
-    public void afterIndividualAxiomRemoved(OWLEditorEvent.IndividualAxiomRemoveEvent event) {
+    public void handleIndividualAxiomRemoveEvent(OWLEditorEvent.IndividualAxiomRemoveEvent event) {
         ChangeApplied ok = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getAxiom()));
 
@@ -543,8 +547,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     }
 
     @Subscribe
-    @SuppressWarnings("unused")
-    public void afterIndividualAxiomModified(OWLEditorEvent.IndividualAxiomModifyEvent event) {
+    public void handleIndividualAxiomModifyEvent(OWLEditorEvent.IndividualAxiomModifyEvent event) {
         ChangeApplied removeOk = editorKit.getModelManager()
                 .applyChange(new RemoveAxiom(editorKit.getActiveOntology(), event.getOldAxiom()));
 
@@ -559,7 +562,10 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
     }
 
     private static abstract class IndividualPanel extends AbstractExpressionPanel<OWLNamedIndividual> {
+        protected Multimap<OWLObjectPropertyExpression, OWLIndividual> map = ArrayListMultimap.create();
+        protected Multimap<OWLDataPropertyExpression, OWLLiteral> map2 = ArrayListMultimap.create();
 
+        protected Collection<OWLClassExpression> ces = new HashSet<>();
         public IndividualPanel(String caption) {
             super(caption);
         }

@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.vaadin.dialogs.ConfirmDialog;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import vn.edu.uit.owleditor.data.hierarchy.AbstractOWLObjectHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLDataPropertySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -302,6 +303,11 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
             }
             dataContainer.getEntityRemover().reset();
+        }
+
+        @Override
+        public AbstractOWLObjectHierarchicalContainer getTreeDataContainer() {
+            return dataContainer;
         }
 
         @Override

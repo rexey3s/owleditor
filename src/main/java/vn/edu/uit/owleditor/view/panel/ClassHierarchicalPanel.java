@@ -28,11 +28,11 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import vn.edu.uit.owleditor.data.hierarchy.AbstractOWLObjectHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassCreatedEvent;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -41,7 +41,6 @@ import vn.edu.uit.owleditor.utils.validator.OWLClassValidator;
 import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 
 import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -186,6 +185,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                 }
             });
         else Notification.show("Warning", "Cannot remove OWLThing", Notification.Type.WARNING_MESSAGE);
+    }
+
+    @Subscribe
+    public void handleAfterSubClassOfAxiomAddEvent(OWLEditorEvent.afterSubClassOfAxiomAddEvent event) {
+        event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomAdder());
     }
 
     public static class DownloadOntologyWindow extends Window {
@@ -345,16 +349,12 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         }
 
-        @PostConstruct
-        public void registerWithEventBus() {
-            OWLEditorEventBus.register(this);
+
+        @Override
+        public AbstractOWLObjectHierarchicalContainer getTreeDataContainer() {
+            return dataContainer;
         }
 
-        @Subscribe
-        public void handleAfterSubClassOfAxiomAddEvent(OWLEditorEvent.afterSubClassOfAxiomAddEvent event) {
-            event.getAxiom().accept(dataContainer.getOWLAxiomAdder());
-        }
-        
         @Override
         public OWLClassSource getSelectedItem() {
             return selectedItem;

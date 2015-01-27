@@ -11,11 +11,10 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLogicalEntity;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.hierarchy.AbstractOWLObjectHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLLogicalEntitySource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -30,6 +29,7 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     protected OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
     public AbstractHierarchyPanel() {
         editorKit = OWLEditorUI.getEditorKit();
+        OWLEditorEventBus.register(this);
     }
 
     @Override
@@ -39,10 +39,6 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
         caption.setSizeUndefined();
     }
 
-    @PostConstruct
-    protected void registerWithEventBus() {
-        OWLEditorEventBus.register(this);
-    }
 
     public abstract Property<T> getSelectedItem();
 
@@ -65,7 +61,7 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
     }
 
     static interface TreeKit<T extends OWLLogicalEntitySource> extends Property.ValueChangeListener {
-
+        public AbstractOWLObjectHierarchicalContainer getTreeDataContainer();
         public T getSelectedItem();
     }
 }

@@ -108,11 +108,14 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         } else if (action == REMOVE) {
             handleItemRemove();
         } else if (action == FUNCTIONAL_MARK) {
-            Boolean checked = (Boolean)
-                    tree.getContainerProperty(getSelectedItem().getValue(),
-                            OWLEditorData.OWLFunctionalProperty).getValue();
-            tree.getContainerProperty(getSelectedItem().getValue(), OWLEditorData.OWLFunctionalProperty)
-                    .setValue(!checked);
+            if (getSelectedItem().getValue() != null) {
+                Boolean checked = (Boolean)
+                        tree.getContainerProperty(getSelectedItem().getValue(),
+                                OWLEditorData.OWLFunctionalProperty).getValue();
+                tree.getContainerProperty(getSelectedItem().getValue(), OWLEditorData.OWLFunctionalProperty)
+                        .setValue(!checked);
+            } else Notification.show("Notice",
+                    "Please select a DataProperty to mark", Notification.Type.WARNING_MESSAGE);
         }
     }
 

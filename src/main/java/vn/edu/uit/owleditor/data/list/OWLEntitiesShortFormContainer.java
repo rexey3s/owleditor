@@ -30,13 +30,13 @@ public class OWLEntitiesShortFormContainer extends IndexedContainer {
             String sf = OWLEditorKitImpl.getShortForm(o);
             addItem(sf);
             getContainerProperty(sf, OWLEditorData.OWLEntityIcon)
-                    .setValue(new ThemeResource("../owleditor/class.png"));
+                    .setValue(new ThemeResource("../owleditor/objectproperty.png"));
         });
         ontology.getDataPropertiesInSignature().forEach(d -> {
             String sf = OWLEditorKitImpl.getShortForm(d);
             addItem(sf);
             getContainerProperty(sf, OWLEditorData.OWLEntityIcon)
-                    .setValue(new ThemeResource("../owleditor/class.png"));
+                    .setValue(new ThemeResource("../owleditor/dataproperty.png"));
         });
         ontology.getIndividualsInSignature().forEach(i -> {
             String sf = OWLEditorKitImpl.getShortForm(i);

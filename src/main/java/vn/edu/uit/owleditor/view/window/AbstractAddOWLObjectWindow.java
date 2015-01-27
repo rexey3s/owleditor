@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 
@@ -40,6 +41,10 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         initialize();
     }
 
+    public AbstractAddOWLObjectWindow(@Nonnull OWLEntityAddHandler<T> adder) {
+        this.adder = adder;
+        initialize();
+    }
     private void initialize() {
         setModal(true);
         setClosable(false);
@@ -85,10 +90,11 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
         return click -> {
             try {
                 nameField.validate();
-                if (isSub)
-                    handler.afterAddSubSaved(adder.addingEntity((T) nameField.getConvertedValue()));
-                else
-                    handler.afterAddSiblingSaved(adder.addingEntity((T) nameField.getConvertedValue()));
+//                if (isSub)
+//                    handler.afterAddSubSaved(adder.addingEntity((T) nameField.getConvertedValue()));
+                OWLEditorEventBus.post(adder.addingEntity((T) nameField.getConvertedValue()));
+//                else
+//                    handler.afterAddSiblingSaved(adder.addingEntity((T) nameField.getConvertedValue()));
                 close();
             } catch (Validator.InvalidValueException ex) {
                 Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);

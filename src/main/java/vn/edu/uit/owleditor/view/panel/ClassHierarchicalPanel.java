@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
@@ -31,7 +32,7 @@ import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassCreatedEvent;
-import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.converter.StringToOWLClassConverter;
@@ -157,7 +158,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     @Override
     public void handleSubNodeCreation() {
         UI.getCurrent().addWindow(new buildAddOWLClassWindow(
-                tree, c -> new OWLEditorEvent.SubClassCreatedEvent(c, tree.getSelectedItem().getValue()), true));
+                c -> new OWLEditorEvent.SubClassCreatedEvent(c, tree.getSelectedItem().getValue())));
 
     }
 
@@ -165,8 +166,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     public void handleSiblingNodeCreation() {
         if (!checkOWLThing(tree.selectedItem))
             UI.getCurrent().addWindow(new buildAddOWLClassWindow(
-                    tree, c -> new SiblingClassCreatedEvent(c, tree.getSelectedItem().getValue()), false));
-
+                    c -> new SiblingClassCreatedEvent(c, tree.getSelectedItem().getValue())));
+        
         else Notification.show("Warning", "Cannot create sibling for OWLThing", Notification.Type.WARNING_MESSAGE);
     }
 
@@ -176,8 +177,9 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
             ConfirmDialog.show(UI.getCurrent(), "Are you sure ?", dialog -> {
                 if (dialog.isConfirmed()) {
-                    tree.afterRemoved(new OWLEditorEvent.ClassRemovedEvent(
-                            tree.getSelectedItem().getValue()));
+//                    tree.afterRemoved(new OWLEditorEvent.ClassRemovedEvent(
+//                            tree.getSelectedItem().getValue()));
+                    OWLEditorEventBus.post(new OWLEditorEvent.ClassRemovedEvent(tree.getSelectedItem().getValue()));
                 } else {
                     dialog.close();
                 }
@@ -321,8 +323,9 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
     }
 
-    public class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubClassCreatedEvent, SiblingClassCreatedEvent, OWLEditorEvent.ClassRemovedEvent> {
+    public class OWLClassTree extends Tree implements TreeKit<OWLClassSource>
+//            OWLEntityActionHandler<OWLEditorEvent.SubClassCreatedEvent, SiblingClassCreatedEvent, OWLEditorEvent.ClassRemovedEvent> 
+    {
 
         private final OWLClassHierarchicalContainer dataContainer;
         private final OWLClassSource selectedItem = new OWLClassSource();
@@ -357,7 +360,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         }
 
 
-        @Override
+        @Subscribe
         public void afterAddSiblingSaved(SiblingClassCreatedEvent event) {
             Boolean success = false;
             OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getDeclareClass());
@@ -392,7 +395,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         }
 
-        @Override
+        @Subscribe
         public void afterRemoved(OWLEditorEvent.ClassRemovedEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
             List<OWLOntologyChange> changes = editorKit
@@ -404,7 +407,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             dataContainer.getEntityRemover().reset();
         }
 
-        @Override
+        @Subscribe
         public void afterAddSubSaved(OWLEditorEvent.SubClassCreatedEvent event) {
             OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getSubClass());
             OWLAxiom subClsAxiom = owlFactory.getOWLSubClassOfAxiom(event.getSubClass(), event.getSuperClass());
@@ -428,15 +431,21 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     }
     
     public class buildAddOWLClassWindow extends AbstractAddOWLObjectWindow<OWLClass> {
-
-        public buildAddOWLClassWindow(@Nonnull OWLEntityActionHandler handler,
-                                      @Nonnull OWLEntityAddHandler<OWLClass> adder,
-                                      @Nonnull Boolean isSub) {
-            super(handler, adder, isSub);
+        public buildAddOWLClassWindow(@Nonnull OWLEntityAddHandler<OWLClass> adder) {
+            super(adder);
             nameField.setCaption("Class");
             nameField.setConverter(new StringToOWLClassConverter(editorKit));
             nameField.addValidator(new OWLClassValidator(editorKit));
         }
+
+//        public buildAddOWLClassWindow(@Nonnull OWLEntityActionHandler handler,
+//                                      @Nonnull OWLEntityAddHandler<OWLClass> adder,
+//                                      @Nonnull Boolean isSub) {
+//            super(handler, adder, isSub);
+//            nameField.setCaption("Class");
+//            nameField.setConverter(new StringToOWLClassConverter(editorKit));
+//            nameField.addValidator(new OWLClassValidator(editorKit));
+//        }
     }
 
 }

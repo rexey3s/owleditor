@@ -40,6 +40,7 @@ import vn.edu.uit.owleditor.utils.validator.OWLClassValidator;
 import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -347,6 +348,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         }
 
+        @PostConstruct
+        public void registerWithEventBus() {
+            OWLEditorEventBus.register(this);
+        }
+        
         @Override
         public OWLClassSource getSelectedItem() {
             return selectedItem;

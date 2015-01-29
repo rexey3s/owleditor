@@ -36,6 +36,9 @@ public class MainView extends HorizontalLayout {
         root.addTab(diagramSheet, "Diagram");
         root.addSelectedTabChangeListener(event -> {
             Notification.show("Reasoner status: "+ (OWLEditorUI.getEditorKit().getReasonerStatus() ? "On":"Off"));
+            if (event.getTabSheet().getSelectedTab() instanceof DiagramSheet) {
+                ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
+            }
         });
         root.setSizeFull();
         root.addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);

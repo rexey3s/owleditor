@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,16 +15,13 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping(value = "/api/")
 public class RestAPI {
-    @Autowired
-    HttpSession httpSession;
 
-    ClassHierarchicalTree clzzTree = new ClassHierarchicalTree((OWLEditorKit) httpSession.getAttribute("OWLEditorKit"));
     
     @RequestMapping(value = "/owl/class", method = RequestMethod.GET)
     public
     @ResponseBody
-    String getOWLClassTreeDiagram() {
-        return clzzTree.refreshTree();
+    String getOWLClassTreeDiagram(HttpSession session) {
+        return (new ClassHierarchicalTree((OWLEditorKit) session.getAttribute("OWLEditorKit"))).refreshTree();
     }
 
 

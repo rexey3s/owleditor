@@ -70,12 +70,12 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
                 selectedRow.setValue((SWRLAPIRule) event.getProperty().getValue());
             }
         });
-        rulesTable.addStyleName(ValoTheme.TABLE_BORDERLESS);
         rulesTable.setSizeFull();
         setMargin(true);
         addStyleName(ValoTheme.LAYOUT_CARD);
         addComponent(addRule);
         addComponent(rulesTable);
+        setExpandRatio(rulesTable, 1);
         setSizeFull();
     }
 

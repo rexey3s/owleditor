@@ -184,6 +184,11 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomAdder());
         tree.expandItem(event.getOwner());
     }
+
+    @Subscribe
+    public void handleAfterSubObjectPropertyOfAxiomRemoveEvent(OWLEditorEvent.afterSubObjectPropertyOfAxiomRemoveEvent event) {
+        event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomRemover());
+    }
     public class OWLObjectPropertyTree extends Tree implements TreeKit<OWLObjectPropertySource>,
             OWLEntityActionHandler<OWLEditorEvent.SubObjectPropertyAddEvent,
                     OWLEditorEvent.SiblingObjectPropertyAddEvent, OWLEditorEvent.ObjectPropertyRemove> {

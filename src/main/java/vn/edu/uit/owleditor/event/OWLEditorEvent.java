@@ -352,7 +352,14 @@ public final class OWLEditorEvent {
             super(axiom, owner);
         }
     }
-    
+
+    public static final class afterSubObjectPropertyOfAxiomRemoveEvent
+            extends OWLAxiomAddEvent<OWLObjectPropertyAxiom, OWLObjectProperty> {
+
+        public afterSubObjectPropertyOfAxiomRemoveEvent(OWLObjectPropertyAxiom axiom, OWLObjectProperty owner) {
+            super(axiom, owner);
+        }
+    }
     public static final class ObjectPropertyAxiomRemoveEvent extends OWLAxiomRemoveEvent<OWLObjectPropertyAxiom, OWLObjectProperty> {
 
         public ObjectPropertyAxiomRemoveEvent(OWLObjectPropertyAxiom axiom, OWLObjectProperty owner) {
@@ -377,6 +384,12 @@ public final class OWLEditorEvent {
         }
     }
 
+    public static final class afterSubDataPropertyOfAxiomRemoveEvent extends OWLAxiomRemoveEvent<OWLDataPropertyAxiom, OWLDataProperty> {
+
+        public afterSubDataPropertyOfAxiomRemoveEvent(OWLDataPropertyAxiom axiom, OWLDataProperty owner) {
+            super(axiom, owner);
+        }
+    }
     public static final class afterSubDataPropertyOfAxiomAddEvent
             extends OWLAxiomAddEvent<OWLDataPropertyAxiom, OWLDataProperty> {
 

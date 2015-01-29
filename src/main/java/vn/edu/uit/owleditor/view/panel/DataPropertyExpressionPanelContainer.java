@@ -273,6 +273,8 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
                         new OWLDataPropertyExpressionSource(axiom.getSuperProperty()),
                         () -> editorKit.getDataFactory().getSubPropertyOfRemoveEvent(owner, axiom.getSuperProperty())
                 ));
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubDataPropertyOfAxiomAddEvent(axiom,
+                        axiom.getSuperProperty().asOWLDataProperty()));
             }
 
             @Override
@@ -318,6 +320,8 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
             @Override
             public void visit(OWLSubDataPropertyOfAxiom axiom) {
                 subOfPn.removeExpression(axiom.getSuperProperty());
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubDataPropertyOfAxiomRemoveEvent(axiom,
+                        owner));
             }
 
             @Override

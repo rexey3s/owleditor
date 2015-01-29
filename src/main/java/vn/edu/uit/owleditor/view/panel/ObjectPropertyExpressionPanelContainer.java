@@ -359,6 +359,8 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
             @Override
             public void visit(OWLSubObjectPropertyOfAxiom axiom) {
                 subObjPropPanel.removeExpression(axiom.getSuperProperty());
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubObjectPropertyOfAxiomRemoveEvent(axiom,
+                        owner));
             }
 
             @Override

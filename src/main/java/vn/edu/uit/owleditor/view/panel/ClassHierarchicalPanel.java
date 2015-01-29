@@ -1,5 +1,6 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
@@ -223,7 +224,6 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         public DownloadOntologyWindow() {
             eKit = OWLEditorUI.getEditorKit();
             ontologyName.setPropertyDataSource(fileNameSource);
-            ontologyName.addValueChangeListener(change -> fileNameSource.setValue(String.valueOf(change.getProperty().getValue())));
             documentFormat = eKit.getModelManager().getOntologyFormat(eKit.getActiveOntology());
             formats.setNullSelectionAllowed(false);
             formats.addContainerProperty("FORMAT", String.class, null);
@@ -285,7 +285,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             return documentFormat;
         }
 
-        private StreamResource createResource() {
+        private StreamResource createResource(@Nonnull String output) {
             return new StreamResource(() -> {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 try {
@@ -296,7 +296,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     Notification.show(nullEx.getMessage(), Notification.Type.WARNING_MESSAGE);
                 }
                 return new ByteArrayInputStream(bos.toByteArray());
-            }, fileNameSource.getValue().isEmpty() ? "ont.owl" : fileNameSource.getValue());
+            }, output);
         }
 
         private Component buildContent() {
@@ -328,10 +328,12 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
             Button save = new Button("Save");
             save.addStyleName(ValoTheme.BUTTON_PRIMARY);
+            ontologyName.addValueChangeListener(change -> {
+                StreamResource rs = createResource(Preconditions.checkNotNull(change.getProperty().getValue().toString()));
+                FileDownloader fd = new FileDownloader(rs);
+                fd.extend(save);
+            });
 
-            StreamResource rs = createResource();
-            FileDownloader fd = new FileDownloader(rs);
-            fd.extend(save);
 
             save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
 

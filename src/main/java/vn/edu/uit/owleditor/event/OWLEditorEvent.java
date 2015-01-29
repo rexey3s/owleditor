@@ -259,6 +259,13 @@ public final class OWLEditorEvent {
             super(axiom, owner);
         }
     }
+
+    public static final class afterSubClassOfAxiomRemoveEvent extends OWLAxiomAddEvent<OWLLogicalAxiom, OWLClass> {
+
+        public afterSubClassOfAxiomRemoveEvent(OWLSubClassOfAxiom axiom, OWLClass owner) {
+            super(axiom, owner);
+        }
+    }
     
     public static final class IndividualAxiomAddEvent extends OWLAxiomAddEvent<OWLIndividualAxiom, OWLNamedIndividual> {
         public IndividualAxiomAddEvent(OWLIndividualAxiom axiom, OWLNamedIndividual owner) {

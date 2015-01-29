@@ -205,6 +205,11 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         tree.expandItem(event.getOwner());
     }
 
+    @Subscribe
+    public void handleAfterSubClassOfAxiomRemoveEvent(OWLEditorEvent.afterSubClassOfAxiomRemoveEvent event) {
+        event.getAxiom().accept(tree.getTreeDataContainer().getOWLAxiomRemover());
+    }
+    
     public static class DownloadOntologyWindow extends Window {
         private final OWLEditorKit eKit;
         private final TextField ontologyName = new TextField();

@@ -290,6 +290,8 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
             @Override
             public void visit(OWLSubClassOfAxiom axiom) {
                 subClsOfPanel.removeExpression(axiom.getSuperClass());
+                OWLEditorEventBus.post(new OWLEditorEvent.afterSubClassOfAxiomRemoveEvent(axiom,
+                        owner));
             }
         };
     }

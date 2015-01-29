@@ -19,14 +19,6 @@ public class DnDTree extends AbstractJavaScriptComponent {
         getState().data = data;
     }
 
-    public String getAPI() {
-        return getState().api;
-    }
-
-    public void setAPI(String API_PATH) {
-        getState().api = API_PATH;
-
-    }
     
     @Override
     protected DnDTreeState getState() {

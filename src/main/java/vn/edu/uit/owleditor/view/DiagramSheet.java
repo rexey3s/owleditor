@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
+import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
@@ -36,16 +37,18 @@ public class DiagramSheet extends VerticalLayout implements View {
     private static final int SIZE = 400;
     private static Logger LOG = LoggerFactory.getLogger(DnDTree.class);
     private final TabSheet tabSheet = new TabSheet();
-//    private final ClassDnDTree classDnDTree;
-//    private final EntityDnDTree entityDnDTree;
+    private final ClassDnDTree classDnDTree;
+    private final EntityDnDTree entityDnDTree;
 
-    
+    //    private final ClassHierarchicalTree clzzTreeSource;
     public DiagramSheet() {
-//        classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
-//        entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
-        DnDTree classTree = new DnDTree();
-        tabSheet.addTab(createWrapper(classTree), "Classes");
-//        tabSheet.addTab(wrapping(classTree), "Entities");
+        classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
+        entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
+//        clzzTreeSource = new ClassHierarchicalTree(OWLEditorUI.getEditorKit());
+        DnDTree classTreeDiagram1 = new DnDTree();
+        tabSheet.addTab(classDnDTree, "Classes");
+        tabSheet.addTab(entityDnDTree, "Classes and Individuals");
+//        classTreeDiagram1.setData(clzzTreeSource.refreshTree());
         tabSheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         tabSheet.setSizeFull();
         setMargin(true);
@@ -76,10 +79,10 @@ public class DiagramSheet extends VerticalLayout implements View {
         return diagramContainer;
     }
 
-//    public void reloadAll() {
-//        classDnDTree.reload();
-//        entityDnDTree.reload();
-//    }
+    public void reloadAll() {
+        classDnDTree.reload();
+        entityDnDTree.reload();
+    }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

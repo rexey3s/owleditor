@@ -9,8 +9,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
@@ -26,7 +24,6 @@ import java.util.stream.Collectors;
  */
 public class ClassHierarchicalTree {
     private static final int SIZE = 400;
-    private static final Logger LOG = LoggerFactory.getLogger(RestAPI.class);
     protected final Set<OWLClass> visited = new HashSet<>();
     private final JsonObject thingObject = new JsonObject();
     OWLEditorKit editorKit;
@@ -73,7 +70,7 @@ public class ClassHierarchicalTree {
             reload(editorKit.getActiveOntology());
             return thingObject.toString();
         } catch (NullPointerException ex) {
-            LOG.error(ex.getMessage());
+            ex.printStackTrace();
         }
         return thingObject.toString();
     }

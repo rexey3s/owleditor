@@ -22,6 +22,8 @@ import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -39,6 +41,8 @@ import java.util.Collections;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/11/14.
  */
+@Service
+@Scope(value = "session")
 public class OWLEditorKitImpl implements OWLEditorKit {
 
     private static final Logger LOG = LoggerFactory.getLogger(OWLEditorKitImpl.class);

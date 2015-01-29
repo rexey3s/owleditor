@@ -4,8 +4,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -17,8 +15,6 @@ import javax.annotation.Nonnull;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/27/14.
  */
-@Service
-@Scope(value = "session")
 public interface OWLEditorKit {
 
     public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;

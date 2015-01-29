@@ -65,7 +65,7 @@ public class SWRLRuleEditor extends VerticalLayout {
         wrapper.setExpandRatio(root, 8);
         wrapper.setHeight("100%");
 
-        input.addShortcutListener(new ShortcutListener("TAB2POPUP", ShortcutAction.KeyCode.TAB, null) {
+        input.addShortcutListener(new ShortcutListener("TAB2POPUP", ShortcutAction.KeyCode.INSERT, null) {
             @Override
             public void handleAction(Object sender, Object target) {
                 if (target instanceof TextArea) {
@@ -93,6 +93,7 @@ public class SWRLRuleEditor extends VerticalLayout {
             @Override
             public void handleAction(Object o, Object o1) {
                 root.removeComponent(suggestBox);
+                input.focus();
             }
         });
         input.addFocusListener(focusEvent -> root.removeComponent(suggestBox));
@@ -101,6 +102,7 @@ public class SWRLRuleEditor extends VerticalLayout {
             @Override
             public void handleAction(Object o, Object o1) {
                 root.removeComponent(suggestBox);
+                input.focus();
             }
         });
         suggestBox.addShortcutListener(new ShortcutListener("Add", ShortcutAction.KeyCode.ENTER, null) {

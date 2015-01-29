@@ -59,7 +59,6 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
         visit(treeData, function (d) {
             totalNodes++;
             maxLabelLength = Math.max(d.name.length, maxLabelLength);
-
         }, function (d) {
             return d.children && d.children.length > 0 ? d.children : null;
         });
@@ -161,7 +160,6 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
             .attr("height", viewerHeight)
             .attr("class", "overlay")
             .call(zoomListener);
-
 
         // Define the drag listeners for drag/drop behaviour of nodes.
         dragListener = d3.behavior.drag()
@@ -384,7 +382,6 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
                 .data(nodes, function (d) {
                     return d.id || (d.id = ++i);
                 });
-
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("g")
                 .call(dragListener)

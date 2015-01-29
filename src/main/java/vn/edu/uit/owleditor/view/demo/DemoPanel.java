@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/17/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/17/14.
  */
 
 public class DemoPanel extends VerticalLayout implements WizardProgressListener {
@@ -34,6 +34,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
     private final OWLNamedIndividualSource individualSource = new OWLNamedIndividualSource();
 
     private final OWLClassSource classSource = new OWLClassSource();
+
     private final SWRLAtomSearchByDefinedClass searcher;
 
     private final VerticalLayout body = new VerticalLayout();
@@ -111,7 +112,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
 
 
     private Button.ClickListener initStartClickListener() {
-        return clicked -> {
+        return click -> {
             try {
                 EditorUtils.checkNotNull(classSource.getValue(), "Please choose a Class");
                 EditorUtils.checkNotNull(individualSource.getValue(), "Please choose an Individual");

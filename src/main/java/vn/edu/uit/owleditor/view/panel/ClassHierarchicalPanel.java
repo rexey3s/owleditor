@@ -1,7 +1,9 @@
 package vn.edu.uit.owleditor.view.panel;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.*;
@@ -209,13 +211,15 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         private final OWLDocumentFormat documentFormat;
         //        private OWLDocumentFormat targetFormat;
         private final ComboBox formats = new ComboBox();
+        private final ObjectProperty<String> fileNameSource = new ObjectProperty<>("ont.owl", String.class, false);
         private OWLXMLDocumentFormat owlxmlFormat = new OWLXMLDocumentFormat();
         private RDFXMLDocumentFormat rdfxmlFormat = new RDFXMLDocumentFormat();
         private ManchesterSyntaxDocumentFormat manSyntaxFormat = new ManchesterSyntaxDocumentFormat();
         private FunctionalSyntaxDocumentFormat funcSyntaxFormat = new FunctionalSyntaxDocumentFormat();
-
         public DownloadOntologyWindow() {
             eKit = OWLEditorUI.getEditorKit();
+            ontologyName.setPropertyDataSource(fileNameSource);
+            ontologyName.addValueChangeListener(change -> fileNameSource.setValue(String.valueOf(change.getProperty().getValue())));
             documentFormat = eKit.getModelManager().getOntologyFormat(eKit.getActiveOntology());
             formats.setNullSelectionAllowed(false);
             formats.addContainerProperty("FORMAT", String.class, null);
@@ -281,8 +285,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             return new StreamResource(() -> {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 try {
-                    Assert.notNull(ontologyName.getValue(), "Enter name");
-//                    Assert.notNull(formats.getValue(), "Select format");
+                    Assert.notNull(Strings.emptyToNull(fileNameSource.getValue()), "Enter name");
                     eKit.getModelManager()
                             .saveOntology(eKit.getActiveOntology(), selectFormat(), new StreamDocumentTarget(bos));
 
@@ -290,7 +293,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     Notification.show(nullEx.getMessage(), Notification.Type.WARNING_MESSAGE);
                 }
                 return new ByteArrayInputStream(bos.toByteArray());
-            }, ontologyName.getValue());
+            }, fileNameSource.getValue());
         }
 
         private Component buildContent() {
@@ -300,7 +303,6 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             FormLayout form = new FormLayout();
             ontologyName.focus();
             ontologyName.setCaption("FileName");
-            ontologyName.setValue("ontology.owl");
             formats.setCaption("Format");
 
             form.addComponent(ontologyName);

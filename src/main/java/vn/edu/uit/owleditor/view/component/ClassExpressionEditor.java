@@ -42,7 +42,7 @@ public class ClassExpressionEditor extends VerticalLayout {
 
         root.addComponents(input);
 
-        input.addShortcutListener(new ShortcutListener("TAB2POPUP", ShortcutAction.KeyCode.TAB, null) {
+        input.addShortcutListener(new ShortcutListener("TAB2POPUP", ShortcutAction.KeyCode.INSERT, null) {
             @Override
             public void handleAction(Object sender, Object target) {
                 root.addComponent(entitiesList, EditorUtils.writePixelCoordinator(input.getValue().length()));

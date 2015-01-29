@@ -56,6 +56,7 @@ window.vn_edu_uit_owleditor_view_diagram_DnDTree = function () {
             totalNodes++;
             maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
+
         }, function (d) {
             return d.children && d.children.length > 0 ? d.children : null;
         });

@@ -6,9 +6,9 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/21/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/21/14.
  */
-@JavaScript({"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js", "http://d3js.org/d3.v3.min.js", "lib/classTree.js"})
+@JavaScript({"lib/jquery.min.js", "lib/d3.v3.min.js", "lib/classTree.js"})
 public class DnDTree extends AbstractJavaScriptComponent {
 
     public String getData() {

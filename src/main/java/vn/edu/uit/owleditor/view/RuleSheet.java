@@ -6,10 +6,8 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.Action;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.UI;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
@@ -30,7 +28,7 @@ import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
  */
 @VaadinUIScope
 @VaadinView(name = RuleSheet.NAME)
-public class RuleSheet extends HorizontalLayout implements Action.Handler, View {
+public class RuleSheet extends VerticalLayout implements Action.Handler, View {
 
     public static final String NAME = "Rules";
     
@@ -57,6 +55,12 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, View 
     }
 
     private void init() {
+        Button addRule = new Button("Add rule");
+        addRule.setIcon(FontAwesome.PLUS_CIRCLE);
+        addRule.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        addRule.addClickListener(click -> UI.getCurrent().addWindow(new buildAddRuleWindow(rule ->
+                editorKit.getDataFactory().getRuleAddEvent(rule, activeOntology.getOWLOntology())
+        )));
         Table rulesTable = new Table();
         rulesTable.setContainerDataSource(rulesContainer);
         rulesTable.setSelectable(true);
@@ -70,6 +74,7 @@ public class RuleSheet extends HorizontalLayout implements Action.Handler, View 
         rulesTable.setSizeFull();
         setMargin(true);
         addStyleName(ValoTheme.LAYOUT_CARD);
+        addComponent(addRule);
         addComponent(rulesTable);
         setSizeFull();
     }

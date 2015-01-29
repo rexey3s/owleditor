@@ -1,6 +1,5 @@
 package vn.edu.uit.owleditor.view.panel;
 
-import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
@@ -290,7 +289,6 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             return new StreamResource(() -> {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 try {
-                    Assert.notNull(Strings.emptyToNull(fileNameSource.getValue()), "Enter name");
                     eKit.getModelManager()
                             .saveOntology(eKit.getActiveOntology(), selectFormat(), new StreamDocumentTarget(bos));
 
@@ -298,7 +296,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     Notification.show(nullEx.getMessage(), Notification.Type.WARNING_MESSAGE);
                 }
                 return new ByteArrayInputStream(bos.toByteArray());
-            }, fileNameSource.getValue());
+            }, fileNameSource.getValue().isEmpty() ? "ont.owl" : fileNameSource.getValue());
         }
 
         private Component buildContent() {

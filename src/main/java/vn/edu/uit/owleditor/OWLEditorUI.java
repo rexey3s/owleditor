@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinUI;
-import org.vaadin.spring.navigator.SpringViewProvider;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
@@ -31,9 +30,6 @@ public class OWLEditorUI extends UI {
 
     @Autowired
     OWLEditorKit editorKit;
-
-    @Autowired
-    SpringViewProvider viewProvider;
 
     @Autowired 
     EntryView entryView;

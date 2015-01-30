@@ -21,16 +21,14 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
     private final OWLEditorKit editorKit;
     private final OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
-    private OWLClassHierarchicalContainer classHierarchicalContainer;
     public OWLEditorDataFactoryImpl(@Nonnull OWLEditorKitImpl eKit) {
         this.editorKit = eKit;
-        OWLClassHierarchicalContainer classHierarchicalContainer = new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
     }
 
 
     @Override
     public OWLClassHierarchicalContainer getOWLClassHierarchicalContainer() {
-        return classHierarchicalContainer;
+        return new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
     }
 
     @Override

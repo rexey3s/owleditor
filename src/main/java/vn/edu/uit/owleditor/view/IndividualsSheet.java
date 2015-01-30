@@ -54,9 +54,8 @@ public class IndividualsSheet extends HorizontalLayout implements View {
     public IndividualsSheet() {
         editorKit = OWLEditorUI.getEditorKit();
         initialise();
-
     }
-
+    
     private void initialise() {
         hierarchy = new ClassHierarchicalPanel();
         individualsList = new IndividualList();

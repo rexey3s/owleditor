@@ -12,7 +12,7 @@
 
 	<groupId>vn.edu.uit</groupId>
 	<artifactId>owleditor</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>OWLEditor</name>

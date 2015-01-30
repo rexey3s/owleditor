@@ -21,16 +21,42 @@ import javax.annotation.Nonnull;
 public class OWLNamedIndividualContainer extends IndexedContainer implements
         OWLObjectContainer, HasOntologyChangeListener {
 
-    private final OWLOntologyChangeVisitor changeListener;
+    private final OWLAxiomVisitor nodeAdder = new OWLAxiomVisitorAdapter() {
+        @Override
+        public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
+            if (axiom.getIndividual().isNamed()) {
+                addItem(axiom.getIndividual().asOWLNamedIndividual());
+                getContainerProperty(axiom.getIndividual().asOWLNamedIndividual(),
+                        OWLEditorData.OWLNamedIndividualName).setValue(
+                        OWLEditorKitImpl.getShortForm(axiom.getIndividual().asOWLNamedIndividual())
+                );
+            }
+        }
+    };
+    private final OWLAxiomVisitor nodeRemover = new OWLAxiomVisitorAdapter() {
+        @Override
+        public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
+            removeItem(axiom.getIndividual());
+        }
+    };
+    private final OWLOntologyChangeVisitor changeVisitor = new OWLOntologyChangeVisitorAdapter() {
+        @Override
+        public void visit(@Nonnull AddAxiom change) {
+            change.getAxiom().accept(nodeAdder);
+        }
 
+        @Override
+        public void visit(@Nonnull RemoveAxiom change) {
+            change.getAxiom().accept(nodeRemover);
+        }
+    };
     private OWLOntology activeOntology;
-
     private OWLNamedIndividualSource dataSource = new OWLNamedIndividualSource();
 
     public OWLNamedIndividualContainer(@Nonnull OWLOntology ontology) {
         activeOntology = ontology;
         addContainerProperty(OWLEditorData.OWLNamedIndividualName, String.class, "UnknownNamedIndividual");
-        changeListener = initChangeListener();
+
         activeOntology.accept(new OWLObjectVisitorAdapter() {
 
             @Override
@@ -52,9 +78,8 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
     public OWLNamedIndividualContainer(@Nonnull OWLOntology ontology, @Nonnull OWLClass owlClass) {
         activeOntology = ontology;
         addContainerProperty(OWLEditorData.OWLNamedIndividualName, String.class, "UnknownNamedIndividual");
-        changeListener = initChangeListener();
-        final OWLOntologyManager manager = ontology.getOWLOntologyManager();
-        manager.addOntologyChangeListener(changes -> changes.forEach(change -> change.accept(changeListener)));
+
+//        manager.addOntologyChangeListener(changes -> changes.forEach(change -> change.accept(changeListener)));
         EntitySearcher.getIndividuals(owlClass, activeOntology).forEach(ind -> {
             if (ind.isNamed()) {
                 addItem(ind.asOWLNamedIndividual());
@@ -82,43 +107,17 @@ public class OWLNamedIndividualContainer extends IndexedContainer implements
     }
 
 
-    public OWLOntologyChangeVisitor initChangeListener() {
-        return new OWLOntologyChangeVisitorAdapter() {
-            @Override
-            public void visit(@Nonnull AddAxiom change) {
-                change.getAxiom().accept(getOWLAxiomAdder());
-            }
-
-            @Override
-            public void visit(@Nonnull RemoveAxiom change) {
-                change.getAxiom().accept(getOWLAxiomRemover());
-            }
-        };
-    }
-
     @Override
     public OWLAxiomVisitor getOWLAxiomAdder() {
-        return new OWLAxiomVisitorAdapter() {
-            @Override
-            public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
-                if (axiom.getIndividual().isNamed()) {
-                    addItem(axiom.getIndividual().asOWLNamedIndividual());
-                    getContainerProperty(axiom.getIndividual().asOWLNamedIndividual(),
-                            OWLEditorData.OWLNamedIndividualName).setValue(
-                            OWLEditorKitImpl.getShortForm(axiom.getIndividual().asOWLNamedIndividual())
-                    );
-                }
-            }
-        };
+        return nodeAdder;
     }
 
     @Override
     public OWLAxiomVisitor getOWLAxiomRemover() {
-        return new OWLAxiomVisitorAdapter() {
-            @Override
-            public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
-                removeItem(axiom.getIndividual());
-            }
-        };
+        return nodeRemover;
+    }
+
+    public OWLOntologyChangeVisitor getOWLOntologyChangeVisitor() {
+        return changeVisitor;
     }
 }

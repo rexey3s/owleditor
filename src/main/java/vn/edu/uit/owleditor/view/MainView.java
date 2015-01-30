@@ -38,7 +38,6 @@ public class MainView extends HorizontalLayout {
         DiagramSheet diagramSheet = new DiagramSheet();
         root.addTab(diagramSheet, "Diagram");
         root.addSelectedTabChangeListener(event -> {
-            Notification.show("Reasoner status: "+ (OWLEditorUI.getEditorKit().getReasonerStatus() ? "On":"Off"));
             Component selectedTab = event.getTabSheet().getSelectedTab();
             if (selectedTab instanceof DiagramSheet || selectedTab instanceof DemoSheet) {
                 editorKit.setReasonerStatus(!editorKit.getReasonerStatus());
@@ -48,6 +47,7 @@ public class MainView extends HorizontalLayout {
             if (selectedTab instanceof DiagramSheet) {               
                 ((DiagramSheet) event.getTabSheet().getSelectedTab()).reloadAll();
             }
+            Notification.show("Reasoner status: " + (OWLEditorUI.getEditorKit().getReasonerStatus() ? "On" : "Off"));
 
         });
         root.setSizeFull();

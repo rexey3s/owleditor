@@ -123,6 +123,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
 
         private final ListSelect list = new ListSelect();
 
+
         private final OWLNamedIndividualSource selectSource = new OWLNamedIndividualSource();
 
         private final OWLEditorKit editorKit;

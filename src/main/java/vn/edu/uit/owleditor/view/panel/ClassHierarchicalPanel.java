@@ -3,6 +3,7 @@ package vn.edu.uit.owleditor.view.panel;
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
@@ -32,6 +33,7 @@ import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.property.OWLClassSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEvent.SiblingClassAddEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
 import vn.edu.uit.owleditor.event.OWLEntityAddHandler;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
@@ -158,7 +160,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     @Override
     public void handleSubItemCreate() {
         if (getSelectedItem().getValue() != null) {
-            UI.getCurrent().addWindow(new buildAddOWLClassWindow(tree,
+            UI.getCurrent().addWindow(new buildAddOWLClassWindow(
                     c -> new OWLEditorEvent.SubClassAddEvent(c, tree.getSelectedItem().getValue()), true));
         } else Notification.show("Notice",
                 "Please select a Super Class for your Class", Notification.Type.WARNING_MESSAGE);
@@ -172,7 +174,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     "Please select a Sibling Class for your Class", Notification.Type.WARNING_MESSAGE);
 
         else if (!checkOWLThing(tree.selectedItem))
-            UI.getCurrent().addWindow(new buildAddOWLClassWindow(tree,
+            UI.getCurrent().addWindow(new buildAddOWLClassWindow(
                     c -> new SiblingClassAddEvent(c, tree.getSelectedItem().getValue()), false));
 
         else Notification.show("Notice",
@@ -346,8 +348,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
     }
 
-    public class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
-            OWLEntityActionHandler<OWLEditorEvent.SubClassAddEvent, SiblingClassAddEvent, OWLEditorEvent.ClassRemoveEvent> {
+    public class OWLClassTree extends Tree implements TreeKit<OWLClassSource> {
 
         private final OWLClassHierarchicalContainer dataContainer;
         private final OWLClassSource selectedItem = new OWLClassSource();
@@ -364,7 +365,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             addValueChangeListener(this);
             setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId(OWLEditorData.OWLClassName);
-
+            OWLEditorEventBus.register(this);
         }
 
 
@@ -385,8 +386,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             }
         }
 
-
-        public void handleAddSiblingEntityEvent(SiblingClassAddEvent event) {
+        @Subscribe
+        public void handleAddSiblingEntityEvent(OWLEditorEvent.SiblingClassAddEvent event) {
             Boolean success = false;
             OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getDeclareClass());
 
@@ -432,6 +433,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             dataContainer.getEntityRemover().reset();
         }
 
+        @Subscribe
         public void handleAddSubEntityEvent(OWLEditorEvent.SubClassAddEvent event) {
             OWLAxiom clsDeclaration = owlFactory.getOWLDeclarationAxiom(event.getSubClass());
             OWLAxiom subClsAxiom = owlFactory.getOWLSubClassOfAxiom(event.getSubClass(), event.getSuperClass());
@@ -463,6 +465,32 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             nameField.setCaption("Class");
             nameField.setConverter(new StringToOWLClassConverter(editorKit));
             nameField.addValidator(new OWLClassValidator(editorKit));
+        }
+
+        public buildAddOWLClassWindow(@Nonnull OWLEntityAddHandler<OWLClass> adder,
+                                      @Nonnull Boolean isSub) {
+            super(adder, isSub);
+            nameField.setCaption("Class");
+            nameField.setConverter(new StringToOWLClassConverter(editorKit));
+            nameField.addValidator(new OWLClassValidator(editorKit));
+        }
+
+        @Override
+        protected Button.ClickListener getSaveListener() {
+            return click -> {
+                try {
+                    nameField.validate();
+                    if (isSub)
+                        OWLEditorEventBus.post(adder.addingEntity((OWLClass) nameField.getConvertedValue()));
+                    else
+                        OWLEditorEventBus.post((adder.addingEntity((OWLClass) nameField.getConvertedValue())));
+                    close();
+                } catch (Validator.InvalidValueException ex) {
+                    Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);
+                } catch (Exception e) {
+                    LOG.error(e.getMessage(), this);
+                }
+            };
         }
     }
 

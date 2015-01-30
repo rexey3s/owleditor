@@ -25,12 +25,18 @@ public abstract class AbstractAddOWLObjectWindow<T extends OWLLogicalEntity> ext
 
     protected final MTextField nameField = new MTextField().withInputPrompt("Enter entity name").withFullWidth();
     protected OWLEntityAddHandler<T> adder;
+    protected Boolean isSub;
     private OWLEntityActionHandler handler;
-    private Boolean isSub;
     public AbstractAddOWLObjectWindow() {
         initialize();
     }
 
+    public AbstractAddOWLObjectWindow(@Nonnull OWLEntityAddHandler<T> adder,
+                                      @Nonnull Boolean isSub) {
+        this.adder = adder;
+        this.isSub = isSub;
+        initialize();
+    }
     public AbstractAddOWLObjectWindow(@Nonnull OWLEntityActionHandler handler,
                                       @Nonnull OWLEntityAddHandler<T> adder,
                                       @Nonnull Boolean isSub) {

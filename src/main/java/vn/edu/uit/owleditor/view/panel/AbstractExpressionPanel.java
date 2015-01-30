@@ -85,12 +85,12 @@ public abstract class AbstractExpressionPanel<T extends OWLEntity> extends Panel
         } catch (InconsistentOntologyException inconsistentEx) {
             Notification.show("Inconsistent Ontology", "Please check your ontology axioms!", Notification.Type.ERROR_MESSAGE);
         } catch (NullPointerException nullEx) {
-            LOG.error(nullEx.getMessage(), this);
+            LOG.info(nullEx.getMessage(), this);
         }
         
     }
 
-    public void addInferredExpressions() throws InconsistentOntologyException {
+    public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
     }
 
     public void setPropertyDataSource(@Nonnull OWLObjectSource newDataSource) {

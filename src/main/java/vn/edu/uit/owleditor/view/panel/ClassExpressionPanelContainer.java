@@ -77,7 +77,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 }
             }
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException {
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getEquivalentClasses(Preconditions.checkNotNull(dataSource.getValue()))
                         .getEntitiesMinusTop();
@@ -118,7 +118,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
 
             }
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException {
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getSuperClasses(Preconditions.checkNotNull(dataSource.getValue()), false)
                         .getFlattened();
@@ -151,7 +151,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 }
             }
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException{
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 editorKit.getReasoner().getInstances(Preconditions.checkNotNull(dataSource.getValue()), true)
                         .getFlattened().forEach(i -> root.addComponent(new InferredLabel(i,
                         () -> editorKit.explain(owlFactory.getOWLClassAssertionAxiom(dataSource.getValue(), i)))));
@@ -182,7 +182,7 @@ public class ClassExpressionPanelContainer extends AbstractPanelContainer {
                 }
             }
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException {
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getDisjointClasses(Preconditions.checkNotNull(dataSource.getValue()))
                         .getFlattened();

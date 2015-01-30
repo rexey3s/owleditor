@@ -43,6 +43,7 @@ public class buildEditRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLA
                     SWRLAPIRule rule = editorKit.getSWRLActiveOntology()
                             .createSWRLRule(editor.getRuleName(),
                                     String.valueOf(editor.getValue()), editor.getRuleComment(), true);
+
                     OWLEditorEventBus.post(modifyExpression.modifyingExpression(rule));
                     close();
                 } catch (SWRLParseException ex) {

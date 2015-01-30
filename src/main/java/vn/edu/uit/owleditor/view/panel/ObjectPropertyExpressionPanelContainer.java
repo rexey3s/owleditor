@@ -177,7 +177,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
             }
 
             @Override
-            public void removeInferredExpressions() throws InconsistentOntologyException{
+            public void removeInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit
                         .getReasoner().getObjectPropertyDomains(Preconditions.checkNotNull(dataSource.getValue()), false)
                         .getFlattened();
@@ -211,7 +211,7 @@ public class ObjectPropertyExpressionPanelContainer extends AbstractPanelContain
                 }
             }
             @Override
-            public void removeInferredExpressions() throws InconsistentOntologyException {
+            public void removeInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit
                         .getReasoner().getObjectPropertyRanges(Preconditions.checkNotNull(dataSource.getValue()), false)
                         .getFlattened();

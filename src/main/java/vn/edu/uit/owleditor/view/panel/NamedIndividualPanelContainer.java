@@ -87,7 +87,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             }
 
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException{
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
                         .getTypes(Preconditions.checkNotNull(dataSource.getValue()), false)
                         .getFlattened();
@@ -134,7 +134,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             }
 
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException {
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
                         .getSameIndividuals(Preconditions.checkNotNull(dataSource.getValue()))
                         .getEntitiesMinusTop();
@@ -177,7 +177,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             }
 
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException {
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLNamedIndividual> implicitIndividuals = editorKit.getReasoner()
                         .getDifferentIndividuals(Preconditions.checkNotNull(dataSource.getValue()))
                         .getFlattened();
@@ -218,7 +218,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             }
 
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException{
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 editorKit.getActiveOntology().getDataPropertiesInSignature()
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLObjectProperty property) {
@@ -271,7 +271,7 @@ public class NamedIndividualPanelContainer extends AbstractPanelContainer {
             }
 
             @Override
-            public void addInferredExpressions() throws InconsistentOntologyException{
+            public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 editorKit.getActiveOntology().getDataPropertiesInSignature()
                         .forEach(dp -> dp.accept(new OWLPropertyExpressionVisitorAdapter() {
                             public void visit(OWLDataProperty property) {

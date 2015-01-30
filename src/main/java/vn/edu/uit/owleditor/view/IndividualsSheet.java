@@ -20,6 +20,7 @@ import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
+import vn.edu.uit.owleditor.data.list.OWLNamedIndividualContainer;
 import vn.edu.uit.owleditor.data.property.OWLNamedIndividualSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEntityActionHandler;
@@ -55,7 +56,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         editorKit = OWLEditorUI.getEditorKit();
         initialise();
     }
-    
+
     private void initialise() {
         hierarchy = new ClassHierarchicalPanel();
         individualsList = new IndividualList();
@@ -65,13 +66,10 @@ public class IndividualsSheet extends HorizontalLayout implements View {
             if (event.getProperty().getValue() != null) {
                 OWLClass clz = hierarchy.getSelectedItem().getValue();
                 if (clz.isOWLThing()) {
-                    individualsList.setContainerDataSource(editorKit
-                            .getDataFactory()
-                            .getOWLIndividualListContainer());
+                    individualsList.setContainerDataSource(new OWLNamedIndividualContainer(editorKit.getActiveOntology()));
                 } else
-                    individualsList.setContainerDataSource(editorKit
-                            .getDataFactory()
-                            .getOWLIndividualListContainer(clz));
+                    individualsList.setContainerDataSource(new OWLNamedIndividualContainer(
+                            editorKit.getActiveOntology(), clz));
 
             }
         });

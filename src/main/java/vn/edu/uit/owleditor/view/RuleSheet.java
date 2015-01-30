@@ -9,8 +9,11 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
+import org.swrlapi.exceptions.SWRLRuleException;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
@@ -29,9 +32,8 @@ import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 @VaadinUIScope
 @VaadinView(name = RuleSheet.NAME)
 public class RuleSheet extends VerticalLayout implements Action.Handler, View {
-
     public static final String NAME = "Rules";
-    
+    private static final Logger LOG = LoggerFactory.getLogger(RuleSheet.class);
     private static final Action ADD = new Action("Add");
     private static final Action EDIT = new Action("Edit");
     private static final Action REMOVE = new Action("Remove");
@@ -153,28 +155,32 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
 
     @Subscribe
     public void handleRuleAddEvent(OWLEditorEvent.RuleAddEvent event) {
-        SWRLAPIOWLOntology ruleOnt = editorKit.getSWRLActiveOntology();
-        if (ruleOnt.hasAssertedOWLAxiom(event.getAxiom())) {
-            handleAddRule(event.getAxiom());
-            Notification.show("Successfully added rule " + event.getAxiom().getRuleName(),
-                    Notification.Type.TRAY_NOTIFICATION);
-        } else
+        try {
+            SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
+            handleAddRule(rule);
+        } catch (SWRLRuleException e) {
             Notification.show("Cannot add rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
+            LOG.error(e.getMessage(), this);
+        }
+            
     }
 
 
     @Subscribe
     public void handleRuleRemoveEvent(OWLEditorEvent.RuleRemoveEvent event) {
         activeOntology.deleteSWRLRule(event.getAxiom().getRuleName());
-
-        if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getAxiom().getAxiomWithoutAnnotations())) {
-            rulesContainer.removeItem(event.getAxiom());
-            Notification.show("Successfully removed rule " + event.getAxiom().getRuleName(),
-                    Notification.Type.TRAY_NOTIFICATION);
-        } else
+        try {
+            SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
             Notification.show("Cannot remove rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
+            rulesContainer.removeItem(event.getAxiom());
+            LOG.error("Cannot remove rule ", rule);
+        } catch (SWRLRuleException e) {
+            Notification.show("Successfully removed rule " + event.getAxiom().getRuleName(),
+                    Notification.Type.TRAY_NOTIFICATION);
+            LOG.info(e.getMessage(), this);
+        }      
     }
 
     @Subscribe

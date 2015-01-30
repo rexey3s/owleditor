@@ -35,6 +35,7 @@ public class buildAddRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLAP
         return clicked -> {
             if (getSelectedTab() instanceof SWRLRuleEditor) {
                 try {
+
                     SWRLAPIRule rule = editorKit.getSWRLActiveOntology()
                             .createSWRLRule(editor.getRuleName(),
                                     String.valueOf(editor.getValue()), editor.getRuleComment(), true);

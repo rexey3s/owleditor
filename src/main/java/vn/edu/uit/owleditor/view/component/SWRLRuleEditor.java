@@ -26,9 +26,9 @@ public class SWRLRuleEditor extends VerticalLayout {
     }
 
     public String getRuleName() throws InvalidSWRLRuleNameException {
+        ruleName.validate();
         return ruleName.getValue();
     }
-
     public void setRuleName(String s) {
         ruleName.setValue(s);
     }

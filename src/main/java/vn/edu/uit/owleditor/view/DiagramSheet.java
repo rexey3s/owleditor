@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.view.diagram.AbstractDiagramLayout;
 import vn.edu.uit.owleditor.view.diagram.DnDTree;
@@ -25,6 +26,7 @@ import vn.edu.uit.owleditor.view.diagram.DnDTree;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -39,15 +41,17 @@ public class DiagramSheet extends VerticalLayout implements View {
     private final TabSheet tabSheet = new TabSheet();
     private final ClassDnDTree classDnDTree;
     private final EntityDnDTree entityDnDTree;
-
+    private final InferredEntityDnDTree afterClassify;
     //    private final ClassHierarchicalTree clzzTreeSource;
     public DiagramSheet() {
         classDnDTree = new ClassDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
         entityDnDTree = new EntityDnDTree(OWLEditorUI.getEditorKit().getActiveOntology());
+        afterClassify = new InferredEntityDnDTree(OWLEditorUI.getEditorKit(), OWLEditorUI.getEditorKit().getActiveOntology());
 //        clzzTreeSource = new ClassHierarchicalTree(OWLEditorUI.getEditorKit());
         DnDTree classTreeDiagram1 = new DnDTree();
         tabSheet.addTab(classDnDTree, "Classes");
         tabSheet.addTab(entityDnDTree, "Classes and Individuals");
+        tabSheet.addTab(afterClassify, "Sau khi phân loại");
 //        classTreeDiagram1.setData(clzzTreeSource.refreshTree());
         tabSheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         tabSheet.setSizeFull();
@@ -252,5 +256,95 @@ public class DiagramSheet extends VerticalLayout implements View {
         }
     }
 
+    public static class InferredEntityDnDTree extends AbstractDiagramLayout<OWLClass> {
+        private final JsonObject thingObject = new JsonObject();
+        private final OWLEditorKit editorKit;
+        private JsonArray thingArray;
+
+        public InferredEntityDnDTree(@Nonnull OWLEditorKit editorKit, @Nonnull OWLOntology ontology) {
+            super(ontology);
+            this.editorKit = editorKit;
+            thingObject.addProperty("name", "Thing");
+            thingObject.add("children", thingArray);
+            thingArray = new JsonArray();
+            reload();
+        }
+
+        @Override
+        protected void recursive(OWLOntology ontology, OWLClass child, OWLClass parent, JsonObject parentObject) {
+            visited.add(child);
+            final JsonObject childObject = new JsonObject();
+            childObject.addProperty("name", OWLEditorKitImpl.getShortForm(child));
+            childObject.addProperty("type", "class");
+            childObject.addProperty("size", randInt(2, 10) * SIZE);
+
+            if (parent != null && parentObject.has("children")) {
+
+                parentObject.get("children").getAsJsonArray().add(childObject);
+
+            } else if (parentObject.has("children")) {
+                if (EntitySearcher.getSuperClasses(child, ontology).size() == 0)
+                    parentObject.get("children").getAsJsonArray().add(childObject);
+
+            }
+            Collection<OWLClassExpression> childs = EntitySearcher.getSubClasses(child, ontology);
+
+            Set<OWLNamedIndividual> individuals = editorKit.getReasoner().getInstances(child, true).getFlattened();
+
+
+            if (individuals.size() > 0 || childs.size() > 0) {
+                final JsonArray childArray = new JsonArray();
+                childObject.add("children", childArray);
+                individuals.stream().forEach(i -> {
+                    final JsonObject iObject = new JsonObject();
+                    iObject.addProperty("name", "Individual: " + OWLEditorKitImpl.getShortForm(i));
+                    iObject.addProperty("type", "individual");
+                    childArray.add(iObject);
+                });
+
+                childObject.remove("size");
+                childs.forEach(
+                        ce -> ce.accept(new OWLClassExpressionVisitorAdapter() {
+                            public void visit(OWLClass owlClass) {
+                                recursive(ontology, owlClass, child, childObject);
+                            }
+                        })
+                );
+            }
+
+        }
+
+        @Override
+        protected OWLObjectVisitor initPopulationEngine(OWLOntology activeOntology, JsonObject topObject) {
+            return new OWLObjectVisitorAdapter() {
+                @Override
+                public void visit(@Nonnull OWLOntology ontology) {
+                    ontology.getClassesInSignature()
+                            .stream().filter(c -> !c.isOWLThing())
+                            .forEach(c -> c.accept(this));
+                }
+
+                @Override
+                public void visit(@Nonnull OWLClass owlClass) {
+                    if (!visited.contains(owlClass)) {
+                        recursive(activeOntology, owlClass, null, thingObject);
+                    }
+                }
+            };
+        }
+
+        @Override
+        public void reload() {
+            editorKit.getReasoner().flush();
+            visited.clear();
+            thingObject.remove("children");
+            thingArray = new JsonArray();
+            thingObject.add("children", thingArray);
+
+            activeOntology.accept(initPopulationEngine(activeOntology, thingObject));
+            LOG.info(thingObject.toString());
+            graph.setData(thingObject.toString());
+        }
+    }
 
 }

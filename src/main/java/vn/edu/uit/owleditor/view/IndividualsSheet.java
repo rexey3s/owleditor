@@ -118,7 +118,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
     @VaadinUIScope
     @VaadinComponent
     public static class IndividualList extends VerticalLayout implements
-            OWLEntityActionHandler<OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualAdded, OWLEditorEvent.IndividualRemove>,
+            OWLEntityActionHandler<OWLEditorEvent.IndividualAddEvent, OWLEditorEvent.IndividualAddEvent, OWLEditorEvent.IndividualRemoveEvent>,
             Container.Viewer {
 
         private final ListSelect list = new ListSelect();
@@ -179,7 +179,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
             act.addItem("Remove Individual", clicked -> ConfirmDialog.show(UI.getCurrent(),
                     "Are you sure ?", dialog -> {
                         if (dialog.isConfirmed()) {
-                            this.handleRemoveEntityEvent(new OWLEditorEvent.IndividualRemove(
+                            this.handleRemoveEntityEvent(new OWLEditorEvent.IndividualRemoveEvent(
                                     getSelectedProperty().getValue()
                             ));
                         } else {
@@ -215,12 +215,12 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         }
 
         @Override
-        public void handleAddSubEntityEvent(OWLEditorEvent.IndividualAdded event) {
+        public void handleAddSubEntityEvent(OWLEditorEvent.IndividualAddEvent event) {
 
         }
 
         @Override
-        public void handleAddSiblingEntityEvent(OWLEditorEvent.IndividualAdded event) {
+        public void handleAddSiblingEntityEvent(OWLEditorEvent.IndividualAddEvent event) {
             OWLDeclarationAxiom declareIndividual = editorKit.getOWLDataFactory().getOWLDeclarationAxiom(event.getIndividual());
             ChangeApplied ok = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), declareIndividual);
             if(ok == ChangeApplied.SUCCESSFULLY) {
@@ -234,7 +234,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         }
 
         @Override
-        public void handleRemoveEntityEvent(OWLEditorEvent.IndividualRemove event) {
+        public void handleRemoveEntityEvent(OWLEditorEvent.IndividualRemoveEvent event) {
             event.getIndividual().accept(editorKit.getEntityRemover());
             List<OWLOntologyChange> changes = editorKit
                     .getModelManager()
@@ -265,7 +265,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
                 return click -> {
                     try {
                         nameField.validate();
-                        handler.handleAddSiblingEntityEvent(new OWLEditorEvent.IndividualAdded((OWLNamedIndividual) nameField.getConvertedValue()));
+                        handler.handleAddSiblingEntityEvent(new OWLEditorEvent.IndividualAddEvent((OWLNamedIndividual) nameField.getConvertedValue()));
                         close();
                     }
                     catch (Validator.InvalidValueException ex) {

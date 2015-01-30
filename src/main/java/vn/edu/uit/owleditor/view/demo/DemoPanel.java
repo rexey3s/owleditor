@@ -83,7 +83,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
 
     private Component buildStartButton() {
         final VerticalLayout wrapper = new VerticalLayout();
-        final Button start = new Button("Suggest me");
+        final Button start = new Button("Gợi ý các thuộc tính");
         start.addStyleName(ValoTheme.BUTTON_HUGE);
         start.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         start.addClickListener(initStartClickListener());
@@ -113,16 +113,18 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
 
     private Button.ClickListener initStartClickListener() {
         return click -> {
-            try {
-                EditorUtils.checkNotNull(classSource.getValue(), "Please choose a Class");
-                EditorUtils.checkNotNull(individualSource.getValue(), "Please choose an Individual");
-                EditorUtils.checkNotNull(editorKit.getReasoner(), "Please turn on Reasoning");
 
-                body.removeComponent(start);
-                body.addComponent(buildWizard(classSource.getValue(), individualSource.getValue()));
-            } catch (NullPointerException ex) {
-                Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);
-            }
+            if (editorKit.getReasonerStatus()) {
+                try {
+                    EditorUtils.checkNotNull(classSource.getValue(), "Please choose a Class");
+                    EditorUtils.checkNotNull(individualSource.getValue(), "Please choose an Individual");
+
+                    body.removeComponent(start);
+                    body.addComponent(buildWizard(classSource.getValue(), individualSource.getValue()));
+                } catch (NullPointerException ex) {
+                    Notification.show(ex.getMessage(), Notification.Type.WARNING_MESSAGE);
+                }
+            } else Notification.show("Please start reasoner");
 
         };
     }
@@ -183,7 +185,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
     public void activeStepChanged(WizardStepActivationEvent event) {
         if (event.getActivatedStep() instanceof DemoUIFactory.FinishStep) {
             ((DemoUIFactory.FinishStep) event.getActivatedStep())
-                    .printNewType(editorKit.getReasoner(), individualSource.getValue());
+                    .printNewType(individualSource.getValue());
 
         }
     }

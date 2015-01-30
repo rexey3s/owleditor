@@ -8,7 +8,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.logging.Log;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -21,9 +20,11 @@ import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.list.OWL2DatatypeContainer;
 import vn.edu.uit.owleditor.data.property.OWLLiteralSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.view.IndividualsSheet;
+import vn.edu.uit.owleditor.view.component.InferredLabel;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/15/14.
+ *         Faculty of Computer Network and Telecommunication created on 12/15/14.
  */
 public class DemoUIFactory {
     private static final Log LOG = org.apache.commons.logging.LogFactory.getLog(DemoUIFactory.class);
@@ -257,17 +258,20 @@ public class DemoUIFactory {
     public interface DemoWizardStep extends WizardStep {
     }
 
-    static class FinishStep extends VerticalLayout implements WizardStep {
+    public static class FinishStep extends VerticalLayout implements WizardStep {
+        final OWLEditorKit editorKit;
 
-        public void printNewType(@Nonnull OWLReasoner reasoner, @Nonnull OWLNamedIndividual individual) {
-            reasoner.flush();
-            Set<OWLClass> types = reasoner.getTypes(individual, false).getFlattened();
+        public FinishStep() {
+            editorKit = OWLEditorUI.getEditorKit();
+
+        }
+
+        public void printNewType(@Nonnull OWLNamedIndividual individual) {
+            editorKit.getReasoner().flush();
+            Set<OWLClass> types = editorKit.getReasoner().getTypes(individual, true).getFlattened();
             for (OWLClass type : types) {
-                Label lb = new Label(OWLEditorKitImpl.getShortForm(type));
-                lb.addStyleName(ValoTheme.LABEL_COLORED);
-                lb.addStyleName(ValoTheme.LABEL_H2);
-                addComponent(lb);
-                setComponentAlignment(lb, Alignment.MIDDLE_CENTER);
+                addComponent(new InferredLabel(type, () -> editorKit.explain(editorKit.getOWLDataFactory()
+                        .getOWLClassAssertionAxiom(type, individual))));
             }
             setSpacing(true);
             setMargin(true);
@@ -344,10 +348,7 @@ public class DemoUIFactory {
 
         @Override
         public boolean passesFilter(Object itemId, Item item) throws UnsupportedOperationException {
-            if (filter.isEmpty()) return true;
-            else
-                return filter.contains(itemId);
-
+            return filter.isEmpty() || filter.contains(itemId);
         }
 
         @Override
@@ -496,7 +497,7 @@ public class DemoUIFactory {
                     "Are you sure about adding \"" + OWLEditorKitImpl.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
-                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAddEvent(newAxiom, subject));
+                            OWLEditorEventBus.post(new OWLEditorEvent.IndividualAxiomAddEvent(newAxiom, subject));
                             dialog.close();
                         } else
                             dialog.close();
@@ -559,7 +560,7 @@ public class DemoUIFactory {
                     "Are you sure about adding \"" + OWLEditorKitImpl.render(newAxiom) + "\"",
                     dialog -> {
                         if (dialog.isConfirmed()) {
-                            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAddEvent(newAxiom, subject));
+                            OWLEditorEventBus.post(new OWLEditorEvent.IndividualAxiomAddEvent(newAxiom, subject));
                             dialog.close();
 
                         } else
@@ -602,7 +603,7 @@ public class DemoUIFactory {
             EditorUtils.checkNotNull(selectedProperty.getValue(), "Please select an option");
             OWLIndividualAxiom axiom = factory
                     .getOWLDataPropertyAssertionAxiom(property, subject, selectedProperty.getValue());
-            OWLEditorUI.getGuavaEventBus().post(new OWLEditorEvent.IndividualAxiomAddEvent(axiom, subject));
+            OWLEditorEventBus.post(new OWLEditorEvent.IndividualAxiomAddEvent(axiom, subject));
 
         }
 
@@ -638,7 +639,7 @@ public class DemoUIFactory {
         }
         @Override
         public boolean onBack() {
-            return true;
+            return false;
         }
     }
 

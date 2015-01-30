@@ -139,7 +139,7 @@ public class DataPropertyDependenciesSearcher {
                         edges.add(buildDataEdge(renderer.render(clzz), renderer.render(node.getLiteral()), renderer.render(propertyAtom.getPredicate())));
                         extractClassFromRuleHead(rule).forEach(cls -> {
                             nodes.add(buildOWLObjectNode(cls));
-                            edges.add(buildDataEdge(renderer.render(node.getLiteral()), renderer.render(cls), "maybe a"));
+                            edges.add(buildDataEdge(renderer.render(node.getLiteral()), renderer.render(cls), "có thể là"));
                         });
                     }
 
@@ -156,7 +156,7 @@ public class DataPropertyDependenciesSearcher {
                                     nodes.add(buildOWLObjectNode(cls));
                                     edges.add(buildDataEdge(
                                             renderDataLiteral(entry.getKey(), entry.getValue()),
-                                            renderer.render(cls), "maybe a"));
+                                            renderer.render(cls), "có thể là"));
                                 });
                             });
                         consequence.put(variableDependencies, rule.getHead());

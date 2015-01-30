@@ -305,11 +305,11 @@ public final class OWLEditorEvent {
     /**
      * OWLNamedIndividual creation and removal events
      */
-    public static final class IndividualAdded extends
+    public static final class IndividualAddEvent extends
             EntityAddEvent<OWLNamedIndividual> {
         private final OWLNamedIndividual subject;
 
-        public IndividualAdded(OWLNamedIndividual subject) {
+        public IndividualAddEvent(OWLNamedIndividual subject) {
             super(subject, null);
             this.subject = subject;
         }
@@ -320,11 +320,11 @@ public final class OWLEditorEvent {
 
     }
 
-    public static final class IndividualRemove extends
+    public static final class IndividualRemoveEvent extends
             EntityRemoveEvent<OWLNamedIndividual> {
         private final OWLNamedIndividual individual;
 
-        public IndividualRemove(OWLNamedIndividual individual) {
+        public IndividualRemoveEvent(OWLNamedIndividual individual) {
             super(individual);
             this.individual = individual;
         }

@@ -115,7 +115,7 @@ public class ObjectPropertyDependenciesSearcher {
                     edges.add(buildEdges(clzz, clz, renderer.render(propertyAtom.getPredicate())));
                     extractClassFromRuleHead(rule).forEach(result -> {
                         nodes.add(buildEntityNode(result));
-                        edges.add(buildEdges(clz, result, "maybe a"));
+                        edges.add(buildEdges(clz, result, "có thể là"));
                     });
                 });
 

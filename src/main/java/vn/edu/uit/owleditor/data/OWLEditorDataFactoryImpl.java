@@ -18,15 +18,16 @@ import javax.annotation.Nonnull;
 public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
     private final OWLEditorKitImpl editorKit;
-
+    private OWLClassHierarchicalContainer classHierarchicalContainer;
     public OWLEditorDataFactoryImpl(@Nonnull OWLEditorKitImpl eKit) {
         this.editorKit = eKit;
+        OWLClassHierarchicalContainer classHierarchicalContainer = new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
     }
 
 
     @Override
     public OWLClassHierarchicalContainer getOWLClassHierarchicalContainer() {
-        return new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
+        return classHierarchicalContainer;
     }
 
     @Override

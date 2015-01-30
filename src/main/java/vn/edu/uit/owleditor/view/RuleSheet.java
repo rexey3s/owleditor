@@ -152,9 +152,9 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     }
 
     @Subscribe
-    public void afterRuleAdded(OWLEditorEvent.RuleAddEvent event) {
-
-        if (editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getAxiom().getAxiomWithoutAnnotations())) {
+    public void handleRuleAddEvent(OWLEditorEvent.RuleAddEvent event) {
+        SWRLAPIOWLOntology ruleOnt = editorKit.getSWRLActiveOntology();
+        if (ruleOnt.hasAssertedOWLAxiom(event.getAxiom())) {
             handleAddRule(event.getAxiom());
             Notification.show("Successfully added rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
@@ -165,7 +165,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
 
 
     @Subscribe
-    public void afterRuleRemoved(OWLEditorEvent.RuleRemoveEvent event) {
+    public void handleRuleRemoveEvent(OWLEditorEvent.RuleRemoveEvent event) {
         activeOntology.deleteSWRLRule(event.getAxiom().getRuleName());
 
         if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getAxiom().getAxiomWithoutAnnotations())) {
@@ -178,7 +178,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     }
 
     @Subscribe
-    public void afterRuleModified(OWLEditorEvent.RuleModifyEvent event) {
+    public void handleRuleModifyEvent(OWLEditorEvent.RuleModifyEvent event) {
         activeOntology.deleteSWRLRule(event.getOldAxiom().getRuleName());
 
         if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getOldAxiom().getAxiomWithoutAnnotations())

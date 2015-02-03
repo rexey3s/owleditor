@@ -90,6 +90,8 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         initialise();    
         activeOntology = modelManager.createOntology(documentIRI);
         swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
+        editorDataFactory.setActiveOntology(this.activeOntology);
+
 //        activeOntology.getDirectImportsDocuments();
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
         prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
@@ -107,6 +109,8 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
+        editorDataFactory.setActiveOntology(this.activeOntology);
+
 //        activeOntology.getDirectImportsDocuments();
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
         prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");

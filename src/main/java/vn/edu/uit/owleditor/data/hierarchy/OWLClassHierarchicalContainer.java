@@ -46,7 +46,7 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
     }
 
     public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
-        if (!activeOntology.equals(ontology)) {
+        if (!ontology.equals(activeOntology)) {
             removeItemRecursively(thing);
             addThing();
 

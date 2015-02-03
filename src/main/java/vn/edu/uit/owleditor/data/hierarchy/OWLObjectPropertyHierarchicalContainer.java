@@ -46,7 +46,7 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
 
     @Override
     public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
-        if (!activeOntology.equals(ontology)) {
+        if (!ontology.equals(activeOntology)) {
             removeItemRecursively(topObjectProp);
             addTopObjectProperty();
 

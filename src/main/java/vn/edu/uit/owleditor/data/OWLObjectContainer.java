@@ -2,7 +2,6 @@ package vn.edu.uit.owleditor.data;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
 
@@ -15,7 +14,7 @@ public interface OWLObjectContainer {
 
     public OWLOntology getActiveOntology();
 
-    public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException;
+    public void setActiveOntology(OWLOntology ontology);
 
     /**
      * Provide short form

@@ -33,9 +33,10 @@ public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
-    private Layout currentList = new HorizontalLayout();
+    private Component currentList = new HorizontalLayout();
+    private Layout entriesPanel;
     public EntryView() {
-        final Component entriesPanel = buildEntryPanel();
+        entriesPanel = buildEntryPanel();
         Responsive.makeResponsive(entriesPanel);
         addComponent(entriesPanel);
         setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
@@ -44,9 +45,9 @@ public class EntryView extends VerticalLayout {
     }
 
     public void addCurrentOntologies() {
-        removeComponent(currentList);
+        entriesPanel.removeComponent(currentList);
         currentList = buildCurrentList();
-        addComponent(currentList);
+        entriesPanel.addComponent(currentList);
     }
 
     private Layout buildEntryPanel() {
@@ -57,7 +58,7 @@ public class EntryView extends VerticalLayout {
                 .withSpacing(true);
     }
 
-    private Layout buildCurrentList() {
+    private Component buildCurrentList() {
         Table list = new Table();
         list.setContainerDataSource(buildOntologiesContainer());
         list.setSelectable(true);
@@ -67,7 +68,6 @@ public class EntryView extends VerticalLayout {
 //                selectedRow.setValue((SWRLAPIRule) event.getProperty().getValue());
 //            }
 //        });
-        list.setSizeFull();
         return new MHorizontalLayout(list)
                 .withAlign(list, Alignment.MIDDLE_RIGHT)
                 .withSpacing(true);

@@ -14,7 +14,7 @@ public interface OWLObjectContainer {
 
     public OWLOntology getActiveOntology();
 
-    public void setActiveOntology(OWLOntology ontology);
+    public void setActiveOntology(@Nonnull OWLOntology ontology);
 
     /**
      * Provide short form

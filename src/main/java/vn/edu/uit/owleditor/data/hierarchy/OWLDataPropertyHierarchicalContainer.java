@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
@@ -15,6 +16,7 @@ import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -55,13 +57,15 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     }
 
     @Override
-    public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
+    public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
         if (!ontology.equals(activeOntology)) {
             removeItemRecursively(topDataProp);
             addTopDataProperty();
-
+            activeOntology = ontology;
+            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
             manager = activeOntology.getOWLOntologyManager();
-            Set<OWLDataProperty> allProperties = ontology.getDataPropertiesInSignature();
+
+            Set<OWLDataProperty> allProperties = activeOntology.getDataPropertiesInSignature();
             allProperties.remove(topDataProp);
             allProperties.forEach(d -> {
                 if (!containsId(d)) {

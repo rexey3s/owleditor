@@ -45,14 +45,14 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         }
     }
 
-    public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
+    public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
         if (!ontology.equals(activeOntology)) {
             removeItemRecursively(thing);
             addThing();
 
             activeOntology = ontology;
             entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-            Set<OWLClass> allClasses = ontology.getClassesInSignature();
+            Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
             allClasses.remove(thing);
             allClasses.forEach(c -> {
                 if (!containsId(c)) {

@@ -3,6 +3,7 @@ package vn.edu.uit.owleditor.data.hierarchy;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.vaadin.spring.annotation.VaadinComponent;
@@ -10,7 +11,9 @@ import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
+import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -45,12 +48,14 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
     }
 
     @Override
-    public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
+    public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
         if (!ontology.equals(activeOntology)) {
             removeItemRecursively(topObjectProp);
             addTopObjectProperty();
 
-            Set<OWLObjectProperty> allProperties = ontology.getObjectPropertiesInSignature();
+            activeOntology = ontology;
+            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+            Set<OWLObjectProperty> allProperties = activeOntology.getObjectPropertiesInSignature();
             allProperties.remove(topObjectProp);
             allProperties.forEach(o -> {
                 if (!containsId(o)) {

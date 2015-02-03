@@ -23,7 +23,6 @@ import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 
 /**
@@ -36,7 +35,7 @@ public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);
     private static final String TEMP_FILE_DIR = "./";
-
+    private Layout currentList = new HorizontalLayout();
     public EntryView() {
         final Component entriesPanel = buildEntryPanel();
         Responsive.makeResponsive(entriesPanel);
@@ -46,9 +45,10 @@ public class EntryView extends VerticalLayout {
         setSizeFull();
     }
 
-    @PostConstruct
-    public void initOntologyList() {
-        addComponent(buildCurrentList());
+    public void addCurrentOntologies() {
+        removeComponent(currentList);
+        currentList = buildCurrentList();
+        addComponent(currentList);
     }
 
     private Layout buildEntryPanel() {

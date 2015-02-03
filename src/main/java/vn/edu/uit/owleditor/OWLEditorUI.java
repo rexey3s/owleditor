@@ -66,9 +66,9 @@ public class OWLEditorUI extends UI {
         if (eKit != null && eKit.getActiveOntology() != null) {
             ConfirmDialog.show(this, "Do you want to load a new ontology ?", dialog -> {
                 if (dialog.isConfirmed()) {
+                    entryView.addCurrentOntologies();
                     setContent(entryView);
 //                    eKit.removeActiveOntology();
-
                 } else {
                     setContent(new MainView());
                 }

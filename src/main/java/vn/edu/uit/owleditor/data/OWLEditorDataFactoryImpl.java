@@ -2,9 +2,11 @@ package vn.edu.uit.owleditor.data;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIRule;
-import vn.edu.uit.owleditor.core.OWLEditorKit;
-import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLObjectPropertyHierarchicalContainer;
@@ -15,40 +17,65 @@ import javax.annotation.Nonnull;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/1/2014.
+ *         Faculty of Computer Network and Telecommunication created on 12/1/2014.
  */
+@Repository
 public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
+    private static final Logger LOG = LoggerFactory.getLogger(OWLEditorDataFactory.class);
 
-    private final OWLEditorKit editorKit;
     private final OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
-    public OWLEditorDataFactoryImpl(@Nonnull OWLEditorKitImpl eKit) {
-        this.editorKit = eKit;
+
+    private OWLOntology activeOntology;
+
+    @Autowired
+    private OWLClassHierarchicalContainer classHierarchicalContainer;
+
+    @Autowired
+    private OWLObjectPropertyHierarchicalContainer objectPropertyHierarchicalContainer;
+
+    @Autowired
+    private OWLDataPropertyHierarchicalContainer dataPropertyHierarchicalContainer;
+
+    public OWLEditorDataFactoryImpl() {
+        
     }
 
 
     @Override
+    public synchronized void setActiveOntology(OWLOntology ontology) {
+        this.activeOntology = ontology;
+        try {
+            classHierarchicalContainer.setActiveOntology(activeOntology);
+            objectPropertyHierarchicalContainer.setActiveOntology(activeOntology);
+            dataPropertyHierarchicalContainer.setActiveOntology(activeOntology);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+    }
+
+    @Override
     public OWLClassHierarchicalContainer getOWLClassHierarchicalContainer() {
-        return new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
+        return classHierarchicalContainer;
     }
 
     @Override
     public OWLObjectPropertyHierarchicalContainer getOWLObjectPropertyHierarchicalContainer() {
-        return new OWLObjectPropertyHierarchicalContainer(editorKit.getActiveOntology());
+        return objectPropertyHierarchicalContainer;
     }
 
     @Override
     public OWLDataPropertyHierarchicalContainer getOWLDataPropertyHierarchicalContainer() {
-        return new OWLDataPropertyHierarchicalContainer(editorKit.getActiveOntology());
+        return dataPropertyHierarchicalContainer;
     }
 
     @Override
     public OWLNamedIndividualContainer getOWLIndividualListContainer() {
-        return new OWLNamedIndividualContainer(editorKit.getActiveOntology());
+        return new OWLNamedIndividualContainer(activeOntology);
     }
 
     @Override
     public OWLNamedIndividualContainer getOWLIndividualListContainer(@Nonnull OWLClass owlClass) {
-        return new OWLNamedIndividualContainer(editorKit.getActiveOntology(), owlClass);
+        return new OWLNamedIndividualContainer(activeOntology, owlClass);
     }
 
     @Override

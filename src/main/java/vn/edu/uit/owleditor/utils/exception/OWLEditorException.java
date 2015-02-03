@@ -6,6 +6,31 @@ package vn.edu.uit.owleditor.utils.exception;
  */
 public class OWLEditorException {
 
+    public static class OWLHierarichicalContainerException extends Exception {
 
+        public OWLHierarichicalContainerException(String message) {
+            super(message);
+        }
+
+    }
+
+    public static class DuplicatedActiveOntologyException extends RuntimeException {
+
+
+        public DuplicatedActiveOntologyException() {
+        }
+
+        public DuplicatedActiveOntologyException(String message) {
+            super(message);
+        }
+
+        public DuplicatedActiveOntologyException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public DuplicatedActiveOntologyException(Throwable cause) {
+            super(cause);
+        }
+    }
 
 }

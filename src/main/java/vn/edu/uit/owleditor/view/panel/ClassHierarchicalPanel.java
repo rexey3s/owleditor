@@ -44,8 +44,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     private static final Action ADD_SUB = new Action("Add SubClass");
     private static final Action ADD_SIBLING = new Action("Add SiblingClass");
     private static final Action REMOVE = new Action("Remove");
-    private static final Action[] ACTIONS = new Action[]{ADD_SUB,
-            ADD_SIBLING, REMOVE};
+    private static final Action[] ACTIONS = new Action[]{ADD_SUB, ADD_SIBLING, REMOVE};
 
     private final OWLClassTree tree;
     public ClassHierarchicalPanel() {

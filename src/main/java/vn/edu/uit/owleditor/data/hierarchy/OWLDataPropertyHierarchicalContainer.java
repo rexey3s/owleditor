@@ -8,10 +8,13 @@ import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
+import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
+import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 
@@ -19,41 +22,51 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/22/2014.
  */
-@SuppressWarnings({"unchecked"})
+@VaadinComponent
 public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
 
     private final OWLDataProperty topDataProp = OWLManager.getOWLDataFactory().getOWLTopDataProperty();
 
-
     private final OWLDataFactory factory = OWLManager.getOWLDataFactory();
-    private final OWLOntologyManager manager;
+    private OWLOntologyManager manager;
 
-    public OWLDataPropertyHierarchicalContainer(@Nonnull OWLOntology ontology) {
-        super(ontology);
-        manager = ontology.getOWLOntologyManager();
 
+    @PostConstruct
+    private void initialise() {
         addContainerProperty(OWLEditorData.OWLDataPropertyName, String.class, "Unknown");
         addContainerProperty(OWLEditorData.OWLFunctionalProperty, Boolean.class, null);
         addContainerProperty(OWLEditorData.OWLEntityIcon, Resource.class, null);
-
-        addItem(topDataProp);
-        getContainerProperty(topDataProp, OWLEditorData.OWLDataPropertyName).setValue("TopDataProperty");
-
-        getContainerProperty(topDataProp, OWLEditorData.OWLFunctionalProperty)
-                .setValue(containedInOntology(factory.getOWLFunctionalDataPropertyAxiom(topDataProp)));
-        checkFunctionalIcon(topDataProp);
-        setChildrenAllowed(topDataProp, true);
-        Set<OWLDataProperty> allProperties = ontology.getDataPropertiesInSignature();
-        allProperties.remove(topDataProp);
-        allProperties.forEach(d -> {
-            if (!containsId(d)) {
-                recursive(activeOntology, d, null);
-            }
-        });
-
+        addTopDataProperty();
     }
 
+    private void addTopDataProperty() {
+        if (!containsId(topDataProp)) {
+            addItem(topDataProp);
+            getContainerProperty(topDataProp, OWLEditorData.OWLDataPropertyName).setValue("TopDataProperty");
+            getContainerProperty(topDataProp, OWLEditorData.OWLFunctionalProperty)
+                    .setValue(containedInOntology(factory.getOWLFunctionalDataPropertyAxiom(topDataProp)));
+            checkFunctionalIcon(topDataProp);
+            setChildrenAllowed(topDataProp, true);
+        }
+    }
 
+    @Override
+    public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
+        if (!activeOntology.equals(ontology)) {
+            removeItemRecursively(topDataProp);
+            addTopDataProperty();
+
+            manager = activeOntology.getOWLOntologyManager();
+            Set<OWLDataProperty> allProperties = ontology.getDataPropertiesInSignature();
+            allProperties.remove(topDataProp);
+            allProperties.forEach(d -> {
+                if (!containsId(d)) {
+                    recursive(activeOntology, d, null);
+                }
+            });
+        } else
+            throw new OWLEditorException.DuplicatedActiveOntologyException("Duplicated active ontology");
+    }
 
     @SuppressWarnings("unchecked")
     private void recursive(OWLOntology ontology, OWLDataProperty child, OWLDataProperty parent) {
@@ -173,4 +186,6 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
             }
         };
     }
+
+
 }

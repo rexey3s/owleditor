@@ -5,36 +5,54 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
+import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
+import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
+import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.Set;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
+@VaadinComponent
 public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
     private final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
 
-    @SuppressWarnings("unchecked")
-    public OWLClassHierarchicalContainer(@Nonnull OWLOntology ontology) {
-        super(ontology);
+    @PostConstruct
+    private void initialise() {
         addContainerProperty(OWLEditorData.OWLClassName, String.class, "");
-        
-        addItem(thing);
-        getItem(thing).getItemProperty(OWLEditorData.OWLClassName).setValue("Thing");
-        setChildrenAllowed(thing, true);
-        
-        Set<OWLClass> allClasses = ontology.getClassesInSignature();
-        allClasses.remove(thing);
+        addThing();
+    }
 
-        allClasses.forEach(c -> {
-            if(!containsId(c)) {
-                recursive(activeOntology, c, null);
-            }
-        });
+    private void addThing() {
+        if (!containsId(thing)) {
+            addItem(thing);
+            getItem(thing).getItemProperty(OWLEditorData.OWLClassName).setValue("Thing");
+            setChildrenAllowed(thing, true);
+        }
+    }
+
+    public void setActiveOntology(OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
+        if (!activeOntology.equals(ontology)) {
+            removeItemRecursively(thing);
+            addThing();
+
+            activeOntology = ontology;
+            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+            Set<OWLClass> allClasses = ontology.getClassesInSignature();
+            allClasses.remove(thing);
+            allClasses.forEach(c -> {
+                if (!containsId(c)) {
+                    recursive(activeOntology, c, null);
+                }
+            });
+        } else throw new OWLEditorException.DuplicatedActiveOntologyException("Duplicated active ontology");
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {

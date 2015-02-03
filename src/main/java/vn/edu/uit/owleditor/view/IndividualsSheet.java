@@ -107,6 +107,7 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         setSpacing(true);
         setSizeFull();
     }
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
 

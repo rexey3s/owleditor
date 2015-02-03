@@ -72,17 +72,17 @@ public class EntryView extends VerticalLayout {
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
             }
-            catch (NullPointerException nullEx) {
-                LOG.error(nullEx.getMessage());
-            }
+//            catch (NullPointerException nullEx) {
+//                LOG.error(nullEx.getMessage());
+//            }
             catch (OWLOntologyCreationException e) {
                 Notification.show("Ontology Creation Error", Notification.Type.ERROR_MESSAGE);
                 LOG.error(e.getMessage());
-            } 
-            catch (Exception e) {
-//                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
-                LOG.error(e.getMessage());
             }
+//            catch (Exception e) {
+//                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
+//                LOG.error(e.getMessage());
+//            }
 
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
         

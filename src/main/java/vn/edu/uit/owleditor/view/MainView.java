@@ -33,7 +33,7 @@ public class MainView extends HorizontalLayout {
         root.addTab(new DataPropertiesSheet(), "Data Properties");
         root.addTab(new IndividualsSheet(), "Individuals");
         root.addTab(new RuleSheet(), "SWRL Rules");
-        root.addTab(new DemoSheet(), "Hỗ trợ phân loại");
+        root.addTab(new DemoSheet(), "Classification");
         DiagramSheet diagramSheet = new DiagramSheet();
         root.addTab(diagramSheet, "Diagram");
         root.addSelectedTabChangeListener(event -> {

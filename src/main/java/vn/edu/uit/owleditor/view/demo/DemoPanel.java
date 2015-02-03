@@ -83,7 +83,7 @@ public class DemoPanel extends VerticalLayout implements WizardProgressListener 
 
     private Component buildStartButton() {
         final VerticalLayout wrapper = new VerticalLayout();
-        final Button start = new Button("Gợi ý các thuộc tính");
+        final Button start = new Button("Suggestions");
         start.addStyleName(ValoTheme.BUTTON_HUGE);
         start.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         start.addClickListener(initStartClickListener());

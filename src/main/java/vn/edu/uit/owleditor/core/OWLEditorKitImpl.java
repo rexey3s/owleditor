@@ -93,7 +93,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     }
     
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
-        addMoreOntology(documentIRI);
+        activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         initialise();
     }
     

@@ -205,10 +205,11 @@ public class OWLEditorKitImpl implements OWLEditorKit {
 
     public void setActiveOntology(OWLOntology activeOntology) {
         this.activeOntology = activeOntology;
-        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
+        editorDataFactory.setActiveOntology(this.activeOntology);
+        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(this.activeOntology);
         bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
         parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
-        parser.setDefaultOntology(activeOntology);
+        parser.setDefaultOntology(this.activeOntology);
     }
 
 

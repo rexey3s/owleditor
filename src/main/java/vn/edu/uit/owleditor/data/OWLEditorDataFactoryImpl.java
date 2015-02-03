@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
  */
 @Repository
 public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
-    private static final Logger LOG = LoggerFactory.getLogger(OWLEditorDataFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OWLEditorDataFactoryImpl.class);
 
     private final OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
 
@@ -42,14 +42,14 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
 
     @Override
-    public synchronized void setActiveOntology(OWLOntology ontology) {
+    public void setActiveOntology(OWLOntology ontology) {
         this.activeOntology = ontology;
         try {
             classHierarchicalContainer.setActiveOntology(activeOntology);
             objectPropertyHierarchicalContainer.setActiveOntology(activeOntology);
             dataPropertyHierarchicalContainer.setActiveOntology(activeOntology);
         } catch (Exception ex) {
-            LOG.error(ex.getMessage());
+            LOG.error("setActiveOntology: " + ex.getMessage());
         }
     }
 

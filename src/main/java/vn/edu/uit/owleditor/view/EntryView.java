@@ -82,7 +82,7 @@ public class EntryView extends VerticalLayout {
         OWLEditorUI.getEditorKit().getModelManager().getOntologies().forEach(ont -> {
             container.addItem(ont);
             container.getContainerProperty(ont, "IRI").setValue(
-                    ont.isAnonymous() ? "" : ont.getOntologyID().getDefaultDocumentIRI().get());
+                    ont.isAnonymous() ? "" : ont.getOntologyID().getDefaultDocumentIRI().get().toQuotedString());
             container.getContainerProperty(ont, "LogicalAxioms").setValue(ont.getLogicalAxiomCount());
             container.getContainerProperty(ont, "Type")
                     .setValue(OWLEditorUI.getEditorKit().getModelManager().getOntologyFormat(ont).toString());

@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRenderer;
@@ -31,7 +32,6 @@ import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
-import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -56,6 +56,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private SWRLAPIRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
+    @Autowired
     private OWLEditorDataFactory editorDataFactory;
     private PrefixManager prefixManager;
     private OWLOntology activeOntology;
@@ -127,7 +128,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         reasonerFactory = PelletReasonerFactory.getInstance();
         explanationOrderer = new ExplanationOrdererImpl(modelManager);
         parser = OWLManager.createManchesterParser();
-        editorDataFactory = new OWLEditorDataFactoryImpl(this);
+//        editorDataFactory = new OWLEditorDataFactoryImpl(this);
     }
 
 

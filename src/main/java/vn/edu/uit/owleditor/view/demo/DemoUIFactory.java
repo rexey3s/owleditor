@@ -449,7 +449,7 @@ public class DemoUIFactory {
             editorKit = OWLEditorUI.getEditorKit();
             this.property = property;
             individualList = new IndividualsSheet.IndividualList();
-            OWLClassHierarchicalContainer container = new OWLClassHierarchicalContainer(editorKit.getActiveOntology());
+            OWLClassHierarchicalContainer container = OWLEditorUI.getEditorKit().getDataFactory().getOWLClassHierarchicalContainer();
             owlClassTree.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             owlClassTree.setItemCaptionPropertyId(OWLEditorData.OWLClassName);
             Collection<OWLClass> filering = (new ObjectPropertyRangeExtrator(property,

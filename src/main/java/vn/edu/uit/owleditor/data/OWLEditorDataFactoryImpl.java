@@ -44,13 +44,13 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     @Override
     public void setActiveOntology(OWLOntology ontology) {
         this.activeOntology = ontology;
-        try {
+//        try {
             classHierarchicalContainer.setActiveOntology(activeOntology);
             objectPropertyHierarchicalContainer.setActiveOntology(activeOntology);
             dataPropertyHierarchicalContainer.setActiveOntology(activeOntology);
-        } catch (Exception ex) {
-            LOG.error("setActiveOntology: " + ex.getMessage());
-        }
+//        } catch (Exception ex) {
+//            LOG.error("setActiveOntology: " + ex.getMessage());
+//        }
     }
 
     @Override

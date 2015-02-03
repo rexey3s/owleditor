@@ -22,6 +22,10 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
 
     private final OWLObjectProperty topObjectProp = OWLManager.getOWLDataFactory().getOWLTopObjectProperty();
 
+    public OWLObjectPropertyHierarchicalContainer() {
+        super();
+    }
+
 
     @PostConstruct
     private void initialise() {

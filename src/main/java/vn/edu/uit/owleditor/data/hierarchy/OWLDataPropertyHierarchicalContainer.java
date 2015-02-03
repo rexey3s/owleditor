@@ -30,6 +30,10 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     private final OWLDataFactory factory = OWLManager.getOWLDataFactory();
     private OWLOntologyManager manager;
 
+    public OWLDataPropertyHierarchicalContainer() {
+        super();
+    }
+
 
     @PostConstruct
     private void initialise() {

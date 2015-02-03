@@ -9,7 +9,6 @@ import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
 import vn.edu.uit.owleditor.data.OWLObjectContainer;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 
 import javax.annotation.Nonnull;
 
@@ -40,7 +39,6 @@ public abstract class AbstractOWLObjectHierarchicalContainer extends Hierarchica
                 change.getAxiom().accept(nodeRemover);
             }
         };
-        OWLEditorEventBus.register(this);
     }
 
 

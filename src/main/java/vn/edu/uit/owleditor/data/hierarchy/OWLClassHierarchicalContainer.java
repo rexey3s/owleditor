@@ -24,6 +24,10 @@ import java.util.Set;
 public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
     private final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
 
+    public OWLClassHierarchicalContainer() {
+        super();
+    }
+
     @PostConstruct
     private void initialise() {
         addContainerProperty(OWLEditorData.OWLClassName, String.class, "");

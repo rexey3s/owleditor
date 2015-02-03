@@ -1,5 +1,7 @@
 package vn.edu.uit.owleditor.view;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
@@ -59,7 +61,7 @@ public class EntryView extends VerticalLayout {
 
     private Layout buildCurrentList() {
         Table list = new Table();
-        list.setContainerDataSource(OWLEditorUI.getOntologyRepository());
+        list.setContainerDataSource(buildOntologiesContainer());
         list.setSelectable(true);
 //        rulesTable.addActionHandler(this);
 //        list.addValueChangeListener(event -> {
@@ -74,6 +76,21 @@ public class EntryView extends VerticalLayout {
 
     }
 
+    private Container buildOntologiesContainer() {
+        final Container container = new IndexedContainer();
+        container.addContainerProperty("IRI", String.class, "");
+        container.addContainerProperty("LogicalAxioms", Integer.class, "");
+        container.addContainerProperty("Type", String.class, "");
+        OWLEditorUI.getEditorKit().getModelManager().getOntologies().forEach(ont -> {
+            container.addItem(ont);
+            container.getContainerProperty(ont, "IRI").setValue(ont.getOntologyID().getDefaultDocumentIRI().get());
+            container.getContainerProperty(ont, "LogicalAxioms").setValue(ont.getLogicalAxiomCount());
+            container.getContainerProperty(ont, "Type")
+                    .setValue(OWLEditorUI.getEditorKit().getModelManager().getOntologyFormat(ont));
+
+        });
+        return container;
+    }
     private Layout buildUrlEntry() {
         final MTextField urlField = new MTextField().withWidth("350px");
         final MButton openBtn = new MButton("Open", click -> {

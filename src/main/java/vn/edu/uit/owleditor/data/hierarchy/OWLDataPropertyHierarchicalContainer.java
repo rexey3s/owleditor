@@ -48,7 +48,7 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
             addItem(topDataProp);
             getContainerProperty(topDataProp, OWLEditorData.OWLDataPropertyName).setValue("TopDataProperty");
             getContainerProperty(topDataProp, OWLEditorData.OWLFunctionalProperty)
-                    .setValue(containedInOntology(factory.getOWLFunctionalDataPropertyAxiom(topDataProp)));
+                    .setValue(true);
             checkFunctionalIcon(topDataProp);
             setChildrenAllowed(topDataProp, true);
         }
@@ -114,7 +114,8 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
         );
 
     }
-    public Boolean containedInOntology(OWLAxiom axiom) {
+
+    private Boolean containedInOntology(OWLAxiom axiom) {
         return activeOntology.containsAxiom(axiom);
     }
 

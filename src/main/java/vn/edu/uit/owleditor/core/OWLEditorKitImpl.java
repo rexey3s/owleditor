@@ -74,7 +74,6 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private ShortFormProvider sfpFormat;
     private BidirectionalShortFormProvider bidirectionalSfp;
     public OWLEditorKitImpl() {
-        initialise();
 
     }
 
@@ -86,6 +85,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     public static String render(OWLObject object) {
         return renderer.render(object);
     }
+
 
     public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         activeOntology = modelManager.createOntology(documentIRI);

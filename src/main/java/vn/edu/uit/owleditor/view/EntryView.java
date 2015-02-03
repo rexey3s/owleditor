@@ -17,8 +17,11 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.event.OWLEditorEvent;
+import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 
 /**
@@ -37,11 +40,14 @@ public class EntryView extends VerticalLayout {
         Responsive.makeResponsive(entriesPanel);
         addComponent(entriesPanel);
         setComponentAlignment(entriesPanel, Alignment.MIDDLE_CENTER);
-        addStyleName("owleditor-entry-view");
-        
+        addStyleName("owleditor-entry-view");        
         setSizeFull();
     }
 
+    @PostConstruct
+    public void initOntologyList() {
+        addComponent(buildCurrentList());
+    }
 
     private Layout buildEntryPanel() {
 
@@ -49,6 +55,23 @@ public class EntryView extends VerticalLayout {
                 .withStyleName("entry-panel")
                 .withWidth("500px")
                 .withSpacing(true);
+    }
+
+    private Layout buildCurrentList() {
+        Table list = new Table();
+        list.setContainerDataSource(OWLEditorUI.getOntologyRepository());
+        list.setSelectable(true);
+//        rulesTable.addActionHandler(this);
+//        list.addValueChangeListener(event -> {
+//            if (event.getProperty().getValue() != null) {
+//                selectedRow.setValue((SWRLAPIRule) event.getProperty().getValue());
+//            }
+//        });
+        list.setSizeFull();
+        return new MHorizontalLayout(list)
+                .withAlign(list, Alignment.MIDDLE_RIGHT)
+                .withSpacing(true);
+
     }
 
     private Layout buildUrlEntry() {
@@ -60,9 +83,7 @@ public class EntryView extends VerticalLayout {
                 if (!s.substring(0,7).equals("http://")) {
                     urlField.setValue("http://" + s);
                 } 
-//                if(!s.substring(0,8).equals("https://")) {
-//                    urlField.setValue("https://" + s);
-//                }
+
 
                 
                 OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(urlField.getValue()));
@@ -70,6 +91,9 @@ public class EntryView extends VerticalLayout {
                         .setConverterFactory(new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
+                OWLEditorEventBus.post(new OWLEditorEvent.AddOntologyDocumentEvent(
+                        OWLEditorUI.getEditorKit().getActiveOntology(), s
+                ));
                 UI.getCurrent().setContent(new MainView());
             } catch (NullPointerException nullEx) {
                 LOG.error("NullPointerException some where in buildUrlEntry", nullEx.getCause());

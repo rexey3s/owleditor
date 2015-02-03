@@ -5,6 +5,8 @@ import org.swrlapi.core.SWRLAPIRule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.File;
+import java.io.Serializable;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -12,6 +14,49 @@ import javax.annotation.Nullable;
  */
 public final class OWLEditorEvent {
 
+    public static class AddOntologyDocumentEvent implements Serializable {
+        private Boolean isFile = false;
+        private Boolean isURI = false;
+        private Boolean isCreated = false;
+        private String URL = "";
+        private File file;
+        private OWLOntology ontology;
+
+        public AddOntologyDocumentEvent(OWLOntology ontology) {
+            this.ontology = ontology;
+            isCreated = true;
+        }
+
+        public AddOntologyDocumentEvent(OWLOntology ontology, File file) {
+            this.ontology = ontology;
+            this.file = file;
+            isFile = true;
+        }
+
+        public AddOntologyDocumentEvent(OWLOntology ontology, String url) {
+            this.ontology = ontology;
+            this.URL = url;
+            isURI = true;
+        }
+
+        public OWLOntology getOntology() {
+            return ontology;
+        }
+
+        public Boolean isFromFile() {
+            return isFile;
+        }
+
+        public Boolean isFromURI() {
+            return isURI;
+        }
+
+        public Boolean isCreated() {
+            return isCreated;
+        }
+
+
+    }
     public static abstract class EntityAddEvent<T extends OWLLogicalEntity> {
 
         private final T subject, object;

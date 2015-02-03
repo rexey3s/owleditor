@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.annotation.VaadinUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
+import vn.edu.uit.owleditor.data.OWLOntologyContainer;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
 import vn.edu.uit.owleditor.view.MainView;
@@ -31,6 +32,9 @@ public class OWLEditorUI extends UI {
     @Autowired
     OWLEditorKit editorKit;
 
+    @Autowired
+    OWLOntologyContainer ontologyRepository;
+    
     @Autowired 
     EntryView entryView;
 
@@ -44,7 +48,11 @@ public class OWLEditorUI extends UI {
     public static OWLEditorKit getEditorKit() {
         return ((OWLEditorUI) getCurrent()).editorKit;
     }
-
+    
+    public static OWLOntologyContainer getOntologyRepository() {
+        return ((OWLEditorUI) getCurrent()).ontologyRepository;
+    }
+    
     public static HttpSession getHttpSession() {
         return ((OWLEditorUI) getCurrent()).httpSession;
     }

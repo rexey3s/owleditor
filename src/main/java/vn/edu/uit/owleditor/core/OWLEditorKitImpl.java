@@ -34,7 +34,9 @@ import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -52,7 +54,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private final ExplanationProgressMonitor progressMonitor = new SilentExplanationProgressMonitor();
 
     private final OWLOntologyManager modelManager = OWLManager.createOWLOntologyManager();
-
+    private final List<OWLOntology> ontologyList = Arrays.asList();
     private SWRLAPIRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
@@ -71,8 +73,6 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private ManchesterOWLSyntaxParser parser;
     private ShortFormProvider sfpFormat;
     private BidirectionalShortFormProvider bidirectionalSfp;
-
-
     public OWLEditorKitImpl() {
         initialise();
 

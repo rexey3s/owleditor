@@ -19,8 +19,6 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
-import vn.edu.uit.owleditor.event.OWLEditorEvent;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -83,7 +81,8 @@ public class EntryView extends VerticalLayout {
         container.addContainerProperty("Type", String.class, "");
         OWLEditorUI.getEditorKit().getModelManager().getOntologies().forEach(ont -> {
             container.addItem(ont);
-            container.getContainerProperty(ont, "IRI").setValue(ont.getOntologyID().getDefaultDocumentIRI().get());
+            container.getContainerProperty(ont, "IRI").setValue(
+                    ont.isAnonymous() ? "" : ont.getOntologyID().getDefaultDocumentIRI().get());
             container.getContainerProperty(ont, "LogicalAxioms").setValue(ont.getLogicalAxiomCount());
             container.getContainerProperty(ont, "Type")
                     .setValue(OWLEditorUI.getEditorKit().getModelManager().getOntologyFormat(ont));
@@ -108,9 +107,7 @@ public class EntryView extends VerticalLayout {
                         .setConverterFactory(new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
-                OWLEditorEventBus.post(new OWLEditorEvent.AddOntologyDocumentEvent(
-                        OWLEditorUI.getEditorKit().getActiveOntology(), s
-                ));
+
                 UI.getCurrent().setContent(new MainView());
             } catch (NullPointerException nullEx) {
                 LOG.error("NullPointerException some where in buildUrlEntry", nullEx.getCause());

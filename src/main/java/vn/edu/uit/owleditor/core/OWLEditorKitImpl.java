@@ -115,7 +115,8 @@ public class OWLEditorKitImpl implements OWLEditorKit {
             parser.setDefaultOntology(activeOntology);
             reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
             explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
-        } else throw new NullPointerException("Unable to instantiate Active Ontology");
+        } else
+            throw new NullPointerException("Unable to instantiate Active Ontology");
     }
 
 
@@ -228,11 +229,8 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     }
 
     public void addMoreOntology(@Nonnull IRI iri) throws OWLOntologyCreationException {
-        if (!modelManager.contains(iri)) {
-            activeOntology = modelManager.loadOntologyFromOntologyDocument(iri);
-            initialise();
-        }
-
+        activeOntology = modelManager.loadOntologyFromOntologyDocument(iri);
+        initialise();
     }
 
 }

@@ -35,6 +35,7 @@ import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -244,6 +245,13 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         }
     }
 
+    public void removeAllOntologies() {
+        Iterator<OWLOntology> onts = modelManager.getOntologies().iterator();
+        while (onts.hasNext()) {
+            OWLOntology ont = onts.next();
+            onts.remove();
+        }
+    }
     public void addMoreOntology(@Nonnull IRI iri) throws OWLOntologyCreationException {
         if (!modelManager.contains(iri)) {
             activeOntology = modelManager.loadOntologyFromOntologyDocument(iri);

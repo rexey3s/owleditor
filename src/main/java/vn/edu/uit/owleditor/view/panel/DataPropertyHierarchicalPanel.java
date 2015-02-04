@@ -222,7 +222,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
             addValueChangeListener(this);
 
             dataContainer.addValueChangeListener(valueChangeEvent -> {
-                if (getSelectedItem().getType() != null && valueChangeEvent.getProperty().getValue() != null) {
+                if (getSelectedItem().getValue() != null && valueChangeEvent.getProperty().getValue() != null) {
                     if (valueChangeEvent.getProperty().getType() == Boolean.class) {
                         dataContainer.toggle((Boolean) valueChangeEvent.getProperty().getValue(),
                                 owlFactory.getOWLFunctionalDataPropertyAxiom(getSelectedItem().getValue()));

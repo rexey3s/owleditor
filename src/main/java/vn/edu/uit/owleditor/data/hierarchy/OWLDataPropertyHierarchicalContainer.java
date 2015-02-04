@@ -124,11 +124,13 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     }
 
     public void checkFunctionalIcon(OWLDataProperty objectId) {
-        Boolean checked = (Boolean) getContainerProperty(objectId, OWLEditorData.OWLFunctionalProperty).getValue();
-        if (checked) {
-            getContainerProperty(objectId, OWLEditorData.OWLEntityIcon).setValue(FontAwesome.CHAIN);
-        } else {
-            getContainerProperty(objectId, OWLEditorData.OWLEntityIcon).setValue(null);
+        if (getContainerProperty(objectId, OWLEditorData.OWLFunctionalProperty).getValue() != null) {
+            Boolean checked = (Boolean) getContainerProperty(objectId, OWLEditorData.OWLFunctionalProperty).getValue();
+            if (checked) {
+                getContainerProperty(objectId, OWLEditorData.OWLEntityIcon).setValue(FontAwesome.CHAIN);
+            } else {
+                getContainerProperty(objectId, OWLEditorData.OWLEntityIcon).setValue(null);
+            }
         }
         
     }

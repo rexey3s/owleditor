@@ -222,16 +222,18 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
             addValueChangeListener(this);
 
             dataContainer.addValueChangeListener(valueChangeEvent -> {
-                if (valueChangeEvent.getProperty().getType() == Boolean.class) {
-                    dataContainer.toggle((Boolean) valueChangeEvent.getProperty().getValue(),
-                            owlFactory.getOWLFunctionalDataPropertyAxiom(getSelectedItem().getValue()));
-                    dataContainer.checkFunctionalIcon(getSelectedItem().getValue());
+                if (getSelectedItem().getType() != null && valueChangeEvent.getProperty().getValue() != null) {
+                    if (valueChangeEvent.getProperty().getType() == Boolean.class) {
+                        dataContainer.toggle((Boolean) valueChangeEvent.getProperty().getValue(),
+                                owlFactory.getOWLFunctionalDataPropertyAxiom(getSelectedItem().getValue()));
+                        dataContainer.checkFunctionalIcon(getSelectedItem().getValue());
 
-                    Notification.show(OWLEditorKitImpl.getShortForm(
-                                    getSelectedItem().getValue())
-                                    + " is functional: "
-                                    + valueChangeEvent.getProperty().getValue(),
-                            Notification.Type.TRAY_NOTIFICATION);
+                        Notification.show(OWLEditorKitImpl.getShortForm(
+                                        getSelectedItem().getValue())
+                                        + " is functional: "
+                                        + valueChangeEvent.getProperty().getValue(),
+                                Notification.Type.TRAY_NOTIFICATION);
+                    }
                 }
             });
 

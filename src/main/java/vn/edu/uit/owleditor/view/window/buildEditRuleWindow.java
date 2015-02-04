@@ -5,10 +5,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import org.swrlapi.core.SWRLAPIRenderer;
 import org.swrlapi.core.SWRLAPIRule;
-import org.swrlapi.parser.SWRLParseException;
 import vn.edu.uit.owleditor.core.OWLEditorSWRLAPIRuleRenderer;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
-import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.event.OWLExpressionUpdateHandler;
 import vn.edu.uit.owleditor.view.component.SWRLRuleEditor;
 
@@ -39,14 +37,16 @@ public class buildEditRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLA
     protected Button.ClickListener initSaveListener() {
         return clicked -> {
             if (getSelectedTab() instanceof SWRLRuleEditor) {
-                try {
-                    SWRLAPIRule rule = editorKit.getSWRLActiveOntology().createSWRLRule(editor.getRuleName(),
-                            String.valueOf(editor.getValue()), editor.getRuleComment(), true);
-                    OWLEditorEventBus.post(modifyExpression.modifyingExpression(rule));
+//                try {
+//                    SWRLAPIRule rule = editorKit.getSWRLActiveOntology().createSWRLRule(editor.getRuleName(),
+//                            String.valueOf(editor.getValue()), editor.getRuleComment(), true);
+//                    OWLEditorEventBus.post(modifyExpression.modifyingExpression(rule));
+                Notification.show("Bug", "Not fix this bug yet", Notification.Type.WARNING_MESSAGE);
+
                     close();
-                } catch (SWRLParseException ex) {
-                    Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-                }
+//                } catch (SWRLParseException ex) {
+//                    Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+//                }
 
             }
         };

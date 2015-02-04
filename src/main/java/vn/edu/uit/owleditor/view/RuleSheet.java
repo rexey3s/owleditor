@@ -23,6 +23,7 @@ import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
+import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -36,7 +37,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     private static final Action ADD = new Action("Add");
     private static final Action EDIT = new Action("Edit");
     private static final Action REMOVE = new Action("Remove");
-    private static final Action[] ACTIONS = new Action[]{ADD, REMOVE /* ,EDIT */};
+    private static final Action[] ACTIONS = new Action[]{ADD, REMOVE, EDIT};
 
 
     private final SWRLAPIRuleSource selectedRow = new SWRLAPIRuleSource();
@@ -110,8 +111,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
                         editorKit.getDataFactory().getRuleAddEvent(rule, activeOntology.getOWLOntology())
             ));
         } else if (action == EDIT) {
-            Notification.show("Bug", "Not fix this bug yet", Notification.Type.WARNING_MESSAGE);
-            /*
+
             try {
                 UI.getCurrent().addWindow(new buildEditRuleWindow(
                         selectedRow,
@@ -122,7 +122,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
             } catch (NullPointerException ex) {
                 Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
-            */
+
         } else if (action == REMOVE) {
 
             ConfirmDialog.show(UI.getCurrent(), dialog -> {
@@ -192,16 +192,22 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
         /*
         activeOntology.deleteSWRLRule(event.getOldAxiom().getRuleName());
 
-        if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getOldAxiom().getAxiomWithoutAnnotations())
-                && editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getNewAxiom().getAxiomWithoutAnnotations())) {
-            rulesContainer.removeItem(event.getOldAxiom());
-            handleAddRule(event.getNewAxiom());
-            Notification.show("Successfully modified rule ",
+        try {
+            SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
+            Notification.show("Cannot remove rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
-        } else
-            Notification.show("Cannot modify rule " + event.getOldAxiom().getRuleName(),
+            LOG.error("Cannot remove rule ", rule);
+        } catch (SWRLRuleException e) {
+            SWRLAPIRule rule = activeOntology.getSWRLRule(event.getNewAxiom().getRuleName());
+            handleAddRule(rule);
+            Notification.show("Successfully removed rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
+            rulesContainer.removeItem(event.getAxiom());
+
+            LOG.info(e.getMessage(), this);
+        }
         */
+
     }
 
     @Override

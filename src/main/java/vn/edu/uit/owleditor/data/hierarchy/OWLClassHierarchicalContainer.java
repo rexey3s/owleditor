@@ -46,20 +46,18 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
     }
 
     public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
-        if (!ontology.equals(activeOntology)) {
-            removeItemRecursively(thing);
-            addThing();
+        removeItemRecursively(thing);
+        addThing();
 
-            activeOntology = ontology;
-            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-            Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
-            allClasses.remove(thing);
-            allClasses.forEach(c -> {
-                if (!containsId(c)) {
+        activeOntology = ontology;
+        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+        Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
+        allClasses.remove(thing);
+        allClasses.forEach(c -> {
+            if (!containsId(c)) {
                     recursive(activeOntology, c, null);
-                }
-            });
-        } else throw new OWLEditorException.DuplicatedActiveOntologyException("Duplicated active ontology");
+            }
+        });
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {

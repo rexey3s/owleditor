@@ -58,7 +58,7 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
 
     @Override
     public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
-        if (!ontology.equals(activeOntology)) {
+//        if (!ontology.equals(activeOntology)) {
             removeItemRecursively(topDataProp);
             addTopDataProperty();
             activeOntology = ontology;
@@ -72,8 +72,8 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                     recursive(activeOntology, d, null);
                 }
             });
-        } else
-            throw new OWLEditorException.DuplicatedActiveOntologyException("Duplicated active ontology");
+//        } else
+//            throw new OWLEditorException.DuplicatedActiveOntologyException("Duplicated active ontology");
     }
 
     @SuppressWarnings("unchecked")

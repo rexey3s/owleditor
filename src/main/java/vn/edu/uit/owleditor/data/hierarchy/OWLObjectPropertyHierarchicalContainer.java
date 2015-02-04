@@ -6,8 +6,9 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.vaadin.spring.annotation.VaadinSessionScope;
+import org.springframework.web.context.WebApplicationContext;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
@@ -22,7 +23,7 @@ import java.util.Set;
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
 @Component
-@VaadinSessionScope
+@Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
 
     private final OWLObjectProperty topObjectProp = OWLManager.getOWLDataFactory().getOWLTopObjectProperty();

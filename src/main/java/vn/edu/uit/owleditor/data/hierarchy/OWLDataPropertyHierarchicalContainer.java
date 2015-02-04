@@ -49,8 +49,8 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
         if (!containsId(topDataProp)) {
             addItem(topDataProp);
             getContainerProperty(topDataProp, OWLEditorData.OWLDataPropertyName).setValue("TopDataProperty");
-            getContainerProperty(topDataProp, OWLEditorData.OWLFunctionalProperty)
-                    .setValue(true);
+//            getContainerProperty(topDataProp, OWLEditorData.OWLFunctionalProperty)
+//                    .setValue(false);
             checkFunctionalIcon(topDataProp);
             setChildrenAllowed(topDataProp, true);
         }

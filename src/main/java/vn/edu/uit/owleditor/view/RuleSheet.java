@@ -171,19 +171,20 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     @Subscribe
     public void handleRuleRemoveEvent(OWLEditorEvent.RuleRemoveEvent event) {
         activeOntology.deleteSWRLRule(event.getAxiom().getRuleName());
-        /*
+
         try {
             SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
             Notification.show("Cannot remove rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
-            rulesContainer.removeItem(event.getAxiom());
             LOG.error("Cannot remove rule ", rule);
         } catch (SWRLRuleException e) {
             Notification.show("Successfully removed rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
+            rulesContainer.removeItem(event.getAxiom());
+
             LOG.info(e.getMessage(), this);
-        }      
-        */
+        }
+
     }
 
     @Subscribe

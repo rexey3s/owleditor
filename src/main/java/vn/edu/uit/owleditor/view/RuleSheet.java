@@ -23,11 +23,10 @@ import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
-import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
- *         Faculty of Computer Network and Telecomunication created on 12/9/2014.
+ *         Faculty of Computer Network and Telecommunication created on 12/9/2014.
  */
 @VaadinUIScope
 @VaadinView(name = RuleSheet.NAME)
@@ -37,8 +36,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     private static final Action ADD = new Action("Add");
     private static final Action EDIT = new Action("Edit");
     private static final Action REMOVE = new Action("Remove");
-    private static final Action[] ACTIONS = new Action[]{ADD,
-            EDIT, REMOVE};
+    private static final Action[] ACTIONS = new Action[]{ADD, REMOVE /* ,EDIT */};
 
 
     private final SWRLAPIRuleSource selectedRow = new SWRLAPIRuleSource();
@@ -112,6 +110,8 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
                         editorKit.getDataFactory().getRuleAddEvent(rule, activeOntology.getOWLOntology())
             ));
         } else if (action == EDIT) {
+            Notification.show("Bug", "Not fix this bug yet", Notification.Type.WARNING_MESSAGE);
+            /*
             try {
                 UI.getCurrent().addWindow(new buildEditRuleWindow(
                         selectedRow,
@@ -122,6 +122,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
             } catch (NullPointerException ex) {
                 Notification.show(ex.getMessage(), Notification.Type.ERROR_MESSAGE);
             }
+            */
         } else if (action == REMOVE) {
 
             ConfirmDialog.show(UI.getCurrent(), dialog -> {
@@ -170,6 +171,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     @Subscribe
     public void handleRuleRemoveEvent(OWLEditorEvent.RuleRemoveEvent event) {
         activeOntology.deleteSWRLRule(event.getAxiom().getRuleName());
+        /*
         try {
             SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
             Notification.show("Cannot remove rule " + event.getAxiom().getRuleName(),
@@ -181,10 +183,12 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
                     Notification.Type.TRAY_NOTIFICATION);
             LOG.info(e.getMessage(), this);
         }      
+        */
     }
 
     @Subscribe
     public void handleRuleModifyEvent(OWLEditorEvent.RuleModifyEvent event) {
+        /*
         activeOntology.deleteSWRLRule(event.getOldAxiom().getRuleName());
 
         if (!editorKit.getActiveOntology().containsAxiomIgnoreAnnotations(event.getOldAxiom().getAxiomWithoutAnnotations())
@@ -196,6 +200,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
         } else
             Notification.show("Cannot modify rule " + event.getOldAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
+        */
     }
 
     @Override

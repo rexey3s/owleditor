@@ -338,9 +338,7 @@ public class DiagramSheet extends VerticalLayout implements View {
             thingObject.remove("children");
             thingArray = new JsonArray();
             thingObject.add("children", thingArray);
-
             activeOntology.accept(initPopulationEngine(activeOntology, thingObject));
-            LOG.info(thingObject.toString());
             graph.setData(thingObject.toString());
         }
     }

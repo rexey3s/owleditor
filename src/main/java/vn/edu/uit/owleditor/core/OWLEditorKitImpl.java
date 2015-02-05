@@ -58,20 +58,21 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private final OWLOntologyManager modelManager = OWLManager.createOWLOntologyManager();
 
     private SWRLAPIRenderer ruleRenderer;
-    private ExplanationOrderer explanationOrderer;
+    private ExplanationOrderer explanationOrderer = new ExplanationOrdererImpl(modelManager);
     private DefaultExplanationGenerator explanationGenerator;
     private OWLEditorDataFactory editorDataFactory = new OWLEditorDataFactoryImpl();
     private PrefixManager prefixManager;
     private OWLOntology activeOntology;
     private OWLEntityRemover entityRemover;
     /* Pellet Reasoner Interface */
-    private OWLReasonerFactory reasonerFactory;
+    private OWLReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
     private OWLReasoner reasoner;
     private Boolean reasonerStatus = false;
     /* Converted SWRLOntology  used for writing and reading SWRL rules */
     private SWRLAPIOWLOntology swrlActiveOntology;
     /* Variables for OWLClassExpression Parser */
-    private ManchesterOWLSyntaxParser parser;
+    private ManchesterOWLSyntaxParser parser = OWLManager.createManchesterParser();
+
     private ShortFormProvider sfpFormat;
     private BidirectionalShortFormProvider bidirectionalSfp;
 
@@ -90,52 +91,34 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     }
 
     public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
-        initialise();    
         activeOntology = modelManager.createOntology(documentIRI);
-        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
-        editorDataFactory.setActiveOntology(this.activeOntology);
-
-//        activeOntology.getDirectImportsDocuments();
-        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
-        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
-        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
-        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
-        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
-        parser.setDefaultOntology(activeOntology);
-        reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
-        explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
+        initialise();
     }
     
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
-        initialise();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
-        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
-        editorDataFactory.setActiveOntology(this.activeOntology);
-
-//        activeOntology.getDirectImportsDocuments();
-        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
-        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
-        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
-        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
-        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
-        parser.setDefaultOntology(activeOntology);
-        reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
-        explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
-
+        initialise();
     }
     
     public ExplanationTree explain(OWLAxiom axiom) {
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));
     }
     private void initialise() {
-        reasonerFactory = PelletReasonerFactory.getInstance();
-        explanationOrderer = new ExplanationOrdererImpl(modelManager);
-        parser = OWLManager.createManchesterParser();
-//        editorDataFactory = new OWLEditorDataFactoryImpl(this);
+        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
+        editorDataFactory.setActiveOntology(this.activeOntology);
+
+//        activeOntology.getDirectImportsDocuments();
+        modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
+        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
+        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
+        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+        sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
+        bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
+        parser.setOWLEntityChecker(new ShortFormEntityChecker(bidirectionalSfp));
+        parser.setDefaultOntology(activeOntology);
+        reasoner = reasonerFactory.createReasoner(activeOntology, new SimpleConfiguration());
+        explanationGenerator = new DefaultExplanationGenerator(modelManager, reasonerFactory, activeOntology, reasoner, progressMonitor);
+
     }
 
 

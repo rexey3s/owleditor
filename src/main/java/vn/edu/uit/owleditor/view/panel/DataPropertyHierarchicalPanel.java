@@ -210,15 +210,7 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
 
             dataContainer = editorKit.getDataFactory().getOWLDataPropertyHierarchicalContainer();
 
-//            editorKit.getModelManager().addOntologyChangeListener(changes -> {
-//
-//                for (OWLOntologyChange chg : changes) {
-//                    chg.accept(dataContainer.getOWLOntologyChangeVisitor());
-//                }
-//            });
-
             setContainerDataSource(dataContainer);
-
             addValueChangeListener(this);
 
             dataContainer.addValueChangeListener(valueChangeEvent -> {
@@ -237,7 +229,6 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
                 }
             });
 
-//            OWLEditorEventBus.register(this);
             setItemIconPropertyId(OWLEditorData.OWLEntityIcon);
             setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId(OWLEditorData.OWLDataPropertyName);

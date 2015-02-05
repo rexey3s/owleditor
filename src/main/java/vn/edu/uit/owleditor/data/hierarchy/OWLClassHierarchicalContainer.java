@@ -10,7 +10,6 @@ import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -43,25 +42,20 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         }
     }
 
-    public void setActiveOntology(@Nonnull OWLOntology ontology)
-            throws OWLEditorException.DuplicatedActiveOntologyException {
+    public void setActiveOntology(@Nonnull OWLOntology ontology) {
 
-        if (ontology.equals(activeOntology)) {
-            removeItemRecursively(thing);
-            addThing();
+        removeItemRecursively(thing);
+        addThing();
 
-            activeOntology = ontology;
-            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-            Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
-            allClasses.remove(thing);
-            allClasses.forEach(c -> {
-                if (!containsId(c)) {
-                    recursive(activeOntology, c, null);
-                }
-            });
-        } else
-            throw new OWLEditorException.DuplicatedActiveOntologyException(
-                    "Duplicated Ontology loaded in HierarcahicalContainer");
+        activeOntology = ontology;
+        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+        Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
+        allClasses.remove(thing);
+        allClasses.forEach(c -> {
+            if (!containsId(c)) {
+                recursive(activeOntology, c, null);
+            }
+        });
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {

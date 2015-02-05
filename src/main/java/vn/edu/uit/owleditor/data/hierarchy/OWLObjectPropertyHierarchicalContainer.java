@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -46,24 +45,20 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
     }
 
     @Override
-    public void setActiveOntology(@Nonnull OWLOntology ontology)
-            throws OWLEditorException.DuplicatedActiveOntologyException {
-        if (!ontology.equals(activeOntology)) {
-            removeItemRecursively(topObjectProp);
-            addTopObjectProperty();
+    public void setActiveOntology(@Nonnull OWLOntology ontology) {
+        removeItemRecursively(topObjectProp);
+        addTopObjectProperty();
 
-            activeOntology = ontology;
-            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-            Set<OWLObjectProperty> allProperties = activeOntology.getObjectPropertiesInSignature();
-            allProperties.remove(topObjectProp);
-            allProperties.forEach(o -> {
-                if (!containsId(o)) {
-                    recursive(activeOntology, o, null);
-                }
-            });
-        } else
-            throw new OWLEditorException.DuplicatedActiveOntologyException(
-                    "Duplicated Ontology loaded in HierarcahicalContainer");
+        activeOntology = ontology;
+        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+        Set<OWLObjectProperty> allProperties = activeOntology.getObjectPropertiesInSignature();
+        allProperties.remove(topObjectProp);
+        allProperties.forEach(o -> {
+            if (!containsId(o)) {
+                recursive(activeOntology, o, null);
+            }
+        });
+
     }
 
     @SuppressWarnings({"unchecked"})

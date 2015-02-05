@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
-import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.PostConstruct;
@@ -55,10 +54,8 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
     }
 
     @Override
-    public void setActiveOntology(@Nonnull OWLOntology ontology)
-            throws OWLEditorException.DuplicatedActiveOntologyException {
+    public void setActiveOntology(@Nonnull OWLOntology ontology) {
 
-        if (!ontology.equals(activeOntology)) {
             removeItemRecursively(topDataProp);
             addTopDataProperty();
             activeOntology = ontology;
@@ -72,9 +69,6 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
                     recursive(activeOntology, d, null);
                 }
             });
-        } else
-            throw new OWLEditorException.DuplicatedActiveOntologyException(
-                    "Duplicated Ontology loaded in HierarcahicalContainer");
     }
 
     @SuppressWarnings("unchecked")

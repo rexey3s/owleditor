@@ -1,7 +1,7 @@
 package vn.edu.uit.owleditor.view.component;
 
 
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
+import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,

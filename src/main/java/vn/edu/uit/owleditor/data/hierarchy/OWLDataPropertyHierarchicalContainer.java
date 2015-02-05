@@ -13,7 +13,6 @@ import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +30,10 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
 
     public OWLDataPropertyHierarchicalContainer() {
         super();
+        initialise();
     }
 
 
-    @PostConstruct
     private void initialise() {
         addContainerProperty(OWLEditorData.OWLDataPropertyName, String.class, "Unknown");
         addContainerProperty(OWLEditorData.OWLFunctionalProperty, Boolean.class, null);

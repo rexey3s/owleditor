@@ -10,7 +10,6 @@ import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.Set;
 
@@ -24,10 +23,10 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
 
     public OWLObjectPropertyHierarchicalContainer() {
         super();
+        initialise();
     }
 
 
-    @PostConstruct
     private void initialise() {
         addContainerProperty(OWLEditorData.OWLObjectPropertyName, String.class, "Unknown");
         addTopObjectProperty();

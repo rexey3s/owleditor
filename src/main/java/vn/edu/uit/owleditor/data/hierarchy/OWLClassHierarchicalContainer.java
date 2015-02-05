@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 
 import javax.annotation.Nonnull;
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.Set;
 
@@ -26,9 +25,10 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
 
     public OWLClassHierarchicalContainer() {
         super();
+        initialise();
     }
 
-    @PostConstruct
+
     private void initialise() {
         addContainerProperty(OWLEditorData.OWLClassName, String.class, "");
         addThing();

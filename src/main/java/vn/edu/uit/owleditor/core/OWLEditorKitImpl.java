@@ -22,7 +22,6 @@ import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,6 +33,7 @@ import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
+import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -60,8 +60,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     private SWRLAPIRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
-    @Autowired
-    private OWLEditorDataFactory editorDataFactory;
+    private OWLEditorDataFactory editorDataFactory = new OWLEditorDataFactoryImpl();
     private PrefixManager prefixManager;
     private OWLOntology activeOntology;
     private OWLEntityRemover entityRemover;

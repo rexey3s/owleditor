@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
-import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.core.owlapi.OWLPropertyExpressionVisitorAdapter;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
@@ -20,7 +19,6 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
-@VaadinComponent
 public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
 
     private final OWLObjectProperty topObjectProp = OWLManager.getOWLDataFactory().getOWLTopObjectProperty();
@@ -48,8 +46,9 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
     }
 
     @Override
-    public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
-//        if (!ontology.equals(activeOntology)) {
+    public void setActiveOntology(@Nonnull OWLOntology ontology)
+            throws OWLEditorException.DuplicatedActiveOntologyException {
+        if (!ontology.equals(activeOntology)) {
             removeItemRecursively(topObjectProp);
             addTopObjectProperty();
 
@@ -62,8 +61,9 @@ public class OWLObjectPropertyHierarchicalContainer extends AbstractOWLObjectHie
                     recursive(activeOntology, o, null);
                 }
             });
-//        } else
-//            throw new OWLEditorException.DuplicatedActiveOntologyException("Duplicated active ontology");
+        } else
+            throw new OWLEditorException.DuplicatedActiveOntologyException(
+                    "Duplicated Ontology loaded in HierarcahicalContainer");
     }
 
     @SuppressWarnings({"unchecked"})

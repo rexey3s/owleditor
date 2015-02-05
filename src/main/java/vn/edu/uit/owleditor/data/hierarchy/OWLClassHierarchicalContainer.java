@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLEntityVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.utils.OWLEditorData;
 import vn.edu.uit.owleditor.utils.exception.OWLEditorException;
 
@@ -22,7 +21,6 @@ import java.util.Set;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
-@VaadinComponent
 public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
     private static final Logger LOG = LoggerFactory.getLogger(OWLClassHierarchicalContainer.class);
     private final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
@@ -45,19 +43,25 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         }
     }
 
-    public void setActiveOntology(@Nonnull OWLOntology ontology) throws OWLEditorException.DuplicatedActiveOntologyException {
-        removeItemRecursively(thing);
-        addThing();
+    public void setActiveOntology(@Nonnull OWLOntology ontology)
+            throws OWLEditorException.DuplicatedActiveOntologyException {
 
-        activeOntology = ontology;
-        entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
-        Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
-        allClasses.remove(thing);
-        allClasses.forEach(c -> {
-            if (!containsId(c)) {
+        if (ontology.equals(activeOntology)) {
+            removeItemRecursively(thing);
+            addThing();
+
+            activeOntology = ontology;
+            entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
+            Set<OWLClass> allClasses = activeOntology.getClassesInSignature();
+            allClasses.remove(thing);
+            allClasses.forEach(c -> {
+                if (!containsId(c)) {
                     recursive(activeOntology, c, null);
-            }
-        });
+                }
+            });
+        } else
+            throw new OWLEditorException.DuplicatedActiveOntologyException(
+                    "Duplicated Ontology loaded in HierarcahicalContainer");
     }
     
     private void recursive(OWLOntology ontology, OWLClass child, OWLClass parent) {

@@ -4,8 +4,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.swrlapi.core.SWRLAPIRule;
 import vn.edu.uit.owleditor.data.hierarchy.OWLClassHierarchicalContainer;
 import vn.edu.uit.owleditor.data.hierarchy.OWLDataPropertyHierarchicalContainer;
@@ -19,7 +17,7 @@ import javax.annotation.Nonnull;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/1/2014.
  */
-@Repository
+
 public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     private static final Logger LOG = LoggerFactory.getLogger(OWLEditorDataFactoryImpl.class);
 
@@ -27,30 +25,23 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
     private OWLOntology activeOntology;
 
-    @Autowired
-    private OWLClassHierarchicalContainer classHierarchicalContainer;
+    private OWLClassHierarchicalContainer classHierarchicalContainer = new OWLClassHierarchicalContainer();
 
-    @Autowired
-    private OWLObjectPropertyHierarchicalContainer objectPropertyHierarchicalContainer;
+    private OWLObjectPropertyHierarchicalContainer objectPropertyHierarchicalContainer = new OWLObjectPropertyHierarchicalContainer();
 
-    @Autowired
-    private OWLDataPropertyHierarchicalContainer dataPropertyHierarchicalContainer;
-
-    public OWLEditorDataFactoryImpl() {
-        
-    }
+    private OWLDataPropertyHierarchicalContainer dataPropertyHierarchicalContainer = new OWLDataPropertyHierarchicalContainer();
 
 
     @Override
     public void setActiveOntology(OWLOntology ontology) {
         this.activeOntology = ontology;
-//        try {
+        try {
             classHierarchicalContainer.setActiveOntology(activeOntology);
             objectPropertyHierarchicalContainer.setActiveOntology(activeOntology);
             dataPropertyHierarchicalContainer.setActiveOntology(activeOntology);
-//        } catch (Exception ex) {
-//            LOG.error("setActiveOntology: " + ex.getMessage());
-//        }
+        } catch (Exception ex) {
+            LOG.error("setActiveOntology: " + ex.getMessage());
+        }
     }
 
     @Override

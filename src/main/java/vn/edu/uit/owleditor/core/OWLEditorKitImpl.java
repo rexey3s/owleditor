@@ -78,8 +78,6 @@ public class OWLEditorKitImpl implements OWLEditorKit {
 
 
     public OWLEditorKitImpl() {
-        initialise();
-
     }
 
     public static String getShortForm(OWLEntity entity) {

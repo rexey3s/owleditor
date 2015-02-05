@@ -36,7 +36,7 @@ $ echo 'export PATH=$M2:$PATH' > ~/.bashrc
 4. Kiếm tra ``mvn --version``
 
 ### Cài đặt SWRL-API
-1. Clone một bản [SWRL-API]([SWRL-API](https://github.com/protegeproject/swrlapi))
+1. Clone một bản [SWRL-API](https://github.com/protegeproject/swrlapi)
 2. Dùng Maven để cài đặt 
 ```
 $ cd ~/swrlapi

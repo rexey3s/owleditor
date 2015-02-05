@@ -71,18 +71,16 @@ public class EntryView extends VerticalLayout {
 
                 OWLEditorUI.getHttpSession().setAttribute("OWLEditorKit", OWLEditorUI.getEditorKit());
                 UI.getCurrent().setContent(new MainView());
+            } catch (NullPointerException nullEx) {
+                LOG.error("NullPointerException some where in buildUrlEntry", nullEx.getCause());
             }
-//            catch (NullPointerException nullEx) {
-//                LOG.error("NullPointerException some where in buildUrlEntry", nullEx.getCause());
-//            } 
             catch (OWLOntologyCreationException ec) {
                 Notification.show(ec.getMessage(), Notification.Type.ERROR_MESSAGE);
                 LOG.error(ec.getMessage());
+            } catch (Exception e) {
+                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
+                LOG.error(e.getMessage());
             }
-//            catch (Exception e) {
-//                Notification.show(e.getMessage(), Notification.Type.WARNING_MESSAGE);
-//                LOG.error(e.getMessage());
-//            }
 
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
         

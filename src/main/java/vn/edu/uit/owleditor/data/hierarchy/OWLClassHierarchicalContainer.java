@@ -62,7 +62,6 @@ public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchical
         addItem(child);
         getContainerProperty(child, OWLEditorData.OWLClassName).setValue(sf(child));
         setChildrenAllowed(child, false);
-        LOG.info(sf(child));
         if (parent != null) {
             setChildrenAllowed(parent, true);
             setParent(child, parent);

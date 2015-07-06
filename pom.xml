@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.2.0.RELEASE</version>
+		<version>1.2.3.RELEASE</version>
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
@@ -12,7 +12,7 @@
 
 	<groupId>vn.edu.uit</groupId>
 	<artifactId>owleditor</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+	<version>1.1.0.SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>OWLEditor</name>
@@ -24,10 +24,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>vn.edu.uit.owleditor.OWLEditorApplication</start-class>
 		<java.version>1.8</java.version>
-		<owlapi.version>4.0.0</owlapi.version>
-        <pellet.version>2.3.0</pellet.version>
-        <vaadin.version>7.3.8</vaadin.version>
-		<vaadinSpring.version>0.0.4-SNAPSHOT</vaadinSpring.version>
+		<owlapi.version>4.0.2</owlapi.version>
+		<pellet.version>2.4.0-ignazio1977</pellet.version>
+		<vaadin.version>7.5.0</vaadin.version>
+		<vaadin-spring-addon.version>0.0.6-SNAPSHOT</vaadin-spring-addon.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
 	</properties>
@@ -41,9 +41,9 @@
 	<dependencies>
 		<!-- Vaadin - Spring integration -->
 		<dependency>
-			<groupId>org.vaadin.spring</groupId>
-			<artifactId>spring-boot-vaadin</artifactId>
-			<version>${vaadinSpring.version}</version>
+			<groupId>org.vaadin.spring.extensions</groupId>
+			<artifactId>vaadin-spring-ext-boot</artifactId>
+			<version>${vaadin-spring-addon.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -60,10 +60,12 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
+		<!--<dependency>-->
+		<!--<groupId>javax.servlet</groupId>-->
+		<!--<artifactId>javax.servlet-api</artifactId>-->
+		<!--<version>3.0.1</version>-->
+		<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -78,24 +80,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-
-		<!-- Event Bus and Eclipse Annotation -->
-		<!--<dependency>-->
-			<!--<groupId>org.eclipse.jdt</groupId>-->
-			<!--<artifactId>org.eclipse.jdt.annotation</artifactId>-->
-			<!--<version>2.0.0</version>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -106,7 +96,7 @@
 			<artifactId>gson</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		
+
 		<!-- OWL-API, Pellet Reasoner and SWRLAPI -->
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
@@ -114,33 +104,31 @@
 			<version>${owlapi.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.owldl</groupId>
-			<artifactId>pellet</artifactId>
-			<version>${pellet.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>net.sourceforge.owlapi</groupId>
-					<artifactId>owlapi</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-core-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
 		</dependency>
-		<!--<dependency>-->
-		<!--<groupId>com.clarkparsia</groupId>-->
-		<!--<artifactId>pellet-distribution</artifactId>-->
-		<!--<version>${pellet.version}</version>-->
-		<!--<exclusions>-->
-		<!--<exclusion>-->
-		<!--<groupId>net.sourceforge.owlapi</groupId>-->
-		<!--<artifactId>owlapi</artifactId>-->
-		<!--</exclusion>-->
-		<!--</exclusions>-->
-		<!--</dependency>-->
 		<dependency>
-			<groupId>org.swrlapi</groupId>
-			<artifactId>swrlapi</artifactId>
-			<version>1.0.5</version>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-pellint-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-explanation-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>pellet-modularity-ignazio1977</artifactId>
+			<version>2.4.0-ignazio1977</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.swrl</groupId>
+			<artifactId>swrlapi</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
 		<!-- Addons -->
 		<dependency>
 			<groupId>org.vaadin.addon</groupId>
@@ -155,18 +143,13 @@
 		<dependency>
 			<groupId>org.vaadin.addon</groupId>
 			<artifactId>easyuploads</artifactId>
-			<version>7.3.4</version>
+			<version>7.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.vaadin</groupId>
 			<artifactId>viritin</artifactId>
-			<version>1.22</version>
+			<version>1.34</version>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.vaadin.alump.columnlayout</groupId>-->
-			<!--<artifactId>columnlayout-addon</artifactId>-->
-			<!--<version>0.1.6</version>-->
-		<!--</dependency>-->
 	</dependencies>
 
 	<build>
@@ -177,7 +160,7 @@
 				<version>3.2</version>
 				<configuration>
 					<source>1.8</source>
-                    <target>1.8</target>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -329,29 +312,6 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-        <!--<repository>-->
-        <!--<id>on.cs.unibas.ch</id>-->
-        <!--<name>DBIS Maven Releases Repository</name>-->
-        <!--<url>http://on.cs.unibas.ch/maven/repository</url>-->
-        <!--<layout>default</layout>-->
-        <!--<snapshots>-->
-        <!--<enabled>false</enabled>-->
-        <!--</snapshots>-->
-        <!--<releases>-->
-        <!--<enabled>true</enabled>-->
-        <!--</releases>-->
-        <!--</repository>-->
-        <repository>
-            <id>maven.aksw.org</id>
-            <name>Aksw Maven Releases Repository</name>
-            <url>http://maven.aksw.org/repository/internal</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
+		<!--ld-->
 	</repositories>
 </project>

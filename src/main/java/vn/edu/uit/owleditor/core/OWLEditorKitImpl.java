@@ -5,6 +5,8 @@ import com.clarkparsia.owlapi.explanation.DefaultExplanationGenerator;
 import com.clarkparsia.owlapi.explanation.util.ExplanationProgressMonitor;
 import com.clarkparsia.owlapi.explanation.util.SilentExplanationProgressMonitor;
 import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.expression.ShortFormEntityChecker;
@@ -18,13 +20,9 @@ import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
-import org.swrlapi.core.SWRLAPIFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
-import org.swrlapi.core.SWRLAPIRenderer;
-import org.swrlapi.core.impl.DefaultSWRLAPIRenderer;
+import org.swrlapi.core.SWRLRuleRenderer;
+import org.swrlapi.factory.SWRLAPIFactory;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -39,8 +37,8 @@ import java.util.Iterator;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/11/14.
  */
-@Component
-@Scope(value = WebApplicationContext.SCOPE_SESSION)
+@UIScope
+@SpringComponent
 public class OWLEditorKitImpl implements OWLEditorKit {
 
     private static final Logger LOG = LoggerFactory.getLogger(OWLEditorKitImpl.class);
@@ -53,7 +51,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
 
     private final OWLOntologyManager modelManager = OWLManager.createOWLOntologyManager();
 
-    private SWRLAPIRenderer ruleRenderer;
+    private SWRLRuleRenderer ruleRenderer;
     private ExplanationOrderer explanationOrderer = new ExplanationOrdererImpl(modelManager);
     private DefaultExplanationGenerator explanationGenerator;
     private OWLEditorDataFactory editorDataFactory = new OWLEditorDataFactoryImpl();
@@ -88,23 +86,23 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         activeOntology = modelManager.createOntology(documentIRI);
         initialise();
     }
-    
+
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         initialise();
     }
-    
+
     public ExplanationTree explain(OWLAxiom axiom) {
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));
     }
     private void initialise() {
-        swrlActiveOntology = SWRLAPIFactory.createOntology(activeOntology);
+        swrlActiveOntology = SWRLAPIFactory.createSWRLAPIOntology(activeOntology);
         editorDataFactory.setActiveOntology(this.activeOntology);
 
 //        activeOntology.getDirectImportsDocuments();
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
         prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-        ruleRenderer = new DefaultSWRLAPIRenderer(swrlActiveOntology);
+        ruleRenderer = SWRLAPIFactory.createSWRLRuleRenderer(activeOntology, (DefaultPrefixManager) prefixManager);
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
         sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
         bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);
@@ -147,7 +145,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         } else {
 //            if (reasoner != null) reasoner.dispose();
 //            if (explanationGenerator != null) explanationGenerator = null;
-            
+
             Notification.show("Reasoner deactivated");
 
         }
@@ -171,7 +169,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         return parser.parseClassExpression();
     }
 
-    public SWRLAPIRenderer getRuleRenderer() {
+    public SWRLRuleRenderer getRuleRenderer() {
         return ruleRenderer;
     }
 

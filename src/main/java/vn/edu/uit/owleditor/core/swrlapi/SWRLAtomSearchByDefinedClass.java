@@ -28,7 +28,7 @@ public class SWRLAtomSearchByDefinedClass {
 
     public Set<OWLObjectPropertyExpression> getObjectPropertiesByDefinedClass(OWLClass owlClass) {
         final Set<OWLObjectPropertyExpression> retOEs = new HashSet<>();
-        ontology.getSWRLAPIRules()
+        ontology.getSWRLRules()
                 .stream().filter(rule -> !rule.isSQWRLQuery())
                 .forEach(rule -> {
                     for (SWRLAtom atom : rule.getBodyAtoms()) {
@@ -44,7 +44,7 @@ public class SWRLAtomSearchByDefinedClass {
 
     public Set<OWLDataPropertyExpression> getDataPropertiesByDefinedClass(OWLClass owlClass) {
         final Set<OWLDataPropertyExpression> retDEs = new HashSet<>();
-        ontology.getSWRLAPIRules()
+        ontology.getSWRLRules()
                 .stream().filter(rule -> !rule.isSQWRLQuery())
                 .forEach(rule -> {
                     for (SWRLAtom atom : rule.getBodyAtoms()) {

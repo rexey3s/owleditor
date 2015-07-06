@@ -5,6 +5,8 @@ import com.vaadin.data.Property;
 import com.vaadin.event.Action;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -16,8 +18,6 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.hierarchy.AbstractOWLObjectHierarchicalContainer;
@@ -36,8 +36,8 @@ import vn.edu.uit.owleditor.view.window.DownloadOntologyWindow;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@SpringComponent
 public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
     private static final Logger LOG = LoggerFactory.getLogger(ClassHierarchicalPanel.class);
     // Actions for the context menu

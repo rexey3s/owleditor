@@ -3,13 +3,13 @@ package vn.edu.uit.owleditor;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.annotation.VaadinUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.EntryView;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 
 @Theme("mytheme")
-@VaadinUI
+@SpringUI
 public class OWLEditorUI extends UI {
     private static final Logger LOG = LoggerFactory.getLogger(OWLEditorUI.class);
     @Autowired

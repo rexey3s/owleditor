@@ -2,6 +2,8 @@ package vn.edu.uit.owleditor.view;
 
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.IRI;
@@ -10,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.vaadin.easyuploads.UploadField;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -25,8 +25,8 @@ import java.io.File;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/13/14.
  */
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@SpringComponent
 public class EntryView extends VerticalLayout {
     public  static final String NAME = "entryView";
     private static final Logger LOG = LoggerFactory.getLogger(EntryView.class);

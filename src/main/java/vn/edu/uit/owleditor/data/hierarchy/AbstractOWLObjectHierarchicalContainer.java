@@ -2,10 +2,10 @@ package vn.edu.uit.owleditor.data.hierarchy;
 
 
 import com.vaadin.data.util.HierarchicalContainer;
+import com.vaadin.spring.annotation.SpringComponent;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
-import org.vaadin.spring.annotation.VaadinComponent;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
 import vn.edu.uit.owleditor.data.HasOntologyChangeListener;
 import vn.edu.uit.owleditor.data.OWLObjectContainer;
@@ -16,8 +16,9 @@ import javax.annotation.Nonnull;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/6/14.
  */
-@VaadinComponent
-public abstract class AbstractOWLObjectHierarchicalContainer extends HierarchicalContainer implements OWLObjectContainer, HasOntologyChangeListener {
+@SpringComponent
+public abstract class AbstractOWLObjectHierarchicalContainer extends HierarchicalContainer
+        implements OWLObjectContainer, HasOntologyChangeListener {
     
     private final OWLOntologyChangeVisitor changeVisitor;
     private final OWLAxiomVisitor nodeAdder;

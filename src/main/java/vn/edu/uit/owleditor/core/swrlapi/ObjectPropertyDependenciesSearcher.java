@@ -28,7 +28,7 @@ public class ObjectPropertyDependenciesSearcher {
     private JsonArray edges = new JsonArray();
 
     public ObjectPropertyDependenciesSearcher(SWRLAPIOWLOntology swrlapiowlOntology) {
-        swrlapiowlOntology.getSWRLAPIRules().stream()
+        swrlapiowlOntology.getSWRLRules().stream()
                 .filter(rule -> !rule.isSQWRLQuery())
                 .forEach(rules::add);
         dataSet.add("nodes", nodes);

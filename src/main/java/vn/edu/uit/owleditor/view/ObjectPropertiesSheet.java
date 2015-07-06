@@ -4,11 +4,11 @@ import com.vaadin.data.Property;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Responsive;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.OWLObjectPropertySource;
@@ -20,8 +20,8 @@ import vn.edu.uit.owleditor.view.panel.ObjectPropertyHierarchicalPanel;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 11/21/14.
  */
-@VaadinUIScope
-@VaadinView(name = ObjectPropertiesSheet.NAME)
+@UIScope
+@SpringView(name = ObjectPropertiesSheet.NAME)
 public class ObjectPropertiesSheet extends HorizontalLayout implements View {
     public static final String NAME = "ObjectProperties";
     private ObjectPropertyHierarchicalPanel hcLayout;

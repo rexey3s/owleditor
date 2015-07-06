@@ -3,8 +3,8 @@ package vn.edu.uit.owleditor.event;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import vn.edu.uit.owleditor.OWLEditorUI;
 
 import javax.annotation.Nonnull;
@@ -15,8 +15,8 @@ import java.io.Serializable;
  * A simple wrapper for Guava event bus. Defines static convenience methods for
  * relevant actions.
  */
-@VaadinUIScope
-@VaadinComponent
+@UIScope
+@SpringComponent
 public class OWLEditorEventBus implements SubscriberExceptionHandler, Serializable {
 
     private final EventBus eventBus = new EventBus(this);

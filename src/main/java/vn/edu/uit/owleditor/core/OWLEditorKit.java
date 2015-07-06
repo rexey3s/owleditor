@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.swrlapi.core.SWRLAPIOWLOntology;
-import org.swrlapi.core.SWRLAPIRenderer;
+import org.swrlapi.core.SWRLRuleRenderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 
@@ -17,47 +17,47 @@ import javax.annotation.Nonnull;
  */
 public interface OWLEditorKit {
 
-    public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
-    
-    public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
+    void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
 
-    public Boolean getReasonerStatus();
+    void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
 
-    public void setReasonerStatus(Boolean value);
+    Boolean getReasonerStatus();
 
-    public OWLReasoner getReasoner();
+    void setReasonerStatus(Boolean value);
 
-    public ExplanationTree explain(OWLAxiom axiom);
+    OWLReasoner getReasoner();
 
-    public OWLEntityRemover getEntityRemover();
+    ExplanationTree explain(OWLAxiom axiom);
 
-    public SWRLAPIRenderer getRuleRenderer();
+    OWLEntityRemover getEntityRemover();
 
-    public OWLDataFactory getOWLDataFactory();
+    SWRLRuleRenderer getRuleRenderer();
 
-    public OWLOntology getActiveOntology();
+    OWLDataFactory getOWLDataFactory();
 
-    public void setActiveOntology(OWLOntology activeOntology);
+    OWLOntology getActiveOntology();
 
-    public SWRLAPIOWLOntology getSWRLActiveOntology();
+    void setActiveOntology(OWLOntology activeOntology);
 
-    public OWLEditorDataFactory getDataFactory();
+    SWRLAPIOWLOntology getSWRLActiveOntology();
 
-    public ManchesterOWLSyntaxParser getParser();
+    OWLEditorDataFactory getDataFactory();
 
-    public OWLClassExpression parseClassExpression(String s);
+    ManchesterOWLSyntaxParser getParser();
 
-    public OWLOntologyManager getModelManager();
+    OWLClassExpression parseClassExpression(String s);
 
-    public PrefixManager getPrefixManager();
+    OWLOntologyManager getModelManager();
 
-    public void setPrefixManager(PrefixManager prefixManager);
+    PrefixManager getPrefixManager();
 
-    public void removeAllOntologies();
-    
-    public void removeActiveOntology();
+    void setPrefixManager(PrefixManager prefixManager);
 
-    public void addMoreOntology(IRI iri) throws OWLOntologyCreationException;
-    
-    
+    void removeAllOntologies();
+
+    void removeActiveOntology();
+
+    void addMoreOntology(IRI iri) throws OWLOntologyCreationException;
+
+
 }

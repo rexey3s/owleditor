@@ -7,6 +7,8 @@ import com.vaadin.event.Action;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
@@ -15,8 +17,6 @@ import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.exceptions.SWRLRuleException;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.data.property.SWRLAPIRuleSource;
@@ -29,8 +29,8 @@ import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/9/2014.
  */
-@VaadinUIScope
-@VaadinView(name = RuleSheet.NAME)
+@UIScope
+@SpringView(name = RuleSheet.NAME)
 public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     public static final String NAME = "Rules";
     private static final Logger LOG = LoggerFactory.getLogger(RuleSheet.class);
@@ -87,7 +87,7 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
         container.addContainerProperty("Content", String.class, "");
         container.addContainerProperty("Comment", String.class, "");
         container.addContainerProperty("Active", Boolean.class, null);
-        editorKit.getSWRLActiveOntology().getSWRLAPIRules().forEach(rule -> {
+        editorKit.getSWRLActiveOntology().getSWRLRules().forEach(rule -> {
             if (!rule.isSQWRLQuery()) {
                 container.addItem(rule);
                 container.getContainerProperty(rule, "Rule name").setValue(rule.getRuleName());

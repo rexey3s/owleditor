@@ -7,7 +7,7 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 import org.swrlapi.builtins.arguments.*;
 import org.swrlapi.core.SWRLAPIBuiltInAtom;
 import org.swrlapi.core.SWRLAPIOWLOntology;
-import org.swrlapi.core.SWRLAPIRenderer;
+import org.swrlapi.core.SWRLRuleRenderer;
 import org.swrlapi.sqwrl.SQWRLNames;
 import org.swrlapi.sqwrl.SQWRLQuery;
 
@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/10/2014.
  */
-public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
+public class OWLEditorSWRLAPIRuleRenderer implements SWRLRuleRenderer {
     private final OWLOntology ontology;
     private final DefaultPrefixManager prefixManager;
 
@@ -48,7 +48,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
         boolean collectionOperationEncountered = false;
 
         for (boolean isFirst = true; bodyAtomIterator.hasNext(); isFirst = false) {
-            SWRLAtom atom = (SWRLAtom) bodyAtomIterator.next();
+            SWRLAtom atom = bodyAtomIterator.next();
             if (this.isSQWRLCollectionMakeBuiltInAtom(atom)) {
                 if (collectionMakeEncountered) {
                     sb.append(" ^ ");
@@ -67,7 +67,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
                 sb.append(" ^ ");
             }
 
-            sb.append((String) atom.accept(this));
+            sb.append(atom.accept(this));
         }
 
         return sb;
@@ -78,12 +78,12 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
         boolean isFirst = true;
 
         for (isFirst = true; headAtomIterator.hasNext(); isFirst = false) {
-            SWRLAtom atom = (SWRLAtom) headAtomIterator.next();
+            SWRLAtom atom = headAtomIterator.next();
             if (!isFirst) {
                 sb.append("  ");
             }
 
-            sb.append((String) atom.accept(this));
+            sb.append(atom.accept(this));
         }
 
         return sb;
@@ -95,39 +95,39 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
 
     public String visit(SWRLClassAtom classAtom) {
         OWLClassExpression classExpression = classAtom.getPredicate();
-        SWRLIArgument iArgument = (SWRLIArgument) classAtom.getArgument();
+        SWRLIArgument iArgument = classAtom.getArgument();
         StringBuilder sb = new StringBuilder();
-        sb.append(this.visit((OWLClassExpression) classExpression));
-        sb.append("(" + this.visit((SWRLIArgument) iArgument) + ")");
+        sb.append(this.visit(classExpression));
+        sb.append("(" + this.visit(iArgument) + ")");
         return sb.toString();
     }
 
     public String visit(SWRLDataRangeAtom dataRangeAtom) {
         OWLDataRange dataRange = dataRangeAtom.getPredicate();
-        SWRLDArgument dArgument = (SWRLDArgument) dataRangeAtom.getArgument();
+        SWRLDArgument dArgument = dataRangeAtom.getArgument();
         StringBuilder sb = new StringBuilder();
-        sb.append(this.visit((OWLDataRange) dataRange));
-        sb.append("(" + this.visit((SWRLDArgument) dArgument) + ")");
+        sb.append(this.visit(dataRange));
+        sb.append("(" + this.visit(dArgument) + ")");
         return sb.toString();
     }
 
     public String visit(SWRLObjectPropertyAtom objectPropertyAtom) {
         OWLObjectPropertyExpression objectPropertyExpression = objectPropertyAtom.getPredicate();
-        SWRLIArgument iArgument1 = (SWRLIArgument) objectPropertyAtom.getFirstArgument();
-        SWRLIArgument iArgument2 = (SWRLIArgument) objectPropertyAtom.getSecondArgument();
+        SWRLIArgument iArgument1 = objectPropertyAtom.getFirstArgument();
+        SWRLIArgument iArgument2 = objectPropertyAtom.getSecondArgument();
         StringBuilder sb = new StringBuilder();
-        sb.append(this.visit((OWLObjectPropertyExpression) objectPropertyExpression));
-        sb.append("(" + this.visit((SWRLIArgument) iArgument1) + ", " + this.visit((SWRLIArgument) iArgument2) + ")");
+        sb.append(this.visit(objectPropertyExpression));
+        sb.append("(" + this.visit(iArgument1) + ", " + this.visit(iArgument2) + ")");
         return sb.toString();
     }
 
     public String visit(SWRLDataPropertyAtom dataPropertyAtom) {
         OWLDataPropertyExpression dataPropertyExpression = dataPropertyAtom.getPredicate();
-        SWRLIArgument iArgument1 = (SWRLIArgument) dataPropertyAtom.getFirstArgument();
-        SWRLDArgument dArgument2 = (SWRLDArgument) dataPropertyAtom.getSecondArgument();
+        SWRLIArgument iArgument1 = dataPropertyAtom.getFirstArgument();
+        SWRLDArgument dArgument2 = dataPropertyAtom.getSecondArgument();
         StringBuilder sb = new StringBuilder();
-        sb.append(this.visit((OWLDataPropertyExpression) dataPropertyExpression));
-        sb.append("(" + this.visit((SWRLIArgument) iArgument1) + ", " + this.visit((SWRLDArgument) dArgument2) + ")");
+        sb.append(this.visit(dataPropertyExpression));
+        sb.append("(" + this.visit(iArgument1) + ", " + this.visit(dArgument2) + ")");
         return sb.toString();
     }
 
@@ -144,7 +144,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
                 sb.append(", ");
             }
 
-            sb.append((String) argument.accept(this));
+            sb.append(argument.accept(this));
         }
 
         sb.append(")");
@@ -162,7 +162,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
                 sb.append(", ");
             }
 
-            sb.append((String) argument.accept((SWRLBuiltInArgumentVisitorEx<String>) this));
+            sb.append(argument.accept((SWRLBuiltInArgumentVisitorEx<String>) this));
         }
 
         sb.append(")");
@@ -182,29 +182,29 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
     }
 
     public String visit(SWRLIndividualArgument individualArgument) {
-        return this.visit((OWLIndividual) individualArgument.getIndividual());
+        return this.visit(individualArgument.getIndividual());
     }
 
     public String visit(SWRLLiteralArgument literalArgument) {
         OWLLiteral literal = literalArgument.getLiteral();
-        return this.visit((OWLLiteral) literal);
+        return this.visit(literal);
     }
 
     public String visit(SWRLSameIndividualAtom sameIndividualAtom) {
-        SWRLIArgument iArgument1 = (SWRLIArgument) sameIndividualAtom.getFirstArgument();
-        SWRLIArgument iArgument2 = (SWRLIArgument) sameIndividualAtom.getSecondArgument();
+        SWRLIArgument iArgument1 = sameIndividualAtom.getFirstArgument();
+        SWRLIArgument iArgument2 = sameIndividualAtom.getSecondArgument();
         StringBuilder sb = new StringBuilder();
         sb.append("sameAs");
-        sb.append("(" + this.visit((SWRLIArgument) iArgument1) + ", " + this.visit((SWRLIArgument) iArgument2) + ")");
+        sb.append("(" + this.visit(iArgument1) + ", " + this.visit(iArgument2) + ")");
         return sb.toString();
     }
 
     public String visit(SWRLDifferentIndividualsAtom differentIndividualsAtom) {
-        SWRLIArgument iArgument1 = (SWRLIArgument) differentIndividualsAtom.getFirstArgument();
-        SWRLIArgument iArgument2 = (SWRLIArgument) differentIndividualsAtom.getSecondArgument();
+        SWRLIArgument iArgument1 = differentIndividualsAtom.getFirstArgument();
+        SWRLIArgument iArgument2 = differentIndividualsAtom.getSecondArgument();
         StringBuilder sb = new StringBuilder();
         sb.append("differentFrom");
-        sb.append("(" + this.visit((SWRLIArgument) iArgument1) + ", " + this.visit((SWRLIArgument) iArgument2) + ")");
+        sb.append("(" + this.visit(iArgument1) + ", " + this.visit(iArgument2) + ")");
         return sb.toString();
     }
 
@@ -212,10 +212,10 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
         StringBuilder sb = new StringBuilder();
         if (argument instanceof SWRLIndividualArgument) {
             SWRLIndividualArgument variableArgument = (SWRLIndividualArgument) argument;
-            sb.append((String) variableArgument.accept(this));
+            sb.append(variableArgument.accept(this));
         } else if (argument instanceof SWRLVariable) {
             SWRLVariable variableArgument1 = (SWRLVariable) argument;
-            sb.append((String) variableArgument1.accept(this));
+            sb.append(variableArgument1.accept(this));
         } else {
             sb.append("[Unknown " + SWRLIArgument.class.getName() + " type " + argument.getClass().getName() + "]");
         }
@@ -227,13 +227,13 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
         StringBuilder sb = new StringBuilder();
         if (argument instanceof SWRLBuiltInArgument) {
             SWRLBuiltInArgument variableArgument = (SWRLBuiltInArgument) argument;
-            sb.append((String) variableArgument.accept((SWRLBuiltInArgumentVisitorEx<String>) this));
+            sb.append(variableArgument.accept((SWRLBuiltInArgumentVisitorEx<String>) this));
         } else if (argument instanceof SWRLLiteralArgument) {
             SWRLLiteralArgument variableArgument1 = (SWRLLiteralArgument) argument;
-            sb.append((String) variableArgument1.accept(this));
+            sb.append(variableArgument1.accept(this));
         } else if (argument instanceof SWRLVariable) {
             SWRLVariable variableArgument2 = (SWRLVariable) argument;
-            sb.append((String) variableArgument2.accept(this));
+            sb.append(variableArgument2.accept(this));
         } else {
             sb.append("[Unknown " + SWRLDArgument.class.getName() + " type " + argument.getClass().getName() + "]");
         }
@@ -246,7 +246,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
             return classExpression.toString();
         } else {
             OWLClass cls = classExpression.asOWLClass();
-            return this.visit((OWLClass) cls);
+            return this.visit(cls);
         }
     }
 
@@ -265,7 +265,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
     }
 
     private String visit(OWLObjectPropertyExpression objectPropertyExpression) {
-        return objectPropertyExpression.isAnonymous() ? objectPropertyExpression.toString() : this.visit((OWLObjectProperty) objectPropertyExpression.asOWLObjectProperty());
+        return objectPropertyExpression.isAnonymous() ? objectPropertyExpression.toString() : this.visit(objectPropertyExpression.asOWLObjectProperty());
     }
 
     private String visit(OWLObjectProperty property) {
@@ -274,7 +274,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
     }
 
     private String visit(OWLDataPropertyExpression dataPropertyExpression) {
-        return dataPropertyExpression.isAnonymous() ? dataPropertyExpression.toString() : this.visit((OWLDataProperty) dataPropertyExpression.asOWLDataProperty());
+        return dataPropertyExpression.isAnonymous() ? dataPropertyExpression.toString() : this.visit(dataPropertyExpression.asOWLDataProperty());
     }
 
     private String visit(OWLDataProperty property) {
@@ -327,7 +327,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
     }
 
     public String visit(SWRLLiteralBuiltInArgument argument) {
-        return this.visit((OWLLiteral) argument.getLiteral());
+        return this.visit(argument.getLiteral());
     }
 
     public String visit(SWRLVariableBuiltInArgument argument) {
@@ -355,7 +355,7 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLAPIRenderer {
     private String visit(OWLLiteral literal) {
         OWLDatatype datatype = literal.getDatatype();
         String value = literal.getLiteral();
-        return datatype.isString() ? "\"" + value + "\"" : (datatype.isFloat() ? value : (datatype.isBoolean() ? value : (datatype.getIRI().equals(XSDVocabulary.INT.getIRI()) ? value : "\"" + value + "\"^^\"" + this.visit((OWLDataRange) datatype) + "\"")));
+        return datatype.isString() ? "\"" + value + "\"" : (datatype.isFloat() ? value : (datatype.isBoolean() ? value : (datatype.getIRI().equals(XSDVocabulary.INT.getIRI()) ? value : "\"" + value + "\"^^\"" + this.visit(datatype) + "\"")));
     }
 
     private String variablePrefixedName2VariableName(String variablePrefixedName) {

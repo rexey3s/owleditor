@@ -6,6 +6,9 @@ import com.vaadin.data.Validator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -14,9 +17,6 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.annotation.VaadinComponent;
-import org.vaadin.spring.annotation.VaadinUIScope;
-import org.vaadin.spring.navigator.annotation.VaadinView;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.core.OWLEditorKitImpl;
@@ -38,8 +38,8 @@ import java.util.List;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecomunication created on 12/3/2014.
  */
-@VaadinUIScope
-@VaadinView(name = IndividualsSheet.NAME)
+@UIScope
+@SpringView(name = IndividualsSheet.NAME)
 public class IndividualsSheet extends HorizontalLayout implements View {
 
     public static final String NAME = "Individuals";
@@ -113,8 +113,8 @@ public class IndividualsSheet extends HorizontalLayout implements View {
 
     }
 
-    @VaadinUIScope
-    @VaadinComponent
+    @UIScope
+    @SpringComponent
     public static class IndividualList extends VerticalLayout implements
             OWLEntityActionHandler<OWLEditorEvent.IndividualAddEvent, OWLEditorEvent.IndividualAddEvent, OWLEditorEvent.IndividualRemoveEvent>,
             Container.Viewer {

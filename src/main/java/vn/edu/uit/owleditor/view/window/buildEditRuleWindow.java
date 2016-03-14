@@ -3,6 +3,7 @@ package vn.edu.uit.owleditor.view.window;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.swrlapi.core.SWRLAPIRule;
 import org.swrlapi.core.SWRLRuleRenderer;
 import vn.edu.uit.owleditor.core.OWLEditorSWRLAPIRuleRenderer;
@@ -23,7 +24,7 @@ public class buildEditRuleWindow extends AbstractOWLExpressionEditorWindow<SWRLA
         super(source, mod);
 
         editor = new SWRLRuleEditor();
-        SWRLRuleRenderer myRenderer = new OWLEditorSWRLAPIRuleRenderer(editorKit.getSWRLActiveOntology());
+        SWRLRuleRenderer myRenderer = new OWLEditorSWRLAPIRuleRenderer(editorKit.getSWRLActiveOntology(), (DefaultPrefixManager) editorKit.getPrefixManager());
         editor.setValue(myRenderer.renderSWRLRule(source.getValue()));
         editor.setRuleName(source.getValue().getRuleName());
         editor.setRuleComment(source.getValue().getComment());

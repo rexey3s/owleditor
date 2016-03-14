@@ -34,7 +34,6 @@ import vn.edu.uit.owleditor.view.window.AbstractAddOWLObjectWindow;
 import vn.edu.uit.owleditor.view.window.DownloadOntologyWindow;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 @UIScope
 @SpringComponent
@@ -204,13 +203,13 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
     public class OWLClassTree extends Tree implements TreeKit<OWLClassSource>,
             OWLEntityActionHandler<OWLEditorEvent.SubClassAddEvent, OWLEditorEvent.SiblingClassAddEvent, OWLEditorEvent.ClassRemoveEvent> {
-        private final OWLClassHierarchicalContainer dataContainer;
+        private final OWLClassHierarchicalContainer eKit;
         private final OWLClassSource selectedItem = new OWLClassSource();
 
         public OWLClassTree() {
-            dataContainer = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
+            eKit = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
 
-            setContainerDataSource(dataContainer);
+            setContainerDataSource(eKit);
             addValueChangeListener(this);
             setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId(OWLEditorData.OWLClassName);
@@ -219,7 +218,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
         @Override
         public AbstractOWLObjectHierarchicalContainer getTreeDataContainer() {
-            return dataContainer;
+            return eKit;
         }
 
         @Override
@@ -243,7 +242,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
                     .addAxiom(editorKit.getActiveOntology(), clsDeclaration);
             if (ChangeApplied.SUCCESSFULLY == ok1) {
                 success = true;
-                clsDeclaration.accept(dataContainer.getOWLAxiomAdder());
+                clsDeclaration.accept(eKit.getOWLAxiomAdder());
             }
 
             for (OWLClassExpression ce : EntitySearcher
@@ -254,7 +253,7 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
 
                     ChangeApplied ok2 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), siblingAxiom);
                     if (ChangeApplied.SUCCESSFULLY == ok2 && success) {
-                        siblingAxiom.accept(dataContainer.getOWLAxiomAdder());
+                        siblingAxiom.accept(eKit.getOWLAxiomAdder());
                         expandItem(ce.asOWLClass());
                     } else success = false;
                     break;
@@ -269,15 +268,15 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         }
 
         public void handleRemoveEntityEvent(OWLEditorEvent.ClassRemoveEvent event) {
-            event.getRemovedObject().accept(dataContainer.getEntityRemover());
+            event.getRemovedObject().accept(eKit.getEntityRemover());
 
-            List<OWLOntologyChange> changes = editorKit.getModelManager()
-                    .applyChanges(dataContainer.getEntityRemover().getChanges());
+            ChangeApplied changeApplied = editorKit.getModelManager()
+                    .applyChanges(eKit.getEntityRemover().getChanges());
 
-            for (OWLOntologyChange axiom : changes) {
-                axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
+            for (OWLOntologyChange axiom : eKit.getEntityRemover().getChanges()) {
+                axiom.accept(eKit.getOWLOntologyChangeVisitor());
             }
-            dataContainer.getEntityRemover().reset();
+            eKit.getEntityRemover().reset();
         }
 
 
@@ -289,8 +288,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
             ChangeApplied ok2 = editorKit.getModelManager().addAxiom(editorKit.getActiveOntology(), subClsAxiom);
 
             if (ChangeApplied.SUCCESSFULLY == ok1 && ChangeApplied.SUCCESSFULLY == ok2) {
-                clsDeclaration.accept(dataContainer.getOWLAxiomAdder());
-                subClsAxiom.accept(dataContainer.getOWLAxiomAdder());
+                clsDeclaration.accept(eKit.getOWLAxiomAdder());
+                subClsAxiom.accept(eKit.getOWLAxiomAdder());
                 expandItem(event.getSuperClass());
                 Notification.show("Successfully create "
                                     + OWLEditorKitImpl.getShortForm(event.getSubClass()),

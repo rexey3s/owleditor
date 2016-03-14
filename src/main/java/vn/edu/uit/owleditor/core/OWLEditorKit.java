@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLRuleRenderer;
+import org.swrlapi.sqwrl.exceptions.SQWRLException;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 
@@ -17,9 +18,9 @@ import javax.annotation.Nonnull;
  */
 public interface OWLEditorKit {
 
-    void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
+    void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException;
 
-    void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException;
+    void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException;
 
     Boolean getReasonerStatus();
 

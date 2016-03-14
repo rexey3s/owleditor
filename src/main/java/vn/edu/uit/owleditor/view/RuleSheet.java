@@ -25,6 +25,8 @@ import vn.edu.uit.owleditor.event.OWLEditorEventBus;
 import vn.edu.uit.owleditor.view.window.buildAddRuleWindow;
 import vn.edu.uit.owleditor.view.window.buildEditRuleWindow;
 
+import java.util.Optional;
+
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/9/2014.
@@ -157,8 +159,8 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
     @Subscribe
     public void handleRuleAddEvent(OWLEditorEvent.RuleAddEvent event) {
         try {
-            SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
-            handleAddRule(rule);
+            Optional<SWRLAPIRule> rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
+            handleAddRule(rule.get());
         } catch (SWRLRuleException e) {
             Notification.show("Cannot add rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
@@ -173,10 +175,10 @@ public class RuleSheet extends VerticalLayout implements Action.Handler, View {
         activeOntology.deleteSWRLRule(event.getAxiom().getRuleName());
 
         try {
-            SWRLAPIRule rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
+            Optional<SWRLAPIRule> rule = activeOntology.getSWRLRule(event.getAxiom().getRuleName());
             Notification.show("Cannot remove rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);
-            LOG.error("Cannot remove rule ", rule);
+            LOG.error("Cannot remove rule ", rule.get());
         } catch (SWRLRuleException e) {
             Notification.show("Successfully removed rule " + event.getAxiom().getRuleName(),
                     Notification.Type.TRAY_NOTIFICATION);

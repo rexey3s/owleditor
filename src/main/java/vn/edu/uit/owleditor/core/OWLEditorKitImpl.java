@@ -22,7 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLRuleRenderer;
+import org.swrlapi.factory.DefaultIRIResolver;
 import org.swrlapi.factory.SWRLAPIFactory;
+import org.swrlapi.sqwrl.exceptions.SQWRLException;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrderer;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
@@ -82,12 +84,12 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         return renderer.render(object);
     }
 
-    public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
+    public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException {
         activeOntology = modelManager.createOntology(documentIRI);
         initialise();
     }
 
-    public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException {
+    public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException {
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         initialise();
     }
@@ -95,14 +97,15 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     public ExplanationTree explain(OWLAxiom axiom) {
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));
     }
-    private void initialise() {
+    private void initialise() throws SQWRLException {
         swrlActiveOntology = SWRLAPIFactory.createSWRLAPIOntology(activeOntology);
         editorDataFactory.setActiveOntology(this.activeOntology);
 
 //        activeOntology.getDirectImportsDocuments();
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
         prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-        ruleRenderer = SWRLAPIFactory.createSWRLRuleRenderer(activeOntology, (DefaultPrefixManager) prefixManager);
+        ruleRenderer = SWRLAPIFactory.createSWRLRuleRenderer(activeOntology, new DefaultIRIResolver(modelManager.getOntologyDocumentIRI(activeOntology) + "#"));
+
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
         sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);
         bidirectionalSfp = new BidirectionalShortFormProviderAdapter(modelManager.getOntologies(), sfpFormat);

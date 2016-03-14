@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.swrlapi.sqwrl.exceptions.SQWRLException;
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
@@ -124,6 +125,8 @@ public class EntryView extends VerticalLayout {
             catch (OWLOntologyCreationException e) {
                 
                 Notification.show(e.getMessage(), Notification.Type.ERROR_MESSAGE);
+            } catch (SQWRLException e) {
+                e.printStackTrace();
             }
         }).withStyleName(ValoTheme.BUTTON_PRIMARY);
 
@@ -155,6 +158,8 @@ public class EntryView extends VerticalLayout {
            }
            catch (OWLOntologyCreationException creationEx) {
                Notification.show(creationEx.getMessage(), Notification.Type.ERROR_MESSAGE);
+           } catch (SQWRLException e) {
+               e.printStackTrace();
            }
         });
 

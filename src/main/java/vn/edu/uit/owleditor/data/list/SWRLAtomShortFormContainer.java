@@ -20,7 +20,7 @@ public class SWRLAtomShortFormContainer extends IndexedContainer {
     public SWRLAtomShortFormContainer() {
         SWRLAPIOWLOntology ontology = OWLEditorUI.getEditorKit().getSWRLActiveOntology();
 
-        DefaultPrefixManager prefixManager = ontology.getPrefixManager();
+        DefaultPrefixManager prefixManager = (DefaultPrefixManager) OWLEditorUI.getEditorKit().getPrefixManager();
         addContainerProperty(OWLEditorData.OWLEntityIcon, Resource.class, null);
         ontology.getOWLOntology().getSignature(Imports.INCLUDED).forEach(e -> {
             String shortForm = prefixManager.getShortForm(e.getIRI());

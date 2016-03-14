@@ -21,9 +21,9 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLRuleRenderer {
     private final OWLOntology ontology;
     private final DefaultPrefixManager prefixManager;
 
-    public OWLEditorSWRLAPIRuleRenderer(SWRLAPIOWLOntology swrlapiowlOntology) {
+    public OWLEditorSWRLAPIRuleRenderer(SWRLAPIOWLOntology swrlapiowlOntology, DefaultPrefixManager prefixManager) {
         this.ontology = swrlapiowlOntology.getOWLOntology();
-        this.prefixManager = swrlapiowlOntology.getPrefixManager();
+        this.prefixManager = prefixManager;
     }
 
     public String renderSWRLRule(SWRLRule rule) {
@@ -343,12 +343,12 @@ public class OWLEditorSWRLAPIRuleRenderer implements SWRLRuleRenderer {
     }
 
     public String visit(SWRLMultiValueVariableBuiltInArgument argument) {
-        String variablePrefixedName = argument.getVariablePrefixedName();
+        String variablePrefixedName = argument.getVariableName();
         return this.variablePrefixedName2VariableName(variablePrefixedName);
     }
 
     public String visit(SQWRLCollectionVariableBuiltInArgument argument) {
-        String variablePrefixedName = argument.getVariablePrefixedName();
+        String variablePrefixedName = argument.getVariableName();
         return this.variablePrefixedName2VariableName(variablePrefixedName);
     }
 

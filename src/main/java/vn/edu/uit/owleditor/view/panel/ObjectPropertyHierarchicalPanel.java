@@ -294,10 +294,10 @@ public class ObjectPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLO
         public void handleRemoveEntityEvent(OWLEditorEvent.ObjectPropertyRemove event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
 
-            List<OWLOntologyChange> changes = editorKit.getModelManager()
+            ChangeApplied changeApplied = editorKit.getModelManager()
                     .applyChanges(dataContainer.getEntityRemover().getChanges());
 
-            for (OWLOntologyChange axiom : changes) {
+            for (OWLOntologyChange axiom : editorKit.getEntityRemover().getChanges()) {
                 axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
             }
             dataContainer.getEntityRemover().reset();

@@ -308,11 +308,11 @@ public class DataPropertyHierarchicalPanel extends AbstractHierarchyPanel<OWLDat
         public void handleRemoveEntityEvent(OWLEditorEvent.DataPropertyRemoveEvent event) {
             event.getRemovedObject().accept(dataContainer.getEntityRemover());
 
-            List<OWLOntologyChange> changes = editorKit
+            ChangeApplied changeApplied = editorKit
                     .getModelManager()
                     .applyChanges(dataContainer.getEntityRemover().getChanges());
 
-            for (OWLOntologyChange axiom : changes) {
+            for (OWLOntologyChange axiom : editorKit.getEntityRemover().getChanges()) {
 
                 axiom.accept(dataContainer.getOWLOntologyChangeVisitor());
 

@@ -134,8 +134,8 @@ public class OWLDataPropertyHierarchicalContainer extends AbstractOWLObjectHiera
             ChangeApplied applied = manager.addAxiom(activeOntology, axiom);
 
         } else {
-            List<OWLOntologyChange> changes = manager.removeAxiom(activeOntology, axiom);
-            manager.applyChanges(changes);
+            ChangeApplied changeApplied = manager.removeAxiom(activeOntology, axiom);
+//            manager.applyChange(changeApplied.getClass());
             
         }
     }

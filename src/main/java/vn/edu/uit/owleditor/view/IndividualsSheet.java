@@ -235,10 +235,11 @@ public class IndividualsSheet extends HorizontalLayout implements View {
         @Override
         public void handleRemoveEntityEvent(OWLEditorEvent.IndividualRemoveEvent event) {
             event.getIndividual().accept(editorKit.getEntityRemover());
-            List<OWLOntologyChange> changes = editorKit
+
+            ChangeApplied changeApplied = editorKit
                     .getModelManager()
                     .applyChanges(editorKit.getEntityRemover().getChanges());
-            if (changes.size() > 0) {
+            if (changeApplied == ChangeApplied.SUCCESSFULLY) {
                 list.removeItem(event.getIndividual());
                 Notification.show("Successfully removed individual", Notification.Type.TRAY_NOTIFICATION);
             } else {

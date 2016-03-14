@@ -38,13 +38,14 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
+                ChangeApplied changes =
                         eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 functionalDataPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes.getDeclaringClass()) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -103,13 +104,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 functionalObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -170,13 +170,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                ChangeApplied changeApplied = eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 inverseFunctionalObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -236,13 +235,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                ChangeApplied changes = eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 symmetricObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -302,13 +300,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                ChangeApplied changeApplied = eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 owlaSymmetricObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -368,13 +365,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                ChangeApplied changeApplied = eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 transitiveObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -434,13 +430,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                ChangeApplied changes = eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 reflexiveObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 
@@ -500,13 +495,12 @@ public abstract class OWLPropertyAttributes {
                 System.out.println(applied);
 
             } else {
-                List<OWLOntologyChange> changes =
-                        eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
+                ChangeApplied changes = eKit.getModelManager().removeAxiom(eKit.getActiveOntology(),
                                 irreflexiveObjectPropertyAxiom);
-                eKit.getModelManager().applyChanges(changes);
-                for (OWLOntologyChange change : changes) {
-                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
-                }
+//                eKit.getModelManager().applyChanges(changes);
+//                for (OWLOntologyChange change : changes) {
+//                    System.out.println(OWLEditorKitImpl.render(change.getAxiom()));
+//                }
             }
         }
 

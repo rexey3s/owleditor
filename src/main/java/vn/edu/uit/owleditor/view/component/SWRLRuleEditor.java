@@ -5,7 +5,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.swrlapi.exceptions.InvalidSWRLRuleNameException;
 import vn.edu.uit.owleditor.data.list.SWRLAtomShortFormContainer;
 import vn.edu.uit.owleditor.utils.EditorUtils;
 
@@ -25,7 +24,7 @@ public class SWRLRuleEditor extends VerticalLayout {
         initialise();
     }
 
-    public String getRuleName() throws InvalidSWRLRuleNameException {
+    public String getRuleName() {
         ruleName.validate();
         return ruleName.getValue();
     }

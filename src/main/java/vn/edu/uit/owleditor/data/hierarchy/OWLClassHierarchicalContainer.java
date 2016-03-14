@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class OWLClassHierarchicalContainer extends AbstractOWLObjectHierarchicalContainer {
     private static final Logger LOG = LoggerFactory.getLogger(OWLClassHierarchicalContainer.class);
-    private final OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
+    private OWLClass thing = OWLManager.getOWLDataFactory().getOWLThing();
 
     public OWLClassHierarchicalContainer() {
         super();

@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
     private static final Logger LOG = LoggerFactory.getLogger(OWLEditorDataFactoryImpl.class);
 
-    private final OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
+    private OWLDataFactory owlFactory;
 
     private OWLOntology activeOntology;
 
@@ -31,7 +31,9 @@ public class OWLEditorDataFactoryImpl implements OWLEditorDataFactory {
 
     private OWLDataPropertyHierarchicalContainer dataPropertyHierarchicalContainer = new OWLDataPropertyHierarchicalContainer();
 
-
+    public OWLEditorDataFactoryImpl() {
+        owlFactory = OWLManager.getOWLDataFactory();
+    }
     @Override
     public void setActiveOntology(OWLOntology ontology) {
         this.activeOntology = ontology;

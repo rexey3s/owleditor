@@ -18,6 +18,7 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import vn.edu.uit.owleditor.OWLEditorUI;
+import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.utils.converter.OWLObjectConverterFactory;
 
 import java.io.File;
@@ -109,8 +110,9 @@ public class EntryView extends VerticalLayout {
             try {
                 File file = (File) uploadField.getValue();
                 if (file.exists()) {
-
-                    OWLEditorUI.getEditorKit().loadOntologyFromOntologyDocument(IRI.create(file));
+                    IRI iriDoc = IRI.create(file);
+                    OWLEditorKit eKit = OWLEditorUI.getEditorKit();
+                    eKit.loadOntologyFromOntologyDocument(iriDoc);
                     VaadinSession.getCurrent().setConverterFactory(
                             new OWLObjectConverterFactory(OWLEditorUI.getEditorKit()));
 

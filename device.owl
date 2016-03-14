@@ -1,0 +1,904 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY ace_lexicon "http://attempto.ifi.uzh.ch/ace_lexicon#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="smart_device_ontology#"
+     xml:base="smart_device_ontology"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:ace_lexicon="http://attempto.ifi.uzh.ch/ace_lexicon#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="smart_device_ontology"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://attempto.ifi.uzh.ch/ace_lexicon#CN_pl -->
+
+    <owl:AnnotationProperty rdf:about="&ace_lexicon;CN_pl"/>
+    
+
+
+    <!-- http://attempto.ifi.uzh.ch/ace_lexicon#CN_sg -->
+
+    <owl:AnnotationProperty rdf:about="&ace_lexicon;CN_sg"/>
+    
+
+
+    <!-- http://attempto.ifi.uzh.ch/ace_lexicon#PN_sg -->
+
+    <owl:AnnotationProperty rdf:about="&ace_lexicon;PN_sg"/>
+    
+
+
+    <!-- http://attempto.ifi.uzh.ch/ace_lexicon#TV_pl -->
+
+    <owl:AnnotationProperty rdf:about="&ace_lexicon;TV_pl"/>
+    
+
+
+    <!-- http://attempto.ifi.uzh.ch/ace_lexicon#TV_sg -->
+
+    <owl:AnnotationProperty rdf:about="&ace_lexicon;TV_sg"/>
+    
+
+
+    <!-- http://attempto.ifi.uzh.ch/ace_lexicon#TV_vbg -->
+
+    <owl:AnnotationProperty rdf:about="&ace_lexicon;TV_vbg"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- smart_device_ontology#có_camera_sau -->
+
+    <owl:ObjectProperty rdf:about="smart_device_ontology#có_camera_sau">
+        <ace_lexicon:TV_vbg>có_camera_sau</ace_lexicon:TV_vbg>
+        <ace_lexicon:TV_pl>có_camera_sau</ace_lexicon:TV_pl>
+        <ace_lexicon:TV_sg>có_camera_sau</ace_lexicon:TV_sg>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- smart_device_ontology#có_camera_trước -->
+
+    <owl:ObjectProperty rdf:about="smart_device_ontology#có_camera_trước">
+        <ace_lexicon:TV_vbg>có_camera_trước</ace_lexicon:TV_vbg>
+        <ace_lexicon:TV_sg>có_camera_trước</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_pl>có_camera_trước</ace_lexicon:TV_pl>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- smart_device_ontology#sử_dụng_cpu -->
+
+    <owl:ObjectProperty rdf:about="smart_device_ontology#sử_dụng_cpu">
+        <ace_lexicon:TV_sg>sử_dụng_cpu</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_vbg>sử_dụng_cpu</ace_lexicon:TV_vbg>
+        <ace_lexicon:TV_pl>sử_dụng_cpu</ace_lexicon:TV_pl>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- smart_device_ontology#bộ_nhớ_ngoài -->
+
+    <owl:DatatypeProperty rdf:about="smart_device_ontology#bộ_nhớ_ngoài">
+        <ace_lexicon:TV_pl>bộ_nhớ_ngoài</ace_lexicon:TV_pl>
+        <ace_lexicon:TV_sg>bộ_nhớ_ngoài</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_vbg>bộ_nhớ_ngoài</ace_lexicon:TV_vbg>
+        <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- smart_device_ontology#bộ_nhớ_trong -->
+
+    <owl:DatatypeProperty rdf:about="smart_device_ontology#bộ_nhớ_trong">
+        <ace_lexicon:TV_sg>bộ_nhớ_trong</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_vbg>bộ_nhớ_trong</ace_lexicon:TV_vbg>
+        <ace_lexicon:TV_pl>bộ_nhớ_trong</ace_lexicon:TV_pl>
+        <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- smart_device_ontology#có_giá -->
+
+    <owl:DatatypeProperty rdf:about="smart_device_ontology#có_giá">
+        <ace_lexicon:TV_sg>có_giá</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_vbg>có_giá</ace_lexicon:TV_vbg>
+        <ace_lexicon:TV_pl>có_giá</ace_lexicon:TV_pl>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- smart_device_ontology#dung_lượng_pin -->
+
+    <owl:DatatypeProperty rdf:about="smart_device_ontology#dung_lượng_pin">
+        <ace_lexicon:TV_sg>dung_lượng_pin</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_vbg>dung_lượng_pin</ace_lexicon:TV_vbg>
+        <ace_lexicon:TV_pl>dung_lượng_pin</ace_lexicon:TV_pl>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- smart_device_ontology#kích_cỡ_màn_hình -->
+
+    <owl:DatatypeProperty rdf:about="smart_device_ontology#kích_cỡ_màn_hình">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <ace_lexicon:TV_sg>kích_cỡ_màn_hình</ace_lexicon:TV_sg>
+        <ace_lexicon:TV_pl>kích_cỡ_màn_hình</ace_lexicon:TV_pl>
+        <ace_lexicon:TV_vbg>kích_cỡ_màn_hình</ace_lexicon:TV_vbg>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- smart_device_ontology#A5 -->
+
+    <owl:Class rdf:about="smart_device_ontology#A5">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>A5</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>A5s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Android -->
+
+    <owl:Class rdf:about="smart_device_ontology#Android">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Nền_tảng"/>
+        <ace_lexicon:CN_sg>Android</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Androids</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#CPU -->
+
+    <owl:Class rdf:about="smart_device_ontology#CPU">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Thông_số_kĩ_thuật"/>
+        <ace_lexicon:CN_sg>CPU</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>CPUs</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Camera -->
+
+    <owl:Class rdf:about="smart_device_ontology#Camera">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Thông_số_kĩ_thuật"/>
+        <ace_lexicon:CN_pl>Cameras</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Camera</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Cao_cấp -->
+
+    <owl:Class rdf:about="smart_device_ontology#Cao_cấp">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Phân_khúc_sản_phẩm"/>
+        <ace_lexicon:CN_pl>Cao_cấp</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Cao_cấp</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#GalaxyGrand -->
+
+    <owl:Class rdf:about="smart_device_ontology#GalaxyGrand">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>GalaxyGrand</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>GalaxyGrands</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#GalaxyTrend -->
+
+    <owl:Class rdf:about="smart_device_ontology#GalaxyTrend">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>GalaxyTrend</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>GalaxyTrends</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#GalaxyV -->
+
+    <owl:Class rdf:about="smart_device_ontology#GalaxyV">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>GalaxyV</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>GalaxyVs</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#GoogleNexus -->
+
+    <owl:Class rdf:about="smart_device_ontology#GoogleNexus">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Sản_phẩm"/>
+        <ace_lexicon:CN_sg>GoogleNexus</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>GoogleNexuses</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Lumia -->
+
+    <owl:Class rdf:about="smart_device_ontology#Lumia">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Sản_phẩm"/>
+        <ace_lexicon:CN_sg>Lumia</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Lumias</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Lumia52x -->
+
+    <owl:Class rdf:about="smart_device_ontology#Lumia52x">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Lumia"/>
+        <ace_lexicon:CN_sg>Lumia52x</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Lumia52xes</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Lumia62x -->
+
+    <owl:Class rdf:about="smart_device_ontology#Lumia62x">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Lumia"/>
+        <ace_lexicon:CN_sg>Lumia62x</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Lumia62xes</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Lumia72x -->
+
+    <owl:Class rdf:about="smart_device_ontology#Lumia72x">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Lumia"/>
+        <ace_lexicon:CN_sg>Lumia72x</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Lumia72xes</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Lumia82x -->
+
+    <owl:Class rdf:about="smart_device_ontology#Lumia82x">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Lumia"/>
+        <ace_lexicon:CN_sg>Lumia82x</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Lumia82xes</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Lumia92x -->
+
+    <owl:Class rdf:about="smart_device_ontology#Lumia92x">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Lumia"/>
+        <ace_lexicon:CN_pl>Lumia92xes</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Lumia92x</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Máy_tính_bảng -->
+
+    <owl:Class rdf:about="smart_device_ontology#Máy_tính_bảng">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Thiết_bị_thông_minh"/>
+        <ace_lexicon:CN_pl>Máy_tính_bảng</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Máy_tính_bảng</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Nhà_sản_xuất -->
+
+    <owl:Class rdf:about="smart_device_ontology#Nhà_sản_xuất">
+        <ace_lexicon:CN_pl>Nhà_sản_xuất</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Nhà_sản_xuất</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Note1 -->
+
+    <owl:Class rdf:about="smart_device_ontology#Note1">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_pl>Note1s</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Note1</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Note2 -->
+
+    <owl:Class rdf:about="smart_device_ontology#Note2">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>Note2</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Note2s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Note3 -->
+
+    <owl:Class rdf:about="smart_device_ontology#Note3">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_pl>Note3s</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Note3</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Note4 -->
+
+    <owl:Class rdf:about="smart_device_ontology#Note4">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>Note4</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Note4s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Nền_tảng -->
+
+    <owl:Class rdf:about="smart_device_ontology#Nền_tảng">
+        <ace_lexicon:CN_pl>Nền_tảng</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Nền_tảng</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Phalet -->
+
+    <owl:Class rdf:about="smart_device_ontology#Phalet">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Thiết_bị_thông_minh"/>
+        <ace_lexicon:CN_sg>Phalet</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Phalets</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Phân_khúc_sản_phẩm -->
+
+    <owl:Class rdf:about="smart_device_ontology#Phân_khúc_sản_phẩm">
+        <ace_lexicon:CN_sg>Phân_khúc_sản_phẩm</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Phân_khúc_sản_phẩm</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Phổ_thông -->
+
+    <owl:Class rdf:about="smart_device_ontology#Phổ_thông">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Phân_khúc_sản_phẩm"/>
+        <ace_lexicon:CN_sg>Phổ_thông</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Phổ_thông</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#S2 -->
+
+    <owl:Class rdf:about="smart_device_ontology#S2">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_pl>S2s</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>S2</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#S3 -->
+
+    <owl:Class rdf:about="smart_device_ontology#S3">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_pl>S3s</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>S3</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#S4 -->
+
+    <owl:Class rdf:about="smart_device_ontology#S4">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>S4</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>S4s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#S5 -->
+
+    <owl:Class rdf:about="smart_device_ontology#S5">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_pl>S5s</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>S5</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#S6 -->
+
+    <owl:Class rdf:about="smart_device_ontology#S6">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#SamsungGalaxy"/>
+        <ace_lexicon:CN_sg>S6</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>S6s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#SamsungGalaxy -->
+
+    <owl:Class rdf:about="smart_device_ontology#SamsungGalaxy">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Sản_phẩm"/>
+        <ace_lexicon:CN_sg>SamsungGalaxy</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>SamsungGalaxies</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Smartphone -->
+
+    <owl:Class rdf:about="smart_device_ontology#Smartphone">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Thiết_bị_thông_minh"/>
+        <ace_lexicon:CN_sg>Smartphone</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Smartphones</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Sản_phẩm -->
+
+    <owl:Class rdf:about="smart_device_ontology#Sản_phẩm">
+        <ace_lexicon:CN_pl>Thương_hiệu</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Thương_hiệu</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Thiết_bị_thông_minh -->
+
+    <owl:Class rdf:about="smart_device_ontology#Thiết_bị_thông_minh">
+        <ace_lexicon:CN_sg>Thiết_bị_thông_minh</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Thiết_bị_thông_minh</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Thông_số_kĩ_thuật -->
+
+    <owl:Class rdf:about="smart_device_ontology#Thông_số_kĩ_thuật">
+        <ace_lexicon:CN_pl>Thông_số_kĩ_thuật</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>Thông_số_kĩ_thuật</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Trung_cấp -->
+
+    <owl:Class rdf:about="smart_device_ontology#Trung_cấp">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Phân_khúc_sản_phẩm"/>
+        <ace_lexicon:CN_sg>Trung_cấp</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Trung_cấp</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#WindowPhone -->
+
+    <owl:Class rdf:about="smart_device_ontology#WindowPhone">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Nền_tảng"/>
+        <ace_lexicon:CN_pl>WindowPhones</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>WindowPhone</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#Xperia -->
+
+    <owl:Class rdf:about="smart_device_ontology#Xperia">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Sản_phẩm"/>
+        <ace_lexicon:CN_sg>Xperia</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>Xperias</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iOS -->
+
+    <owl:Class rdf:about="smart_device_ontology#iOS">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Nền_tảng"/>
+        <ace_lexicon:CN_sg>iOS</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>iOSes</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPad -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPad">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Sản_phẩm"/>
+        <ace_lexicon:CN_pl>iPads</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPad</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPad4 -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPad4">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPad"/>
+        <ace_lexicon:CN_sg>iPad4</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>iPad4s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPadAir -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPadAir">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPad"/>
+        <ace_lexicon:CN_pl>iPadAirs</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPadAir</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPadMini -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPadMini">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPad"/>
+        <ace_lexicon:CN_pl>iPadMinis</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPadMini</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#Sản_phẩm"/>
+        <ace_lexicon:CN_sg>iPhone</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>iPhones</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone4 -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone4">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPhone"/>
+        <ace_lexicon:CN_pl>iPhone4s</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPhone4</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone4S -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone4S">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPhone"/>
+        <ace_lexicon:CN_pl>iPhone4Ses</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPhone4S</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone5 -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone5">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPhone"/>
+        <ace_lexicon:CN_sg>iPhone5</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>iPhone5s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone5S -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone5S">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPhone"/>
+        <ace_lexicon:CN_pl>iPhone5Ses</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPhone5S</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone6 -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone6">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPhone"/>
+        <ace_lexicon:CN_sg>iPhone6</ace_lexicon:CN_sg>
+        <ace_lexicon:CN_pl>iPhone6s</ace_lexicon:CN_pl>
+    </owl:Class>
+    
+
+
+    <!-- smart_device_ontology#iPhone6Plus -->
+
+    <owl:Class rdf:about="smart_device_ontology#iPhone6Plus">
+        <rdfs:subClassOf rdf:resource="smart_device_ontology#iPhone"/>
+        <ace_lexicon:CN_pl>iPhone6Pluses</ace_lexicon:CN_pl>
+        <ace_lexicon:CN_sg>iPhone6Plus</ace_lexicon:CN_sg>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- smart_device_ontology#Apple -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Apple">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>Apple</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#BlackBerry -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#BlackBerry">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>BlackBerry</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Froyo_2.2 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Froyo_2.2">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>Froyo_2.2</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Gingerbread_2.3 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Gingerbread_2.3">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>Gingerbread_2.3</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Google -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Google">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>Google</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#HTC -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#HTC">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>HTC</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Honeycomb_3.x -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Honeycomb_3.x">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>Honeycomb_3.x</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#IceCreamSanwich_4.0 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#IceCreamSanwich_4.0">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>IceCreamSanwich_4.0</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#JellyBean_4.1_4.3 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#JellyBean_4.1_4.3">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>JellyBean_4.1_4.3</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#KitKat_4.4 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#KitKat_4.4">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>KitKat_4.4</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Lollipop_5.0 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Lollipop_5.0">
+        <rdf:type rdf:resource="smart_device_ontology#Android"/>
+        <ace_lexicon:PN_sg>Lollipop_5.0</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Microsoft -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Microsoft">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>Microsoft</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Samsung -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Samsung">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>Samsung</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#Sony -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#Sony">
+        <rdf:type rdf:resource="smart_device_ontology#Nhà_sản_xuất"/>
+        <ace_lexicon:PN_sg>Sony</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#WindowPhone7 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#WindowPhone7">
+        <rdf:type rdf:resource="smart_device_ontology#WindowPhone"/>
+        <ace_lexicon:PN_sg>WindowPhone7</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#WindowPhone8 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#WindowPhone8">
+        <rdf:type rdf:resource="smart_device_ontology#WindowPhone"/>
+        <ace_lexicon:PN_sg>WindowPhone8</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#iOS_5 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#iOS_5">
+        <rdf:type rdf:resource="smart_device_ontology#iOS"/>
+        <ace_lexicon:PN_sg>iOS_5</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#iOS_6 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#iOS_6">
+        <rdf:type rdf:resource="smart_device_ontology#iOS"/>
+        <ace_lexicon:PN_sg>iOS_6</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#iOS_7 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#iOS_7">
+        <rdf:type rdf:resource="smart_device_ontology#iOS"/>
+        <ace_lexicon:PN_sg>iOS_7</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- smart_device_ontology#iOS_8 -->
+
+    <owl:NamedIndividual rdf:about="smart_device_ontology#iOS_8">
+        <rdf:type rdf:resource="smart_device_ontology#iOS"/>
+        <ace_lexicon:PN_sg>iOS_8</ace_lexicon:PN_sg>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="smart_device_ontology#A5"/>
+            <rdf:Description rdf:about="smart_device_ontology#GalaxyGrand"/>
+            <rdf:Description rdf:about="smart_device_ontology#GalaxyTrend"/>
+            <rdf:Description rdf:about="smart_device_ontology#GalaxyV"/>
+            <rdf:Description rdf:about="smart_device_ontology#Note1"/>
+            <rdf:Description rdf:about="smart_device_ontology#Note2"/>
+            <rdf:Description rdf:about="smart_device_ontology#Note3"/>
+            <rdf:Description rdf:about="smart_device_ontology#Note4"/>
+            <rdf:Description rdf:about="smart_device_ontology#S2"/>
+            <rdf:Description rdf:about="smart_device_ontology#S3"/>
+            <rdf:Description rdf:about="smart_device_ontology#S4"/>
+            <rdf:Description rdf:about="smart_device_ontology#S5"/>
+            <rdf:Description rdf:about="smart_device_ontology#S6"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.5.0) http://owlapi.sourceforge.net -->
+

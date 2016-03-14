@@ -20,8 +20,10 @@ import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.swrlapi.core.IRIResolver;
 import org.swrlapi.core.SWRLAPIOWLOntology;
 import org.swrlapi.core.SWRLRuleRenderer;
+
 import org.swrlapi.factory.DefaultIRIResolver;
 import org.swrlapi.factory.SWRLAPIFactory;
 import org.swrlapi.sqwrl.exceptions.SQWRLException;
@@ -39,8 +41,8 @@ import java.util.Iterator;
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 11/11/14.
  */
-@UIScope
 @SpringComponent
+@UIScope
 public class OWLEditorKitImpl implements OWLEditorKit {
 
     private static final Logger LOG = LoggerFactory.getLogger(OWLEditorKitImpl.class);
@@ -51,12 +53,12 @@ public class OWLEditorKitImpl implements OWLEditorKit {
 
     private final ExplanationProgressMonitor progressMonitor = new SilentExplanationProgressMonitor();
 
-    private final OWLOntologyManager modelManager = OWLManager.createOWLOntologyManager();
+    private OWLOntologyManager modelManager;
 
     private SWRLRuleRenderer ruleRenderer;
-    private ExplanationOrderer explanationOrderer = new ExplanationOrdererImpl(modelManager);
+    private ExplanationOrderer explanationOrderer;
     private DefaultExplanationGenerator explanationGenerator;
-    private OWLEditorDataFactory editorDataFactory = new OWLEditorDataFactoryImpl();
+    private OWLEditorDataFactory editorDataFactory;
     private PrefixManager prefixManager;
     private OWLOntology activeOntology;
     private OWLEntityRemover entityRemover;
@@ -67,7 +69,7 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     /* Converted SWRLOntology  used for writing and reading SWRL rules */
     private SWRLAPIOWLOntology swrlActiveOntology;
     /* Variables for OWLClassExpression Parser */
-    private ManchesterOWLSyntaxParser parser = OWLManager.createManchesterParser();
+    private ManchesterOWLSyntaxParser parser;
 
     private ShortFormProvider sfpFormat;
     private BidirectionalShortFormProvider bidirectionalSfp;
@@ -85,11 +87,17 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     }
 
     public void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException {
+        modelManager = OWLManager.createOWLOntologyManager();
+        explanationOrderer = new ExplanationOrdererImpl(modelManager);
+        editorDataFactory = new OWLEditorDataFactoryImpl();
         activeOntology = modelManager.createOntology(documentIRI);
         initialise();
     }
 
     public void loadOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException {
+        modelManager = OWLManager.createOWLOntologyManager();
+        explanationOrderer = new ExplanationOrdererImpl(modelManager);
+        editorDataFactory = new OWLEditorDataFactoryImpl();
         activeOntology = modelManager.loadOntologyFromOntologyDocument(documentIRI);
         initialise();
     }
@@ -98,13 +106,26 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         return explanationOrderer.getOrderedExplanation(axiom, explanationGenerator.getExplanation(axiom));
     }
     private void initialise() throws SQWRLException {
-        swrlActiveOntology = SWRLAPIFactory.createSWRLAPIOntology(activeOntology);
-        editorDataFactory.setActiveOntology(this.activeOntology);
 
+        swrlActiveOntology = SWRLAPIFactory.createSWRLAPIOntology(activeOntology);
+        parser = OWLManager.createManchesterParser();
+        editorDataFactory.setActiveOntology(this.activeOntology);
+        String dfPrefix = activeOntology.getOntologyID().getOntologyIRI().get() + "#";
 //        activeOntology.getDirectImportsDocuments();
+
         modelManager.setOntologyDocumentIRI(activeOntology, activeOntology.getOntologyID().getDefaultDocumentIRI().get());
-        prefixManager = new DefaultPrefixManager(null, null, modelManager.getOntologyDocumentIRI(activeOntology) + "#");
-        ruleRenderer = SWRLAPIFactory.createSWRLRuleRenderer(activeOntology, new DefaultIRIResolver(modelManager.getOntologyDocumentIRI(activeOntology) + "#"));
+        prefixManager = new DefaultPrefixManager(null, null, dfPrefix);
+        prefixManager.setPrefix("owl:", "http://www.w3.org/2002/07/owl#");
+        prefixManager.setPrefix("swrl:", "http://www.w3.org/2003/11/swrl#");
+        prefixManager.setPrefix("swrlb:", "http://www.w3.org/2003/11/swrlb#");
+        prefixManager.setPrefix("sqwrl:", "http://sqwrl.stanford.edu/ontologies/built-ins/3.4/sqwrl.owl#");
+        prefixManager.setPrefix("swrlm:", "http://swrl.stanford.edu/ontologies/built-ins/3.4/swrlm.owl#");
+        prefixManager.setPrefix("temporal:", "http://swrl.stanford.edu/ontologies/built-ins/3.3/temporal.owl#");
+        prefixManager.setPrefix("swrlx:", "http://swrl.stanford.edu/ontologies/built-ins/3.3/swrlx.owl#");
+        prefixManager.setPrefix("swrla:", "http://swrl.stanford.edu/ontologies/3.3/swrla.owl#");
+        IRIResolver iriResolver = SWRLAPIFactory.createIRIResolver(dfPrefix);
+        iriResolver.updatePrefixes(activeOntology);
+        ruleRenderer = SWRLAPIFactory.createSWRLRuleRenderer(activeOntology, iriResolver);
 
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
         sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);

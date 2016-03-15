@@ -124,7 +124,15 @@ public class DataPropertyDependenciesSearcher {
         Set<SWRLAPIRule> affectedRules = new HashSet<>();
 
         for (SWRLAPIRule rule : rules) {
-            affectedRules.addAll(rule.getBody().stream().filter(atom -> atom.containsEntityInSignature(clzz)).map(atom -> rule).collect(Collectors.toList()));
+
+            Set<SWRLAtom> atoms = rule.getBodyAtoms().stream().filter(swrlAtom -> {
+                System.out.println(clzz +" == " + swrlAtom.getAllArguments());
+                return  swrlAtom.containsEntityInSignature(clzz);
+            }).map(swrlAtom -> swrlAtom).collect(Collectors.toSet());
+
+
+            affectedRules.addAll(rule.getBody().stream().filter(atom -> atom.containsEntityInSignature(clzz))
+                    .map(atom -> rule).collect(Collectors.toList()));
         }
 
         affectedRules.forEach(rule -> rule.getBody().forEach(atom -> atom.accept(new SWRLObjectVisitorAdapter() {

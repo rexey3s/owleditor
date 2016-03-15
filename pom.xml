@@ -24,7 +24,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>vn.edu.uit.owleditor.OWLEditorApplication</start-class>
 		<java.version>1.8</java.version>
-		<owlapi.version>4.1.0</owlapi.version>
+		<owlapi.version>5.0.0</owlapi.version>
+		<!--<owlapi.version>4.1.0</owlapi.version>-->
+
 		<pellet.version>2.4.0-ignazio1977</pellet.version>
 		<vaadin.version>7.6.3</vaadin.version>
 		<vaadin-spring-addon.version>0.0.8-SNAPSHOT</vaadin-spring-addon.version>
@@ -161,51 +163,82 @@
 			<plugin>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
-				<version>${vaadin.version}</version>
+				<version>${vaadin.plugin.version}</version>
 				<configuration>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<!-- <runTarget>mobilemail</runTarget> -->
-					<!-- We are doing "inplace" but into subdir VAADIN/widgetsets.
-                        This way compatible with Vaadin eclipse plugin. -->
-					<webappDirectory>${project.build.directory}/classes/VAADIN/widgetsets</webappDirectory>
-					<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
-					<!--<hostedWebapp>${project.build.directory}/classes/VAADIN/widgetsets</hostedWebapp>-->
+					<extraJvmArgs>-Xmx1g -Xss1024k</extraJvmArgs>
 
-					<!-- Most Vaadin apps don't need this stuff, guide that
-                        to target -->
-					<persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
-					<deploy>${project.build.directory}/gwt-deploy</deploy>
-					<!-- Compile report is not typically needed either, saves
-                        hunreds of mb disk -->
-					<compileReport>false</compileReport>
+					<!-- We are doing "inplace" gwt compilation
+                    but into subdir VAADIN/widgetsets -->
+					<webappDirectory>${basedir}/src/main/public/VAADIN/widgetsets
+					</webappDirectory>
+					<hostedWebapp>${basedir}/src/main/public/VAADIN/widgetsets
+					</hostedWebapp>
 					<noServer>true</noServer>
 					<!-- Remove draftCompile when project is ready -->
-					<draftCompile>false</draftCompile>
-
+					<draftCompile>true</draftCompile>
+					<persistentunitcachedir>${project.build.directory}/gwtdirt</persistentunitcachedir>
+					<compileReport>true</compileReport>
 					<style>OBF</style>
 					<strict>true</strict>
-					<runTarget>http://localhost:8080</runTarget>
+					<!-- Symbol maps etc, not needed in vaadin app, just target them outside war -->
+					<deploy>${project.build.directory}/gwt-deploy</deploy>
 				</configuration>
 				<executions>
 					<execution>
 						<configuration>
-							<!-- if you don't specify any modules, the plugin
-                                will find them -->
-							<!-- <modules> <module>com.vaadin.org.demo.mobilemail.gwt.ColorPickerWidgetSet</module>
-                                </modules> -->
+							<!-- if you don't specify any modules, the plugin will find them -->
+							<!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module>
+                            </modules> -->
 						</configuration>
 						<goals>
 							<goal>clean</goal>
 							<goal>resources</goal>
-							<goal>update-theme</goal>
-							<goal>update-widgetset</goal>
+							<!-- These are non functional currently with spring boot directory structure
+                            <goal>update-theme</goal>
+                            <goal>update-widgetset</goal>-->
 							<goal>compile-theme</goal>
 							<goal>compile</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<!-- ensure fresly compiled widgetset to jar, TODO check
+                    vaadin plugin configuration could get rid of this -->
+					<execution>
+						<id>copy-resources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/VAADIN</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/public/VAADIN</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main</directory>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+			</resource>
+			<!--<resource>-->
+			<!--<directory>src/main/webapp</directory>-->
+			<!--</resource>-->
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
 	</build>
 	<repositories>
 		<repository>

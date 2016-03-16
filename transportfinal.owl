@@ -1162,7 +1162,7 @@
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://attempto.ifi.uzh.ch/ace_lexicon#PN_sg"/>
-        <IRI>#MotorEngife</IRI>
+        <IRI>#MotorEngine</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">MotorEngine</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>

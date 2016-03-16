@@ -126,7 +126,7 @@ public class DataPropertyDependenciesSearcher {
         for (SWRLAPIRule rule : rules) {
 
             Set<SWRLAtom> atoms = rule.getBodyAtoms().stream().filter(swrlAtom -> {
-                System.out.println(clzz +" == " + swrlAtom.getAllArguments());
+                System.out.println(clzz +" == " + swrlAtom.getClassesInSignature());
                 return  swrlAtom.containsEntityInSignature(clzz);
             }).map(swrlAtom -> swrlAtom).collect(Collectors.toSet());
 

@@ -8,4 +8,5 @@
 target
 out
 gen
+src/main/resources/VAADIN/themes/mytheme/styles.css
 

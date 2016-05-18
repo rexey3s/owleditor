@@ -25,7 +25,7 @@ window.vn_edu_uit_owleditor_view_diagram_SuggestionGraph = function () {
             g.setNode(v.id, {label: v.label});
         });
         data.data.edges.forEach(function (v) {
-
+            console.log(v.start + " -> " + v.end);
             g.setEdge(v.start, v.end, {label: v.label});
         });
         data.object.nodes.forEach(function (v) {

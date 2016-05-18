@@ -117,7 +117,9 @@ public class DataPropertyDependenciesSearcher {
         getDataSuggestionByClass(clzz);
         return dataSet;
     }
-
+    private boolean checkAtomContainClassInSignatures(SWRLAtom atom, OWLClass owlClass) {
+        return atom.getPredicate() instanceof OWLClass && ((OWLClass) atom.getPredicate()).equals(owlClass);
+    }
     protected Multimap<OWLDataProperty, Multimap<Object, Set<SWRLAtom>>> getDataSuggestionByClass(OWLClass clzz) {
         nodes.add(buildOWLObjectNode(clzz));
         dataPropertySuggestions.clear();
@@ -125,14 +127,20 @@ public class DataPropertyDependenciesSearcher {
 
         for (SWRLAPIRule rule : rules) {
 
-            Set<SWRLAtom> atoms = rule.getBodyAtoms().stream().filter(swrlAtom -> {
-                System.out.println(clzz +" == " + swrlAtom.getClassesInSignature());
-                return  swrlAtom.containsEntityInSignature(clzz);
-            }).map(swrlAtom -> swrlAtom).collect(Collectors.toSet());
+//            Set<SWRLAtom> atoms = rule.getBodyAtoms().stream().filter(swrlAtom -> {
+//                System.out.println(clzz +" == " + swrlAtom.getClassesInSignature());
+//                return  swrlAtom.containsEntityInSignature(clzz);
+//            }).map(swrlAtom -> swrlAtom).collect(Collectors.toSet());
 
 
-            affectedRules.addAll(rule.getBody().stream().filter(atom -> atom.containsEntityInSignature(clzz))
+            affectedRules.addAll(rule.getBody().stream().filter(atom -> checkAtomContainClassInSignatures(atom, clzz)
+            )
                     .map(atom -> rule).collect(Collectors.toList()));
+//            affectedRules.addAll(rule.getBody().stream().filter(atom -> {
+//                if(atom instanceof ClassAtom) {
+//
+//                }
+//            }).map(atom -> rule).collect(Collectors.toList()));
         }
 
         affectedRules.forEach(rule -> rule.getBody().forEach(atom -> atom.accept(new SWRLObjectVisitorAdapter() {

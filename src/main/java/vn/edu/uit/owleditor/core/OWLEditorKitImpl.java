@@ -36,6 +36,7 @@ import vn.edu.uit.owleditor.data.OWLEditorDataFactoryImpl;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
@@ -107,7 +108,6 @@ public class OWLEditorKitImpl implements OWLEditorKit {
     }
     private void initialise() throws SQWRLException {
 
-        swrlActiveOntology = SWRLAPIFactory.createSWRLAPIOntology(activeOntology);
         parser = OWLManager.createManchesterParser();
         editorDataFactory.setActiveOntology(this.activeOntology);
         String dfPrefix = activeOntology.getOntologyID().getOntologyIRI().get() + "#";
@@ -125,7 +125,9 @@ public class OWLEditorKitImpl implements OWLEditorKit {
         prefixManager.setPrefix("swrla:", "http://swrl.stanford.edu/ontologies/3.3/swrla.owl#");
         IRIResolver iriResolver = SWRLAPIFactory.createIRIResolver(dfPrefix);
         iriResolver.updatePrefixes(activeOntology);
+
         ruleRenderer = SWRLAPIFactory.createSWRLRuleRenderer(activeOntology, iriResolver);
+        swrlActiveOntology = SWRLAPIFactory.createSWRLAPIOntology(activeOntology, iriResolver);
 
         entityRemover = new OWLEntityRemover(Collections.singleton(activeOntology));
         sfpFormat = new ManchesterOWLSyntaxPrefixNameShortFormProvider(activeOntology);

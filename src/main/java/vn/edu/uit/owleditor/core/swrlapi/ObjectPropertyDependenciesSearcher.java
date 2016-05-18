@@ -35,6 +35,9 @@ public class ObjectPropertyDependenciesSearcher {
         dataSet.add("edges", edges);
     }
 
+    private boolean checkAtomContainClassInSignatures(SWRLAtom atom, OWLClass owlClass) {
+        return atom.getPredicate() instanceof OWLClass && ((OWLClass) atom.getPredicate()).equals(owlClass);
+    }
     private static Set<OWLClass> collectObjectPropertyEndpoint(SWRLRule rule, SWRLObjectPropertyAtom propertyAtom) {
         final Set<OWLClass> classesSuggestion = new HashSet<>();
         rule.accept(new SWRLObjectVisitorAdapter() {
@@ -107,6 +110,7 @@ public class ObjectPropertyDependenciesSearcher {
         affectedRules.forEach(rule -> rule.getBody().forEach(atom -> atom.accept(new SWRLObjectVisitorAdapter() {
             @Override
             public void visit(SWRLObjectPropertyAtom propertyAtom) {
+
                 final Multimap<Set<OWLClass>, Set<SWRLAtom>> consequence = LinkedListMultimap.create();
                 final Set<OWLClass> endpoints = collectObjectPropertyEndpoint(rule, propertyAtom);
 

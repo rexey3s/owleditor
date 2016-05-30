@@ -42,8 +42,10 @@ public class OWLEditorUI extends UI {
     }
 
     public static OWLEditorKit getEditorKit() {
-        return ((OWLEditorUI) getCurrent()).editorKit;
+        return ((OWLEditorUI) getCurrent()).eKit;
     }
+
+    private OWLEditorKit eKit;
 
     public static HttpSession getHttpSession() {
         return ((OWLEditorUI) getCurrent()).httpSession;
@@ -56,13 +58,14 @@ public class OWLEditorUI extends UI {
         LOG.info("Note: VaadinRequest WrapSession is equivalent to HttpSession");
         LOG.info("This VaadinRequest SessionId -> " + request.getWrappedSession().getId());
         LOG.info("HttpSessionId -> " + httpSession.getId());
-
+        eKit = editorKit;
         updateContent();
 
     }
 
     private void updateContent() {
         OWLEditorKit eKit = (OWLEditorKit) httpSession.getAttribute("OWLEditorKit");
+
         if (eKit != null && eKit.getActiveOntology() != null) {
             ConfirmDialog.show(this, "Do you want to load a new ontology ?", dialog -> {
                 if (dialog.isConfirmed()) {
@@ -71,6 +74,7 @@ public class OWLEditorUI extends UI {
                     eKit.removeActiveOntology();
 
                 } else {
+                    this.eKit = eKit;
                     setContent(new MainView());
                 }
             });

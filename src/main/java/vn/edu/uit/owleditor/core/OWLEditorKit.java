@@ -11,12 +11,13 @@ import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationTree;
 import vn.edu.uit.owleditor.data.OWLEditorDataFactory;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 /**
  * @author Chuong Dang, University of Information and Technology, HCMC Vietnam,
  *         Faculty of Computer Network and Telecommunication created on 12/27/14.
  */
-public interface OWLEditorKit {
+public interface OWLEditorKit extends Serializable {
 
     void createOntologyFromOntologyDocument(@Nonnull IRI documentIRI) throws OWLOntologyCreationException, SQWRLException;
 

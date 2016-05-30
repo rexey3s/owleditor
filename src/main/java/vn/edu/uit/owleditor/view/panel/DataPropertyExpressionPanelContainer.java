@@ -170,7 +170,9 @@ public class DataPropertyExpressionPanelContainer extends AbstractPanelContainer
             @Override
             public void addInferredExpressions() throws InconsistentOntologyException, NullPointerException {
                 Set<OWLClass> implicitClasses = editorKit.getReasoner()
-                        .getDataPropertyDomains(Preconditions.checkNotNull(dataSource.getValue()), false)
+                        .getDataPropertyDomains(
+                                Preconditions.checkNotNull(
+                                        dataSource.getValue()), false)
                         .getFlattened();
                 implicitClasses.remove(thing);
                 implicitClasses.removeAll(ces);

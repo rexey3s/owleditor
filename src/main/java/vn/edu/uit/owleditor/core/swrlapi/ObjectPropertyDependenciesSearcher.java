@@ -103,7 +103,7 @@ public class ObjectPropertyDependenciesSearcher {
         Set<SWRLRule> affectedRules = new HashSet<>();
         for (SWRLRule rule : rules) {
             affectedRules.addAll(rule.getBody()
-                    .stream().filter(atom -> atom.containsEntityInSignature(clzz))
+                    .stream().filter(atom -> checkAtomContainClassInSignatures(atom, clzz))
                     .map(atom -> rule).collect(Collectors.toList()));
         }
         /* To be more efficient */

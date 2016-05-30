@@ -8,6 +8,7 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import vn.edu.uit.owleditor.OWLEditorUI;
 import vn.edu.uit.owleditor.core.OWLEditorKit;
 import vn.edu.uit.owleditor.event.OWLEditorEvent;
@@ -24,8 +25,8 @@ public class MainView extends HorizontalLayout {
     public final static String NAME = "mainView";
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
     final TabSheet root = new TabSheet();
+    OWLEditorKit editorKit;
 
-    final OWLEditorKit editorKit;
     public MainView() {
         editorKit = OWLEditorUI.getEditorKit();
         root.addTab(new ClassesSheet(), "Classes");

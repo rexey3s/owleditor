@@ -207,7 +207,8 @@ public class ClassHierarchicalPanel extends AbstractHierarchyPanel<OWLClass> {
         private final OWLClassSource selectedItem = new OWLClassSource();
 
         public OWLClassTree() {
-            eKit = editorKit.getDataFactory().getOWLClassHierarchicalContainer();
+            eKit = editorKit.getDataFactory()
+                    .getOWLClassHierarchicalContainer();
 
             setContainerDataSource(eKit);
             addValueChangeListener(this);

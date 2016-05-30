@@ -25,7 +25,8 @@ public abstract class AbstractHierarchyPanel<T extends OWLLogicalEntity> extends
         Action.Handler, Property.ValueChangeNotifier {
 
     protected Label caption = new Label();
-    protected OWLEditorKit editorKit;
+
+    OWLEditorKit editorKit;
     protected MenuBar.MenuItem reasonerToggle;
     protected OWLDataFactory owlFactory = OWLManager.getOWLDataFactory();
     public AbstractHierarchyPanel() {
